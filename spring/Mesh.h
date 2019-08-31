@@ -1,4 +1,5 @@
 #pragma once
+#include "glew.h"
 #include <vector>
 #include "vector2.h"
 #include "vector3.h"
@@ -14,5 +15,8 @@ namespace spring
 		vector<Vector3> normals;
 		vector<Vector2> texcoords;
 		vector<unsigned int> indices;
+
+		GLuint VAO, VBO, EBO;
+		Mesh();
 	};
 }

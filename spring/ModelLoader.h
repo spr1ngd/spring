@@ -8,6 +8,7 @@ namespace spring
 	private:
 
 	public:
+		ModelLoader();
 		void Load(const char* filePath);
 	};
 }
