@@ -10,6 +10,7 @@ A LONG TRIP.
 ## processing
 
 - build base framework 
+- use assimp library load variety models. learn how to use assimp
 
 ## finished 
 
