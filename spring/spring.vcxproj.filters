@@ -24,94 +24,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="spring.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="Camera.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="Transform.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="Application.h">
-      <Filter>spring</Filter>
-    </ClInclude>
-    <ClInclude Include="AssetLoader.h">
-      <Filter>spring</Filter>
-    </ClInclude>
-    <ClInclude Include="Console.h">
-      <Filter>spring</Filter>
-    </ClInclude>
-    <ClInclude Include="Mesh.h">
-      <Filter>spring</Filter>
-    </ClInclude>
-    <ClInclude Include="Model.h">
-      <Filter>spring</Filter>
-    </ClInclude>
-    <ClInclude Include="Node.h">
-      <Filter>spring</Filter>
-    </ClInclude>
-    <ClInclude Include="Object.h">
-      <Filter>spring</Filter>
-    </ClInclude>
-    <ClInclude Include="Primitive.h">
-      <Filter>spring</Filter>
-    </ClInclude>
-    <ClInclude Include="Shader.h">
-      <Filter>spring</Filter>
-    </ClInclude>
-    <ClInclude Include="Vector2.h">
-      <Filter>spring</Filter>
-    </ClInclude>
-    <ClInclude Include="Vector3.h">
-      <Filter>spring</Filter>
-    </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="spring.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="Camera.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="Transform.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="Application.cpp">
-      <Filter>spring</Filter>
-    </ClCompile>
-    <ClCompile Include="AssetLoader.cpp">
-      <Filter>spring</Filter>
-    </ClCompile>
-    <ClCompile Include="Console.cpp">
-      <Filter>spring</Filter>
-    </ClCompile>
-    <ClCompile Include="Mesh.cpp">
-      <Filter>spring</Filter>
-    </ClCompile>
-    <ClCompile Include="Model.cpp">
-      <Filter>spring</Filter>
-    </ClCompile>
-    <ClCompile Include="Node.cpp">
-      <Filter>spring</Filter>
-    </ClCompile>
-    <ClCompile Include="Object.cpp">
-      <Filter>spring</Filter>
-    </ClCompile>
-    <ClCompile Include="Primitive.cpp">
-      <Filter>spring</Filter>
-    </ClCompile>
-    <ClCompile Include="Shader.cpp">
-      <Filter>spring</Filter>
-    </ClCompile>
-    <ClCompile Include="Vector2.cpp">
-      <Filter>spring</Filter>
-    </ClCompile>
-    <ClCompile Include="Vector3.cpp">
-      <Filter>spring</Filter>
-    </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
     <ResourceCompile Include="spring.rc">
       <Filter>资源文件</Filter>
     </ResourceCompile>
@@ -123,5 +35,138 @@
     <Image Include="spring.ico">
       <Filter>资源文件</Filter>
     </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="spring\Camera.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="spring\Console.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="spring\Material.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="spring\Mesh.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="spring\Model.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="spring\Node.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="spring\Object.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="spring\Primitive.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="spring\Shader.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="spring\spring.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="spring\Texture.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="spring\Transform.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="spring\App\Application.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="spring\Loader\AssetLoader.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="spring\Loader\ModelLoader.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="spring\Loader\TextureLoader.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="spring\Math\Vector3.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="spring\Math\Vector2.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="spring\Camera.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="spring\Console.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="spring\Material.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="spring\Mesh.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="spring\Model.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="spring\Node.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="spring\Object.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="spring\Primitive.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="spring\Shader.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="spring\spring.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="spring\Texture.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="spring\Transform.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="eglew.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="framework.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="glew.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="soil.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="wglew.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="spring\App\Application.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="spring\Loader\AssetLoader.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="spring\Loader\ModelLoader.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="spring\Loader\TextureLoader.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="spring\Math\Vector3.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="spring\Math\Vector2.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
