@@ -1,5 +1,4 @@
-#pragma once
-#include <string>
+#pragma once 
 
 using namespace std;
 
@@ -10,8 +9,12 @@ namespace spring
 	private:
 		unsigned int instanceId;
 	public:
-		string name;
+		const char* name;
 		Object();
+
+	public:
+		static Object Instantiate(Object obj);
+		static Object Destroy();
 	};
 }
 

@@ -89,6 +89,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 	// load model from file
 	// transfer data to mesh
 
+	// todo : load model 
+
 	// 2. create vao
 
 	GLuint vao;

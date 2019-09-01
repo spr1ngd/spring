@@ -10,6 +10,7 @@ namespace spring
 		ModelLoader loader;
 	public:
 		Mesh mesh;
+		Model();
 		Model(const char*filePath);
 	};
 }
