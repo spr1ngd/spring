@@ -7,6 +7,9 @@
 #include "spring.h"
 #include "application.h"
 #include "shader.h"
+#include "model.h"
+#include "mesh.h"
+#include "material.h"
 
 #pragma comment (lib,"glew32.lib")
 #pragma comment (lib,"opengl32.lib")
@@ -139,6 +142,34 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 
 #pragma endregion
 
+#pragma region draw triangle by encapsuled object
+
+	spring::Mesh mesh;
+	/*mesh.positions =
+	{
+		spring::Vector3(0.5f,0.5f,0.0f),
+		spring::Vector3(0.5f, -0.5f, 0.0f),
+		spring::Vector3(-0.5f, -0.5f, 0.0f),
+		spring::Vector3(-0.5f, 0.5f, 0.0f)
+	};*/
+	/*mesh.pvertices = new float[12]{
+	0.5f, 0.5f, 0.0f,
+	0.5f, -0.5f, 0.0f,
+	-0.5f, -0.5f, 0.0f,
+	-0.5f, 0.5f, 0.0f
+	};
+	mesh.pindices = new unsigned int[6]{
+		0, 1, 3,
+		1, 2, 3
+	};*/
+	//mesh.indices = {0,1,3,1,2,3};
+	mesh.indexCount = 6;
+	mesh.vertexCount = 12;
+	spring::Material material("res/shader/base/base.vs", "res/shader/base/base.fs");
+	spring::Model model(&mesh, &material);
+	model.Init();
+
+#pragma endregion
 
 	while (true)
 	{
@@ -155,7 +186,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 		glClearColor(0.1f, 0.4f, 0.7f, 1.0f);
 		glClear(GL_DEPTH_BUFFER_BIT|GL_COLOR_BUFFER_BIT);
 
-		render();
+		model.Render();
+		//render();
 		//app.Render();
 
 		glFinish();

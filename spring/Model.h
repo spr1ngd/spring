@@ -1,6 +1,8 @@
 #pragma once
 #include "mesh.h"
 #include "modelloader.h"
+#include "shader.h"
+#include "material.h"
 
 namespace spring 
 {
@@ -9,8 +11,13 @@ namespace spring
 	private:
 		ModelLoader loader;
 	public:
-		Mesh mesh;
+		Mesh* mesh;
+		Material* material;
 		Model();
 		Model(const char*filePath);
+		Model(Mesh* mesh, Material* material);
+
+		void Init();
+		void Render();
 	};
 }
