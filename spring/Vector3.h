@@ -3,10 +3,16 @@
 
 namespace spring 
 {
-	struct Vector3
+	class Vector3
 	{
 	public:
-		float x, y, z;
+		union 
+		{
+			struct 
+			{
+				float x, y, z;
+			};
+		};
 	public:
 		Vector3(float x = 0.0f, float y = 0.0f, float z = 0.0f) 
 		{
@@ -14,5 +20,7 @@ namespace spring
 			this->y = y;
 			this->z = z;
 		}
+		float Magnitude();
+		void Normalize();
 	};
 }

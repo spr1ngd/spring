@@ -42,13 +42,13 @@ void Shader::linkProgram()
 
 void Shader::initializeLocation()
 {
-	GLuint mLocation = glGetAttribLocation(this->program, MATRIX_M);
+	GLuint mLocation = glGetUniformLocation(this->program, MATRIX_M);
 	this->locations.insert(pair<const char*, GLuint>(MATRIX_M, mLocation));
 
-	GLuint vLocation = glGetAttribLocation(this->program, MATRIX_V);
+	GLuint vLocation = glGetUniformLocation(this->program, MATRIX_V);
 	this->locations.insert(pair<const char*, GLuint>(MATRIX_V, vLocation));
 
-	GLuint pLocation = glGetAttribLocation(this->program, MATRIX_P);
+	GLuint pLocation = glGetUniformLocation(this->program, MATRIX_P);
 	this->locations.insert(pair<const char*, GLuint>(MATRIX_P, pLocation));
 
 	GLuint veretxLocation = glGetAttribLocation(this->program, VERTEX);

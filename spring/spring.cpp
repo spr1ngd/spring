@@ -10,6 +10,7 @@
 #include "model.h"
 #include "mesh.h"
 #include "material.h"
+#include "camera.h"
 
 #pragma comment (lib,"glew32.lib")
 #pragma comment (lib,"opengl32.lib")
@@ -144,32 +145,28 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 
 #pragma region draw triangle by encapsuled object
 
+	Camera camera;
+	//camera.transform->position = Vector3(2.0f,2.0f,2.0f);
+
 	spring::Mesh mesh;
-	/*mesh.positions =
+	mesh.vertices =
 	{
 		spring::Vector3(0.5f,0.5f,0.0f),
 		spring::Vector3(0.5f, -0.5f, 0.0f),
 		spring::Vector3(-0.5f, -0.5f, 0.0f),
 		spring::Vector3(-0.5f, 0.5f, 0.0f)
-	};*/
-	/*mesh.pvertices = new float[12]{
-	0.5f, 0.5f, 0.0f,
-	0.5f, -0.5f, 0.0f,
-	-0.5f, -0.5f, 0.0f,
-	-0.5f, 0.5f, 0.0f
-	};
-	mesh.pindices = new unsigned int[6]{
-		0, 1, 3,
-		1, 2, 3
-	};*/
-	//mesh.indices = {0,1,3,1,2,3};
+	}; 
+	mesh.indices = {0,1,3,1,2,3};
 	mesh.indexCount = 6;
 	mesh.vertexCount = 12;
-	spring::Material material("res/shader/base/base.vs", "res/shader/base/base.fs");
+	//spring::Material material("res/shader/base/base.vs", "res/shader/base/base.fs");
+	spring::Material material("res/shader/vertex/vertexcolor.vs","res/shader/vertex/vertexcolor.fs");
 	spring::Model model(&mesh, &material);
 	model.Init();
 
 #pragma endregion
+
+	glDisable(GL_CULL_FACE);
 
 	while (true)
 	{

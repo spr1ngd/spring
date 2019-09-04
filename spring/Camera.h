@@ -14,17 +14,17 @@ namespace spring
 		};
 		struct PerspectiveSetting 
 		{
-			float nearClip;
-			float farClip;
+			float nearClip = 0.1f;
+			float farClip = 1000.0f;
 		};
 		struct OrthographicSetting
 		{
-			float nearClip;
-			float farClip;
+			float nearClip = 0.1f;
+			float farClip = 1000.0f;
 		};
 	public:
 		Transform* transform;
-		Type cameraType;
+		Type cameraType = Type::Perspective;
 		PerspectiveSetting perspectiveSetting;
 		OrthographicSetting orthographicSetting;
 
