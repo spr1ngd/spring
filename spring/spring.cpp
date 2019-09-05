@@ -146,7 +146,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 #pragma region draw triangle by encapsuled object
 
 	Camera camera;
-	//camera.transform->position = Vector3(2.0f,2.0f,2.0f);
 
 	spring::Mesh mesh;
 	mesh.vertices =
@@ -183,7 +182,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 		glClearColor(0.1f, 0.4f, 0.7f, 1.0f);
 		glClear(GL_DEPTH_BUFFER_BIT|GL_COLOR_BUFFER_BIT);
 
-		model.Render();
+		camera.Render(&model);
+		//model.Render();
 		//render();
 		//app.Render();
 

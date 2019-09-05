@@ -4,11 +4,13 @@ using namespace spring;
 
 Model::Model(const char* filePath)
 {
-
+	this->transform = new Transform();
+	//todo  delete the pointer
 }
 
 Model::Model(Mesh* mesh,Material*material) 
 {
+	this->transform = new Transform();
 	this->mesh = mesh;
 	this->material = material;
 }
@@ -23,14 +25,15 @@ void Model::Init()
 		});
 }
 
-void Model::Render() 
+void Model::Render( glm::mat4 view,glm::mat4 projection ) 
 {
 	this->material->shader->use();
 	this->mesh->Draw([&](void)
 		{
-			glm::mat4 model = glm::translate(glm::mat4(1.0), glm::vec3(0.0f, 0.0f, -1.0f));
-			glm::mat4 view = glm::lookAt(glm::vec3(0.0f,0.0f, 0.0f), glm::vec3(0.0f, 0.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-			glm::mat4 projection = glm::perspective(60.0f, 800.0f / 600.0f, 0.1f, 1000.0f);
+			glm::mat4 model = glm::translate(glm::mat4(1.0), 
+				glm::vec3(this->transform->position.x,
+					this->transform->position.y,
+					this->transform->position.z));
 
 			GLuint mLocation = this->material->shader->getLocation(MATRIX_M);
 			glUniformMatrix4fv(mLocation, 1, GL_FALSE, glm::value_ptr(model));

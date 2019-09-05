@@ -2,6 +2,7 @@
 #include "node.h"
 #include "transform.h"
 #include "vector3.h"
+#include "model.h"
 
 namespace spring 
 {
@@ -24,12 +25,19 @@ namespace spring
 		};
 	public:
 		Transform* transform;
+		Vector3* center;
+		Vector3* direction;
 		Type cameraType = Type::Perspective;
+		float fov = 60.0f;
+		float nearClip = 0.1f;
+		float farClip = 1000.0f;
 		PerspectiveSetting perspectiveSetting;
 		OrthographicSetting orthographicSetting;
 
 	public:
+		Camera();
 		void LookAt(const Node* target);
 		void LookAt(const Vector3* target);
+		void Render(Model* model );
 	};
 }
