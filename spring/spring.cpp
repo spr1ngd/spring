@@ -51,7 +51,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 	rect.bottom = (long)600.0;
 	// AdjustWinwRect(&rect, WS_OVERLAPPEDWINDOW, FALSE);
 
-	HWND hwnd = CreateWindowEx(NULL, L"OpenGL", L"RenderWindow", WS_OVERLAPPEDWINDOW, 100, 100, rect.right - rect.left, rect.bottom - rect.top, NULL, NULL, hInstance, NULL);
+	HWND hwnd = CreateWindowEx(NULL, L"OpenGL", L"spring engine", WS_OVERLAPPEDWINDOW, 100, 100, rect.right - rect.left, rect.bottom - rect.top, NULL, NULL, hInstance, NULL);
 
 	HDC dc = GetDC(hwnd);
 	PIXELFORMATDESCRIPTOR pfd;
@@ -161,6 +161,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 	//spring::Material material("res/shader/base/base.vs", "res/shader/base/base.fs");
 	spring::Material material("res/shader/vertex/vertexcolor.vs","res/shader/vertex/vertexcolor.fs");
 	spring::Model model(&mesh, &material);
+	model.transform->position.z = -0.2f;
 	model.Init();
 
 #pragma endregion
@@ -183,9 +184,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 		glClear(GL_DEPTH_BUFFER_BIT|GL_COLOR_BUFFER_BIT);
 
 		camera.Render(&model);
-		//model.Render();
-		//render();
-		//app.Render();
 
 		glFinish();
 		SwapBuffers(dc);
