@@ -11,6 +11,7 @@
 #include "mesh.h"
 #include "material.h"
 #include "camera.h"
+#include "behaviour.h"
 
 #pragma comment (lib,"glew32.lib")
 #pragma comment (lib,"opengl32.lib")
@@ -166,6 +167,9 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 
 #pragma endregion
 
+	for (auto behaviour : Behaviour::behaviours)
+		behaviour.second->Awake();
+
 	glDisable(GL_CULL_FACE);
 
 	while (true)
@@ -174,6 +178,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 		{
 			if (msg.message == WM_QUIT)
 			{
+				for (auto behaviour : Behaviour::behaviours)
+					behaviour.second->Destroy();
 				break;
 			}
 			TranslateMessage(&msg);
@@ -184,7 +190,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 		glClear(GL_DEPTH_BUFFER_BIT|GL_COLOR_BUFFER_BIT);
 
 		camera.Render(&model);
-
+		for (auto behaviour : Behaviour::behaviours)
+			behaviour.second->Update();
 		glFinish();
 		SwapBuffers(dc);
 	}
