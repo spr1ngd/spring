@@ -2,6 +2,11 @@
 
 using namespace spring;
 
+Model::Model() 
+{
+	this->transform = new Transform();
+}
+
 Model::Model(const char* filePath)
 {
 	this->transform = new Transform();
@@ -15,8 +20,8 @@ void Model::Init()
 {
 	for (unsigned int i = 0; i < this->meshes.size(); i++) 
 	{
-		Mesh mesh = this->meshes[i];
-		mesh.Init([&](void)
+		Mesh* mesh = &meshes[i];
+		mesh->Init([&](void)
 			{
 				GLuint locationId = this->material->shader->getLocation(VERTEX);
 				glEnableVertexAttribArray(locationId);
@@ -31,8 +36,8 @@ void Model::Render( glm::mat4 view,glm::mat4 projection )
 	this->material->shader->use();
 	for (unsigned int i = 0; i < this->meshes.size(); i++) 
 	{
-		Mesh mesh = this->meshes[i];
-		mesh.Draw([&](void)
+		Mesh* mesh = &meshes[i];
+		mesh->Draw([&](void)
 			{
 				glm::mat4 model = glm::translate(glm::mat4(1.0),
 					glm::vec3(this->transform->position.x,

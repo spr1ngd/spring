@@ -12,6 +12,7 @@
 #include "material.h"
 #include "camera.h"
 #include "behaviour.h"
+#include "vertex.h"
 
 #pragma comment (lib,"glew32.lib")
 #pragma comment (lib,"opengl32.lib")
@@ -89,36 +90,22 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 
 	Camera camera;
 
-	spring::Mesh mesh;
-	/*mesh.vertices =
-	{
-		spring::Vector3(0.5f,0.5f,0.0f),
-		spring::Vector3(0.5f, -0.5f, 0.0f),
-		spring::Vector3(-0.5f, -0.5f, 0.0f),
-		spring::Vector3(-0.5f, 0.5f, 0.0f)
-	};
-	mesh.indices = {0,1,3,1,2,3};*/
-	/*mesh.indexCount = 6;
-	mesh.vertexCount = 12;*/ 
-
 	//spring::Material material("res/shader/base/base.vs", "res/shader/base/base.fs");
 	spring::Material material("res/shader/vertex/vertexcolor.vs","res/shader/vertex/vertexcolor.fs");
 
-	/*spring::Model model(&mesh, &material);
-	
-	model.Init();*/
-	//Model model("res/model/fbx/tauren.fbx");
-	Model model("res/model/obj/Cube.obj");
+	//Model model("res/model/obj/Cube.obj");
+	Model model("res/model/fbx/tauren.fbx");
 	model.material = &material;
 	model.Init();
-	model.transform->position.z = -10.0f;
+	model.transform->position.z = -50.0f;
 
 #pragma endregion
 
 	for (auto behaviour : Behaviour::behaviours)
 		behaviour.second->Awake();
 
-	glDisable(GL_CULL_FACE);
+	//glDisable(GL_CULL_FACE);
+	glEnable(GL_DEPTH_TEST);
 
 	while (true)
 	{
