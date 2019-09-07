@@ -9,15 +9,21 @@ namespace spring
 	private:
 		TextureLoader loader;
 	public:
-		GLuint textureId;
-		const char* textureName;
+		GLuint textureId = -1;
+		const char* textureName = "";
+		const char* textureType = "";
 
+		Texture();
 		Texture(const char* filePath)
 		{
 			loader = TextureLoader();
 			this->textureId = loader.Load(filePath);
-			// todo : split texture name from file path
-			this->textureName = filePath;
 		}
+
+		void Load( const char* filePath ) 
+		{
+			loader = TextureLoader();
+			this->textureId = loader.Load(filePath);
+		};
 	};
 }

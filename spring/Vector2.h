@@ -7,6 +7,10 @@ namespace spring
 	public:
 		float x, y;
 	public:
-		Vector2(float x = 0.0f, float y = 0.0f);
+		Vector2(float x = 0.0f, float y = 0.0f) 
+		{
+			this->x = x;
+			this->y = y;
+		}
 	};
 }

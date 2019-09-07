@@ -8,6 +8,13 @@ Mesh::Mesh()
 
 }
 
+Mesh::Mesh(vector<Vertex> vertices, vector<unsigned int>indices, vector<Texture> textures) 
+{
+	this->vertices = vertices;
+	this->indices = indices;
+	this->textures = textures;
+}
+
 void Mesh::Init(function<void()> setting) 
 {
 	this->GenVBO();
@@ -19,6 +26,9 @@ void Mesh::GenVBO()
 {
 	glGenBuffers(1, &VBO);
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
+	// vector<Vector3>
+	// vector<Vertex>
+	// todo : fixed 
 	glBufferData(GL_ARRAY_BUFFER, sizeof(Vector3) * vertices.size(), &vertices[0], GL_STATIC_DRAW);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
@@ -51,6 +61,6 @@ void Mesh::Draw( function<void()> render )
 	if (nullptr != render)
 		render();
 
-	glDrawElements(GL_TRIANGLES, indexCount, GL_UNSIGNED_INT, 0);
+	glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
 	glBindVertexArray(0);
 }

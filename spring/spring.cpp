@@ -85,85 +85,33 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 	Application app;
 	app.Initialize();
 
-#pragma region draw triangle
-
-	// 1. create shader program
-	spring::Shader shader("res/shader/base/base.vs","res/shader/base/base.fs");
-	 
-	float vertices[] = {
-	0.5f, 0.5f, 0.0f,
-	0.5f, -0.5f, 0.0f,
-	-0.5f, -0.5f, 0.0f,
-	-0.5f, 0.5f, 0.0f
-	};
-
-	unsigned int indices[] = { 
-		0, 1, 3,
-		1, 2, 3
-	};
-	//unsigned int* indices;
-	unsigned int indexCount;
-	unsigned int vertexCount;
-	 
-	GLuint vbo;
-	glGenBuffers(1,&vbo);
-	glBindBuffer(GL_ARRAY_BUFFER, vbo);
-	glBufferData(GL_ARRAY_BUFFER,sizeof(vertices), vertices,GL_STATIC_DRAW);
-	glBindBuffer(GL_ARRAY_BUFFER,0); 
-
-	GLuint vao;
-	glGenVertexArrays(1, &vao);
-	glBindVertexArray(vao);
-
-	glBindBuffer(GL_ARRAY_BUFFER, vbo);
-	glEnableVertexAttribArray(shader.getLocation(VERTEX));
-	glVertexAttribPointer(shader.getLocation(VERTEX), 3, GL_FLOAT, GL_FALSE, sizeof(float) * 3, (void*)0);
-	glBindBuffer(GL_ARRAY_BUFFER,0 );
-
-	glBindVertexArray(0);
-
-	GLuint ebo;
-	glGenBuffers(1, &ebo);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned int) * 6, indices, GL_STATIC_DRAW);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,0);
-	 
-	auto render = [&](void) 
-	{
-		shader.use(); 
-		glBindVertexArray(vao);
-
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,ebo);
-
-		//glDrawArrays(GL_TRIANGLES, 0, 3);
-		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT,0);
-		// todo : what's the difference between glDrawArrays and glDrawElements , and what are the meaning of their parameters?
-		glBindVertexArray(0);
-		shader.disuse();
-	};
-
-#pragma endregion
-
 #pragma region draw triangle by encapsuled object
 
 	Camera camera;
 
 	spring::Mesh mesh;
-	mesh.vertices =
+	/*mesh.vertices =
 	{
 		spring::Vector3(0.5f,0.5f,0.0f),
 		spring::Vector3(0.5f, -0.5f, 0.0f),
 		spring::Vector3(-0.5f, -0.5f, 0.0f),
 		spring::Vector3(-0.5f, 0.5f, 0.0f)
-	}; 
-	mesh.indices = {0,1,3,1,2,3};
-	mesh.indexCount = 6;
-	mesh.vertexCount = 12;
+	};
+	mesh.indices = {0,1,3,1,2,3};*/
+	/*mesh.indexCount = 6;
+	mesh.vertexCount = 12;*/ 
+
 	//spring::Material material("res/shader/base/base.vs", "res/shader/base/base.fs");
 	spring::Material material("res/shader/vertex/vertexcolor.vs","res/shader/vertex/vertexcolor.fs");
-	spring::Model model(&mesh, &material);
-	model.transform->position.z = -0.2f;
+
+	/*spring::Model model(&mesh, &material);
+	
+	model.Init();*/
+	//Model model("res/model/fbx/tauren.fbx");
+	Model model("res/model/obj/Cube.obj");
+	model.material = &material;
 	model.Init();
+	model.transform->position.z = -10.0f;
 
 #pragma endregion
 
@@ -189,6 +137,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 		glClearColor(0.1f, 0.4f, 0.7f, 1.0f);
 		glClear(GL_DEPTH_BUFFER_BIT|GL_COLOR_BUFFER_BIT);
 
+		// todo : does not use camera to render object, render object by  spring engine, if need view matrix and projection matrix, get current render camera by interface.
 		camera.Render(&model);
 		for (auto behaviour : Behaviour::behaviours)
 			behaviour.second->Update();

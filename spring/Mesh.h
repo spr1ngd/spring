@@ -1,8 +1,10 @@
 #pragma once
 #include "glew.h"
 #include <vector>
+#include "vertex.h"
 #include "vector2.h"
 #include "vector3.h"
+#include "texture.h"
 #include <functional>
 
 using namespace std;
@@ -16,15 +18,13 @@ namespace spring
 		void GenVBO();
 		void GenEBO();
 	public:
-		vector<Vector3> vertices;
-		vector<Vector3> normals;
-		vector<Vector2> texcoords;
+		vector<Vertex> vertices;
 		vector<unsigned int> indices;
-		unsigned int indexCount;
-		unsigned int vertexCount;
+		vector<Texture> textures; 
 
 		GLuint VAO, VBO, EBO;
 		Mesh();
+		Mesh(vector<Vertex> vertices,vector<unsigned int>indices,vector<Texture> textures);
 
 		void Init(function<void()> setting);
 		void Draw(function<void()> render);

@@ -16,3 +16,8 @@ void Object::Destroy()
 {
 
 }
+
+unsigned long Object::GetInstanceID() 
+{
+	return 0;
+}
