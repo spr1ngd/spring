@@ -3,7 +3,9 @@
 Open Asset Import Library (assimp)
 ---------------------------------------------------------------------------
 
-Copyright (c) 2006-2019, assimp team
+Copyright (c) 2006-2018, assimp team
+
+
 
 All rights reserved.
 
@@ -58,7 +60,7 @@ extern "C" {
  *
  * Cameras have a representation in the node graph and can be animated.
  * An important aspect is that the camera itself is also part of the
- * scene-graph. This means, any values such as the look-at vector are not
+ * scenegraph. This means, any values such as the look-at vector are not
  * *absolute*, they're <b>relative</b> to the coordinate system defined
  * by the node which corresponds to the camera. This allows for camera
  * animations. For static cameras parameters like the 'look-at' or 'up' vectors
@@ -160,6 +162,7 @@ struct aiCamera
      */
     float mClipPlaneFar;
 
+
     /** Screen aspect ratio.
      *
      * This is the ration between the width and the height of the
@@ -171,7 +174,7 @@ struct aiCamera
 
 #ifdef __cplusplus
 
-    aiCamera() AI_NO_EXCEPT
+    aiCamera()
         : mUp               (0.f,1.f,0.f)
         , mLookAt           (0.f,0.f,1.f)
         , mHorizontalFOV    (0.25f * (float)AI_MATH_PI)
