@@ -3,7 +3,7 @@
 #include <stdio.h> 
 #include "glew.h"
 #include "wglew.h"
-#include <gl/GL.h>
+#include <gl/GL.h> 
 #include "spring.h"
 #include "application.h"
 #include "shader.h"
@@ -13,7 +13,9 @@
 #include "camera.h"
 #include "behaviour.h"
 #include "vertex.h"
+#include "input.h"
 
+#pragma comment (lib,"glfw3.lib")
 #pragma comment (lib,"glew32.lib")
 #pragma comment (lib,"opengl32.lib")
 
@@ -21,11 +23,72 @@ using namespace spring;
 
 LRESULT CALLBACK GLWindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
+	float x = LOWORD(lParam);
+	float y = HIWORD(lParam);
+
+	// todo : x , y is the mouse position in screen 
+
 	switch (msg)
 	{
 	case WM_CLOSE:
 		PostQuitMessage(0);
 		break;
+
+#pragma region mouse left button
+
+	case WM_LBUTTONDBLCLK:
+		break;
+	case WM_LBUTTONDOWN:
+		break;
+	case WM_LBUTTONUP:
+		break;
+
+#pragma endregion
+
+#pragma region mouse right button
+
+
+	case WM_RBUTTONDBLCLK:
+		break;
+	case WM_RBUTTONDOWN:
+		break;
+	case WM_RBUTTONUP:
+		break;
+
+#pragma endregion
+
+#pragma region mouse move
+
+	case WM_MOUSEMOVE:
+		break;
+
+#pragma endregion
+
+#pragma region keyboard 
+
+	case WM_KEYDOWN:
+		switch (wParam)
+		{
+		case 'A':
+
+			break;
+		case 'W':
+
+			break;
+		case 'D':
+
+			break;
+		case 'S':
+
+			break;
+		default:
+			break;
+		}
+		break;
+	case WM_KEYUP:
+		break;
+
+#pragma endregion
 	}
 	return DefWindowProc(hwnd, msg, wParam, lParam);
 }
@@ -89,15 +152,16 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 #pragma region draw triangle by encapsuled object
 
 	Camera camera;
+	camera.transform->position = Vector3(1.0f,1.0f,1.0f);
 
 	//spring::Material material("res/shader/base/base.vs", "res/shader/base/base.fs");
 	spring::Material material("res/shader/vertex/vertexcolor.vs","res/shader/vertex/vertexcolor.fs");
 
-	//Model model("res/model/obj/Cube.obj");
-	Model model("res/model/fbx/tauren.fbx");
+	Model model("res/model/obj/Cube.obj");
+	//Model model("res/model/fbx/tauren.fbx");
 	model.material = &material;
 	model.Init();
-	model.transform->position.z = -50.0f;
+	model.transform->position.z = -0.3f;
 
 #pragma endregion
 
