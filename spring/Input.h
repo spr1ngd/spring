@@ -27,12 +27,19 @@ namespace spring
 	public:
 		KeyCode keyCode;
 		KeyCodeState state = Idle;
+	public:
+		KeyCodeInfo();
+		KeyCodeInfo(KeyCode keyCode, KeyCodeState state) 
+		{
+			this->keyCode = keyCode;
+			this->state = state;
+		}
 	};
 
 	class Input
 	{
 	private:
-		map<KeyCode, KeyCodeInfo> keyCodeCaches;
+		static map<KeyCode, KeyCodeInfo> keyCodeCaches;
 	public:
 
 		/*	static bool GetMouseDown( MouseID mouseId );

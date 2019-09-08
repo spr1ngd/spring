@@ -70,22 +70,39 @@ LRESULT CALLBACK GLWindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 		switch (wParam)
 		{
 		case 'A':
-
+			Input::setKeyCodeState(KeyCode::A, KeyCodeState::Down);
 			break;
 		case 'W':
-
+			Input::setKeyCodeState(KeyCode::W, KeyCodeState::Down);
 			break;
 		case 'D':
-
+			Input::setKeyCodeState(KeyCode::D, KeyCodeState::Down);
 			break;
 		case 'S':
-
+			Input::setKeyCodeState(KeyCode::S, KeyCodeState::Down);
 			break;
 		default:
 			break;
 		}
 		break;
 	case WM_KEYUP:
+		switch (wParam)
+		{
+		case 'A':
+			Input::setKeyCodeState(KeyCode::A, KeyCodeState::Up);
+			break;
+		case 'W':
+			Input::setKeyCodeState(KeyCode::W, KeyCodeState::Up);
+			break;
+		case 'D':
+			Input::setKeyCodeState(KeyCode::D, KeyCodeState::Up);
+			break;
+		case 'S':
+			Input::setKeyCodeState(KeyCode::S, KeyCodeState::Up);
+			break;
+		default:
+			break;
+		}
 		break;
 
 #pragma endregion
