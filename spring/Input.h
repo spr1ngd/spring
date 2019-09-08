@@ -27,6 +27,8 @@ namespace spring
 	public:
 		KeyCode keyCode;
 		KeyCodeState state = Idle;
+		bool down = false;
+		bool up = false;
 	public:
 		KeyCodeInfo();
 		KeyCodeInfo(KeyCode keyCode, KeyCodeState state) 
@@ -40,6 +42,7 @@ namespace spring
 	{
 	private:
 		static map<KeyCode, KeyCodeInfo> keyCodeCaches;
+		static KeyCodeInfo* GetKeyCodeInfo(KeyCode keycode);
 	public:
 
 		/*	static bool GetMouseDown( MouseID mouseId );

@@ -1,5 +1,4 @@
-#include "Mesh.h"
-#define USE_UNION 
+#include "Mesh.h" 
 
 using namespace spring;
 
@@ -26,9 +25,6 @@ void Mesh::GenVBO()
 {
 	glGenBuffers(1, &VBO);
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
-	// vector<Vector3>
-	// vector<Vertex>
-	// todo : fixed 
 	glBufferData(GL_ARRAY_BUFFER, sizeof(Vertex) * vertices.size(), &vertices[0], GL_STATIC_DRAW);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 }

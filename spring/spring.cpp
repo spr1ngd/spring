@@ -6,6 +6,8 @@
 #include "glew.h"
 #include "wglew.h"
 #include <gl/GL.h> 
+
+// spring engine
 #include "spring.h"
 #include "application.h"
 #include "shader.h"
@@ -17,11 +19,16 @@
 #include "vertex.h"
 #include "input.h"
 
+// spring engine editor 
+#include "orbitcamera.h"
+#include "fps.h"
+
 #pragma comment (lib,"glfw3.lib")
 #pragma comment (lib,"glew32.lib")
 #pragma comment (lib,"opengl32.lib")
 
 using namespace spring;
+using namespace spring::editor;
 
 LRESULT CALLBACK GLWindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
@@ -174,6 +181,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 
 #pragma region draw triangle by encapsuled object
 
+	OrbitCamera orbitCamera;
 	Camera camera;
 	camera.transform->position = Vector3(1.0f,1.0f,1.0f);
 
@@ -215,6 +223,9 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 		camera.Render(&model);
 		for (auto behaviour : Behaviour::behaviours)
 			behaviour.second->Update();
+
+		FPS::CalculateFramePerSecond();
+
 		glFinish();
 		SwapBuffers(dc);
 	}
