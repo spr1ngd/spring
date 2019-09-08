@@ -1,4 +1,6 @@
 ﻿
+#define _CRT_SECURE_NO_WARNINGS 
+
 #include <windows.h>
 #include <stdio.h> 
 #include "glew.h"
@@ -152,6 +154,10 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 	wglMakeCurrent(dc, rc);
 	glewInit();
 	MSG msg;
+
+	AllocConsole();
+	SetConsoleCtrlHandler(NULL, true);
+	freopen("CONOUT$", "w", stdout);
 
 	int width, height;
 	GetClientRect(hwnd, &rect);
