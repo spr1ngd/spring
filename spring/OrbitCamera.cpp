@@ -67,7 +67,7 @@ void OrbitCamera::Rotate()
 {
 	if (!this->enableRotate)
 		return;
-
+	Console::Log("Orbit camera rotate by mouse.");
 }
 
 void OrbitCamera::Pan()

@@ -1,7 +1,6 @@
 #pragma once
 #include <math.h>
 
-
 namespace spring 
 {
 	class Vector3
@@ -22,9 +21,9 @@ namespace spring
 			this->z = z;
 		}
 		static float Magnitude(const Vector3 vec3);
-		static Vector3 Normalize(const Vector3 vec3);
-		static float Dot(const Vector3 vec3);
-		static Vector3 Cross(const Vector3 vec3);
+		static Vector3 Normalize(Vector3 vec3);
+		static float Dot(const Vector3 a,const Vector3 b);
+		static Vector3 Cross(const Vector3 a,const Vector3 b);
 
 		Vector3 operator/(const float dividend);
 		Vector3 operator*(const float multiplicand);

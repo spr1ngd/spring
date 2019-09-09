@@ -80,16 +80,16 @@ LRESULT CALLBACK GLWindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 		switch (wParam)
 		{
 		case 'A':
-			Input::setKeyCodeState(KeyCode::A, KeyCodeState::Down);
+			Input::setKeyCodeState(KeyCode::A, InputState::Down);
 			break;
 		case 'W':
-			Input::setKeyCodeState(KeyCode::W, KeyCodeState::Down);
+			Input::setKeyCodeState(KeyCode::W, InputState::Down);
 			break;
 		case 'D':
-			Input::setKeyCodeState(KeyCode::D, KeyCodeState::Down);
+			Input::setKeyCodeState(KeyCode::D, InputState::Down);
 			break;
 		case 'S':
-			Input::setKeyCodeState(KeyCode::S, KeyCodeState::Down);
+			Input::setKeyCodeState(KeyCode::S, InputState::Down);
 			break;
 		default:
 			break;
@@ -99,16 +99,16 @@ LRESULT CALLBACK GLWindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 		switch (wParam)
 		{
 		case 'A':
-			Input::setKeyCodeState(KeyCode::A, KeyCodeState::Up);
+			Input::setKeyCodeState(KeyCode::A, InputState::Up);
 			break;
 		case 'W':
-			Input::setKeyCodeState(KeyCode::W, KeyCodeState::Up);
+			Input::setKeyCodeState(KeyCode::W, InputState::Up);
 			break;
 		case 'D':
-			Input::setKeyCodeState(KeyCode::D, KeyCodeState::Up);
+			Input::setKeyCodeState(KeyCode::D, InputState::Up);
 			break;
 		case 'S':
-			Input::setKeyCodeState(KeyCode::S, KeyCodeState::Up);
+			Input::setKeyCodeState(KeyCode::S, InputState::Up);
 			break;
 		default:
 			break;
@@ -225,7 +225,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 		for (auto behaviour : Behaviour::behaviours)
 			behaviour.second->Update();
 
-		FPS::CalculateFramePerSecond();
+		// FPS::CalculateFramePerSecond();
 
 		glFinish();
 		SwapBuffers(dc);

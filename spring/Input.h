@@ -3,9 +3,14 @@
 
 namespace spring
 {
-	using namespace std;
+	using namespace std; 
 
-#pragma region mouse events
+	enum InputState
+	{
+		Idle,
+		Down,
+		Up
+	};
 
 	enum MouseID : char
 	{
@@ -13,31 +18,21 @@ namespace spring
 		RIGHT,
 		WHELL
 	};
-	enum MouseState 
-	{
-		Idle,
-		Down,
-		Up
-	};
 	class MouseInfo 
 	{
 	public:
 		MouseID mouseID;
-		MouseState state = MouseState::Idle;
+		InputState state = InputState::Idle;
 		bool down = false;
 		bool up = false;
 	public:
 		MouseInfo();
-		MouseInfo( MouseID mouseID,MouseState state )   
+		MouseInfo( MouseID mouseID, InputState state )
 		{
 			this->mouseID = mouseID;
 			this->state = state;
 		}
-	};
-
-#pragma endregion
-
-#pragma region key board events
+	}; 
 
 	enum KeyCode : char
 	{
@@ -48,30 +43,22 @@ namespace spring
 		W = 'W',
 		S = 'S'
 	};
-	enum KeyCodeState
-	{
-		Idle,
-		Down,
-		Up
-	};
+
 	class KeyCodeInfo
 	{
 	public:
 		KeyCode keyCode;
-		KeyCodeState state = KeyCodeState::Idle;
+		InputState state = InputState::Idle;
 		bool down = false;
 		bool up = false;
 	public:
 		KeyCodeInfo();
-		KeyCodeInfo(KeyCode keyCode, KeyCodeState state) 
+		KeyCodeInfo(KeyCode keyCode, InputState state) 
 		{
 			this->keyCode = keyCode;
 			this->state = state;
 		}
 	};
-
-#pragma endregion
-
 
 	class Input
 	{
@@ -91,7 +78,7 @@ namespace spring
 		static bool GetKeyDown(KeyCode keyCode);
 		static bool GetKeyUp(KeyCode keyCode);
 
-		static void setKeyCodeState(KeyCode keyCode, KeyCodeState state);
-		static void setMouseState(MouseID mouseID, MouseState state);
+		static void setKeyCodeState(KeyCode keyCode, InputState state);
+		static void setMouseState(MouseID mouseID, InputState state);
 	};
 }
