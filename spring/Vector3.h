@@ -1,4 +1,5 @@
 #pragma once
+#include <math.h>
 
 
 namespace spring 
@@ -20,7 +21,14 @@ namespace spring
 			this->y = y;
 			this->z = z;
 		}
-		float Magnitude();
-		void Normalize();
+		static float Magnitude(const Vector3 vec3);
+		static Vector3 Normalize(const Vector3 vec3);
+		static float Dot(const Vector3 vec3);
+		static Vector3 Cross(const Vector3 vec3);
+
+		Vector3 operator/(const float dividend);
+		Vector3 operator*(const float multiplicand);
+		Vector3 operator+(const Vector3 plus);
+		Vector3 operator-(const Vector3 minus);
 	};
 }

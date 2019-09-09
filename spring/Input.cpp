@@ -3,6 +3,9 @@
 using namespace spring;
 
 map<KeyCode, KeyCodeInfo> Input::keyCodeCaches;
+map<MouseID, MouseInfo> Input::mouseCaches;
+
+#pragma region keyboard events
 
 KeyCodeInfo* Input::GetKeyCodeInfo(KeyCode keycode) 
 {
@@ -10,6 +13,25 @@ KeyCodeInfo* Input::GetKeyCodeInfo(KeyCode keycode)
 	if (result == keyCodeCaches.end())
 		return nullptr;
 	return &result->second;
+}
+
+void Input::setKeyCodeState(KeyCode keycode, KeyCodeState keycodeState)
+{
+	KeyCodeInfo* info = GetKeyCodeInfo(keycode);
+	if (info == nullptr)
+	{
+		KeyCodeInfo keycodeInfo(keycode, keycodeState);
+		auto item = pair<KeyCode, KeyCodeInfo>(keycode, keycodeInfo);
+		keyCodeCaches.insert(item);
+	}
+	else
+	{
+		info->state = keycodeState;
+		if (keycodeState == KeyCodeState::Down)
+			info->up = false;
+		else if (keycodeState == KeyCodeState::Up)
+			info->down = false;
+	}
 }
 
 bool Input::GetKey(KeyCode keycode)
@@ -38,23 +60,65 @@ bool Input::GetKeyUp(KeyCode keycode)
 	bool result = (info->state == KeyCodeState::Up) && !info->up;
 	info->up = true;
 	return result;
+}  
+
+#pragma endregion
+
+#pragma region mouse events
+
+MouseInfo* Input::GetMouseInfo(MouseID mouseID)
+{
+	auto result = mouseCaches.find(mouseID);
+	if (result == mouseCaches.end())
+		return nullptr;
+	return &result->second;
 }
 
-void Input::setKeyCodeState(KeyCode keycode, KeyCodeState keycodeState) 
+void Input::setMouseState(MouseID mouseID, MouseState state)
 {
-	KeyCodeInfo* info = GetKeyCodeInfo(keycode);
-	if (info == nullptr) 
+	MouseInfo* info = GetMouseInfo(mouseID);
+	if (nullptr == info) 
 	{
-		KeyCodeInfo keycodeInfo(keycode,keycodeState);
-		auto item = pair<KeyCode, KeyCodeInfo>(keycode,keycodeInfo);
-		keyCodeCaches.insert(item);
+		MouseInfo mouseInfo(mouseID, state);
+		auto item = std::pair<MouseID, MouseInfo>(mouseID, mouseInfo);
+		mouseCaches.insert(item);
 	}
 	else 
 	{
-		info->state = keycodeState;
-		if (keycodeState == KeyCodeState::Down)
+		info->state = state;
+		if (state == MouseState::Down)
 			info->up = false;
-		else if (keycodeState == KeyCodeState::Up)
+		if (state == MouseState::Up)
 			info->down = false;
 	}
 }
+
+bool Input::GetMouse(MouseID mouseId) 
+{
+	MouseInfo* info = GetMouseInfo(mouseId);
+	if (nullptr == info)
+		return false;
+	return info->state == MouseState::Down;
+}
+
+bool Input::GetMouseDown(MouseID mouseId) 
+{
+	MouseInfo* info = GetMouseInfo(mouseId);
+	if (nullptr == info)
+		return false;
+	bool result = (info->state == MouseState::Down) && (!info->down) ;
+	info->down = true;
+	return result;
+}
+
+bool Input::GetMouseUp(MouseID mouseId) 
+{
+	MouseInfo* info = GetMouseInfo(mouseId);
+	if (nullptr == info)
+		return false;
+	bool result = (info->state == MouseState::Up) && (!info->up);
+	info->up = true;
+	return result;
+}
+
+#pragma endregion

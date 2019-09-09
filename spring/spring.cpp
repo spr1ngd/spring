@@ -69,6 +69,7 @@ LRESULT CALLBACK GLWindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 #pragma region mouse move
 
 	case WM_MOUSEMOVE:
+
 		break;
 
 #pragma endregion
