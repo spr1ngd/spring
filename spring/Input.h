@@ -9,7 +9,8 @@ namespace spring
 	{
 		Idle,
 		Down,
-		Up
+		Up,
+		DBClick
 	};
 
 	enum MouseID : char

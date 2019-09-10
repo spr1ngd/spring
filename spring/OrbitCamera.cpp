@@ -21,35 +21,26 @@ void OrbitCamera::Destroy()
 }
 
 void OrbitCamera::Update() 
-{
+{   
+	Vector3 direction = Vector3::zero;
 	if (Input::GetKey(KeyCode::W)) 
-	{
-
-	}
+		direction += Vector3::forward;
 	if (Input::GetKey(KeyCode::S)) 
-	{
-
-	}
+		direction += Vector3::back;
 	if (Input::GetKey(KeyCode::A))
-	{
-
-	}
+		direction += Vector3::left;
 	if (Input::GetKey(KeyCode::D)) 
+		direction += Vector3::right;
+	this->moveDirection = Vector3::Normalize(direction);
+
+	if (Input::GetMouseDown(MouseID::LEFT)) 
 	{
-
 	}
-
 	if (Input::GetMouse(MouseID::LEFT)) 
 	{
-		this->enableRotate = true;
 	}
-	if (Input::GetMouse(MouseID::RIGHT)) 
+	if (Input::GetMouseUp(MouseID::LEFT))
 	{
-
-	}
-	if (Input::GetMouse(MouseID::WHELL)) 
-	{
-
 	}
 
 	this->Zoom();
@@ -67,7 +58,7 @@ void OrbitCamera::Rotate()
 {
 	if (!this->enableRotate)
 		return;
-	Console::Log("Orbit camera rotate by mouse.");
+	// Console::Log("Orbit camera rotate by mouse.");
 }
 
 void OrbitCamera::Pan()
@@ -77,5 +68,7 @@ void OrbitCamera::Pan()
 
 void OrbitCamera::Move() 
 {
-
+	if (this->moveDirection == Vector3::zero)
+		return;
+	Console::Log("camera move.");
 }

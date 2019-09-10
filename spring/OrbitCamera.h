@@ -9,10 +9,11 @@ namespace spring
 		class OrbitCamera : public Behaviour
 		{
 		private: 
-			bool enableZoom;
-			bool enableRotate;
-			bool enablePan;
+			bool enableZoom = false;
+			bool enableRotate = false;
+			bool enablePan = false;
 			bool enableControl = false; // control camera through keyboard  
+			Vector3 moveDirection = Vector3::zero;
 
 			void Zoom();
 			void Rotate();

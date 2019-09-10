@@ -46,10 +46,13 @@ LRESULT CALLBACK GLWindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 #pragma region mouse left button
 
 	case WM_LBUTTONDBLCLK:
+		Input::setMouseState(MouseID::LEFT, InputState::DBClick);
 		break;
 	case WM_LBUTTONDOWN:
+		Input::setMouseState(MouseID::LEFT, InputState::Down);
 		break;
 	case WM_LBUTTONUP:
+		Input::setMouseState(MouseID::LEFT, InputState::Up);
 		break;
 
 #pragma endregion
@@ -58,10 +61,13 @@ LRESULT CALLBACK GLWindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 
 
 	case WM_RBUTTONDBLCLK:
+		Input::setMouseState(MouseID::RIGHT, InputState::DBClick);
 		break;
 	case WM_RBUTTONDOWN:
+		Input::setMouseState(MouseID::RIGHT, InputState::Down);
 		break;
 	case WM_RBUTTONUP:
+		Input::setMouseState(MouseID::RIGHT, InputState::Up);
 		break;
 
 #pragma endregion

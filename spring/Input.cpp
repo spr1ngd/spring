@@ -1,4 +1,5 @@
 #include "input.h"
+#include "console.h"
 
 using namespace spring;
 
@@ -48,7 +49,8 @@ bool Input::GetKeyDown(KeyCode keycode)
 	if (info == nullptr)
 		return false;
 	bool result = (info->state == InputState::Down) && !info->down;
-	info->down = true;
+	if(result)
+		info->down = true;
 	return result;
 }
 
@@ -58,7 +60,8 @@ bool Input::GetKeyUp(KeyCode keycode)
 	if (info == nullptr)
 		return false;
 	bool result = (info->state == InputState::Up) && !info->up;
-	info->up = true;
+	if(result)
+		info->up = true;
 	return result;
 }  
 
@@ -107,7 +110,8 @@ bool Input::GetMouseDown(MouseID mouseId)
 	if (nullptr == info)
 		return false;
 	bool result = (info->state == InputState::Down) && (!info->down) ;
-	info->down = true;
+	if( result )
+		info->down = true;
 	return result;
 }
 
@@ -117,7 +121,8 @@ bool Input::GetMouseUp(MouseID mouseId)
 	if (nullptr == info)
 		return false;
 	bool result = (info->state == InputState::Up) && (!info->up);
-	info->up = true;
+	if( result )
+		info->up = true;
 	return result;
 }
 
