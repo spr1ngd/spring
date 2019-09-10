@@ -11,7 +11,7 @@ namespace spring
 	public:
 		const char* name;
 		Object();
-
+		const char* ToString();
 	public:
 		unsigned long GetInstanceID();
 		static Object* Instantiate(Object obj);

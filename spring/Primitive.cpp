@@ -2,7 +2,7 @@
 
 using namespace spring;
 
-Model* Primitive::CreatePrimitive(Primitive::Type type)
+Mesh* Primitive::CreatePrimitive(Primitive::Type type)
 { 
 	// todo : create model by other program
 	switch( type ) 

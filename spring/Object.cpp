@@ -2,9 +2,14 @@
 
 using namespace spring;
 
-spring::Object::Object()
+Object::Object()
 {
 
+}
+
+const char* Object::ToString() 
+{
+	return this->name;
 }
 
 Object* Object::Instantiate(Object obj) 

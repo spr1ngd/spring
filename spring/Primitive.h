@@ -1,5 +1,5 @@
 #pragma once
-#include "model.h"
+#include "mesh.h"
 
 namespace spring 
 {
@@ -26,6 +26,6 @@ namespace spring
 		};
 
 	public:
-		Model* CreatePrimitive(Primitive::Type type);
+		Mesh* CreatePrimitive(Primitive::Type type);
 	};
 }

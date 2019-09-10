@@ -16,6 +16,21 @@
     <Filter Include="源文件\Input">
       <UniqueIdentifier>{2325503c-e978-4941-88b3-6670256eac98}</UniqueIdentifier>
     </Filter>
+    <Filter Include="源文件\Skybox">
+      <UniqueIdentifier>{9e76461d-83e1-4b80-a39a-72f202e32524}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\Input">
+      <UniqueIdentifier>{aef72551-4c84-4874-b4df-60f13294fef6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\Skybox">
+      <UniqueIdentifier>{adb59730-9b52-42cf-8bf6-80c5ee80c064}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\IO">
+      <UniqueIdentifier>{7b950726-4764-44aa-83e7-8c492e6f59c8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\IO">
+      <UniqueIdentifier>{5d387d4b-1a62-4c79-889b-a9f0947b2273}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="spring.rc">
@@ -94,16 +109,22 @@
     <ClInclude Include="Color.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="Input.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="FileIO.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="OrbitCamera.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="FPS.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Skybox.h">
+      <Filter>头文件\Skybox</Filter>
+    </ClInclude>
+    <ClInclude Include="Input.h">
+      <Filter>头文件\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="FileIO.h">
+      <Filter>头文件\IO</Filter>
+    </ClInclude>
+    <ClInclude Include="Renderable.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
@@ -174,13 +195,19 @@
     <ClCompile Include="Input.cpp">
       <Filter>源文件\Input</Filter>
     </ClCompile>
-    <ClCompile Include="FileIO.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="OrbitCamera.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="FPS.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Skybox.cpp">
+      <Filter>源文件\Skybox</Filter>
+    </ClCompile>
+    <ClCompile Include="FileIO.cpp">
+      <Filter>源文件\IO</Filter>
+    </ClCompile>
+    <ClCompile Include="Renderable.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

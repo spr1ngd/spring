@@ -203,7 +203,9 @@
     <ClInclude Include="Object.h" />
     <ClInclude Include="OrbitCamera.h" />
     <ClInclude Include="Primitive.h" />
+    <ClInclude Include="Renderable.h" />
     <ClInclude Include="Shader.h" />
+    <ClInclude Include="Skybox.h" />
     <ClInclude Include="spring.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="TextureLoader.h" />
@@ -230,7 +232,9 @@
     <ClCompile Include="Object.cpp" />
     <ClCompile Include="OrbitCamera.cpp" />
     <ClCompile Include="Primitive.cpp" />
+    <ClCompile Include="Renderable.cpp" />
     <ClCompile Include="Shader.cpp" />
+    <ClCompile Include="Skybox.cpp" />
     <ClCompile Include="spring.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="TextureLoader.cpp" />

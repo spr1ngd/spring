@@ -12,17 +12,8 @@ namespace spring
 		{
 			Perspective,
 			Orthographic
-		};
-		struct PerspectiveSetting 
-		{
-			float nearClip = 0.1f;
-			float farClip = 1000.0f;
-		};
-		struct OrthographicSetting
-		{
-			float nearClip = 0.1f;
-			float farClip = 1000.0f;
-		};
+		}; 
+
 	public:
 		Transform* transform;
 		Vector3* center;
@@ -30,10 +21,8 @@ namespace spring
 		Type cameraType = Type::Perspective;
 		float fov = 60.0f;
 		float nearClip = 0.1f;
-		float farClip = 1000.0f;
-		PerspectiveSetting perspectiveSetting;
-		OrthographicSetting orthographicSetting;
-
+		float farClip = 1000.0f; 
+		static Camera*main;
 	public:
 		Camera();
 		void LookAt(const Node* target);

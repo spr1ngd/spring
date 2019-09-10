@@ -1,12 +1,15 @@
-#include "Camera.h"
+#include "camera.h"
 
 using namespace spring;
+
+Camera* Camera::main;
 
 Camera::Camera() 
 {
 	this->transform = new Transform();
 	this->center = new Vector3(0.0f,0.0f,-1.0f);
 	this->direction = new Vector3(0.0f,1.0f,0.0f);
+	Camera::main = this;
 }
 
 void Camera::LookAt(const Node* target) 
