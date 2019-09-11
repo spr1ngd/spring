@@ -11,7 +11,8 @@ namespace spring
 	public:
 		Transform* transform;
 		Material* material;
-		Skybox(const char* skyboxName , Material* material = nullptr) 
+		Skybox() :Renderable() {};
+		Skybox(const char* skyboxName , Material* material = nullptr) : Renderable()
 		{
 			this->transform = new Transform();
 			this->name = skyboxName;
@@ -19,6 +20,6 @@ namespace spring
 		};
 
 		// todo : create cube mesh by Primitive object.
-		void Render();
+		void Render() override;
 	};
 }

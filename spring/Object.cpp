@@ -1,10 +1,14 @@
-#include "Object.h"
+#include "object.h"
+#include "console.h"
+#include <iostream>
 
 using namespace spring;
 
+unsigned long Object::instanceCounts = 1000;
+
 Object::Object()
 {
-
+	this->instanceId = GetInstanceID();
 }
 
 const char* Object::ToString() 
@@ -24,5 +28,5 @@ void Object::Destroy()
 
 unsigned long Object::GetInstanceID() 
 {
-	return 0;
+	return Object::instanceCounts++;
 }

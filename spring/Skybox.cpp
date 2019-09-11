@@ -13,6 +13,5 @@ void Skybox::Render()
 	}
 
 	// skybox.transform.position changed with main camera.
-	// when render skybox disable GL_DEPTH_TEST and GL_DEPTH_WRITE
-	
+	// when render skybox disable GL_DEPTH_TEST and GL_DEPTH_WRITE	
 }

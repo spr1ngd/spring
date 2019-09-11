@@ -18,6 +18,8 @@
 #include "behaviour.h"
 #include "vertex.h"
 #include "input.h"
+#include "renderable.h"
+#include "skybox.h"
 
 // spring engine editor 
 #include "orbitcamera.h"
@@ -188,6 +190,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 
 #pragma region draw triangle by encapsuled object
 
+	Skybox skybox;
 	OrbitCamera orbitCamera;
 	Camera camera;
 	camera.transform->position = Vector3(1.0f,1.0f,1.0f);
@@ -231,6 +234,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 		for (auto behaviour : Behaviour::behaviours)
 			behaviour.second->Update();
 
+		// note : draw all object inherited Renderable.
+		Renderable::Draw();
 		// FPS::CalculateFramePerSecond();
 
 		glFinish();
