@@ -8,7 +8,7 @@ void Skybox::Render()
 	if (this->material == nullptr)
 	{
 		// todo : how to throw exception in c plus plus ,and how to declare custom exception type.
-		// Console::Error("can not render skybox without skybox material,please assign a sky box material.");
+		Console::Warning("can not render skybox without skybox material,please assign a sky box material.");
 		return;
 	}
 

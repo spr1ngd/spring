@@ -189,7 +189,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 	Application app;
 	app.Initialize();
 
-	// Console::Log("%s , %d \n","123",123);
+	Console::LogFormat("%s , %d","123",123);
 
 #pragma region draw triangle by encapsuled object
 
