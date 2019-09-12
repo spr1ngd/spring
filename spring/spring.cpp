@@ -20,6 +20,7 @@
 #include "input.h"
 #include "renderable.h"
 #include "skybox.h"
+#include "console.h"
 
 // spring engine editor 
 #include "orbitcamera.h"
@@ -188,6 +189,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 	Application app;
 	app.Initialize();
 
+	// Console::Log("%s , %d \n","123",123);
+
 #pragma region draw triangle by encapsuled object
 
 	Skybox skybox;
@@ -210,7 +213,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 		behaviour.second->Awake();
 
 	//glDisable(GL_CULL_FACE);
-	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_DEPTH_TEST); 
 
 	while (true)
 	{

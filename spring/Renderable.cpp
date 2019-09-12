@@ -13,6 +13,6 @@ void Renderable::Draw()
 	{
 		auto object = objects[i];
 		object->Render();
-		std::cout << "rendering " << object->instanceId << std::endl;
+		// std::cout << "rendering " << object->instanceId << std::endl;
 	}
 }
