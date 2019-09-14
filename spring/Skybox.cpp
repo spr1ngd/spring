@@ -19,6 +19,9 @@ Skybox::Skybox(const char* skyboxName, Material* material)
 	this->material = material;
 	this->material->depthTest = false;
 	this->renderOrder = RenderOrder::Skybox;
+
+	TextureLoader cubemapLoader;
+	this->cubemap = cubemapLoader.LoadCubemap("res/texture/skybox/nature");
 };
 
 void Skybox::Init() 
@@ -70,6 +73,8 @@ void Skybox::Render()
 
 				GLuint pLocation = this->material->shader->getLocation(MATRIX_P);
 				glUniformMatrix4fv(pLocation, 1, GL_FALSE, glm::value_ptr(Graphic::PROJECTION));
+				 
+				glBindTexture(GL_TEXTURE_CUBE_MAP, cubemap);
 			});
 	}
 	this->material->shader->disuse();

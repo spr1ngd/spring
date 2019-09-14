@@ -12,6 +12,9 @@
 #define NORMAL "normal"
 #define TEXCOORD "texcoord"
 
+#define MAIN_TEX "Main_Texture"
+#define MAIN_CUBEMAP "Main_Cubemap"
+
 namespace spring 
 {
 	class Shader

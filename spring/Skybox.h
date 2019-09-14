@@ -13,6 +13,7 @@ namespace spring
 	private:
 		Model* skybox;
 		ModelLoader* loader;
+		GLuint cubemap;
 	public:
 		Transform* transform;
 		Material* material;

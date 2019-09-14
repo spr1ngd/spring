@@ -7,9 +7,7 @@ unsigned long Renderable::renderCounts = 0;
 std::map<unsigned long, Renderable*> Renderable::objects;
 
 void Renderable::Draw()
-{
-	if (renderCounts <= 0)
-		return;
+{ 
 	for (unsigned int i = 0; i < objects.size(); i++)
 	{
 		auto object = objects[i];

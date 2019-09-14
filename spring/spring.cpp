@@ -177,6 +177,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 	glewInit();
 	MSG msg;
 
+	// call the console window.
 	AllocConsole();
 	SetConsoleCtrlHandler(NULL, true);
 	freopen("CONOUT$", "w", stdout);
@@ -198,7 +199,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 
 	Camera camera;
 	// camera.fov = 45.0f;
-	camera.transform->position = Vector3(2.0f,2.0f,0.0f);
+	camera.transform->position = Vector3(-2.0f,0.0f,-2.0f);
 	camera.center = new Vector3(0.0f,0.0f,-3.0f);
 
 #pragma endregion
@@ -224,7 +225,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 	model.material = &material;
 	model.Init();
 	model.transform->position.z = -3.0f;
-	model.transform->scale = Vector3(1.0f);
+	model.transform->scale = Vector3(0.5f);
 
 #pragma endregion
 

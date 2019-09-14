@@ -1,10 +1,9 @@
 
-uniform samplerCube MAIN_CUBEMAP;
+uniform samplerCube Main_Cubemap;
 
 varying vec3 V_Vertex;
 
 void main()
 {
-    // gl_FragColor = textureCube(MAIN_CUBEMAP,V_Vertex);
-    gl_FragColor = vec4(1.0,1.0,0.0,1.0);
+    gl_FragColor = textureCube(Main_Cubemap,V_Vertex);
 }
