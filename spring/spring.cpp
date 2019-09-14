@@ -199,7 +199,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 
 	Camera camera;
 	// camera.fov = 45.0f;
-	camera.transform->position = Vector3(-2.0f,0.0f,-2.0f);
+	camera.transform->position = Vector3(-2.0f,1.0f,-2.0f);
 	camera.center = new Vector3(0.0f,0.0f,-3.0f);
 
 #pragma endregion
@@ -219,13 +219,15 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 	OrbitCamera orbitCamera;
 
 	//spring::Material material("res/shader/base/base.vs", "res/shader/base/base.fs");
-	spring::Material material("res/shader/vertex/vertexcolor.vs","res/shader/vertex/vertexcolor.fs");
+	// spring::Material material("res/shader/vertex/vertexcolor.vs","res/shader/vertex/vertexcolor.fs");
+	spring::Material material("res/shader/unlit/color.vs", "res/shader/unlit/color.fs");
 	Model model("res/model/obj/Cube.obj");
 	//Model model("res/model/fbx/tauren.fbx");
 	model.material = &material;
 	model.Init();
 	model.transform->position.z = -3.0f;
 	model.transform->scale = Vector3(0.5f);
+	model.material->shader->setColor(MAIN_COLOR,Color::yellow);
 
 #pragma endregion
 
@@ -248,6 +250,9 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 				
 		// use this camera render scene objects.
 		camera.Render();
+
+		// 物体旋转
+		model.transform->eulerangle.y += 2.0f;
 
 		for (auto behaviour : Behaviour::behaviours)
 			behaviour.second->Update();

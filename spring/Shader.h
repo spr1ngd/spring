@@ -3,6 +3,7 @@
 #include "Glm/glm.hpp"
 #include "Glm/ext.hpp"  
 #include <map>
+#include "color.h"
 
 #define MATRIX_M "M"
 #define MATRIX_V "V"
@@ -14,6 +15,9 @@
 
 #define MAIN_TEX "Main_Texture"
 #define MAIN_CUBEMAP "Main_Cubemap"
+#define MAIN_COLOR "Main_Color"
+
+using namespace std;
 
 namespace spring 
 {
@@ -27,6 +31,11 @@ namespace spring
 		char* loadShaderFile(const char* shaderFilePath);
 		void initializeLocation();
 
+		map<GLuint, Color> colors;
+		map<GLuint, GLuint> ints;
+		map<GLuint, GLfloat> floats;
+		void setShaderValues();
+
 	public:
 		GLuint program;
 
@@ -34,6 +43,7 @@ namespace spring
 		Shader(const char*vertex,const char*fragment );
 		void use();
 		void disuse();
+		GLuint getLocation(const char*name);
 
 		void setBool(const char* name, GLboolean value);
 		void setInt(const char* name, GLint value);
@@ -41,6 +51,6 @@ namespace spring
 		void setMat4(const char* name, glm::mat4 value);
 		void setVec3(const char* name, glm::vec3 value);
 
-		GLuint getLocation(const char*name);
+		void setColor(const char* name, Color color);
 	};
 }

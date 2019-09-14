@@ -1,6 +1,7 @@
-#include "Shader.h"
 #include <fstream>
-#include "Console.h"
+#include "NotImplementException.h"
+#include "shader.h"
+#include "console.h"
 
 using namespace std;
 using namespace spring;
@@ -19,7 +20,8 @@ Shader::Shader( const char*vertexShader,const char*fragmentShader )
 	this->linkProgram();
 	this->initializeLocation();
 }
- 
+
+#pragma region shader program methods
 
 void Shader::linkProgram()
 {
@@ -65,28 +67,28 @@ void Shader::initializeLocation()
 
 	GLuint mainCubemapLocation = glGetUniformLocation(this->program,MAIN_CUBEMAP);
 	this->locations.insert(pair<const char*,GLuint>(MAIN_CUBEMAP,mainCubemapLocation));
+
+	GLuint mainColorLocation = glGetUniformLocation(this->program,MAIN_COLOR);
+	this->locations.insert(pair<const char*,GLuint>(MAIN_COLOR,mainColorLocation));
 }
 
 GLuint Shader::getLocation(const char* name)
 {
 	auto pair = this->locations.find(name);
-	// todo : read security code.
+	if (pair == this->locations.end())
+		return -1;
 	return pair->second;
 }
 
 void Shader::use() 
 {
 	glUseProgram(this->program);
+	this->setShaderValues();
 }
 
 void Shader::disuse() 
 {
 	glUseProgram(0);
-}
-
-void Shader::setFloat(const char* name, GLfloat value) 
-{
-
 }
 
 GLuint Shader::compileShader( GLenum shaderType,const char*shaderFilePath )
@@ -125,4 +127,106 @@ char* Shader::loadShaderFile( const char*shaderFilePath )
 	buffer[length] = '\0';
 	shaderFile.close();
 	return buffer;
-} 
+}
+
+#pragma endregion
+
+void Shader::setBool(const char* name, GLboolean value) 
+{
+	GLuint location = this->getLocation(name);
+	if (location <= 0)
+	{
+		Console::ErrorFormat("can not get location of %s in shader",name);
+		return;
+	}
+	throw new NotImplementException();
+}
+
+void Shader::setMat4(const char* name, glm::mat4 value) 
+{
+	GLuint location = this->getLocation(name);
+	if (location <= 0)
+	{
+		Console::ErrorFormat("can not get location of %s in shader", name);
+		return;
+	}
+	throw new NotImplementException();
+}
+
+void Shader::setVec3(const char* name, glm::vec3 vec3) 
+{
+	GLuint location = this->getLocation(name);
+	if (location <= 0)
+	{
+		Console::ErrorFormat("can not get location of %s in shader", name);
+		return;
+	}
+	throw new NotImplementException();
+}
+
+void Shader::setInt(const char* name, GLint value)
+{
+	GLuint location = this->getLocation(name);
+	if (location <= 0)
+	{
+		Console::ErrorFormat("can not get location of %s in shader", name);
+		return;
+	}
+	auto pair = this->ints.find(location);
+	if (pair == this->ints.end())
+	{
+		this->ints.insert(std::pair<GLuint,GLuint>(location, value));
+		return;
+	}
+	this->ints[location] = value;
+}
+
+void Shader::setFloat(const char* name, GLfloat value)
+{
+	GLuint location = this->getLocation(name);
+	if (location <= 0)
+	{
+		Console::ErrorFormat("can not get location of %s in shader", name);
+		return;
+	}
+	auto pair = this->floats.find(location);
+	if (pair == this->floats.end())
+	{
+		this->floats.insert(std::pair<GLuint,GLfloat>(location,value));
+		return;
+	}
+	this->floats[location] = value;
+}
+
+void Shader::setColor(const char* name, Color color) 
+{
+	GLuint location = this->getLocation(name);
+	if (location <= 0)
+	{
+		Console::ErrorFormat("can not get location of %s in shader", name);
+		return;
+	}
+	auto pair = this->colors.find(location);
+	if (pair == this->colors.end())
+	{
+		this->colors.insert(std::pair<GLuint,Color>(location, color));
+		return;
+	}
+	this->colors[location] = color;
+}
+
+void Shader::setShaderValues() 
+{
+	for (auto pair : this->ints) 
+		glUniform1i(pair.first, pair.second);
+
+	for (auto pair : this->floats)
+		glUniform1f(pair.first, pair.second);
+
+	for (auto pair : this->colors)
+	{
+		Color color = pair.second;
+		const GLfloat value[4] = { color.r / 255.0f ,color.g / 255.0f,color.b / 255.0f,color.a / 255.0f };
+		glUniform4fv(pair.first, 1, value);
+	}
+}

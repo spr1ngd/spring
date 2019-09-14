@@ -51,7 +51,11 @@ void Model::Render()
 			{
 				glm::mat4 model = 
 					glm::translate(glm::mat4(1.0),glm::vec3(this->transform->position.x,this->transform->position.y,this->transform->position.z))*
-					glm::scale(glm::mat4(1.0f),glm::vec3(this->transform->scale.x,this->transform->scale.y,this->transform->scale.z));
+					glm::scale(glm::mat4(1.0f),glm::vec3(this->transform->scale.x,this->transform->scale.y,this->transform->scale.z))*
+					glm::rotate(glm::mat4(1.0f), glm::radians(this->transform->eulerangle.x), glm::vec3(1.0f, 0.0f, 0.0f)) *
+					glm::rotate(glm::mat4(1.0f), glm::radians(this->transform->eulerangle.y), glm::vec3(0.0f, 1.0f, 0.0f)) *
+					glm::rotate(glm::mat4(1.0f), glm::radians(this->transform->eulerangle.z), glm::vec3(0.0f, 0.0f, 1.0f));
+				// todo : supports rotate parameter..
 
 				GLuint mLocation = this->material->shader->getLocation(MATRIX_M);
 				glUniformMatrix4fv(mLocation, 1, GL_FALSE, glm::value_ptr(model));

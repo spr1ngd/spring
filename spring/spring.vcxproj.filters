@@ -31,6 +31,12 @@
     <Filter Include="源文件\IO">
       <UniqueIdentifier>{5d387d4b-1a62-4c79-889b-a9f0947b2273}</UniqueIdentifier>
     </Filter>
+    <Filter Include="源文件\Exceptions">
+      <UniqueIdentifier>{1d689603-a5eb-4fbf-b9be-6a3a2085e647}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\Exceptions">
+      <UniqueIdentifier>{22d7c6c0-734a-4b61-87a7-c0abf7f5d6b1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="spring.rc">
@@ -136,6 +142,9 @@
     <ClInclude Include="RenderOrder.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="NotImplementException.h">
+      <Filter>头文件\Exceptions</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Primitive.cpp">
@@ -227,6 +236,9 @@
     </ClCompile>
     <ClCompile Include="RenderOrder.cpp">
       <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="NotImplementException.cpp">
+      <Filter>源文件\Exceptions</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

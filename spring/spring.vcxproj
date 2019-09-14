@@ -201,6 +201,7 @@
     <ClInclude Include="Model.h" />
     <ClInclude Include="ModelLoader.h" />
     <ClInclude Include="Node.h" />
+    <ClInclude Include="NotImplementException.h" />
     <ClInclude Include="Object.h" />
     <ClInclude Include="OrbitCamera.h" />
     <ClInclude Include="Primitive.h" />
@@ -233,6 +234,7 @@
     <ClCompile Include="Model.cpp" />
     <ClCompile Include="ModelLoader.cpp" />
     <ClCompile Include="Node.cpp" />
+    <ClCompile Include="NotImplementException.cpp" />
     <ClCompile Include="Object.cpp" />
     <ClCompile Include="OrbitCamera.cpp" />
     <ClCompile Include="Primitive.cpp" />
