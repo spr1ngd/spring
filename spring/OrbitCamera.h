@@ -1,6 +1,7 @@
 #pragma once
 #include "behaviour.h"
 #include "vector3.h"
+#include "camera.h"
 
 namespace spring
 {
@@ -20,6 +21,7 @@ namespace spring
 			void Pan();
 			void Move();
 		public:
+			Camera* camera;
 			Vector3 target;
 			float rotateSpeed = 0.2f;
 			float zoomSpeed = 0.5f;

@@ -7,7 +7,7 @@ using namespace spring::editor;
 
 OrbitCamera::OrbitCamera() 
 {
-
+	this->camera = Camera::main;
 }
 
 void OrbitCamera::Awake() 

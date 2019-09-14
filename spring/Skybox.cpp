@@ -1,5 +1,6 @@
 #include "skybox.h"
 #include "console.h"
+#include "camera.h"
 
 using namespace spring;
 
@@ -13,5 +14,6 @@ void Skybox::Render()
 	}
 
 	// skybox.transform.position changed with main camera.
+	this->transform->position = Camera::main->transform->position;
 	// when render skybox disable GL_DEPTH_TEST and GL_DEPTH_WRITE	
 }
