@@ -8,9 +8,10 @@ namespace spring
 	{
 	public:
 		const char* name;
-	public:
 		Shader* shader;
-
+		bool depthTest = true;
+		bool alphaTest = true;
+	public:
 		Material();
 		Material(const char*verexShaderFile,const char*fragmentShaderFile);
 		Material(Shader* shader);

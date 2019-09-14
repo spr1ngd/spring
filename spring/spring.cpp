@@ -197,8 +197,9 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 #pragma region scene camera setting
 
 	Camera camera;
-	//camera.transform->position = Vector3(.5f,.5f,.5f);
-	camera.transform->position = Vector3::zero;
+	// camera.fov = 45.0f;
+	camera.transform->position = Vector3(2.0f,2.0f,0.0f);
+	camera.center = new Vector3(0.0f,0.0f,-3.0f);
 
 #pragma endregion
 
@@ -207,8 +208,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 
 	Material skyboxMaterial("res/shader/skybox/6 Sided.vs","res/shader/skybox/6 Sided.fs");
 	//  Material skyboxMaterial("res/shader/base/base.vs", "res/shader/base/base.fs");
-	//Skybox skybox("6 Sided",&skyboxMaterial);
-	//skybox.Init();
+	spring::Skybox skybox("6 Sided", &skyboxMaterial);
+	skybox.Init();
 
 #pragma endregion
 
@@ -222,20 +223,13 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 	//Model model("res/model/fbx/tauren.fbx");
 	model.material = &material;
 	model.Init();
-	model.transform->position.z = -0.3f;
+	model.transform->position.z = -3.0f;
 	model.transform->scale = Vector3(1.0f);
 
 #pragma endregion
 
 	for (auto behaviour : Behaviour::behaviours)
-		behaviour.second->Awake();
-
-	// glDisable(GL_CULL_FACE);
-	glFrontFace(GL_CCW);
-	// glEnable(GL_CULL_FACE);
-	// glCullFace(GL_FRONT);
-	// glEnable(GL_DEPTH_TEST);
-	// glPolygonMode(GL_BACK,GL_LINE);
+		behaviour.second->Awake(); 
 
 	while (true)
 	{

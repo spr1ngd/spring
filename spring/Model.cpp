@@ -34,6 +34,15 @@ void Model::Init()
 
 void Model::Render() 
 {
+	if (this->material->depthTest == true)
+		glEnable(GL_DEPTH_TEST);
+	else
+		glDisable(GL_DEPTH_TEST);
+	if (this->material->alphaTest == true)
+		glEnable(GL_ALPHA_TEST);
+	else
+		glDisable(GL_ALPHA_TEST);
+
 	this->material->shader->use();
 	for (unsigned int i = 0; i < this->meshes.size(); i++) 
 	{
@@ -41,8 +50,8 @@ void Model::Render()
 		mesh->Draw([&](void)
 			{
 				glm::mat4 model = 
-					glm::translate(glm::mat4(1.0),glm::vec3(this->transform->position.x,this->transform->position.y,this->transform->position.z))
-					*glm::scale(glm::mat4(1.0f),glm::vec3(this->transform->scale.x,this->transform->scale.y,this->transform->scale.z));
+					glm::translate(glm::mat4(1.0),glm::vec3(this->transform->position.x,this->transform->position.y,this->transform->position.z))*
+					glm::scale(glm::mat4(1.0f),glm::vec3(this->transform->scale.x,this->transform->scale.y,this->transform->scale.z));
 
 				GLuint mLocation = this->material->shader->getLocation(MATRIX_M);
 				glUniformMatrix4fv(mLocation, 1, GL_FALSE, glm::value_ptr(model));

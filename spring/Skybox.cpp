@@ -3,6 +3,7 @@
 #include "camera.h"
 #include "model.h"
 #include "graphic.h"
+#include "renderorder.h"
 
 using namespace spring;
 
@@ -16,6 +17,8 @@ Skybox::Skybox(const char* skyboxName, Material* material)
 	this->transform = new Transform();
 	this->name = skyboxName;
 	this->material = material;
+	this->material->depthTest = false;
+	this->renderOrder = RenderOrder::Skybox;
 };
 
 void Skybox::Init() 
@@ -43,6 +46,10 @@ void Skybox::Render()
 
 	this->transform->position = Camera::main->transform->position;
 	// this->skybox->transform->position = this->transform->position;
+
+	// todo : enable lighting or enable depth test and alpha test should be decided by material(shader).
+	glDisable(GL_LIGHTING);
+	glDisable(GL_DEPTH_TEST);
 
 	this->material->shader->use();
 	for (unsigned int i = 0; i < this->meshes.size(); i++)

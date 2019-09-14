@@ -205,6 +205,7 @@
     <ClInclude Include="OrbitCamera.h" />
     <ClInclude Include="Primitive.h" />
     <ClInclude Include="Renderable.h" />
+    <ClInclude Include="RenderOrder.h" />
     <ClInclude Include="Screen.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="Skybox.h" />
@@ -236,6 +237,7 @@
     <ClCompile Include="OrbitCamera.cpp" />
     <ClCompile Include="Primitive.cpp" />
     <ClCompile Include="Renderable.cpp" />
+    <ClCompile Include="RenderOrder.cpp" />
     <ClCompile Include="Screen.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="Skybox.cpp" />

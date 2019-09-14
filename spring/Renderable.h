@@ -11,6 +11,7 @@ namespace spring
 		unsigned long instanceId;
 		static std::map<unsigned long, Renderable*> objects;
 	public:
+		unsigned int renderOrder = 2000;
 		Renderable() 
 		{
 			this->instanceId = ++renderCounts;

@@ -8,15 +8,13 @@ std::map<unsigned long, Renderable*> Renderable::objects;
 
 void Renderable::Draw()
 {
-	for (unsigned int i = 0; i < objects.size(); i++) 
+	if (renderCounts <= 0)
+		return;
+	for (unsigned int i = 0; i < objects.size(); i++)
 	{
 		auto object = objects[i];
 		if (nullptr == object)
-		{
-			// std::cout << "object render failed." << endl;
 			continue;
-		}
 		object->Render();
-		// std::cout << "rendering " << object->instanceId << std::endl;
 	}
 }
