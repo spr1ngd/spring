@@ -9,6 +9,7 @@
 
 // spring engine
 #include "spring.h"
+#include "screen.h"
 #include "application.h"
 #include "shader.h"
 #include "model.h"
@@ -131,6 +132,10 @@ LRESULT CALLBACK GLWindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPWSTR lpCmdLine, _In_ int nCmdShow)
 {
+	// initialize spring engine configuration.
+	Screen::width = 800;
+	Screen::height = 600;
+
 	WNDCLASSEX wndClass;
 	wndClass.cbClsExtra = 0;
 	wndClass.cbSize = sizeof(WNDCLASSEX);
@@ -147,9 +152,9 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 	ATOM atom = RegisterClassEx(&wndClass);
 	RECT rect;
 	rect.left = (long)0.0;
-	rect.right = (long)800.0;
+	rect.right = (long)Screen::width;
 	rect.top = (long)0.0;
-	rect.bottom = (long)600.0;
+	rect.bottom = (long)Screen::height;
 	// AdjustWinwRect(&rect, WS_OVERLAPPEDWINDOW, FALSE);
 
 	HWND hwnd = CreateWindowEx(NULL, L"OpenGL", L"spring engine", WS_OVERLAPPEDWINDOW, 100, 100, rect.right - rect.left, rect.bottom - rect.top, NULL, NULL, hInstance, NULL);
@@ -189,31 +194,48 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 	Application app;
 	app.Initialize();
 
-	Console::LogFormat("%s , %d","123",123);
+#pragma region scene camera setting
+
+	Camera camera;
+	//camera.transform->position = Vector3(.5f,.5f,.5f);
+	camera.transform->position = Vector3::zero;
+
+#pragma endregion
+
+
+#pragma region skybox rendering
+
+	Material skyboxMaterial("res/shader/skybox/6 Sided.vs","res/shader/skybox/6 Sided.fs");
+	//  Material skyboxMaterial("res/shader/base/base.vs", "res/shader/base/base.fs");
+	//Skybox skybox("6 Sided",&skyboxMaterial);
+	//skybox.Init();
+
+#pragma endregion
 
 #pragma region draw triangle by encapsuled object
 
-	Skybox skybox;
 	OrbitCamera orbitCamera;
-	Camera camera;
-	camera.transform->position = Vector3(1.0f,1.0f,1.0f);
 
 	//spring::Material material("res/shader/base/base.vs", "res/shader/base/base.fs");
 	spring::Material material("res/shader/vertex/vertexcolor.vs","res/shader/vertex/vertexcolor.fs");
-
 	Model model("res/model/obj/Cube.obj");
 	//Model model("res/model/fbx/tauren.fbx");
 	model.material = &material;
 	model.Init();
 	model.transform->position.z = -0.3f;
+	model.transform->scale = Vector3(1.0f);
 
 #pragma endregion
 
 	for (auto behaviour : Behaviour::behaviours)
 		behaviour.second->Awake();
 
-	//glDisable(GL_CULL_FACE);
-	glEnable(GL_DEPTH_TEST); 
+	// glDisable(GL_CULL_FACE);
+	glFrontFace(GL_CCW);
+	// glEnable(GL_CULL_FACE);
+	// glCullFace(GL_FRONT);
+	// glEnable(GL_DEPTH_TEST);
+	// glPolygonMode(GL_BACK,GL_LINE);
 
 	while (true)
 	{
@@ -228,12 +250,10 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 			TranslateMessage(&msg);
 			DispatchMessage(&msg);
 		} 
+				
+		// use this camera render scene objects.
+		camera.Render();
 
-		glClearColor(0.1f, 0.4f, 0.7f, 1.0f);
-		glClear(GL_DEPTH_BUFFER_BIT|GL_COLOR_BUFFER_BIT);
-
-		// todo : does not use camera to render object, render object by  spring engine, if need view matrix and projection matrix, get current render camera by interface.
-		camera.Render(&model);
 		for (auto behaviour : Behaviour::behaviours)
 			behaviour.second->Update();
 

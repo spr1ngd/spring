@@ -19,6 +19,14 @@ Color::Color()
 	this->a = 255;
 } 
 
+Color::Color( unsigned char color )   
+{
+	this->r = color;
+	this->g = color;
+	this->b = color;
+	this->a = color;
+}
+
 Color::Color(unsigned char r, unsigned char g, unsigned char b, unsigned char a)
 {
 	this->r = r;

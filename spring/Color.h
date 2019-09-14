@@ -4,15 +4,15 @@ namespace spring
 {
 	class Color
 	{
-		union 
+	public:
+		union
 		{
-			struct 
+			struct
 			{
 				unsigned char r, g, b, a;
 			};
 		};
 
-	public:
 		static Color black;
 		static Color white;
 		static Color red;
@@ -25,6 +25,7 @@ namespace spring
 
 	public:
 		Color();
+		Color(unsigned char color);
 		Color(unsigned char r,unsigned char g,unsigned char b,unsigned char a);
 	};
 }

@@ -194,6 +194,7 @@
     <ClInclude Include="Console.h" />
     <ClInclude Include="FileIO.h" />
     <ClInclude Include="FPS.h" />
+    <ClInclude Include="Graphic.h" />
     <ClInclude Include="Input.h" />
     <ClInclude Include="Material.h" />
     <ClInclude Include="Mesh.h" />
@@ -204,6 +205,7 @@
     <ClInclude Include="OrbitCamera.h" />
     <ClInclude Include="Primitive.h" />
     <ClInclude Include="Renderable.h" />
+    <ClInclude Include="Screen.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="Skybox.h" />
     <ClInclude Include="spring.h" />
@@ -223,6 +225,7 @@
     <ClCompile Include="Console.cpp" />
     <ClCompile Include="FileIO.cpp" />
     <ClCompile Include="FPS.cpp" />
+    <ClCompile Include="Graphic.cpp" />
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="Material.cpp" />
     <ClCompile Include="Mesh.cpp" />
@@ -233,6 +236,7 @@
     <ClCompile Include="OrbitCamera.cpp" />
     <ClCompile Include="Primitive.cpp" />
     <ClCompile Include="Renderable.cpp" />
+    <ClCompile Include="Screen.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="Skybox.cpp" />
     <ClCompile Include="spring.cpp" />

@@ -1,25 +1,26 @@
 #pragma once
+#include <vector>
 #include "node.h"
+#include "model.h"
 #include "material.h"
 #include "transform.h"
 #include "renderable.h"
 
-namespace spring 
+namespace spring
 {
-	class Skybox : public Node ,public Renderable
+	class Skybox : public Node, public Renderable
 	{
+	private:
+		Model* skybox;
+		ModelLoader* loader;
 	public:
 		Transform* transform;
 		Material* material;
-		Skybox() :Renderable() {};
-		Skybox(const char* skyboxName , Material* material = nullptr) : Renderable()
-		{
-			this->transform = new Transform();
-			this->name = skyboxName;
-			this->material = material;
-		};
+		vector<Mesh> meshes;
+		vector<Texture> textures;
+		Skybox(const char* skyboxName, Material* material = nullptr);
 
-		// todo : create cube mesh by Primitive object.
+		void Init();
 		void Render() override;
 	};
 }

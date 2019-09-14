@@ -6,10 +6,11 @@
 #include "material.h"
 #include "transform.h"
 #include "texture.h"
+#include "renderable.h"
 
 namespace spring 
 {
-	class Model
+	class Model : public Renderable
 	{
 	private:
 		ModelLoader* loader;
@@ -21,9 +22,9 @@ namespace spring
 		Material* material;
 
 		Model();
-		Model(const char*filePath);
+		Model(const char*filePath,Material* mateiral = nullptr);
 
 		void Init();
-		void Render( glm::mat4 view,glm::mat4 projection );
+		void Render() override;
 	};
 }

@@ -1,5 +1,6 @@
 #pragma once
 #include <map>
+#include <iostream>
 
 namespace spring 
 {
@@ -12,7 +13,7 @@ namespace spring
 	public:
 		Renderable() 
 		{
-			this->instanceId = renderCounts++;
+			this->instanceId = ++renderCounts;
 			objects.insert(std::pair<unsigned long,Renderable*>(this->instanceId,this));
 		}
 		~Renderable()

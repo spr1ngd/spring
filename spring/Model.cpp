@@ -1,4 +1,5 @@
-#include "Model.h"
+#include "model.h"
+#include "graphic.h"
 
 using namespace spring;
 
@@ -7,14 +8,15 @@ Model::Model()
 	this->transform = new Transform();
 }
 
-Model::Model(const char* filePath)
+Model::Model(const char* filePath,Material* mateiral)
 {
 	this->transform = new Transform();
 	this->loader = new ModelLoader();
 	this->loader->Load(filePath);
 	this->meshes = this->loader->meshes;
 	this->textures = this->loader->loadedTextures;
-} 
+	this->material = mateiral;
+}
 
 void Model::Init() 
 {
@@ -25,13 +27,12 @@ void Model::Init()
 			{
 				GLuint locationId = this->material->shader->getLocation(VERTEX);
 				glEnableVertexAttribArray(locationId);
-				// todo : fixed one 
 				glVertexAttribPointer(locationId, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)0);
 			});
 	}
 }
 
-void Model::Render( glm::mat4 view,glm::mat4 projection ) 
+void Model::Render() 
 {
 	this->material->shader->use();
 	for (unsigned int i = 0; i < this->meshes.size(); i++) 
@@ -39,19 +40,18 @@ void Model::Render( glm::mat4 view,glm::mat4 projection )
 		Mesh* mesh = &meshes[i];
 		mesh->Draw([&](void)
 			{
-				glm::mat4 model = glm::translate(glm::mat4(1.0),
-					glm::vec3(this->transform->position.x,
-						this->transform->position.y,
-						this->transform->position.z));
+				glm::mat4 model = 
+					glm::translate(glm::mat4(1.0),glm::vec3(this->transform->position.x,this->transform->position.y,this->transform->position.z))
+					*glm::scale(glm::mat4(1.0f),glm::vec3(this->transform->scale.x,this->transform->scale.y,this->transform->scale.z));
 
 				GLuint mLocation = this->material->shader->getLocation(MATRIX_M);
 				glUniformMatrix4fv(mLocation, 1, GL_FALSE, glm::value_ptr(model));
 
 				GLuint vLocation = this->material->shader->getLocation(MATRIX_V);
-				glUniformMatrix4fv(vLocation, 1, GL_FALSE, glm::value_ptr(view));
+				glUniformMatrix4fv(vLocation, 1, GL_FALSE, glm::value_ptr(Graphic::VIEW));
 
 				GLuint pLocation = this->material->shader->getLocation(MATRIX_P);
-				glUniformMatrix4fv(pLocation, 1, GL_FALSE, glm::value_ptr(projection));
+				glUniformMatrix4fv(pLocation, 1, GL_FALSE, glm::value_ptr(Graphic::PROJECTION));
 			});
 	}
 	this->material->shader->disuse();

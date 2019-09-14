@@ -1,5 +1,4 @@
 #include "renderable.h"
-#include <iostream>
 
 using namespace std;
 using namespace spring;
@@ -12,6 +11,11 @@ void Renderable::Draw()
 	for (unsigned int i = 0; i < objects.size(); i++) 
 	{
 		auto object = objects[i];
+		if (nullptr == object)
+		{
+			// std::cout << "object render failed." << endl;
+			continue;
+		}
 		object->Render();
 		// std::cout << "rendering " << object->instanceId << std::endl;
 	}

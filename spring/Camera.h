@@ -3,6 +3,7 @@
 #include "transform.h"
 #include "vector3.h"
 #include "model.h"
+#include "color.h"
 
 namespace spring 
 {
@@ -14,10 +15,20 @@ namespace spring
 			Orthographic
 		}; 
 
+		enum ClearFlag
+		{
+			None,
+			SolidColor,
+			Depth,
+			Skybox
+		};
+
 	public:
+		spring::Color* background;
 		Transform* transform;
 		Vector3* center;
 		Vector3* direction;
+		ClearFlag clearFlag = ClearFlag::SolidColor;
 		Type cameraType = Type::Perspective;
 		float fov = 60.0f;
 		float nearClip = 0.1f;
@@ -27,6 +38,6 @@ namespace spring
 		Camera();
 		void LookAt(const Node* target);
 		void LookAt(const Vector3* target);
-		void Render(Model* model );
+		void Render();
 	};
 }
