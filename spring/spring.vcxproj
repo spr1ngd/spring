@@ -192,6 +192,7 @@
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Color.h" />
     <ClInclude Include="Console.h" />
+    <ClInclude Include="Environment.h" />
     <ClInclude Include="FileIO.h" />
     <ClInclude Include="FPS.h" />
     <ClInclude Include="Graphic.h" />
@@ -225,6 +226,7 @@
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Color.cpp" />
     <ClCompile Include="Console.cpp" />
+    <ClCompile Include="Environment.cpp" />
     <ClCompile Include="FileIO.cpp" />
     <ClCompile Include="FPS.cpp" />
     <ClCompile Include="Graphic.cpp" />

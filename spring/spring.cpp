@@ -220,8 +220,9 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 
 	//spring::Material material("res/shader/base/base.vs", "res/shader/base/base.fs");
 	// spring::Material material("res/shader/vertex/vertexcolor.vs","res/shader/vertex/vertexcolor.fs");
-	spring::Material material("res/shader/unlit/color.vs", "res/shader/unlit/color.fs");
-	Model model("res/model/obj/Cube.obj");
+	// spring::Material material("res/shader/unlit/color.vs", "res/shader/unlit/color.fs");
+	spring::Material material("res/shader/diffuse/diffuse.vs", "res/shader/diffuse/diffuse.fs");
+	Model model("res/model/fbx/sphere.fbx");
 	//Model model("res/model/fbx/tauren.fbx");
 	model.material = &material;
 	model.Init();

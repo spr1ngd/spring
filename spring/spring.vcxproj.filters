@@ -145,6 +145,9 @@
     <ClInclude Include="NotImplementException.h">
       <Filter>头文件\Exceptions</Filter>
     </ClInclude>
+    <ClInclude Include="Environment.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Primitive.cpp">
@@ -239,6 +242,9 @@
     </ClCompile>
     <ClCompile Include="NotImplementException.cpp">
       <Filter>源文件\Exceptions</Filter>
+    </ClCompile>
+    <ClCompile Include="Environment.cpp">
+      <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -19,6 +19,7 @@ Shader::Shader( const char*vertexShader,const char*fragmentShader )
 	shaders.insert(pair<GLenum, GLuint>(GL_FRAGMENT_SHADER, fragment));
 	this->linkProgram();
 	this->initializeLocation();
+	this->setEngineEnvironment();
 }
 
 #pragma region shader program methods
@@ -70,6 +71,9 @@ void Shader::initializeLocation()
 
 	GLuint mainColorLocation = glGetUniformLocation(this->program,MAIN_COLOR);
 	this->locations.insert(pair<const char*,GLuint>(MAIN_COLOR,mainColorLocation));
+
+	GLuint ambientColorLocation = glGetUniformLocation(this->program,AMBIENT_COLOR);
+	this->locations.insert(pair<const char*,GLuint>(AMBIENT_COLOR,ambientColorLocation));
 }
 
 GLuint Shader::getLocation(const char* name)
@@ -134,44 +138,24 @@ char* Shader::loadShaderFile( const char*shaderFilePath )
 void Shader::setBool(const char* name, GLboolean value) 
 {
 	GLuint location = this->getLocation(name);
-	if (location <= 0)
-	{
-		Console::ErrorFormat("can not get location of %s in shader",name);
-		return;
-	}
 	throw new NotImplementException();
 }
 
 void Shader::setMat4(const char* name, glm::mat4 value) 
 {
 	GLuint location = this->getLocation(name);
-	if (location <= 0)
-	{
-		Console::ErrorFormat("can not get location of %s in shader", name);
-		return;
-	}
 	throw new NotImplementException();
 }
 
 void Shader::setVec3(const char* name, glm::vec3 vec3) 
 {
 	GLuint location = this->getLocation(name);
-	if (location <= 0)
-	{
-		Console::ErrorFormat("can not get location of %s in shader", name);
-		return;
-	}
 	throw new NotImplementException();
 }
 
 void Shader::setInt(const char* name, GLint value)
 {
 	GLuint location = this->getLocation(name);
-	if (location <= 0)
-	{
-		Console::ErrorFormat("can not get location of %s in shader", name);
-		return;
-	}
 	auto pair = this->ints.find(location);
 	if (pair == this->ints.end())
 	{
@@ -184,11 +168,6 @@ void Shader::setInt(const char* name, GLint value)
 void Shader::setFloat(const char* name, GLfloat value)
 {
 	GLuint location = this->getLocation(name);
-	if (location <= 0)
-	{
-		Console::ErrorFormat("can not get location of %s in shader", name);
-		return;
-	}
 	auto pair = this->floats.find(location);
 	if (pair == this->floats.end())
 	{
@@ -201,11 +180,6 @@ void Shader::setFloat(const char* name, GLfloat value)
 void Shader::setColor(const char* name, Color color) 
 {
 	GLuint location = this->getLocation(name);
-	if (location <= 0)
-	{
-		Console::ErrorFormat("can not get location of %s in shader", name);
-		return;
-	}
 	auto pair = this->colors.find(location);
 	if (pair == this->colors.end())
 	{
@@ -229,4 +203,9 @@ void Shader::setShaderValues()
 		const GLfloat value[4] = { color.r / 255.0f ,color.g / 255.0f,color.b / 255.0f,color.a / 255.0f };
 		glUniform4fv(pair.first, 1, value);
 	}
+}
+
+void Shader::setEngineEnvironment() 
+{
+	this->setColor(AMBIENT_COLOR,Environment::ambient.color);
 }

@@ -10,6 +10,7 @@ Color Color::blue = Color(0,0,255,255);
 Color Color::yellow = Color(255,255,0,255);
 Color Color::cyan = Color(0,255,255,255);
 Color Color::magenta = Color(255,0,255,255);
+Color Color::gray = Color(128,128,128,255);
 
 Color::Color() 
 {

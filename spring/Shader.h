@@ -4,6 +4,7 @@
 #include "Glm/ext.hpp"  
 #include <map>
 #include "color.h"
+#include "environment.h"
 
 #define MATRIX_M "M"
 #define MATRIX_V "V"
@@ -16,6 +17,7 @@
 #define MAIN_TEX "Main_Texture"
 #define MAIN_CUBEMAP "Main_Cubemap"
 #define MAIN_COLOR "Main_Color"
+#define AMBIENT_COLOR "AmbientColor"
 
 using namespace std;
 
@@ -35,6 +37,7 @@ namespace spring
 		map<GLuint, GLuint> ints;
 		map<GLuint, GLfloat> floats;
 		void setShaderValues();
+		void setEngineEnvironment();
 
 	public:
 		GLuint program;
