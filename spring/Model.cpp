@@ -38,7 +38,7 @@ void Model::Init()
 				glVertexAttribPointer(texcoordLocation, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)(sizeof(float) * 5));
 			});
 	}
-}
+} 
 
 void Model::Render() 
 {
@@ -49,7 +49,7 @@ void Model::Render()
 	if (this->material->alphaTest == true)
 		glEnable(GL_ALPHA_TEST);
 	else
-		glDisable(GL_ALPHA_TEST);
+		glDisable(GL_ALPHA_TEST); 
 
 	this->material->shader->use();
 	for (unsigned int i = 0; i < this->meshes.size(); i++) 

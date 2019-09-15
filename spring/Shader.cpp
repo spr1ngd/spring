@@ -218,6 +218,18 @@ void Shader::setColor(const char* name, Color color)
 	this->colors[location] = color;
 }
 
+void Shader::setTexture(const char*name, GLuint texture)
+{
+	GLuint location = this->getLocation(name);
+	auto pair = this->textures.find(location);
+	if (pair == this->textures.end())
+	{
+		this->textures.insert(std::pair<GLuint,GLuint>(location,texture));
+		return;
+	}
+	this->textures[location] = texture;
+}
+
 void Shader::setShaderValues() 
 {
 	for (auto pair : this->ints) 
@@ -239,6 +251,13 @@ void Shader::setShaderValues()
 		const float value[3] = {vec3.x,vec3.y,vec3.z};
 		glUniform3fv(pair.first, 1, value);
 	}
+
+	//for (auto pair : this->textures)
+	//{
+	//	glUniform1i(pair.first,0);
+	//	glActiveTexture(GL_TEXTURE0);
+	//	glBindTexture(GL_TEXTURE_2D, pair.second);
+	//}
 }
 
 void Shader::setEngineEnvironment() 

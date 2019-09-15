@@ -46,8 +46,8 @@ namespace spring
 		map<GLuint, Color> colors;
 		map<GLuint, GLuint> ints;
 		map<GLuint, GLfloat> floats;
-
 		map<GLuint, Vector3> vec3Map;
+		map<GLuint, GLuint> textures;
 
 		void setShaderValues();
 		void setEngineEnvironment();
@@ -68,7 +68,7 @@ namespace spring
 
 		void setVec3(const char* name, Vector3 vec3);
 		// void setVec4(const char* name, Vector3 vec3);
-
 		void setColor(const char* name, Color color);
+		void setTexture(const char*name, GLuint texture);
 	};
 }
