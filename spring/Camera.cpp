@@ -11,7 +11,7 @@ Camera::Camera()
 	this->transform = new Transform();
 	this->center = new Vector3(0.0f,0.0f,-1.0f);
 	this->direction = new Vector3(0.0f,1.0f,0.0f);
-	this->background = new Color(123,134,125,255);
+	this->background = Color(123,134,125,255);
 	Camera::main = this;
 }
 
@@ -43,9 +43,9 @@ void Camera::Render()
 		break;
 	case Camera::ClearFlag::SolidColor:
 		glClearColor(
-			this->background->r / 255.0f, 
-			this->background->g / 255.0f, 
-			this->background->b / 255.0f, 
+			this->background.r / 255.0f,
+			this->background.g / 255.0f,
+			this->background.b / 255.0f,
 			1.0f);
 		glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
 		break;

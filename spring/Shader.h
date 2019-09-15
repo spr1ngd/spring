@@ -4,11 +4,13 @@
 #include "Glm/ext.hpp"  
 #include <map>
 #include "color.h"
+#include "vector3.h"
 #include "environment.h"
 
 #define MATRIX_M "M"
 #define MATRIX_V "V"
 #define MATRIX_P "P"
+#define MATRIX_NM "NM"
 
 #define VERTEX "vertex"
 #define NORMAL "normal"
@@ -17,7 +19,15 @@
 #define MAIN_TEX "Main_Texture"
 #define MAIN_CUBEMAP "Main_Cubemap"
 #define MAIN_COLOR "Main_Color"
+
+// ambient system properties
 #define AMBIENT_COLOR "AmbientColor"
+
+// lighting properties
+#define LIGHT_COLOR "LightColor"
+#define LIGHT_POSITION "LightPosition"
+#define LIGHT_INSTENSITY "LightIntensity"
+#define LIGHT_DIRECTION "LightDirection"
 
 using namespace std;
 
@@ -36,6 +46,9 @@ namespace spring
 		map<GLuint, Color> colors;
 		map<GLuint, GLuint> ints;
 		map<GLuint, GLfloat> floats;
+
+		map<GLuint, Vector3> vec3Map;
+
 		void setShaderValues();
 		void setEngineEnvironment();
 
@@ -52,7 +65,9 @@ namespace spring
 		void setInt(const char* name, GLint value);
 		void setFloat(const char* name, GLfloat value);
 		void setMat4(const char* name, glm::mat4 value);
-		void setVec3(const char* name, glm::vec3 value);
+
+		void setVec3(const char* name, Vector3 vec3);
+		// void setVec4(const char* name, Vector3 vec3);
 
 		void setColor(const char* name, Color color);
 	};

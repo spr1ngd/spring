@@ -12,7 +12,7 @@ namespace spring
 			Color color;
 			AmbientSetting() 
 			{
-				this->color = Color::gray;
+				this->color = Color(50, 50, 50, 255);
 			}
 		};
 

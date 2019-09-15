@@ -37,6 +37,12 @@
     <Filter Include="头文件\Exceptions">
       <UniqueIdentifier>{22d7c6c0-734a-4b61-87a7-c0abf7f5d6b1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="源文件\Lights">
+      <UniqueIdentifier>{f55a8eae-ccd3-4a04-97fb-53f1e59b744e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\Lights">
+      <UniqueIdentifier>{ae737206-edba-420c-9ee4-63ae86a3811b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="spring.rc">
@@ -148,6 +154,9 @@
     <ClInclude Include="Environment.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="Light.h">
+      <Filter>头文件\Lights</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Primitive.cpp">
@@ -245,6 +254,9 @@
     </ClCompile>
     <ClCompile Include="Environment.cpp">
       <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Light.cpp">
+      <Filter>源文件\Lights</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

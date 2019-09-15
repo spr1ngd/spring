@@ -25,9 +25,17 @@ void Model::Init()
 		Mesh* mesh = &meshes[i];
 		mesh->Init([&](void)
 			{
-				GLuint locationId = this->material->shader->getLocation(VERTEX);
-				glEnableVertexAttribArray(locationId);
-				glVertexAttribPointer(locationId, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)0);
+				GLuint verexLocation = this->material->shader->getLocation(VERTEX);
+				glEnableVertexAttribArray(verexLocation);
+				glVertexAttribPointer(verexLocation, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)0);
+
+				GLuint normalLocation = this->material->shader->getLocation(NORMAL);
+				glEnableVertexAttribArray(normalLocation);
+				glVertexAttribPointer(normalLocation, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)(sizeof(float) * 3));
+
+				GLuint texcoordLocation = this->material->shader->getLocation(TEXCOORD);
+				glEnableVertexAttribArray(texcoordLocation);
+				glVertexAttribPointer(texcoordLocation, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)(sizeof(float) * 5));
 			});
 	}
 }
@@ -55,10 +63,13 @@ void Model::Render()
 					glm::rotate(glm::mat4(1.0f), glm::radians(this->transform->eulerangle.x), glm::vec3(1.0f, 0.0f, 0.0f)) *
 					glm::rotate(glm::mat4(1.0f), glm::radians(this->transform->eulerangle.y), glm::vec3(0.0f, 1.0f, 0.0f)) *
 					glm::rotate(glm::mat4(1.0f), glm::radians(this->transform->eulerangle.z), glm::vec3(0.0f, 0.0f, 1.0f));
-				// todo : supports rotate parameter..
+				glm::mat4 nm = glm::inverseTranspose(model);
 
 				GLuint mLocation = this->material->shader->getLocation(MATRIX_M);
 				glUniformMatrix4fv(mLocation, 1, GL_FALSE, glm::value_ptr(model));
+
+				GLuint nmLocation = this->material->shader->getLocation(MATRIX_NM);
+				glUniformMatrix4fv(nmLocation,1,GL_FALSE,glm::value_ptr(nm));
 
 				GLuint vLocation = this->material->shader->getLocation(MATRIX_V);
 				glUniformMatrix4fv(vLocation, 1, GL_FALSE, glm::value_ptr(Graphic::VIEW));

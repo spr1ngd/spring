@@ -51,7 +51,7 @@ namespace spring
 		void operator*=(const float multiplicand);
 		void operator=(const Vector3& vec3);
 		bool operator==(const Vector3& vec3);
-
+		
 		static float Magnitude(const Vector3 vec3);
 		static Vector3 Normalize(Vector3& vec3);
 		static float Dot(const Vector3 a, const Vector3 b);

@@ -1,7 +1,8 @@
 #include <fstream>
-#include "NotImplementException.h"
-#include "shader.h"
+#include "notimplementexception.h"
 #include "console.h"
+#include "shader.h"
+#include "light.h"
 
 using namespace std;
 using namespace spring;
@@ -74,6 +75,23 @@ void Shader::initializeLocation()
 
 	GLuint ambientColorLocation = glGetUniformLocation(this->program,AMBIENT_COLOR);
 	this->locations.insert(pair<const char*,GLuint>(AMBIENT_COLOR,ambientColorLocation));
+
+#pragma region lighting properties
+
+	GLuint lightColorLocation = glGetUniformLocation(this->program,LIGHT_COLOR);
+	this->locations.insert(pair<const char*,GLuint>(LIGHT_COLOR,lightColorLocation));
+
+	GLuint lightIntensityLocation = glGetUniformLocation(this->program,LIGHT_INSTENSITY);
+	this->locations.insert(pair<const char*,GLuint>(LIGHT_INSTENSITY,lightIntensityLocation));
+
+	GLuint lightPositionLocation = glGetUniformLocation(this->program,LIGHT_POSITION);
+	this->locations.insert(pair<const char*,GLuint>(LIGHT_POSITION,lightPositionLocation));
+
+	GLuint lightDirectionLocation = glGetUniformLocation(this->program,LIGHT_DIRECTION);
+	this->locations.insert(pair<const char*,GLuint>(LIGHT_DIRECTION,lightDirectionLocation));
+
+#pragma endregion
+
 }
 
 GLuint Shader::getLocation(const char* name)
@@ -147,11 +165,22 @@ void Shader::setMat4(const char* name, glm::mat4 value)
 	throw new NotImplementException();
 }
 
-void Shader::setVec3(const char* name, glm::vec3 vec3) 
+void Shader::setVec3(const char* name, Vector3 value)
 {
 	GLuint location = this->getLocation(name);
-	throw new NotImplementException();
+	auto pair = this->vec3Map.find(location);
+	if (pair == this->vec3Map.end())
+	{
+		this->vec3Map.insert(std::pair<GLuint,Vector3>(location,value));
+		return;
+	}
+	this->vec3Map[location] = value;
 }
+
+//void Shader::setVec4(const char* name, const GLfloat* value) 
+//{
+//	GLuint location = this->getLocation(name);
+//}
 
 void Shader::setInt(const char* name, GLint value)
 {
@@ -200,12 +229,32 @@ void Shader::setShaderValues()
 	for (auto pair : this->colors)
 	{
 		Color color = pair.second;
-		const GLfloat value[4] = { color.r / 255.0f ,color.g / 255.0f,color.b / 255.0f,color.a / 255.0f };
+		const float value[4] = { color.r / 255.0f ,color.g / 255.0f,color.b / 255.0f,color.a / 255.0f };
 		glUniform4fv(pair.first, 1, value);
+	}
+
+	for (auto pair : this->vec3Map)
+	{
+		Vector3 vec3 = pair.second;
+		const float value[3] = {vec3.x,vec3.y,vec3.z};
+		glUniform3fv(pair.first, 1, value);
 	}
 }
 
 void Shader::setEngineEnvironment() 
 {
 	this->setColor(AMBIENT_COLOR,Environment::ambient.color);
+
+	// todo : set lighting system parameters in here temporary
+	if (Light::main != nullptr)
+	{
+		this->setFloat(LIGHT_INSTENSITY, Light::main->intensity);
+		this->setColor(LIGHT_COLOR, Light::main->color);
+		this->setVec3(LIGHT_DIRECTION, Light::main->transform->position);
+		this->setVec3(LIGHT_POSITION, Light::main->transform->position);
+	}
+	else 
+	{
+		Console::WarningFormat("scene does not have light.");
+	}
 }

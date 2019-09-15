@@ -9,11 +9,12 @@ namespace spring
 {
 	class Camera : public Node
 	{
+	public:
 		enum Type
 		{
 			Perspective,
 			Orthographic
-		}; 
+		};
 
 		enum ClearFlag
 		{
@@ -23,8 +24,7 @@ namespace spring
 			Skybox
 		};
 
-	public:
-		spring::Color* background;
+		spring::Color background;
 		Transform* transform;
 		Vector3* center;
 		Vector3* direction;

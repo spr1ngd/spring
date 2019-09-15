@@ -15,3 +15,9 @@ A LONG TRIP.
 ## finished 
 
 - initialize window program.
+
+## issue
+
+- import quaternion and matrix for transform rotate
+- import shadow system for spring engine.
+- how to shared shader codes in different shaders.

@@ -9,7 +9,9 @@
 
 // spring engine
 #include "spring.h"
+#include "console.h"
 #include "screen.h"
+#include "environment.h"
 #include "application.h"
 #include "shader.h"
 #include "model.h"
@@ -21,7 +23,7 @@
 #include "input.h"
 #include "renderable.h"
 #include "skybox.h"
-#include "console.h"
+#include "light.h"
 
 // spring engine editor 
 #include "orbitcamera.h"
@@ -193,14 +195,28 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 	UpdateWindow(hwnd);
 
 	Application app;
-	app.Initialize();
+	app.Initialize(); 
+
+#pragma region directional light 
+
+	Environment::ambient.color = Color(75,75,75,255);
+
+	Light* directionalLight = new Light();
+	directionalLight->name = "DirectionalLight";
+	directionalLight->color = Color(255, 244, 214, 255);
+	directionalLight->intensity = 1.0f;
+	directionalLight->transform->position = Vector3(0.0f,3.0f,0.0f);
+
+#pragma endregion
+
 
 #pragma region scene camera setting
 
 	Camera camera;
-	// camera.fov = 45.0f;
+	camera.clearFlag = Camera::ClearFlag::Skybox;
 	camera.transform->position = Vector3(-2.0f,1.0f,-2.0f);
 	camera.center = new Vector3(0.0f,0.0f,-3.0f);
+	camera.background = Color(31,113,113,255);
 
 #pragma endregion
 
@@ -208,7 +224,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 #pragma region skybox rendering
 
 	Material skyboxMaterial("res/shader/skybox/6 Sided.vs","res/shader/skybox/6 Sided.fs");
-	//  Material skyboxMaterial("res/shader/base/base.vs", "res/shader/base/base.fs");
 	spring::Skybox skybox("6 Sided", &skyboxMaterial);
 	skybox.Init();
 
@@ -227,8 +242,9 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 	model.material = &material;
 	model.Init();
 	model.transform->position.z = -3.0f;
-	model.transform->scale = Vector3(0.5f);
-	model.material->shader->setColor(MAIN_COLOR,Color::yellow);
+	model.transform->scale = Vector3(1.0f);
+	model.transform->eulerangle = Vector3(-90.0f,0.0f,0.0f);
+	model.material->shader->setColor(MAIN_COLOR,Color(204,204,204,255));
 
 #pragma endregion
 
@@ -253,7 +269,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 		camera.Render();
 
 		// 物体旋转
-		model.transform->eulerangle.y += 2.0f;
+		// model.transform->eulerangle.y += 2.0f;
 
 		for (auto behaviour : Behaviour::behaviours)
 			behaviour.second->Update();
