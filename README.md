@@ -21,9 +21,3 @@ A LONG TRIP.
 - import quaternion and matrix for transform rotate
 - import shadow system for spring engine.
 - how to shared shader codes in different shaders.
-
-# spring engine real-time screenshot
-
--   diffuse material without shadow
-    
-    ![diffuse](/screenhost/spring engine realtime screenhost_01.PNG)
