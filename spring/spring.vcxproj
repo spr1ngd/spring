@@ -148,7 +148,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>glew32.lib;opengl32.lib;soil.lib;assimp-vc142-mt.lib;glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>glew32.lib;opengl32.lib;soil.lib;assimp-vc142-mt.lib;glfw3.lib;lib_json.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>editbin /subsystem:console $(OutDir)$(ProjectName).exe</Command>
@@ -197,6 +197,7 @@
     <ClInclude Include="FPS.h" />
     <ClInclude Include="Graphic.h" />
     <ClInclude Include="Input.h" />
+    <ClInclude Include="Json.h" />
     <ClInclude Include="Light.h" />
     <ClInclude Include="Material.h" />
     <ClInclude Include="Mesh.h" />
@@ -209,6 +210,9 @@
     <ClInclude Include="Primitive.h" />
     <ClInclude Include="Renderable.h" />
     <ClInclude Include="RenderOrder.h" />
+    <ClInclude Include="Resource.h" />
+    <ClInclude Include="Resources.h" />
+    <ClInclude Include="Scene.h" />
     <ClInclude Include="Screen.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="Skybox.h" />
@@ -232,6 +236,7 @@
     <ClCompile Include="FPS.cpp" />
     <ClCompile Include="Graphic.cpp" />
     <ClCompile Include="Input.cpp" />
+    <ClCompile Include="Json.cpp" />
     <ClCompile Include="Light.cpp" />
     <ClCompile Include="Material.cpp" />
     <ClCompile Include="Mesh.cpp" />
@@ -244,6 +249,8 @@
     <ClCompile Include="Primitive.cpp" />
     <ClCompile Include="Renderable.cpp" />
     <ClCompile Include="RenderOrder.cpp" />
+    <ClCompile Include="Resources.cpp" />
+    <ClCompile Include="Scene.cpp" />
     <ClCompile Include="Screen.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="Skybox.cpp" />

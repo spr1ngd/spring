@@ -43,6 +43,30 @@
     <Filter Include="头文件\Lights">
       <UniqueIdentifier>{ae737206-edba-420c-9ee4-63ae86a3811b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="头文件\Resources">
+      <UniqueIdentifier>{1524a16a-1578-4a10-aed3-88d17f167ab4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\Resources">
+      <UniqueIdentifier>{134945e3-25fa-43b7-859d-29492a89dd5b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\Scene">
+      <UniqueIdentifier>{a776fe27-bf17-4f1d-a281-12e543f89ea3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\Scene">
+      <UniqueIdentifier>{32a16426-388a-4069-b23b-77c9884db740}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\Serialize">
+      <UniqueIdentifier>{8e1bf7e8-e546-4501-a461-6e576a64bc5e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\Serialize\Json">
+      <UniqueIdentifier>{baa84a3b-8d01-40cb-927f-0b6b3e09f851}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\Serialize">
+      <UniqueIdentifier>{18097b3d-864a-4bd1-9023-c0aa0321b411}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\Serialize\Json">
+      <UniqueIdentifier>{db0699d5-9496-45e8-87e1-04ecfe3f5bab}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="spring.rc">
@@ -157,6 +181,18 @@
     <ClInclude Include="Light.h">
       <Filter>头文件\Lights</Filter>
     </ClInclude>
+    <ClInclude Include="Resource.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Resources.h">
+      <Filter>头文件\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene.h">
+      <Filter>头文件\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Json.h">
+      <Filter>头文件\Serialize\Json</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Primitive.cpp">
@@ -257,6 +293,15 @@
     </ClCompile>
     <ClCompile Include="Light.cpp">
       <Filter>源文件\Lights</Filter>
+    </ClCompile>
+    <ClCompile Include="Resources.cpp">
+      <Filter>源文件\Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene.cpp">
+      <Filter>源文件\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Json.cpp">
+      <Filter>源文件\Serialize\Json</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

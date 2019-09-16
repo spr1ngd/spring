@@ -28,6 +28,6 @@ void main()
     // texture color
     vec4 tex = texture(Main_Texture,V_Texcoord);
 
-    gl_FragColor = tex;
-    // gl_FragColor = AmbientColor + diffuseColor + tex;
+    // gl_FragColor = tex;
+    gl_FragColor = AmbientColor + diffuseColor;
 }

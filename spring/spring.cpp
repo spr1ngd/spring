@@ -223,9 +223,9 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 
 #pragma region skybox rendering
 
-	/*Material skyboxMaterial("res/shader/skybox/6 Sided.vs","res/shader/skybox/6 Sided.fs");
+	Material skyboxMaterial("res/shader/skybox/6 Sided.vs", "res/shader/skybox/6 Sided.fs");
 	spring::Skybox skybox("6 Sided", &skyboxMaterial);
-	skybox.Init();*/
+	skybox.Init();
 
 #pragma endregion
 
@@ -236,8 +236,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 	//spring::Material material("res/shader/base/base.vs", "res/shader/base/base.fs");
 	// spring::Material material("res/shader/vertex/vertexcolor.vs","res/shader/vertex/vertexcolor.fs");
 	// spring::Material material("res/shader/unlit/color.vs", "res/shader/unlit/color.fs");
-	// spring::Material material("res/shader/diffuse/diffuse.vs", "res/shader/diffuse/diffuse.fs");
-	spring::Material material("res/shader/texture/texture.vs", "res/shader/texture/texture.fs");
+	spring::Material material("res/shader/diffuse/diffuse.vs", "res/shader/diffuse/diffuse.fs");
+	//spring::Material material("res/shader/texture/texture.vs", "res/shader/texture/texture.fs");
 	Model model("res/model/fbx/sphere.fbx");
 	//Model model("res/model/fbx/tauren.fbx");
 	model.material = &material;
@@ -245,11 +245,11 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 	model.transform->position.z = -3.0f;
 	model.transform->scale = Vector3(1.0f);
 	model.transform->eulerangle = Vector3(-90.0f,0.0f,0.0f);
-	// model.material->shader->setColor(MAIN_COLOR,Color(204,204,204,255));
+	model.material->shader->setColor(MAIN_COLOR,Color(204,204,204,255));
 
-	TextureLoader textureLoader;
-	GLuint texture = textureLoader.Load("res/texture/leather.jpg");
-	model.material->shader->setTexture(MAIN_TEX, texture);
+	// TextureLoader textureLoader;
+	// GLuint texture = textureLoader.Load("res/texture/leather.jpg");
+	// model.material->shader->setTexture(MAIN_TEX, texture);
 	// glEnable(GL_TEXTURE_2D);
 	// glBindTexture(GL_TEXTURE_2D,texture);
 
