@@ -199,17 +199,28 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 	Application app;
 	app.Initialize(); 
 
+	auto createLight = [&]( Light::Type lightType,Color lightColor ,float intensity ,Vector3 position,Vector3 eulerangle )
+	{
+		Light* light = new Light();
+		light->type = lightType;
+		light->color = lightColor;
+		light->intensity = intensity;
+		light->transform->eulerangle = eulerangle;
+		light->transform->position = position;
+		return light;
+	};
+
+	//Color(255, 244, 214, 255)
 #pragma region directional light 
 
 	Environment::ambient.color = Color(75,75,75,255);
 
-	Light* light = new Light();
-	light->type = Light::Type::Spot;
-	light->name = "Scene Light";
-	light->color = Color(255, 244, 214, 255);
-	light->intensity = 1.0f;
-	light->transform->eulerangle = Vector3::bottom;
-	light->transform->position = Vector3(0.0f,20.0f,0.0f);
+	Light* light = createLight(Light::Type::Directional, Color(255, 244, 214, 255), 0.3f, Vector3(10.0f, 10.0f, 10.0f), Vector3::bottom);
+	Light* pointLigh1 = createLight(Light::Type::Point, Color::red, 0.6f, Vector3(5.0f, 0.0f, 0.0f), Vector3::left);
+	Light* pointLigh2 = createLight(Light::Type::Point, Color::green, 0.6f, Vector3(-5.0f, 0.0f, 0.0f), Vector3::right);
+	Light* pointLigh3 = createLight(Light::Type::Point, Color::blue, 0.6f, Vector3(0.0f, 0.0f, 5.0f), Vector3::back);
+	Light* pointLigh4 = createLight(Light::Type::Point, Color::green, 0.6f, Vector3(0.0f, 0.0f, -5.0f), Vector3::forward);
+	Light* spotLight = createLight(Light::Type::Spot, Color::yellow, 1.3f, Vector3(0.0f, 6.0f, 0.0f), Vector3::bottom);
 
 #pragma endregion
 
@@ -240,7 +251,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 	lightModel.material = &lightModelMat;
 	lightModel.Init();
 	lightModel.transform->scale = Vector3(.3f);
-	lightModel.transform->position = light->transform->position;
+	lightModel.transform->position = spotLight->transform->position;
 	lightModel.material->shader->setColor(MAIN_COLOR, Color::yellow);
 
 	spring::Material material("res/shader/diffuse/diffuse.vs", "res/shader/diffuse/diffuse.fs");
@@ -251,6 +262,9 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 	model.transform->scale = Vector3(3.0f);
 	// model.transform->eulerangle = Vector3(-90.0f, 0.0f, 0.0f);
 	model.material->shader->setColor(MAIN_COLOR, Color(204, 204, 204, 255));
+	model.material->shader->setColor("Specular_Color",Color::white);
+	model.material->shader->setFloat("Specular_Intensity",1.0f);
+	model.material->shader->setFloat("Specular_Attenuation",64.0f);
 
 #pragma endregion
 
@@ -279,13 +293,13 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 		camera.Render();
 
 		// 物体旋转
-		model.transform->eulerangle.y += 2.0f;
+		model.transform->eulerangle.x += 2.0f;
 
 		// 灯上下移动
 		timer += Timer::deltaTime;
 		float offset = Mathf::Cos(timer) * 3.0f + 5.0f;
-		light->transform->position = Vector3(0, offset, 0);
-		lightModel.transform->position = light->transform->position;
+		spotLight->transform->position = Vector3(0, offset, 0);
+		lightModel.transform->position = spotLight->transform->position;
 
 		for (auto behaviour : Behaviour::behaviours)
 			behaviour.second->Update();

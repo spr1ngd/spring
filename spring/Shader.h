@@ -33,6 +33,9 @@
 #define LIGHT_RANGE "light.range"
 #define LIGHT_ATTENUATION "light.attenuation"
 
+// camera properties
+#define CAMERA_POSITION "CameraPosition"
+
 using namespace std;
 
 namespace spring 

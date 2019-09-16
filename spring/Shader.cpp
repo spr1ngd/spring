@@ -3,6 +3,8 @@
 #include "console.h"
 #include "shader.h"
 #include "light.h"
+#include "camera.h"
+#include <string>
 
 using namespace std;
 using namespace spring;
@@ -297,29 +299,84 @@ void Shader::setEngineEnvironment()
 {
 	this->setColor(AMBIENT_COLOR,Environment::ambient.color);
 
-	// todo : set lighting system parameters in here temporary
-	if (Light::main != nullptr)
-	{
-		this->setFloat(LIGHT_INSTENSITY, Light::main->intensity);
-		this->setColor(LIGHT_COLOR, Light::main->color);
-		Vector3 eulerangle = Light::main->transform->eulerangle;
-		Vector4 direction = Vector4(eulerangle.x, eulerangle.y, eulerangle.z,(Light::main->type == Light::Type::Directional)?0.0f:1.0f);
-		this->setVec4(LIGHT_DIRECTION, direction);
-		this->setVec3(LIGHT_POSITION, Light::main->transform->position);
-		this->setFloat(LIGHT_RANGE,Light::main->range);
+	string intensity = "intensity";
+	string color = "color";
+	string position = "position";
+	string range = "range";
+	string constant = "constant";
+	string linear = "linear";
+	string quadratic = "quadratic";
+	string direction = "direction";
 
+	string cutoff = "cutoff";
+	string outerCutoff = "outerCutoff";
 
-		float cutoff = 0.0f;
-		if (Light::main->type == Light::Type::Spot)
-			cutoff = Light::main->spotAngle / 2.0f;
-		this->setFloat("light.cutoff", glm::cos(glm::radians(cutoff)));
-		this->setFloat("light.outerCutoff", glm::cos(glm::radians(Light::main->outterAngle / 2.0f)));
-		this->setFloat("light.constant", Light::main->contant);
-		this->setFloat("light.linear", Light::main->linear);
-		this->setFloat("light.quadratic",Light::main->quadratic);
-	}
-	else 
+	int directionalLightCount = 0;
+	int pointLightCount = 0;
+	int spotLightCount = 0;
+	for (std::pair<const long,Light*> lightItem : Light::lights) 
 	{
-		Console::WarningFormat("scene does not have light.");
+		auto light = lightItem.second;
+		if (light->type == Light::Type::Directional) 
+		{
+			string arrayName = "dirLights";
+			std::string intensityStr = arrayName + '[' + to_string(directionalLightCount) + "]." + intensity;
+			std::string positionStr = arrayName + '[' + to_string(directionalLightCount) + "]." + position;
+			std::string colorStr = arrayName + '[' + to_string(directionalLightCount) + "]." + color;
+			this->setFloat(intensityStr.c_str(), light->intensity);
+			this->setVec3(positionStr.c_str(),light->transform->position);
+			this->setColor(colorStr.c_str(), light->color);
+			directionalLightCount++;
+		}
+		else if (light->type == Light::Type::Point)
+		{
+			string arrayName = "pointLights";
+			std::string intensityStr = arrayName + '[' + to_string(pointLightCount) + "]." + intensity;
+			std::string positionStr = arrayName + '[' + to_string(pointLightCount) + "]." + position;
+			std::string colorStr = arrayName + '[' + to_string(pointLightCount) + "]." + color;
+			std::string rangeStr = arrayName + '[' + to_string(pointLightCount) + "]." + range;
+			std::string constantStr = arrayName + '[' + to_string(pointLightCount) + "]." + constant;
+			std::string linearStr = arrayName + '[' + to_string(pointLightCount) + "]." + linear;
+			std::string quadraticStr = arrayName + '[' + to_string(pointLightCount) + "]." + quadratic;
+			this->setFloat(intensityStr.c_str(), light->intensity);
+			this->setVec3(positionStr.c_str(), light->transform->position);
+			this->setColor(colorStr.c_str(), light->color);
+			this->setFloat(rangeStr.c_str(), light->range);
+			this->setFloat(constantStr.c_str(), light->constant);
+			this->setFloat(linearStr.c_str(), light->linear);
+			this->setFloat(quadraticStr.c_str(), light->quadratic);
+			pointLightCount++;
+		}
+		else if (light->type == Light::Type::Spot)
+		{
+			string arrayName = "spotLights";
+			std::string intensityStr = arrayName + '[' + to_string(spotLightCount) + "]." + intensity;
+			std::string positionStr = arrayName + '[' + to_string(spotLightCount) + "]." + position;
+			std::string directionStr = arrayName + '[' + to_string(spotLightCount) + "]." + direction;
+			std::string colorStr = arrayName + '[' + to_string(spotLightCount) + "]." + color;
+			std::string rangeStr = arrayName + '[' + to_string(spotLightCount) + "]." + range;
+			std::string constantStr = arrayName + '[' + to_string(spotLightCount) + "]." + constant;
+			std::string linearStr = arrayName + '[' + to_string(spotLightCount) + "]." + linear;
+			std::string quadraticStr = arrayName + '[' + to_string(spotLightCount) + "]." + quadratic;
+			std::string cutoffStr = arrayName + '[' + to_string(spotLightCount) + "]." + cutoff;
+			std::string outerCutoffStr = arrayName + '[' + to_string(spotLightCount) + "]." + outerCutoff;
+
+			this->setFloat(intensityStr.c_str(), light->intensity);
+			this->setVec3(positionStr.c_str(), light->transform->position);
+			this->setColor(colorStr.c_str(), light->color);
+			this->setFloat(rangeStr.c_str(), light->range);
+			this->setFloat(constantStr.c_str(), light->constant);
+			this->setFloat(linearStr.c_str(), light->linear);
+			this->setFloat(quadraticStr.c_str(), light->quadratic);
+			this->setFloat(cutoffStr.c_str(), glm::cos(glm::radians(light->spotAngle / 2.0f)));
+			this->setFloat(outerCutoffStr.c_str(), glm::cos(glm::radians(light->outterAngle / 2.0f)));
+			this->setVec3(directionStr.c_str(), light->transform->eulerangle);
+			spotLightCount++;
+		}
+		else 
+		{
+
+		} 
+		this->setVec3(CAMERA_POSITION, Camera::main->transform->position);
 	}
 }

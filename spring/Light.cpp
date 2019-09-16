@@ -15,7 +15,4 @@ Light::Light()
 	this->color = Color::white;
 	this->intensity = 1.0f;
 	Light::lights.insert(pair<const long,Light*>(this->instanceId,this));
-	
-	if (this->renderMode == Light::RenderMode::Pixel)
-		Light::main = this;
 }
