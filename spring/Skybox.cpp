@@ -46,7 +46,8 @@ void Skybox::Render()
 		Console::Warning("can not render skybox without skybox material,please assign a sky box material.");
 		return;
 	} 
-
+	if (Camera::main->clearFlag != Camera::ClearFlag::Skybox)
+		return;
 	this->transform->position = Camera::main->transform->position;
 	// this->skybox->transform->position = this->transform->position;
 

@@ -7,6 +7,6 @@ namespace spring
 {
 	class Json 
 	{
-
+	public:
 	};
 }

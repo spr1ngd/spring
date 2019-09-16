@@ -5,6 +5,7 @@
 #include <map>
 #include "color.h"
 #include "vector3.h"
+#include "vector4.h"
 #include "environment.h"
 
 #define MATRIX_M "M"
@@ -24,10 +25,13 @@
 #define AMBIENT_COLOR "AmbientColor"
 
 // lighting properties
-#define LIGHT_COLOR "LightColor"
-#define LIGHT_POSITION "LightPosition"
-#define LIGHT_INSTENSITY "LightIntensity"
-#define LIGHT_DIRECTION "LightDirection"
+#define LIGHT_COLOR "light.color"
+#define LIGHT_POSITION "light.position"
+#define LIGHT_INSTENSITY "light.intensity"
+#define LIGHT_DIRECTION "light.direction"
+#define LIGHT_CUTOFF "light.cutoff"
+#define LIGHT_RANGE "light.range"
+#define LIGHT_ATTENUATION "light.attenuation"
 
 using namespace std;
 
@@ -47,7 +51,9 @@ namespace spring
 		map<GLuint, GLuint> ints;
 		map<GLuint, GLfloat> floats;
 		map<GLuint, Vector3> vec3Map;
+		map<GLuint, Vector4> vec4Map;
 		map<GLuint, GLuint> textures;
+		map<GLuint, glm::mat4> mat4Map;
 
 		void setShaderValues();
 		void setEngineEnvironment();
@@ -67,7 +73,7 @@ namespace spring
 		void setMat4(const char* name, glm::mat4 value);
 
 		void setVec3(const char* name, Vector3 vec3);
-		// void setVec4(const char* name, Vector3 vec3);
+		void setVec4(const char* name, Vector4 vec4);
 		void setColor(const char* name, Color color);
 		void setTexture(const char*name, GLuint texture);
 	};

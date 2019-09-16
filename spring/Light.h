@@ -4,6 +4,7 @@
 #include "color.h"
 #include "transform.h"
 #include "vector3.h"
+#include "vector4.h"
 
 using namespace std;
 
@@ -32,9 +33,17 @@ namespace spring
 		Light::Type type = Light::Type::Directional;
 		Color color = Color::white;
 		float intensity = 1.0f;
+		// only work in spot and point mode
+		float range = 10.0f;
+		float contant = 1.0f;
+		float linear = 0.09f;
+		float quadratic = 0.032f;
+		// only work in spot light mode
+		float spotAngle = 25.0f;
+		float outterAngle = 70.0f;
+
 		Transform* transform;
 		// todo : light shadow settings
-
 		static Light* main;
 
 	public:

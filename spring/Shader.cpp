@@ -20,7 +20,6 @@ Shader::Shader( const char*vertexShader,const char*fragmentShader )
 	shaders.insert(pair<GLenum, GLuint>(GL_FRAGMENT_SHADER, fragment));
 	this->linkProgram();
 	this->initializeLocation();
-	this->setEngineEnvironment();
 }
 
 #pragma region shader program methods
@@ -54,6 +53,9 @@ void Shader::initializeLocation()
 
 	GLuint pLocation = glGetUniformLocation(this->program, MATRIX_P);
 	this->locations.insert(pair<const char*, GLuint>(MATRIX_P, pLocation));
+
+	GLuint nmLocation = glGetUniformLocation(this->program,MATRIX_NM);
+	this->locations.insert(pair<CONST char*,GLuint>(MATRIX_NM,nmLocation));
 
 	GLuint veretxLocation = glGetAttribLocation(this->program, VERTEX);
 	this->locations.insert(pair<const char*, GLuint>(VERTEX, veretxLocation));
@@ -106,6 +108,7 @@ void Shader::use()
 {
 	glUseProgram(this->program);
 	this->setShaderValues();
+	this->setEngineEnvironment();
 }
 
 void Shader::disuse() 
@@ -155,19 +158,25 @@ char* Shader::loadShaderFile( const char*shaderFilePath )
 
 void Shader::setBool(const char* name, GLboolean value) 
 {
-	GLuint location = this->getLocation(name);
+	GLuint location = glGetUniformLocation(this->program, name);
 	throw new NotImplementException();
 }
 
 void Shader::setMat4(const char* name, glm::mat4 value) 
 {
-	GLuint location = this->getLocation(name);
-	throw new NotImplementException();
+	GLuint location = glGetUniformLocation(this->program, name);
+	auto pair = this->mat4Map.find(location);
+	if (pair == this->mat4Map.end())
+	{
+		this->mat4Map.insert(std::pair<GLuint, glm::mat4>(location, value));
+		return;
+	}
+	this->mat4Map[location] = value;
 }
 
 void Shader::setVec3(const char* name, Vector3 value)
 {
-	GLuint location = this->getLocation(name);
+	GLuint location = glGetUniformLocation(this->program, name);
 	auto pair = this->vec3Map.find(location);
 	if (pair == this->vec3Map.end())
 	{
@@ -177,14 +186,21 @@ void Shader::setVec3(const char* name, Vector3 value)
 	this->vec3Map[location] = value;
 }
 
-//void Shader::setVec4(const char* name, const GLfloat* value) 
-//{
-//	GLuint location = this->getLocation(name);
-//}
+void Shader::setVec4(const char* name, Vector4 value)
+{
+	GLuint location = glGetUniformLocation(this->program, name);
+	auto pair = this->vec4Map.find(location);
+	if (pair == this->vec4Map.end()) 
+	{
+		this->vec4Map.insert(std::pair<GLuint,Vector4>(location,value));
+		return;
+	}
+	this->vec4Map[location] = value;
+}
 
 void Shader::setInt(const char* name, GLint value)
 {
-	GLuint location = this->getLocation(name);
+	GLuint location = glGetUniformLocation(this->program, name);
 	auto pair = this->ints.find(location);
 	if (pair == this->ints.end())
 	{
@@ -196,7 +212,7 @@ void Shader::setInt(const char* name, GLint value)
 
 void Shader::setFloat(const char* name, GLfloat value)
 {
-	GLuint location = this->getLocation(name);
+	GLuint location = glGetUniformLocation(this->program, name);
 	auto pair = this->floats.find(location);
 	if (pair == this->floats.end())
 	{
@@ -208,7 +224,7 @@ void Shader::setFloat(const char* name, GLfloat value)
 
 void Shader::setColor(const char* name, Color color) 
 {
-	GLuint location = this->getLocation(name);
+	GLuint location = glGetUniformLocation(this->program, name);
 	auto pair = this->colors.find(location);
 	if (pair == this->colors.end())
 	{
@@ -220,7 +236,7 @@ void Shader::setColor(const char* name, Color color)
 
 void Shader::setTexture(const char*name, GLuint texture)
 {
-	GLuint location = this->getLocation(name);
+	GLuint location = glGetUniformLocation(this->program, name);
 	auto pair = this->textures.find(location);
 	if (pair == this->textures.end())
 	{
@@ -232,11 +248,15 @@ void Shader::setTexture(const char*name, GLuint texture)
 
 void Shader::setShaderValues() 
 {
-	for (auto pair : this->ints) 
+	for (auto pair : this->ints)
+	{
 		glUniform1i(pair.first, pair.second);
+	}
 
 	for (auto pair : this->floats)
+	{
 		glUniform1f(pair.first, pair.second);
+	}
 
 	for (auto pair : this->colors)
 	{
@@ -252,12 +272,25 @@ void Shader::setShaderValues()
 		glUniform3fv(pair.first, 1, value);
 	}
 
-	//for (auto pair : this->textures)
-	//{
-	//	glUniform1i(pair.first,0);
-	//	glActiveTexture(GL_TEXTURE0);
-	//	glBindTexture(GL_TEXTURE_2D, pair.second);
-	//}
+	for (auto pair : this->vec4Map) 
+	{
+		Vector4 vec4 = pair.second;
+		const float value[4] = {vec4.x,vec4.y,vec4.z,vec4.w};
+		glUniform4fv(pair.first,1,value);
+	}
+
+	for (auto pair : this->mat4Map) 
+	{
+		glUniformMatrix4fv(pair.first, 1, GL_FALSE, glm::value_ptr(pair.second));
+	}
+
+	// todo : resolve it. why texture does not work
+	for (auto pair : this->textures)
+	{
+		glUniform1i(pair.first, 0);
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, pair.second);
+	}
 }
 
 void Shader::setEngineEnvironment() 
@@ -269,8 +302,21 @@ void Shader::setEngineEnvironment()
 	{
 		this->setFloat(LIGHT_INSTENSITY, Light::main->intensity);
 		this->setColor(LIGHT_COLOR, Light::main->color);
-		this->setVec3(LIGHT_DIRECTION, Light::main->transform->position);
+		Vector3 eulerangle = Light::main->transform->eulerangle;
+		Vector4 direction = Vector4(eulerangle.x, eulerangle.y, eulerangle.z,(Light::main->type == Light::Type::Directional)?0.0f:1.0f);
+		this->setVec4(LIGHT_DIRECTION, direction);
 		this->setVec3(LIGHT_POSITION, Light::main->transform->position);
+		this->setFloat(LIGHT_RANGE,Light::main->range);
+
+
+		float cutoff = 0.0f;
+		if (Light::main->type == Light::Type::Spot)
+			cutoff = Light::main->spotAngle / 2.0f;
+		this->setFloat("light.cutoff", glm::cos(glm::radians(cutoff)));
+		this->setFloat("light.outerCutoff", glm::cos(glm::radians(Light::main->outterAngle / 2.0f)));
+		this->setFloat("light.constant", Light::main->contant);
+		this->setFloat("light.linear", Light::main->linear);
+		this->setFloat("light.quadratic",Light::main->quadratic);
 	}
 	else 
 	{

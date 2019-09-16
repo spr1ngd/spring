@@ -10,6 +10,8 @@
 // spring engine
 #include "spring.h"
 #include "console.h"
+#include "timer.h"
+#include "mathf.h"
 #include "screen.h"
 #include "environment.h"
 #include "application.h"
@@ -201,25 +203,25 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 
 	Environment::ambient.color = Color(75,75,75,255);
 
-	Light* directionalLight = new Light();
-	directionalLight->name = "DirectionalLight";
-	directionalLight->color = Color(255, 244, 214, 255);
-	directionalLight->intensity = 1.0f;
-	directionalLight->transform->position = Vector3(0.0f,3.0f,0.0f);
+	Light* light = new Light();
+	light->type = Light::Type::Spot;
+	light->name = "Scene Light";
+	light->color = Color(255, 244, 214, 255);
+	light->intensity = 1.0f;
+	light->transform->eulerangle = Vector3::bottom;
+	light->transform->position = Vector3(0.0f,20.0f,0.0f);
 
 #pragma endregion
-
 
 #pragma region scene camera setting
 
 	Camera camera;
-	camera.clearFlag = Camera::ClearFlag::Skybox;
-	camera.transform->position = Vector3(-2.0f,1.0f,-2.0f);
-	camera.center = new Vector3(0.0f,0.0f,-3.0f);
+	camera.clearFlag = Camera::ClearFlag::SolidColor;
+	camera.transform->position = Vector3(6.0f,6.0f,6.0f);
+	camera.center = new Vector3(0.0f,0.0f,0.0f);
 	camera.background = Color(31,113,113,255);
 
 #pragma endregion
-
 
 #pragma region skybox rendering
 
@@ -233,31 +235,31 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 
 	OrbitCamera orbitCamera;
 
-	//spring::Material material("res/shader/base/base.vs", "res/shader/base/base.fs");
-	// spring::Material material("res/shader/vertex/vertexcolor.vs","res/shader/vertex/vertexcolor.fs");
-	// spring::Material material("res/shader/unlit/color.vs", "res/shader/unlit/color.fs");
+	Material lightModelMat("res/shader/unlit/color.vs", "res/shader/unlit/color.fs");
+	Model lightModel("res/model/obj/cube.obj");
+	lightModel.material = &lightModelMat;
+	lightModel.Init();
+	lightModel.transform->scale = Vector3(.3f);
+	lightModel.transform->position = light->transform->position;
+	lightModel.material->shader->setColor(MAIN_COLOR, Color::yellow);
+
 	spring::Material material("res/shader/diffuse/diffuse.vs", "res/shader/diffuse/diffuse.fs");
-	//spring::Material material("res/shader/texture/texture.vs", "res/shader/texture/texture.fs");
 	Model model("res/model/fbx/sphere.fbx");
-	//Model model("res/model/fbx/tauren.fbx");
 	model.material = &material;
 	model.Init();
-	model.transform->position.z = -3.0f;
-	model.transform->scale = Vector3(1.0f);
-	model.transform->eulerangle = Vector3(-90.0f,0.0f,0.0f);
-	model.material->shader->setColor(MAIN_COLOR,Color(204,204,204,255));
-
-	// TextureLoader textureLoader;
-	// GLuint texture = textureLoader.Load("res/texture/leather.jpg");
-	// model.material->shader->setTexture(MAIN_TEX, texture);
-	// glEnable(GL_TEXTURE_2D);
-	// glBindTexture(GL_TEXTURE_2D,texture);
+	model.transform->position = Vector3(0.0f, 0.0f, 0.0f);
+	model.transform->scale = Vector3(3.0f);
+	// model.transform->eulerangle = Vector3(-90.0f, 0.0f, 0.0f);
+	model.material->shader->setColor(MAIN_COLOR, Color(204, 204, 204, 255));
 
 #pragma endregion
 
 	for (auto behaviour : Behaviour::behaviours)
 		behaviour.second->Awake(); 
 
+	float timer = 0.0f;
+
+	Timer::Start();
 	while (true)
 	{
 		if (PeekMessage(&msg, NULL, NULL, NULL, PM_REMOVE))
@@ -271,12 +273,19 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 			TranslateMessage(&msg);
 			DispatchMessage(&msg);
 		} 
+		Timer::Time();
 				
 		// use this camera render scene objects.
 		camera.Render();
 
 		// 物体旋转
-		// model.transform->eulerangle.y += 2.0f;
+		model.transform->eulerangle.y += 2.0f;
+
+		// 灯上下移动
+		timer += Timer::deltaTime;
+		float offset = Mathf::Cos(timer) * 3.0f + 5.0f;
+		light->transform->position = Vector3(0, offset, 0);
+		lightModel.transform->position = light->transform->position;
 
 		for (auto behaviour : Behaviour::behaviours)
 			behaviour.second->Update();

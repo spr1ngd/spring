@@ -8,12 +8,14 @@ uniform mat4 V;
 uniform mat4 P;
 uniform mat4 NM;
 
-out vec3 V_WorldNormal;
-out vec2 V_Texcoord;
+out vec4 WorldPos;
+out vec3 WorldNormal;
+out vec2 Texcoord;
 
 void main()
 {
-    V_WorldNormal = normal;
-    V_Texcoord = texcoord;
-    gl_Position = P * V * M * vec4(vertex,1.0);    
+    WorldPos = M * vec4(vertex,1.0);    
+    WorldNormal = mat3(NM)*normal;
+    Texcoord = texcoord;
+    gl_Position = P * V * WorldPos;    
 }

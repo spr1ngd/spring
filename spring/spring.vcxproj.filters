@@ -67,6 +67,12 @@
     <Filter Include="头文件\Serialize\Json">
       <UniqueIdentifier>{db0699d5-9496-45e8-87e1-04ecfe3f5bab}</UniqueIdentifier>
     </Filter>
+    <Filter Include="源文件\Math">
+      <UniqueIdentifier>{e527aa6f-b1ea-4d70-9c32-86dfc6d27eff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\Math">
+      <UniqueIdentifier>{ec9c527c-c224-44c2-83e2-becba78b12c1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="spring.rc">
@@ -122,12 +128,6 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="Transform.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="Vector2.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="Vector3.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="Application.h">
@@ -193,6 +193,21 @@
     <ClInclude Include="Json.h">
       <Filter>头文件\Serialize\Json</Filter>
     </ClInclude>
+    <ClInclude Include="Vector3.h">
+      <Filter>头文件\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Vector2.h">
+      <Filter>头文件\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Vector4.h">
+      <Filter>头文件\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Mathf.h">
+      <Filter>头文件\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Timer.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Primitive.cpp">
@@ -211,12 +226,6 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="Transform.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="Vector2.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="Vector3.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="Application.cpp">
@@ -302,6 +311,21 @@
     </ClCompile>
     <ClCompile Include="Json.cpp">
       <Filter>源文件\Serialize\Json</Filter>
+    </ClCompile>
+    <ClCompile Include="Vector2.cpp">
+      <Filter>源文件\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Vector3.cpp">
+      <Filter>源文件\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Vector4.cpp">
+      <Filter>源文件\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Mathf.cpp">
+      <Filter>源文件\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Timer.cpp">
+      <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
