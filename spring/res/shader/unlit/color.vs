@@ -1,5 +1,5 @@
-
-attribute vec3 vertex;
+#version 330 core
+layout(location = 0) in vec3 vertex;
 
 uniform mat4 M;
 uniform mat4 V;

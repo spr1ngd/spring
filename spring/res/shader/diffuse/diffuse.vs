@@ -1,15 +1,15 @@
-
-attribute vec3 vertex;
-attribute vec3 normal;
-attribute vec2 texcoord;
+#version 330 core
+layout(location = 0) in vec3 vertex;
+layout(location = 1) in vec3 normal;
+layout(location = 2) in vec2 texcoord;
 
 uniform mat4 M;
 uniform mat4 V;
 uniform mat4 P;
 uniform mat4 NM;
 
-varying vec3 V_WorldNormal;
-varying vec2 V_Texcoord;
+out vec3 V_WorldNormal;
+out vec2 V_Texcoord;
 
 void main()
 {

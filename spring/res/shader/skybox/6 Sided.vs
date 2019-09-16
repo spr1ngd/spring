@@ -1,11 +1,11 @@
-
-attribute vec3 vertex;
+#version 330 core
+layout(location = 0) in vec3 vertex;
 
 uniform mat4 M;
 uniform mat4 V;
 uniform mat4 P;
 
-varying vec3 V_Vertex;
+out vec3 V_Vertex;
 
 void main()
 {

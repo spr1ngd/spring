@@ -1,7 +1,8 @@
-
-varying vec4 V_VertexColor;
+#version 330 core
+out vec4 FragColor;
+in vec4 V_VertexColor;
 
 void main()
 {
-    gl_FragColor = V_VertexColor;    
+    FragColor = V_VertexColor;    
 }
