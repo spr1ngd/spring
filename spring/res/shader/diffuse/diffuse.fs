@@ -5,6 +5,13 @@ out vec4 FragColor;
 #define LIGHT_POINT_COUNT 4
 #define LIGHT_SPOT_COUNT 1
 
+struct TextureData
+{
+    sampler2D texture;
+    vec2 tilling;
+    vec2 offset;
+};
+
 struct DirectionalLight
 {
     vec4 color;
@@ -38,19 +45,17 @@ struct PointLight
     float constant;
     float linear;
     float quadratic;
-};
+}; 
 
-uniform sampler2D Main_Texture;
 uniform vec4 Main_Color;
 uniform vec4 AmbientColor;
-
 uniform vec4 Specular_Color;
 uniform float Specular_Attenuation;
 uniform float Specular_Intensity;
 
-uniform vec3 CameraPosition;
-// uniform SpotLight light;
+uniform vec3 CameraPosition; 
 
+uniform TextureData MainTextureData;
 uniform DirectionalLight dirLights[LIGHT_DIRECTIONAL_COUNT];
 uniform SpotLight spotLights[LIGHT_SPOT_COUNT];
 uniform PointLight pointLights[LIGHT_POINT_COUNT];
@@ -163,6 +168,11 @@ vec4 calcPointLight( PointLight lightData )
     OUT = diffuse + specular;
 
     return OUT;
+} 
+
+float calcMod( float a,float b )
+{
+    return a - b * floor(a / b);
 }
 
 void main()
@@ -183,7 +193,12 @@ void main()
     for( int i = 0 ; i < LIGHT_POINT_COUNT;i++ )
     {
         FragColor += calcPointLight(pointLights[i]);
-    }
+    } 
+
+    vec2 offsetUV = Texcoord + MainTextureData.offset;
+    vec2 texcoord = vec2( calcMod(offsetUV.x * MainTextureData.tilling.x,1.0),calcMod(offsetUV.y * MainTextureData.tilling.y ,1.0) ) ;
+    vec4 texColor = texture(MainTextureData.texture,texcoord);
 
     FragColor += ambient;
+    FragColor *= texColor;
 }

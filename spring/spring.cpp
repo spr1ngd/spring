@@ -215,19 +215,19 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 
 	Environment::ambient.color = Color(75,75,75,255);
 
-	Light* light = createLight(Light::Type::Directional, Color(255, 244, 214, 255), 0.3f, Vector3(10.0f, 10.0f, 10.0f), Vector3::bottom);
-	Light* pointLigh1 = createLight(Light::Type::Point, Color::red, 0.6f, Vector3(5.0f, 0.0f, 0.0f), Vector3::left);
-	Light* pointLigh2 = createLight(Light::Type::Point, Color::green, 0.6f, Vector3(-5.0f, 0.0f, 0.0f), Vector3::right);
-	Light* pointLigh3 = createLight(Light::Type::Point, Color::blue, 0.6f, Vector3(0.0f, 0.0f, 5.0f), Vector3::back);
-	Light* pointLigh4 = createLight(Light::Type::Point, Color::green, 0.6f, Vector3(0.0f, 0.0f, -5.0f), Vector3::forward);
-	Light* spotLight = createLight(Light::Type::Spot, Color::yellow, 1.3f, Vector3(0.0f, 6.0f, 0.0f), Vector3::bottom);
+	Light* light = createLight(Light::Type::Directional, Color(255, 244, 214, 255), 1.3f, Vector3(10.0f, 10.0f, 10.0f), Vector3::bottom);
+	//Light* pointLigh1 = createLight(Light::Type::Point, Color::red, 0.6f, Vector3(5.0f, 0.0f, 0.0f), Vector3::left);
+	//Light* pointLigh2 = createLight(Light::Type::Point, Color::green, 0.6f, Vector3(-5.0f, 0.0f, 0.0f), Vector3::right);
+	//Light* pointLigh3 = createLight(Light::Type::Point, Color::blue, 0.6f, Vector3(0.0f, 0.0f, 5.0f), Vector3::back);
+	//Light* pointLigh4 = createLight(Light::Type::Point, Color::green, 0.6f, Vector3(0.0f, 0.0f, -5.0f), Vector3::forward);
+	//Light* spotLight = createLight(Light::Type::Spot, Color::yellow, 1.3f, Vector3(0.0f, 6.0f, 0.0f), Vector3::bottom);
 
 #pragma endregion
 
 #pragma region scene camera setting
 
 	Camera camera;
-	camera.clearFlag = Camera::ClearFlag::SolidColor;
+	camera.clearFlag = Camera::ClearFlag::Skybox;
 	camera.transform->position = Vector3(6.0f,6.0f,6.0f);
 	camera.center = new Vector3(0.0f,0.0f,0.0f);
 	camera.background = Color(31,113,113,255);
@@ -251,7 +251,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 	lightModel.material = &lightModelMat;
 	lightModel.Init();
 	lightModel.transform->scale = Vector3(.3f);
-	lightModel.transform->position = spotLight->transform->position;
+	// lightModel.transform->position = spotLight->transform->position;
 	lightModel.material->shader->setColor(MAIN_COLOR, Color::yellow);
 
 	spring::Material material("res/shader/diffuse/diffuse.vs", "res/shader/diffuse/diffuse.fs");
@@ -259,12 +259,17 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 	model.material = &material;
 	model.Init();
 	model.transform->position = Vector3(0.0f, 0.0f, 0.0f);
-	model.transform->scale = Vector3(3.0f);
-	// model.transform->eulerangle = Vector3(-90.0f, 0.0f, 0.0f);
+	model.transform->scale = Vector3(4.50f);
+	model.transform->eulerangle = Vector3(-90.0f, 0.0f, 0.0f);
 	model.material->shader->setColor(MAIN_COLOR, Color(204, 204, 204, 255));
 	model.material->shader->setColor("Specular_Color",Color::white);
 	model.material->shader->setFloat("Specular_Intensity",1.0f);
 	model.material->shader->setFloat("Specular_Attenuation",64.0f);
+
+	TextureLoader textureLoader;
+	GLuint texture = textureLoader.Load("res/texture/carbon_fiber.jpg");
+	model.material->shader->setTexture("MainTextureData.texture", texture);
+	model.material->shader->setTilling("MainTextureData.texture", Vector2(10.0f,10.0f));
 
 #pragma endregion
 
@@ -293,13 +298,13 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 		camera.Render();
 
 		// 物体旋转
-		model.transform->eulerangle.x += 2.0f;
+		// model.transform->eulerangle.x += 2.0f;
 
 		// 灯上下移动
 		timer += Timer::deltaTime;
 		float offset = Mathf::Cos(timer) * 3.0f + 5.0f;
-		spotLight->transform->position = Vector3(0, offset, 0);
-		lightModel.transform->position = spotLight->transform->position;
+		/*spotLight->transform->position = Vector3(0, offset, 0);
+		lightModel.transform->position = spotLight->transform->position;*/
 
 		for (auto behaviour : Behaviour::behaviours)
 			behaviour.second->Update();

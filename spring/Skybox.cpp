@@ -21,7 +21,7 @@ Skybox::Skybox(const char* skyboxName, Material* material)
 	this->renderOrder = RenderOrder::Skybox;
 
 	TextureLoader cubemapLoader;
-	this->cubemap = cubemapLoader.LoadCubemap("res/texture/skybox/nature");
+	this->cubemap = cubemapLoader.LoadCubemap("res/texture/skybox/night");
 };
 
 void Skybox::Init() 

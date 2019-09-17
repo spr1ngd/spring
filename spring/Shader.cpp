@@ -176,6 +176,18 @@ void Shader::setMat4(const char* name, glm::mat4 value)
 	this->mat4Map[location] = value;
 }
 
+void Shader::setVec2(const char* name, Vector2 value)
+{
+	GLuint location = glGetUniformLocation(this->program, name);
+	auto pair = this->vec2Map.find(location);
+	if (pair == this->vec2Map.end())
+	{
+		this->vec2Map.insert(std::pair<GLuint, Vector2>(location, value));
+		return;
+	}
+	this->vec2Map[location] = value;
+}
+
 void Shader::setVec3(const char* name, Vector3 value)
 {
 	GLuint location = glGetUniformLocation(this->program, name);
@@ -242,10 +254,38 @@ void Shader::setTexture(const char*name, GLuint texture)
 	auto pair = this->textures.find(location);
 	if (pair == this->textures.end())
 	{
-		this->textures.insert(std::pair<GLuint,GLuint>(location,texture));
+		MaterialTexture mt;
+		mt.texture = texture;
+		this->textures.insert(std::pair<GLuint,MaterialTexture>(location,mt));
 		return;
 	}
-	this->textures[location] = texture;
+	MaterialTexture mt = this->textures[location];
+	mt.texture = texture;
+	this->textures[location] = mt;
+}
+
+void Shader::setTilling(const char* name, Vector2 tilling) 
+{
+	GLuint location = glGetUniformLocation(this->program,name);
+	auto pair = this->textures.find(location);
+	if (pair != this->textures.end())
+	{
+		MaterialTexture mt = this->textures[location];
+		mt.tilling = tilling;
+		this->textures[location] = mt;
+	}
+}
+
+void Shader::setOffset(const char* name, Vector2 offset) 
+{
+	GLuint location = glGetUniformLocation(this->program, name);
+	auto pair = this->textures.find(location);
+	if (pair != this->textures.end())
+	{
+		MaterialTexture mt = this->textures[location];
+		mt.offset = offset;
+		this->textures[location] = mt;
+	}
 }
 
 void Shader::setShaderValues() 
@@ -286,18 +326,26 @@ void Shader::setShaderValues()
 		glUniformMatrix4fv(pair.first, 1, GL_FALSE, glm::value_ptr(pair.second));
 	}
 
-	// todo : resolve it. why texture does not work
-	for (auto pair : this->textures)
+	for (std::pair<GLuint,MaterialTexture> pair : this->textures)
 	{
 		glUniform1i(pair.first, 0);
 		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, pair.second);
+		glBindTexture(GL_TEXTURE_2D, pair.second.texture);
+		GLuint tillingLocation = glGetUniformLocation(this->program, "MainTextureData.tilling");
+		GLuint offsetLocation = glGetUniformLocation(this->program, "MainTextureData.offset");
+		const float tilling[2] = {pair.second.tilling.x,pair.second.tilling.y};
+		glUniform2fv(tillingLocation,1, tilling);
+
+		const float offset[2] = { pair.second.offset.x,pair.second.offset.y };
+		glUniform2fv(offsetLocation, 1, offset);
 	}
 }
 
 void Shader::setEngineEnvironment() 
 {
 	this->setColor(AMBIENT_COLOR,Environment::ambient.color);
+
+#pragma region set light for shaders , todo : read shaders properties name from shader file.
 
 	string intensity = "intensity";
 	string color = "color";
@@ -307,7 +355,6 @@ void Shader::setEngineEnvironment()
 	string linear = "linear";
 	string quadratic = "quadratic";
 	string direction = "direction";
-
 	string cutoff = "cutoff";
 	string outerCutoff = "outerCutoff";
 
@@ -379,4 +426,6 @@ void Shader::setEngineEnvironment()
 		} 
 		this->setVec3(CAMERA_POSITION, Camera::main->transform->position);
 	}
+
+#pragma endregion
 }

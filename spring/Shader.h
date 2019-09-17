@@ -7,6 +7,7 @@
 #include "vector3.h"
 #include "vector4.h"
 #include "environment.h"
+#include "materialtexture.h"
 
 #define MATRIX_M "M"
 #define MATRIX_V "V"
@@ -53,10 +54,12 @@ namespace spring
 		map<GLuint, Color> colors;
 		map<GLuint, GLuint> ints;
 		map<GLuint, GLfloat> floats;
+		map<GLuint, Vector2> vec2Map;
 		map<GLuint, Vector3> vec3Map;
 		map<GLuint, Vector4> vec4Map;
-		map<GLuint, GLuint> textures;
 		map<GLuint, glm::mat4> mat4Map;
+
+		map<GLuint, MaterialTexture> textures;
 
 		void setShaderValues();
 		void setEngineEnvironment();
@@ -75,9 +78,13 @@ namespace spring
 		void setFloat(const char* name, GLfloat value);
 		void setMat4(const char* name, glm::mat4 value);
 
+		void setVec2(const char*name, Vector2 vec2);
 		void setVec3(const char* name, Vector3 vec3);
 		void setVec4(const char* name, Vector4 vec4);
 		void setColor(const char* name, Color color);
+
 		void setTexture(const char*name, GLuint texture);
+		void setTilling(const char*name, Vector2 tilling);
+		void setOffset(const char*name, Vector2 offset);
 	};
 }

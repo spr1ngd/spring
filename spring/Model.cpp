@@ -35,7 +35,7 @@ void Model::Init()
 
 				GLuint texcoordLocation = this->material->shader->getLocation(TEXCOORD);
 				glEnableVertexAttribArray(texcoordLocation);
-				glVertexAttribPointer(texcoordLocation, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)(sizeof(float) * 5));
+				glVertexAttribPointer(texcoordLocation, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)(sizeof(float) * 6));
 			});
 	}
 } 
