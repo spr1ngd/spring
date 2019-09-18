@@ -201,4 +201,5 @@ void main()
 
     FragColor += ambient;
     FragColor += texColor;
+    FragColor = vec4(FragColor.rgb,Main_Color.a);
 }

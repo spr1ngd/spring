@@ -42,6 +42,7 @@ void Model::Init()
 
 void Model::Render() 
 {
+
 	if (this->material->depthTest == true)
 		glEnable(GL_DEPTH_TEST);
 	else
@@ -50,6 +51,8 @@ void Model::Render()
 		glEnable(GL_ALPHA_TEST);
 	else
 		glDisable(GL_ALPHA_TEST); 
+
+	this->material->EnableCullFace();
 
 	this->material->shader->use();
 	for (unsigned int i = 0; i < this->meshes.size(); i++) 
