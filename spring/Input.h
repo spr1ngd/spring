@@ -1,5 +1,6 @@
 #pragma once
 #include <map>
+#include "vector2.h"
 
 namespace spring
 {
@@ -70,6 +71,7 @@ namespace spring
 		static map<MouseID, MouseInfo> mouseCaches;
 		static MouseInfo* GetMouseInfo(MouseID mouseID);
 	public:
+		static Vector2 mousePosition;
 
 		static bool GetMouseDown(MouseID mouseId);
 		static bool GetMouse(MouseID mouseId);

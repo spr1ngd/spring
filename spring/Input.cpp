@@ -5,6 +5,7 @@ using namespace spring;
 
 map<KeyCode, KeyCodeInfo> Input::keyCodeCaches;
 map<MouseID, MouseInfo> Input::mouseCaches;
+Vector2 Input::mousePosition;
 
 #pragma region keyboard events
 

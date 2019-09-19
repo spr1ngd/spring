@@ -11,3 +11,8 @@ void Transform::LookAt(Vector3 target, Vector3 worldUp)
 {
 	// todo : use matrix to rotate transform
 }
+
+void Transform::RotateAround(Vector3 point, Vector3 axis, float angel) 
+{
+	
+}

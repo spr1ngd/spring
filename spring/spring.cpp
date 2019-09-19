@@ -39,12 +39,7 @@ using namespace spring;
 using namespace spring::editor;
 
 LRESULT CALLBACK GLWindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
-{
-	float x = LOWORD(lParam);
-	float y = HIWORD(lParam);
-
-	// todo : x , y is the mouse position in screen 
-
+{ 
 	switch (msg)
 	{
 	case WM_CLOSE:
@@ -83,7 +78,9 @@ LRESULT CALLBACK GLWindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 #pragma region mouse move
 
 	case WM_MOUSEMOVE:
-
+		float xPos = LOWORD(lParam);
+		float yPos = HIWORD(lParam);
+		Input::mousePosition = Vector2(xPos,yPos);
 		break;
 
 #pragma endregion

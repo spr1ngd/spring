@@ -25,7 +25,7 @@ namespace spring
 			Vector3 target;
 			float rotateSpeed = 0.2f;
 			float zoomSpeed = 0.5f;
-			float panSpeed = 1.0f;
+			float panSpeed = 0.1f;
 			float moveSpeed = 1.0f;
 
 			OrbitCamera();

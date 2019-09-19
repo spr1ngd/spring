@@ -188,6 +188,7 @@
   <ItemGroup>
     <ClInclude Include="Application.h" />
     <ClInclude Include="AssetLoader.h" />
+    <ClInclude Include="AxisHelper.h" />
     <ClInclude Include="Behaviour.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Color.h" />
@@ -195,6 +196,7 @@
     <ClInclude Include="Environment.h" />
     <ClInclude Include="FileIO.h" />
     <ClInclude Include="FPS.h" />
+    <ClInclude Include="Gizmos.h" />
     <ClInclude Include="Graphic.h" />
     <ClInclude Include="Input.h" />
     <ClInclude Include="Json.h" />
@@ -231,6 +233,7 @@
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="AssetLoader.cpp" />
+    <ClCompile Include="AxisHelper.cpp" />
     <ClCompile Include="Behaviour.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Color.cpp" />
@@ -238,6 +241,7 @@
     <ClCompile Include="Environment.cpp" />
     <ClCompile Include="FileIO.cpp" />
     <ClCompile Include="FPS.cpp" />
+    <ClCompile Include="Gizmos.cpp" />
     <ClCompile Include="Graphic.cpp" />
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="Json.cpp" />

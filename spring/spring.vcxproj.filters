@@ -73,6 +73,12 @@
     <Filter Include="头文件\Math">
       <UniqueIdentifier>{ec9c527c-c224-44c2-83e2-becba78b12c1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="源文件\Gizmos">
+      <UniqueIdentifier>{8e9c9f8a-2a6b-4591-adec-e5481cf0d0a6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\Gizmos">
+      <UniqueIdentifier>{f5e7357a-2958-4d8f-a5e1-cc9e0987fed5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="spring.rc">
@@ -211,6 +217,12 @@
     <ClInclude Include="MaterialTexture.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="Gizmos.h">
+      <Filter>头文件\Gizmos</Filter>
+    </ClInclude>
+    <ClInclude Include="AxisHelper.h">
+      <Filter>头文件\Gizmos</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Primitive.cpp">
@@ -332,6 +344,12 @@
     </ClCompile>
     <ClCompile Include="MaterialTexture.cpp">
       <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Gizmos.cpp">
+      <Filter>源文件\Gizmos</Filter>
+    </ClCompile>
+    <ClCompile Include="AxisHelper.cpp">
+      <Filter>源文件\Gizmos</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

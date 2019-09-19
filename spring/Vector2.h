@@ -25,5 +25,10 @@ namespace spring
 			this->x = x;
 			this->y = y;
 		}
+
+		Vector2 operator-(const Vector2 vec2);
+		Vector2 operator+(const Vector2 vec2);
+		Vector2 operator*(const float multiplicator);
+		Vector2 operator/(const float dividend);
 	};
 }

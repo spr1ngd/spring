@@ -1,4 +1,5 @@
 #pragma once
+#include "glm/glm.hpp"
 #include "node.h"
 #include "vector3.h"
 
@@ -21,5 +22,6 @@ namespace spring
 	public:
 		Transform();
 		void LookAt(Vector3 target,Vector3 worldUp = Vector3::up);
+		void RotateAround(Vector3 point,Vector3 axis,float angel);
 	};
 }
