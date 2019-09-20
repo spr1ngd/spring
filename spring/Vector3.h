@@ -18,7 +18,7 @@ namespace spring
 		const static Vector3 forward;
 		const static Vector3 back;
 		const static Vector3 up;
-		const static Vector3 bottom;
+		const static Vector3 down;
 		const static Vector3 left;
 		const static Vector3 right;
 	public:

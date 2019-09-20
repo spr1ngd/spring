@@ -195,6 +195,7 @@
     <ClInclude Include="Console.h" />
     <ClInclude Include="Environment.h" />
     <ClInclude Include="FileIO.h" />
+    <ClInclude Include="FirstPlayerCamera.h" />
     <ClInclude Include="FPS.h" />
     <ClInclude Include="Gizmos.h" />
     <ClInclude Include="Graphic.h" />
@@ -240,6 +241,7 @@
     <ClCompile Include="Console.cpp" />
     <ClCompile Include="Environment.cpp" />
     <ClCompile Include="FileIO.cpp" />
+    <ClCompile Include="FirstPlayerCamera.cpp" />
     <ClCompile Include="FPS.cpp" />
     <ClCompile Include="Gizmos.cpp" />
     <ClCompile Include="Graphic.cpp" />

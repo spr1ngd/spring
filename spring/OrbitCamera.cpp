@@ -5,7 +5,7 @@
 using namespace spring;
 using namespace spring::editor;
 
-//Vector2 lastFrameMousePosition = Vector2
+Vector2 lastFrameMousePosition = Vector2::zero;
 
 OrbitCamera::OrbitCamera() 
 {
@@ -72,9 +72,9 @@ void OrbitCamera::Rotate()
 }
 
 void OrbitCamera::Pan()
-{
-	Vector2 lastFrameMousePosition;// todo get it.
+{ 
 	Vector2 offset = Input::mousePosition - lastFrameMousePosition;
+	lastFrameMousePosition = Input::mousePosition;
 	// translate along camera.transform.up
 	// translate along camera.transform.right
 }

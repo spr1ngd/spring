@@ -79,6 +79,12 @@
     <Filter Include="头文件\Gizmos">
       <UniqueIdentifier>{f5e7357a-2958-4d8f-a5e1-cc9e0987fed5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="源文件\Camera">
+      <UniqueIdentifier>{0c779de1-6c86-4b1b-8044-b228fcc082be}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\Camera">
+      <UniqueIdentifier>{352fe263-a766-408c-9b31-d715bd5b3e58}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="spring.rc">
@@ -94,9 +100,6 @@
     </Image>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Camera.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="Console.h">
       <Filter>头文件</Filter>
     </ClInclude>
@@ -149,9 +152,6 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="Color.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="OrbitCamera.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="FPS.h">
@@ -223,6 +223,15 @@
     <ClInclude Include="AxisHelper.h">
       <Filter>头文件\Gizmos</Filter>
     </ClInclude>
+    <ClInclude Include="Camera.h">
+      <Filter>头文件\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="OrbitCamera.h">
+      <Filter>头文件\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="FirstPlayerCamera.h">
+      <Filter>头文件\Camera</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Primitive.cpp">
@@ -247,9 +256,6 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="AssetLoader.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="Camera.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="Console.cpp">
@@ -284,9 +290,6 @@
     </ClCompile>
     <ClCompile Include="Input.cpp">
       <Filter>源文件\Input</Filter>
-    </ClCompile>
-    <ClCompile Include="OrbitCamera.cpp">
-      <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="FPS.cpp">
       <Filter>源文件</Filter>
@@ -350,6 +353,15 @@
     </ClCompile>
     <ClCompile Include="AxisHelper.cpp">
       <Filter>源文件\Gizmos</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera.cpp">
+      <Filter>源文件\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="OrbitCamera.cpp">
+      <Filter>源文件\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="FirstPlayerCamera.cpp">
+      <Filter>源文件\Camera</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

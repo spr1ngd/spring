@@ -40,4 +40,4 @@ namespace spring
 		void LookAt(const Vector3* target);
 		void Render();
 	};
-}
+} 
