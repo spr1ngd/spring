@@ -12,7 +12,7 @@ namespace spring
 		private:
 			Camera* camera;
 		public:
-			float moveSpeed = 5.0f;
+			float moveSpeed = 1.0f;
 
 			void Awake() override;
 			void Update() override;

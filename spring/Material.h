@@ -14,9 +14,16 @@ namespace spring
 			Front,
 			FrontAndBack
 		};
+		enum RenderMode 
+		{
+			Point,
+			Line,
+			Fill
+		};
 		const char* name;
 		Shader* shader;
 		CullFace cullface = CullFace::None;
+		RenderMode renderMode = RenderMode::Fill;
 
 		bool depthTest = true;
 		bool alphaTest = true;
@@ -39,14 +46,17 @@ namespace spring
 			case CullFace::Back:
 				glEnable(GL_CULL_FACE);
 				glCullFace(GL_BACK);
+				glPolygonMode(GL_BACK, renderMode);
 				break;
 			case CullFace::Front:
 				glEnable(GL_CULL_FACE);
 				glCullFace(GL_FRONT);
+				glPolygonMode(GL_FRONT, renderMode);
 				break;
 			case CullFace::FrontAndBack:
 				glEnable(GL_CULL_FACE);
 				glCullFace(GL_FRONT_AND_BACK);
+				glPolygonMode(GL_FRONT_AND_BACK, renderMode);
 				break;
 			}
 		}

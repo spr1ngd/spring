@@ -2,7 +2,6 @@
 #include "node.h"
 #include "transform.h"
 #include "vector3.h"
-#include "model.h"
 #include "color.h"
 
 namespace spring 
@@ -26,8 +25,8 @@ namespace spring
 
 		spring::Color background;
 		Transform* transform;
-		Vector3* center;
-		Vector3* direction;
+		Vector3 center;
+		Vector3 direction;
 		ClearFlag clearFlag = ClearFlag::SolidColor;
 		Type cameraType = Type::Perspective;
 		float fov = 60.0f;

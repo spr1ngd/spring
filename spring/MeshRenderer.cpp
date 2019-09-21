@@ -8,13 +8,9 @@ MeshRenderer::MeshRenderer()
 	this->transform = new Transform();
 }
 
-MeshRenderer::MeshRenderer(const char* filePath,Material* mateiral)
+MeshRenderer::MeshRenderer(Material* mateiral)
 {
 	this->transform = new Transform();
-	this->loader = new ModelLoader();
-	this->loader->Load(filePath);
-	this->meshes = this->loader->meshes;
-	this->textures = this->loader->loadedTextures;
 	this->material = mateiral;
 }
 
@@ -42,7 +38,6 @@ void MeshRenderer::Init()
 
 void MeshRenderer::Render() 
 {
-
 	if (this->material->depthTest == true)
 		glEnable(GL_DEPTH_TEST);
 	else

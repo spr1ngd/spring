@@ -1,7 +1,6 @@
 #pragma once
 #include <vector>
 #include "mesh.h"
-#include "modelloader.h"
 #include "shader.h"
 #include "material.h"
 #include "transform.h"
@@ -10,19 +9,17 @@
 
 namespace spring 
 {
-	class Model : public Renderable
+	class MeshRenderer : public Renderable
 	{
 	private:
-		ModelLoader* loader;
 	public:
 		Transform* transform;
-
 		vector<Mesh> meshes;
 		vector<Texture> textures;
 		Material* material;
 
-		Model();
-		Model(const char*filePath,Material* mateiral = nullptr);
+		MeshRenderer();
+		MeshRenderer(Material* mateiral);
 
 		void Init();
 		void Render() override;

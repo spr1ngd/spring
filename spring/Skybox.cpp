@@ -1,18 +1,18 @@
 #include "skybox.h"
 #include "console.h"
 #include "camera.h"
-#include "model.h"
 #include "graphic.h"
 #include "renderorder.h"
+#include "modelloader.h"
 
 using namespace spring;
 
 Skybox::Skybox(const char* skyboxName, Material* material)
 {
-	this->loader = new ModelLoader();
-	this->loader->Load("res/model/obj/Cube.obj");
-	this->meshes = this->loader->meshes;
-	this->textures = this->loader->loadedTextures;
+	auto loader = new ModelLoader();
+	loader->Load("res/model/obj/Cube.obj");
+	this->meshes = loader->meshes;
+	this->textures = loader->loadedTextures;
 
 	this->transform = new Transform();
 	this->name = skyboxName;
@@ -39,7 +39,7 @@ void Skybox::Init()
 }
 
 void Skybox::Render() 
-{
+{ 
 	if (this->material == nullptr)
 	{
 		// todo : how to throw exception in c plus plus ,and how to declare custom exception type.
@@ -48,12 +48,12 @@ void Skybox::Render()
 	} 
 	if (Camera::main->clearFlag != Camera::ClearFlag::Skybox)
 		return;
-	this->transform->position = Camera::main->transform->position;
-	// this->skybox->transform->position = this->transform->position;
-
+	// this->transform->position = Camera::main->transform->position; 
 	// todo : enable lighting or enable depth test and alpha test should be decided by material(shader).
 	glDisable(GL_LIGHTING);
 	glDisable(GL_DEPTH_TEST);
+	glDisable(GL_ALPHA_TEST);
+	glDisable(GL_CULL_FACE);
 
 	this->material->shader->use();
 	for (unsigned int i = 0; i < this->meshes.size(); i++)

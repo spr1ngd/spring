@@ -3,6 +3,7 @@
 #include "mesh.h"
 #include "transform.h"
 
+
 namespace spring 
 {
 	class AxisHelper
@@ -21,7 +22,6 @@ namespace spring
 		Mode mode = Mode::Axis;
 		Transform* transform;
 	private:
-		Mesh* mesh;
 
 		void RenderAxis();
 		void RenderRotator();

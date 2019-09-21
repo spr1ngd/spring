@@ -49,6 +49,7 @@ void Mesh::GenEBO()
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 }
 
+// todo : remove this method to mesh renderer object
 void Mesh::Draw( function<void()> render )
 {
 	glBindVertexArray(VAO);

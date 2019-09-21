@@ -1,7 +1,7 @@
 #pragma once
 #include <vector>
 #include "node.h"
-#include "model.h"
+#include "meshrenderer.h"
 #include "material.h"
 #include "transform.h"
 #include "renderable.h"
@@ -11,8 +11,6 @@ namespace spring
 	class Skybox : public Node, public Renderable
 	{
 	private:
-		Model* skybox;
-		ModelLoader* loader;
 		GLuint cubemap;
 	public:
 		Transform* transform;

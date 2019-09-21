@@ -1,11 +1,15 @@
 #include "axishelper.h"
+#include "meshrenderer.h"
 
 using namespace spring;
 
+AxisHelper::AxisHelper() 
+{
+
+}
+
 void AxisHelper::RenderAxis() 
 {
-	// generate mesh
-	this->mesh = new Mesh();
 	vector<Vertex> vertices;
 	vector<unsigned int> indices;
 	// x axis
@@ -44,8 +48,19 @@ void AxisHelper::RenderAxis()
 	indices.push_back(4);
 	indices.push_back(5);
 
-	this->mesh->vertices = vertices;
-	this->mesh->indices = indices;
+	Mesh mesh;
+	mesh.vertices = vertices;
+	mesh.indices = indices;
+	vector<Mesh> meshes;
+	meshes.push_back(mesh);
+
+	Material axisMaterial = Material("res/shader/unlit/color.vs","res/shader/unlit/color.fs");
+	axisMaterial.name = "axis_color";
+	axisMaterial.renderMode = Material::Point;
+	// todo : why mesh renderer can not use pointer???
+	MeshRenderer meshRenderer = MeshRenderer(&axisMaterial);
+	meshRenderer.meshes = meshes;
+	meshRenderer.Init();
 }
 
 void AxisHelper::RenderRotator() 
