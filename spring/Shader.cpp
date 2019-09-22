@@ -150,7 +150,7 @@ char* Shader::loadShaderFile( const char*shaderFilePath )
 		return NULL;
 	}
 	shaderFile.seekg(0, ios::end);
-	length = shaderFile.tellg();
+	length = int(shaderFile.tellg());
 	shaderFile.seekg(ios::beg);
 	char* buffer = new char[length+1];
 	shaderFile.read(buffer, length);

@@ -1,7 +1,7 @@
 #pragma once
 #include <map>
 #include <vector>
-#include <iostream>
+#include <iostream> 
 
 using namespace std;
 
@@ -10,8 +10,9 @@ namespace spring
 	class Renderable 
 	{
 	private:
-		static unsigned long renderCounts;
 		unsigned long instanceId;
+
+		static unsigned long renderCounts;
 		static std::vector<Renderable*> objects;
 
 		void Insert( Renderable* object ) 
@@ -27,6 +28,8 @@ namespace spring
 		}
 	public:
 		unsigned int renderOrder = 2000;
+		bool drawAxis = false;
+	public:
 		Renderable() 
 		{
 			this->instanceId = ++renderCounts;

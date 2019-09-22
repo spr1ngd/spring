@@ -4,8 +4,7 @@
 
 using namespace spring;
 using namespace spring::editor;
-
-Vector2 lastFrameMousePosition = Vector2::zero;
+ 
 
 OrbitCamera::OrbitCamera() 
 {
@@ -54,29 +53,25 @@ void OrbitCamera::Update()
 void OrbitCamera::Zoom()
 {
 	this->enableZoom = Input::mouseWheelDelta != 0.0f;
-	if (this->enableZoom)
-	{
-		// todo : fixed camera's center
-		Vector3 zoomDirection = Vector3::Normalize(this->target - this->camera->transform->position) * Input::mouseWheelDelta;
-		Vector3 zoomOffset = zoomDirection * zoomSpeed;
-		this->camera->transform->position += zoomOffset;
-	}
+	if (!this->enableZoom)
+		return;
+	Vector3 direction = Vector3::Normalize(this->target - this->camera->transform->position) * Input::mouseWheelDelta;
+	this->camera->transform->position += direction * zoomSpeed;
 }
 
 void OrbitCamera::Rotate()
 {
 	if (!this->enableRotate)
 		return;
-	// Console::Log("Orbit camera rotate by mouse.");
+	Console::Log("Orbit camera rotate by mouse.");
+	Vector3 direction = Vector3::Normalize(this->target - this->camera->transform->position) * Input::mouseWheelDelta;
+
 }
 
 void OrbitCamera::Pan()
 { 
 	if (!this->enablePan)
 		return;
-	Console::Log("mouse pan event");
-	Vector2 offset = Input::mousePosition - lastFrameMousePosition;
-	lastFrameMousePosition = Input::mousePosition;
-	// translate along camera.transform.up
-	// translate along camera.transform.right
+	// todo : calculate transform.right after transform.eulerangle changed.
+	// todo : what's the different between Quaternion and Euler angle.
 }

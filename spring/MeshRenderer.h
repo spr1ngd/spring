@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
 #include "mesh.h"
+#include "node.h"
 #include "shader.h"
 #include "material.h"
 #include "transform.h"
@@ -9,7 +10,7 @@
 
 namespace spring 
 {
-	class MeshRenderer : public Renderable
+	class MeshRenderer : public Node, public Renderable
 	{
 	private:
 	public:

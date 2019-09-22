@@ -14,7 +14,6 @@ namespace spring
 			bool enableRotate = false;
 			bool enablePan = false;
 			bool enableControl = false; // control camera through keyboard  
-			Vector3 moveDirection = Vector3::zero;
 
 			void Zoom();
 			void Rotate();

@@ -4,7 +4,7 @@
 #include "vector3.h"
 
 namespace spring
-{
+{ 
 	class Transform : Node
 	{
 	public:

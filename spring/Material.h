@@ -39,7 +39,7 @@ namespace spring
 			case spring::Material::Fill:
 				return GL_FILL;
 			default:
-				break;
+				return GL_FILL;
 			}
 		}
 	public:

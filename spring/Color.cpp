@@ -39,10 +39,10 @@ Color::Color(unsigned char r, unsigned char g, unsigned char b, unsigned char a)
 
 Color Color::operator=(const Colorf color) 
 {
-	float r = color.r * 255.0f;
-	float g = color.g * 255.0f;
-	float b = color.b * 255.0f;
-	float a = color.a * 255.0f;
+	unsigned char r = (unsigned char)(color.r * 255.0f);
+	unsigned char g = (unsigned char)(color.g * 255.0f);
+	unsigned char b = (unsigned char)(color.b * 255.0f);
+	unsigned char a = (unsigned char)(color.a * 255.0f);
 	return Color(r,g,b,a);
 }
 

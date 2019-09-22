@@ -15,6 +15,7 @@ namespace spring
 	private:
 		Material* material;
 		MeshRenderer* meshRenderer;
+		Transform* transform; // bind with renderable object.
 	public:
 		enum Mode 
 		{
