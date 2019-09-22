@@ -90,6 +90,31 @@ LRESULT CALLBACK GLWindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 
 #pragma endregion
 
+#pragma region mouse wheel event
+
+	case WM_MBUTTONDBLCLK:
+		Input::setMouseState(MouseID::WHELL, InputState::DBClick);
+		break;
+	case WM_MBUTTONDOWN:
+		Input::setMouseState(MouseID::WHELL, InputState::Down);
+		break;
+	case WM_MBUTTONUP:
+		Input::setMouseState(MouseID::WHELL, InputState::Up);
+		break;
+
+	case WM_MOUSEWHEEL:
+	{
+		float fwKey = LOWORD(wParam);
+		float delta = (short)HIWORD(wParam) / 120.0f; // windows API return value is multiple of 120
+		float xPos = LOWORD(lParam);
+		float yPos = HIWORD(lParam);
+		Input::mousePosition = Vector2(xPos,yPos);
+		Input::mouseWheelDelta = delta;
+		Input::setMouseWheel(delta);
+	}
+	break;
+
+#pragma endregion
 #pragma region keyboard 
 
 	case WM_KEYDOWN:
@@ -395,8 +420,12 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 
 #pragma region draw triangle by encapsuled object
 
-	FirstPlayerCamera firstplayer;//todo : test it working state.
-	firstplayer.moveSpeed = 0.1f;
+	//FirstPlayerCamera firstplayer;//todo : test it working state.
+	//firstplayer.moveSpeed = 0.1f;
+
+	OrbitCamera orbit;
+	orbit.target = Vector3::zero;
+	orbit.zoomSpeed = 0.05f;
 
 	// draw floor
 	//ModelLoader floorLoader = ModelLoader();
@@ -504,6 +533,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 		Renderable::Draw();
 		// FPS::CalculateFramePerSecond();
 
+		// reset mouse wheel delta 
+		Input::setMouseWheel(0.0f);
 		glFinish();
 		SwapBuffers(dc);
 	}

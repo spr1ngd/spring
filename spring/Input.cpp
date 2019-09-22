@@ -6,6 +6,7 @@ using namespace spring;
 map<KeyCode, KeyCodeInfo> Input::keyCodeCaches;
 map<MouseID, MouseInfo> Input::mouseCaches;
 Vector2 Input::mousePosition;
+float Input::mouseWheelDelta;
 
 #pragma region keyboard events
 
@@ -97,6 +98,23 @@ void Input::setMouseState(MouseID mouseID, InputState state)
 	}
 }
 
+void Input::setMouseWheel(float delta) 
+{
+	MouseInfo* info = GetMouseInfo(MouseID::WHELL);
+	if (nullptr == info)
+	{
+		MouseInfo mouseInfo(MouseID::WHELL,InputState::Idle);
+		mouseInfo.wheelDelta = delta;
+		auto item = std::pair<MouseID, MouseInfo>(MouseID::WHELL,mouseInfo);
+		mouseCaches.insert(item);
+	}
+	else 
+	{
+		info->wheelDelta = delta;
+	}
+	Input::mouseWheelDelta = delta;
+}
+
 bool Input::GetMouse(MouseID mouseId) 
 {
 	MouseInfo* info = GetMouseInfo(mouseId);
@@ -125,6 +143,14 @@ bool Input::GetMouseUp(MouseID mouseId)
 	if( result )
 		info->up = true;
 	return result;
+}
+
+float Input::GetMouseWheel()
+{
+	MouseInfo* info = GetMouseInfo(MouseID::WHELL);
+	if (nullptr == info)
+		return 0.0f;
+	return info->wheelDelta;
 }
 
 #pragma endregion

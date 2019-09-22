@@ -16,7 +16,7 @@ float Vector3::Magnitude(const Vector3 vec3)
 	return sqrtf(vec3.x * vec3.x + vec3.y * vec3.y + vec3.z * vec3.z);
 }
 
-Vector3 Vector3::Normalize(Vector3& vec3)
+Vector3 Vector3::Normalize(Vector3 vec3)
 {
 	if (vec3 == Vector3::zero)
 		return Vector3::zero;

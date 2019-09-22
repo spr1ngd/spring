@@ -27,6 +27,7 @@ namespace spring
 		InputState state = InputState::Idle;
 		bool down = false;
 		bool up = false;
+		float wheelDelta = 0.0f;
 	public:
 		MouseInfo();
 		MouseInfo( MouseID mouseID, InputState state )
@@ -92,6 +93,7 @@ namespace spring
 		static MouseInfo* GetMouseInfo(MouseID mouseID);
 	public:
 		static Vector2 mousePosition;
+		static float mouseWheelDelta;
 
 		static bool GetMouseDown(MouseID mouseId);
 		static bool GetMouse(MouseID mouseId);
@@ -100,8 +102,10 @@ namespace spring
 		static bool GetKey(KeyCode keyCode);
 		static bool GetKeyDown(KeyCode keyCode);
 		static bool GetKeyUp(KeyCode keyCode);
+		static float GetMouseWheel();
 
 		static void setKeyCodeState(KeyCode keyCode, InputState state);
 		static void setMouseState(MouseID mouseID, InputState state);
+		static void setMouseWheel(float delta);
 	};
 }

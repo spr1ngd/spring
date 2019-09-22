@@ -19,7 +19,6 @@ namespace spring
 			void Zoom();
 			void Rotate();
 			void Pan();
-			void Move();
 		public:
 			Camera* camera;
 			Vector3 target;
