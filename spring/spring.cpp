@@ -370,7 +370,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 
 	Camera camera;
 	camera.clearFlag = Camera::ClearFlag::Skybox;
-	camera.transform->position = Vector3(6.0f,6.0f,6.0f);
+	camera.transform->position = Vector3(1.0f,1.0f,1.0f);
 	camera.center = Vector3(0.0f,0.0f,0.0f);
 	camera.background = Color(31,113,113,255);
 
@@ -396,7 +396,20 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 #pragma region draw triangle by encapsuled object
 
 	FirstPlayerCamera firstplayer;//todo : test it working state.
+	firstplayer.moveSpeed = 0.1f;
 
+	// draw floor
+	//ModelLoader floorLoader = ModelLoader();
+	//floorLoader.Load("res/model/obj/quad.obj");
+	//Material floorMaterial("res/shader/diffuse/diffuse.vs","res/shader/diffuse/diffuse.fs");
+	//floorMaterial.name = "floor";
+	//MeshRenderer floor(&floorMaterial);
+	//floor.meshes = floorLoader.meshes;
+	//floor.Init();
+	//floor.transform->scale = Vector3(8.0f,8.0f,8.0f);
+	//floor.transform->eulerangle = Vector3(-90.0f,0.0f,0.0f);
+
+	// draw light model
 	ModelLoader loader = ModelLoader();
 	loader.Load("res/model/obj/cube.obj");
 	Material lightModelMat("res/shader/unlit/color.vs", "res/shader/unlit/color.fs");
@@ -409,29 +422,46 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 	// lightModel.transform->position = spotLight->transform->position;
 	lightModel.material->shader->setColor(MAIN_COLOR, Color::yellow);
 
-	 
-	ModelLoader modelLoader = ModelLoader();
-	modelLoader.Load("res/model/fbx/sphere.fbx");
-	spring::Material material("res/shader/diffuse/diffuse.vs", "res/shader/diffuse/transparency.fs");
-	material.name = "diffuse";
-	material.renderMode = Material::Line;
-	MeshRenderer model(&material);
-	model.meshes = modelLoader.meshes;
-	model.textures = modelLoader.loadedTextures;
-	model.material->cullface = Material::CullFace::Back;
-	model.Init();
-	model.transform->position = Vector3(0.0f, 0.0f, 0.0f);
-	model.transform->scale = Vector3(3.50f);
-	model.transform->eulerangle = Vector3(-90.0f, 0.0f, 0.0f);
-	model.material->shader->setColor(MAIN_COLOR, Color(204, 204, 204, 128));
-	model.material->shader->setColor("Specular_Color",Color::white);
-	model.material->shader->setFloat("Specular_Intensity",1.0f);
-	model.material->shader->setFloat("Specular_Attenuation",64.0f);
+	// draw a sphere
+	
 
 	// TextureLoader textureLoader;
 	// GLuint texture = textureLoader.Load("res/texture/carbon_fiber.jpg");
 	// model.material->shader->setTexture("MainTextureData.texture", texture);
 	// model.material->shader->setTilling("MainTextureData.texture", Vector2(10.0f,10.0f));
+
+	ModelLoader modelLoader = ModelLoader();
+	modelLoader.Load("res/model/fbx/sphere.fbx");
+
+	// todo : delete pointers
+	vector<Material*> mats;
+	vector<MeshRenderer*> renderers;
+
+	int sphereCount = 1;
+	for (int i = 0; i < sphereCount; i++)
+	{
+		for (int j = 0; j < sphereCount; j++)
+		{
+			Material* mat = new Material("res/shader/diffuse/diffuse.vs", "res/shader/diffuse/transparency.fs");
+			mat->name = "diffuse";
+			mat->renderMode = Material::Fill;
+			mats.push_back(mat);
+
+			MeshRenderer*meshRenderer = new MeshRenderer(mat);
+			meshRenderer->meshes = modelLoader.meshes;
+			meshRenderer->textures = modelLoader.loadedTextures;
+			meshRenderer->material->cullface = Material::CullFace::Back;
+			meshRenderer->Init();
+			meshRenderer->transform->position = Vector3(-10.0f + i * 2.0f, 0.0, -10.0f + j * 2.0f);
+			meshRenderer->transform->scale = Vector3(1.0f);
+			meshRenderer->transform->eulerangle = Vector3(-90.0f, 0.0f, 0.0f);
+			meshRenderer->material->shader->setColor(MAIN_COLOR, Color(204, 204, 204, 128));
+			meshRenderer->material->shader->setColor("Specular_Color", Color::white);
+			meshRenderer->material->shader->setFloat("Specular_Intensity", 1.0f);
+			meshRenderer->material->shader->setFloat("Specular_Attenuation", 64.0f);
+			renderers.push_back(meshRenderer);
+		}
+	}
 
 #pragma endregion
 
@@ -455,11 +485,11 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 		} 
 		Timer::Time();
 				
-		// use this camera render scene objects.
+		// update camera state
 		camera.Render();
 
 		// 物体旋转
-		model.transform->eulerangle.x += 2.0f;
+		// model.transform->eulerangle.x += 2.0f;
 
 		// 灯上下移动
 		timer += Timer::deltaTime;

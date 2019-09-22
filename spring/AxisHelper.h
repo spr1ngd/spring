@@ -2,7 +2,8 @@
 #include <vector>
 #include "mesh.h"
 #include "transform.h"
-
+#include "meshrenderer.h"
+#include "material.h"
 
 namespace spring 
 {
@@ -11,7 +12,9 @@ namespace spring
 		// todo : generate a axis in scene 
 		// todo : axis helper will translate/rotate through transform data.
 		// todo : renderable composite this object.
-
+	private:
+		Material* material;
+		MeshRenderer* meshRenderer;
 	public:
 		enum Mode 
 		{
@@ -20,7 +23,6 @@ namespace spring
 			Scale
 		};
 		Mode mode = Mode::Axis;
-		Transform* transform;
 	private:
 
 		void RenderAxis();

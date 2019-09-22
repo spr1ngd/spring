@@ -41,7 +41,7 @@ void AxisHelper::RenderAxis()
 	zStart.vertex = Vector3::zero;
 	zStart.color = Color::blue;
 	Vertex zEnd;
-	zEnd.vertex = Vector3(0.0f,0.0f,-1.0f);
+	zEnd.vertex = Vector3(0.0f,0.0f,1.0f);
 	zEnd.color = Color::blue;
 	vertices.push_back(zStart);
 	vertices.push_back(zEnd);
@@ -51,16 +51,19 @@ void AxisHelper::RenderAxis()
 	Mesh mesh;
 	mesh.vertices = vertices;
 	mesh.indices = indices;
+	mesh.mode = Mesh::Lines;
 	vector<Mesh> meshes;
 	meshes.push_back(mesh);
 
-	Material axisMaterial = Material("res/shader/unlit/color.vs","res/shader/unlit/color.fs");
-	axisMaterial.name = "axis_color";
-	axisMaterial.renderMode = Material::Point;
-	// todo : why mesh renderer can not use pointer???
-	MeshRenderer meshRenderer = MeshRenderer(&axisMaterial);
-	meshRenderer.meshes = meshes;
-	meshRenderer.Init();
+	this->material = new Material("res/shader/vertex/vertexcolor.vs","res/shader/vertex/vertexcolor.fs");
+	this->material->name = "axis_color";
+	this->material->renderMode = Material::Fill;	this->meshRenderer = new MeshRenderer(this->material);
+	this->meshRenderer->meshes = meshes;
+	this->meshRenderer->Init();
+
+	this->meshRenderer->material->alphaTest = false;
+	this->meshRenderer->material->depthTest = false;
+	this->meshRenderer->renderOrder = 5000;
 }
 
 void AxisHelper::RenderRotator() 

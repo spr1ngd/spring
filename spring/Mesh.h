@@ -13,11 +13,54 @@ namespace spring
 {
 	class Mesh
 	{
+	public:
+		enum Mode 
+		{
+			Points,
+			Lines,
+			LineStrip,
+			LineLoop,
+			Triangles,
+			TriangleStrip,
+			TriangleFan,
+			Quads,
+			QuadStrip,
+			Polygon
+		};
 	private:
-		void GenVAO( function<void()> setting );
+		void GenVAO(function<void()> setting);
 		void GenVBO();
 		void GenEBO();
+		GLenum GetDrawMode(Mode mode)
+		{
+			switch (mode)
+			{
+			case spring::Mesh::Points:
+				return GL_POINTS;
+			case spring::Mesh::Lines:
+				return GL_LINES;
+			case spring::Mesh::LineStrip:
+				return GL_LINE_STRIP;
+			case spring::Mesh::LineLoop:
+				return GL_LINE_LOOP;
+			case spring::Mesh::Triangles:
+				return GL_TRIANGLES;
+			case spring::Mesh::TriangleStrip:
+				return GL_TRIANGLE_STRIP;
+			case spring::Mesh::TriangleFan:
+				return GL_TRIANGLE_FAN;
+			case spring::Mesh::Quads:
+				return GL_QUADS;
+			case spring::Mesh::QuadStrip:
+				return GL_QUAD_STRIP;
+			case spring::Mesh::Polygon:
+				return GL_POLYGON;
+			default:
+				break;
+			}
+		}
 	public:
+		Mode mode = Mode::Triangles;
 		vector<Vertex> vertices;
 		vector<unsigned int> indices;
 		vector<Texture> textures; 

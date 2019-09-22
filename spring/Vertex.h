@@ -13,9 +13,9 @@ namespace spring
 		Vector3 vertex;
 		Vector3 normal;
 		Vector2 texcoord;
+		Color color;
 		Vector3 tangent;
 		Vector3 bitangent;
-		Color color;
 	public:
 		Vertex();
 	};

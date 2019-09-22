@@ -17,6 +17,7 @@
 #define VERTEX "vertex"
 #define NORMAL "normal"
 #define TEXCOORD "texcoord"
+#define COLOR "color"
 
 #define MAIN_TEX "Main_Texture"
 #define MAIN_CUBEMAP "Main_Cubemap"

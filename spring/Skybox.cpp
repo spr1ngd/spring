@@ -54,6 +54,7 @@ void Skybox::Render()
 	glDisable(GL_DEPTH_TEST);
 	glDisable(GL_ALPHA_TEST);
 	glDisable(GL_CULL_FACE);
+	glPolygonMode(GL_BACK, GL_FILL);
 
 	this->material->shader->use();
 	for (unsigned int i = 0; i < this->meshes.size(); i++)

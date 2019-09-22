@@ -32,6 +32,10 @@ void MeshRenderer::Init()
 				GLuint texcoordLocation = this->material->shader->getLocation(TEXCOORD);
 				glEnableVertexAttribArray(texcoordLocation);
 				glVertexAttribPointer(texcoordLocation, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)(sizeof(float) * 6));
+
+				GLuint colorLocation = this->material->shader->getLocation(COLOR);
+				glEnableVertexAttribArray(colorLocation);
+				glVertexAttribPointer(colorLocation,4,GL_INT,GL_FALSE,sizeof(Vertex),(void*)(sizeof(float) * 8));
 			});
 	}
 } 
