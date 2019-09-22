@@ -8,10 +8,12 @@ uniform mat4 M;
 uniform mat4 V;
 uniform mat4 P;
 
+out vec2 Texcoord;
 out vec4 VertexColor;
 
 void main()
 {
+    Texcoord = texcoord;
     VertexColor = color;
     gl_Position = P * V * M * vec4(vertex,1.0);
 }

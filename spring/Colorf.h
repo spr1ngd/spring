@@ -3,6 +3,7 @@
 
 namespace spring
 {
+	class Color;
 	class Colorf 
 	{
 	public:
@@ -28,6 +29,10 @@ namespace spring
 		Colorf(float c);
 		Colorf(float r, float g, float b, float a);
 
-		
+		Colorf operator= (const Color value);
+		Colorf operator+ (const Colorf value);
+		Colorf operator- (const Colorf value);
+		Colorf operator* (const float f);
+		Colorf operator/ (const float f);
 	};
 }

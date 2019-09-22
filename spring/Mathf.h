@@ -20,5 +20,22 @@ namespace spring
 		{
 			return (float)tan(radian);
 		}
+
+		static int Clamp(int value, int min, int max)
+		{
+			if (value < min)
+				return min;
+			if (value > max)
+				return max;
+			return value;
+		};
+		static float Clamp(float value, float min, float max)
+		{
+			if (value < min)
+				return min;
+			if (value > max)
+				return max;
+			return value;
+		}
 	};
 }

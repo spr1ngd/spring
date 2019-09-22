@@ -68,6 +68,9 @@ void Shader::initializeLocation()
 	GLuint texcoordLocation = glGetAttribLocation(this->program, TEXCOORD);
 	this->locations.insert(pair<const char*, GLuint>(TEXCOORD, texcoordLocation));
 
+	GLuint colorLocation = glGetAttribLocation(this->program, COLOR);
+	this->locations.insert(pair<const char*, GLuint>(COLOR, colorLocation));
+
 	GLuint mainTextureLocation = glGetUniformLocation(this->program,MAIN_TEX);
 	this->locations.insert(pair<const char*,GLuint>(MAIN_TEX,mainTextureLocation));
 

@@ -85,6 +85,12 @@
     <Filter Include="头文件\Camera">
       <UniqueIdentifier>{352fe263-a766-408c-9b31-d715bd5b3e58}</UniqueIdentifier>
     </Filter>
+    <Filter Include="头文件\Color">
+      <UniqueIdentifier>{0d301c87-fbef-4d36-a2aa-f8a336b3851c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\Color">
+      <UniqueIdentifier>{3971ca43-a8f9-4cb2-adb6-68460cf4dc9b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="spring.rc">
@@ -146,9 +152,6 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="Vertex.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="Color.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="FPS.h">
@@ -232,6 +235,12 @@
     <ClInclude Include="MeshRenderer.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="Color.h">
+      <Filter>头文件\Color</Filter>
+    </ClInclude>
+    <ClInclude Include="Colorf.h">
+      <Filter>头文件\Color</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Primitive.cpp">
@@ -280,9 +289,6 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="Vertex.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="Color.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="Input.cpp">
@@ -362,6 +368,12 @@
     </ClCompile>
     <ClCompile Include="MeshRenderer.cpp">
       <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Color.cpp">
+      <Filter>源文件\Color</Filter>
+    </ClCompile>
+    <ClCompile Include="Colorf.cpp">
+      <Filter>源文件\Color</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

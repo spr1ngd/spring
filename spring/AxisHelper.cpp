@@ -15,10 +15,10 @@ void AxisHelper::RenderAxis()
 	// x axis
 	Vertex xStart;
 	xStart.vertex = Vector3::zero;
-	xStart.color = Color::red;
+	xStart.color = Colorf::red;
 	Vertex xEnd;
 	xEnd.vertex = Vector3(1.0,0.0f,0.0f);
-	xEnd.color = Color::red;
+	xEnd.color = Colorf::red;
 	vertices.push_back(xStart);
 	vertices.push_back(xEnd);
 	indices.push_back(0);
@@ -27,10 +27,10 @@ void AxisHelper::RenderAxis()
 	// y axis
 	Vertex yStart;
 	yStart.vertex = Vector3::zero;
-	yStart.color = Color::green;
+	yStart.color = Colorf::green;
 	Vertex yEnd;
 	yEnd.vertex = Vector3(0.0f,1.0f,0.0f);
-	yEnd.color = Color::green;
+	yEnd.color = Colorf::green;
 	vertices.push_back(yStart);
 	vertices.push_back(yEnd);
 	indices.push_back(2);
@@ -39,10 +39,10 @@ void AxisHelper::RenderAxis()
 	// z axis
 	Vertex zStart;
 	zStart.vertex = Vector3::zero;
-	zStart.color = Color::blue;
+	zStart.color = Colorf::blue;
 	Vertex zEnd;
 	zEnd.vertex = Vector3(0.0f,0.0f,1.0f);
-	zEnd.color = Color::blue;
+	zEnd.color = Colorf::blue;
 	vertices.push_back(zStart);
 	vertices.push_back(zEnd);
 	indices.push_back(4);

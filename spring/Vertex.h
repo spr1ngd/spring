@@ -1,7 +1,7 @@
 #pragma once
 #include "vector3.h"
 #include "vector2.h"
-#include "color.h"
+#include "colorf.h"
 #include <vector>
 
 namespace spring 
@@ -13,7 +13,7 @@ namespace spring
 		Vector3 vertex;
 		Vector3 normal;
 		Vector2 texcoord;
-		Color color;
+		Colorf color;
 		Vector3 tangent;
 		Vector3 bitangent;
 	public:

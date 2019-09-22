@@ -1,4 +1,5 @@
-#include "Color.h"
+#include "color.h"
+#include "mathf.h"
 
 using namespace spring;
 
@@ -34,4 +35,49 @@ Color::Color(unsigned char r, unsigned char g, unsigned char b, unsigned char a)
 	this->g = g;
 	this->b = b;
 	this->a = a;
+}
+
+Color Color::operator=(const Colorf color) 
+{
+	float r = color.r * 255.0f;
+	float g = color.g * 255.0f;
+	float b = color.b * 255.0f;
+	float a = color.a * 255.0f;
+	return Color(r,g,b,a);
+}
+
+Color Color::operator+(const Color color) 
+{
+	unsigned char r = Mathf::Clamp(this->r + color.r, 0, 255);
+	unsigned char g = Mathf::Clamp(this->g + color.g, 0, 255);
+	unsigned char b = Mathf::Clamp(this->b + color.b, 0, 255);
+	unsigned char a = Mathf::Clamp(this->a + color.a, 0, 255);
+	return Color(r,g,b,a);
+}
+
+Color Color::operator-(const Color color) 
+{
+	unsigned char r = Mathf::Clamp(this->r - color.r, 0, 255);
+	unsigned char g = Mathf::Clamp(this->g - color.g, 0, 255);
+	unsigned char b = Mathf::Clamp(this->b - color.b, 0, 255);
+	unsigned char a = Mathf::Clamp(this->a - color.a, 0, 255);
+	return Color(r, g, b, a);
+}
+
+Color Color::operator*(const float f) 
+{
+	unsigned char r = Mathf::Clamp((unsigned char)(this->r * f), 0, 255);
+	unsigned char g = Mathf::Clamp((unsigned char)(this->g * f), 0, 255);
+	unsigned char b = Mathf::Clamp((unsigned char)(this->b * f), 0, 255);
+	unsigned char a = Mathf::Clamp((unsigned char)(this->a * f), 0, 255);
+	return Color(r, g, b, a);
+}
+
+Color Color::operator/(const float f) 
+{
+	unsigned char r = Mathf::Clamp((unsigned char)(this->r / f), 0, 255);
+	unsigned char g = Mathf::Clamp((unsigned char)(this->g / f), 0, 255);
+	unsigned char b = Mathf::Clamp((unsigned char)(this->b / f), 0, 255);
+	unsigned char a = Mathf::Clamp((unsigned char)(this->a / f), 0, 255);
+	return Color(r, g, b, a);
 }

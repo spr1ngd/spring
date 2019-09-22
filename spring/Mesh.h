@@ -56,7 +56,7 @@ namespace spring
 			case spring::Mesh::Polygon:
 				return GL_POLYGON;
 			default:
-				break;
+				return GL_TRIANGLES;
 			}
 		}
 	public:
