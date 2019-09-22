@@ -414,6 +414,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 	modelLoader.Load("res/model/fbx/sphere.fbx");
 	spring::Material material("res/shader/diffuse/diffuse.vs", "res/shader/diffuse/transparency.fs");
 	material.name = "diffuse";
+	material.renderMode = Material::Line;
 	MeshRenderer model(&material);
 	model.meshes = modelLoader.meshes;
 	model.textures = modelLoader.loadedTextures;

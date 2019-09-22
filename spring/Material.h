@@ -27,6 +27,21 @@ namespace spring
 
 		bool depthTest = true;
 		bool alphaTest = true;
+
+		GLenum GetPolygonMode( RenderMode renderMode )    
+		{
+			switch (renderMode)
+			{
+			case spring::Material::Point:
+				return GL_POINT;
+			case spring::Material::Line:
+				return GL_LINE;
+			case spring::Material::Fill:
+				return GL_FILL;
+			default:
+				break;
+			}
+		}
 	public:
 		Material();
 		Material(const char*verexShaderFile,const char*fragmentShaderFile);
@@ -42,21 +57,21 @@ namespace spring
 			{
 			case CullFace::None:
 				glDisable(GL_CULL_FACE);
+				glPolygonMode(GL_FRONT_AND_BACK, GetPolygonMode(renderMode));
 				break;
 			case CullFace::Back:
 				glEnable(GL_CULL_FACE);
 				glCullFace(GL_BACK);
-				glPolygonMode(GL_BACK, renderMode);
+				glPolygonMode(GL_FRONT, GetPolygonMode(renderMode));
 				break;
 			case CullFace::Front:
 				glEnable(GL_CULL_FACE);
 				glCullFace(GL_FRONT);
-				glPolygonMode(GL_FRONT, renderMode);
+				glPolygonMode(GL_BACK, GetPolygonMode(renderMode));
 				break;
 			case CullFace::FrontAndBack:
 				glEnable(GL_CULL_FACE);
 				glCullFace(GL_FRONT_AND_BACK);
-				glPolygonMode(GL_FRONT_AND_BACK, renderMode);
 				break;
 			}
 		}
