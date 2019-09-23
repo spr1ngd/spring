@@ -206,6 +206,7 @@
     <ClInclude Include="Material.h" />
     <ClInclude Include="MaterialTexture.h" />
     <ClInclude Include="Mathf.h" />
+    <ClInclude Include="Matrix4x4.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="MeshRenderer.h" />
     <ClInclude Include="ModelLoader.h" />
@@ -214,6 +215,7 @@
     <ClInclude Include="Object.h" />
     <ClInclude Include="OrbitCamera.h" />
     <ClInclude Include="Primitive.h" />
+    <ClInclude Include="Quaternion.h" />
     <ClInclude Include="Renderable.h" />
     <ClInclude Include="RenderOrder.h" />
     <ClInclude Include="Resource.h" />
@@ -253,6 +255,7 @@
     <ClCompile Include="Material.cpp" />
     <ClCompile Include="MaterialTexture.cpp" />
     <ClCompile Include="Mathf.cpp" />
+    <ClCompile Include="Matrix4x4.cpp" />
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="MeshRenderer.cpp" />
     <ClCompile Include="ModelLoader.cpp" />
@@ -261,6 +264,7 @@
     <ClCompile Include="Object.cpp" />
     <ClCompile Include="OrbitCamera.cpp" />
     <ClCompile Include="Primitive.cpp" />
+    <ClCompile Include="Quaternion.cpp" />
     <ClCompile Include="Renderable.cpp" />
     <ClCompile Include="RenderOrder.cpp" />
     <ClCompile Include="Resources.cpp" />
