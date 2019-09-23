@@ -1,5 +1,7 @@
 #pragma once
 #include <math.h>
+#include <matrix2x2.h>
+#include <matrix4x4.h>
 
 namespace spring 
 {
@@ -19,6 +21,14 @@ namespace spring
 		static float Tan(float radian)
 		{
 			return (float)tan(radian);
+		}
+		static float Radian(float angle) 
+		{
+			return (angle / 180.0f) * Mathf::pi;
+		}
+		static float Angle(float radian) 
+		{
+			return (radian / Mathf::pi) * 180.0f;
 		}
 
 		static int Clamp(int value, int min, int max)

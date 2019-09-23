@@ -19,8 +19,17 @@ namespace spring
 		Vector3 right;
 		Vector3 left;
 
+		
 	public:
 		Transform();
+
+		Vector3 getForword();
+		Vector3 getBack();
+		Vector3 getTop();
+		Vector3 getBottom();
+		Vector3 getRight();
+		Vector3 getLeft();
+
 		void LookAt(Vector3 target,Vector3 worldUp = Vector3::up);
 		void RotateAround(Vector3 point,Vector3 axis,float angel);
 	};

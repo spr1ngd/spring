@@ -492,6 +492,16 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 
 #pragma endregion
 
+#pragma region Mathf test 
+
+	Vector2 vec2(1.0f,0.0f);
+	Vector2 result = spring::Matrix2x2::Rotate(90.0f, Vector2::right, vec2);
+	Console::ErrorFormat("result : (%f,%f)",result.x,result.y);
+
+#pragma endregion
+
+
+
 	for (auto behaviour : Behaviour::behaviours)
 		behaviour.second->Awake(); 
 	float timer = 0.0f;
@@ -517,6 +527,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 
 		// 物体旋转
 		// model.transform->eulerangle.x += 2.0f;
+		// axishelper.meshRenderer->transform->eulerangle.z += 2.0f;
 
 		// 灯上下移动
 		timer += Timer::deltaTime;

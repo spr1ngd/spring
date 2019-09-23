@@ -21,7 +21,7 @@ namespace spring
 		public:
 			Camera* camera;
 			Vector3 target;
-			float rotateSpeed = 0.2f;
+			float rotateSpeed = 2.0f;
 			float zoomSpeed = 0.5f;
 			float panSpeed = 0.1f;
 			float moveSpeed = 1.0f;
