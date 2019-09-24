@@ -14,6 +14,7 @@ namespace spring
 		// todo : renderable composite this object.
 	private:
 		Material* material;
+		Transform* transform;
 	public:
 		enum Mode 
 		{
@@ -22,6 +23,7 @@ namespace spring
 			Scale
 		};
 		Mode mode = Mode::Axis;
+		Mesh* mesh;
 		MeshRenderer* meshRenderer;
 	private:
 
@@ -29,8 +31,7 @@ namespace spring
 		void RenderRotator();
 		void RenderScaler();
 	public:
-		AxisHelper();
-
+		AxisHelper(Transform* transform);
 		void Render();
 	};
 }

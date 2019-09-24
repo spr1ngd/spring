@@ -21,7 +21,6 @@ namespace spring
 
 		MeshRenderer();
 		MeshRenderer(Material* mateiral);
-
 		void Init();
 		void Render() override;
 	};

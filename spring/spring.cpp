@@ -368,7 +368,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 
 	Camera camera;
 	camera.clearFlag = Camera::ClearFlag::Skybox;
-	camera.transform->position = Vector3(0.0f,0.0f,1.0f);
+	camera.transform->position = Vector3(2.0f,2.0f,2.0f);
 	camera.center = Vector3(0.0f,0.0f,0.0f);
 	camera.background = Color(31,113,113,255);
 
@@ -473,9 +473,9 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 	Timer::Start();
 
 	Vector2 vec2(1.0f, 0.0f);
-	float speed = 30.0f;
+	float speed = 30.0f; 
 
-	spring::Gizmos::DrawAxis(Vector3::zero);
+	Gizmos::DrawAxis(lightModel.transform);
 
 	while (true)
 	{
@@ -497,11 +497,12 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 		timer += Timer::deltaTime;
 
 		float angleDelta = speed * Timer::deltaTime;
-		vec2 = Matrix2x2::Rotate(angleDelta, vec2);
-		/*lightModel.transform->eulerangle.z += angleDelta;
+		// vec2 = Matrix2x2::Rotate(angleDelta, vec2);
+		lightModel.transform->eulerangle.z += angleDelta;
 		if (lightModel.transform->eulerangle.z > 360.0f)
-			lightModel.transform->eulerangle.z -= 360.0f;*/ 
+			lightModel.transform->eulerangle.z -= 360.0f;
 		
+		Gizmos::Render();
 		skybox.transform->position = Camera::main->transform->position;
 		for (auto behaviour : Behaviour::behaviours)
 			behaviour.second->Update();

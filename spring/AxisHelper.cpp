@@ -3,21 +3,17 @@
 
 using namespace spring;
 
-AxisHelper::AxisHelper() 
+AxisHelper::AxisHelper(Transform* trans)
 {
-
-}
-
-void AxisHelper::RenderAxis() 
-{
+	this->transform = trans;
 	vector<Vertex> vertices;
 	vector<unsigned int> indices;
 	// x axis
 	Vertex xStart;
-	xStart.vertex = Vector3::zero;
+	xStart.vertex = transform->position;
 	xStart.color = Colorf::red;
 	Vertex xEnd;
-	xEnd.vertex = Vector3(1.0,0.0f,0.0f);
+	xEnd.vertex = transform->position + transform->getRight();
 	xEnd.color = Colorf::red;
 	vertices.push_back(xStart);
 	vertices.push_back(xEnd);
@@ -26,10 +22,10 @@ void AxisHelper::RenderAxis()
 
 	// y axis
 	Vertex yStart;
-	yStart.vertex = Vector3::zero;
+	yStart.vertex = transform->position;
 	yStart.color = Colorf::green;
 	Vertex yEnd;
-	yEnd.vertex = Vector3(0.0f,1.0f,0.0f);
+	yEnd.vertex = transform->position + transform->getUp();
 	yEnd.color = Colorf::green;
 	vertices.push_back(yStart);
 	vertices.push_back(yEnd);
@@ -38,10 +34,10 @@ void AxisHelper::RenderAxis()
 
 	// z axis
 	Vertex zStart;
-	zStart.vertex = Vector3::zero;
+	zStart.vertex = transform->position;
 	zStart.color = Colorf::blue;
 	Vertex zEnd;
-	zEnd.vertex = Vector3(0.0f,0.0f,1.0f);
+	zEnd.vertex = transform->position + transform->getForword();
 	zEnd.color = Colorf::blue;
 	vertices.push_back(zStart);
 	vertices.push_back(zEnd);
@@ -55,15 +51,22 @@ void AxisHelper::RenderAxis()
 	vector<Mesh> meshes;
 	meshes.push_back(mesh);
 
-	this->material = new Material("res/shader/vertex/vertexcolor.vs","res/shader/vertex/vertexcolor.fs");
+	this->mesh = &mesh;
+
+	this->material = new Material("res/shader/vertex/vertexcolor.vs", "res/shader/vertex/vertexcolor.fs");
 	this->material->name = "axis_color";
-	this->material->renderMode = Material::Fill;	this->meshRenderer = new MeshRenderer(this->material);
+	this->material->renderMode = Material::Fill;	
+	this->meshRenderer = new MeshRenderer(this->material);
 	this->meshRenderer->meshes = meshes;
 	this->meshRenderer->Init();
-
 	this->meshRenderer->material->alphaTest = false;
 	this->meshRenderer->material->depthTest = false;
-	this->meshRenderer->renderOrder = 5000;
+	this->meshRenderer->setRenderOrder(5000);
+}
+
+void AxisHelper::RenderAxis() 
+{
+		
 }
 
 void AxisHelper::RenderRotator() 
@@ -78,6 +81,11 @@ void AxisHelper::RenderScaler()
 
 void AxisHelper::Render() 
 {
+	if (nullptr == this->transform)
+		return;
+	if (nullptr == this->meshRenderer)
+		return;
+	this->meshRenderer->transform->eulerangle = this->transform->eulerangle;
 	switch (this->mode) 
 	{
 	case AxisHelper::Mode::Axis:

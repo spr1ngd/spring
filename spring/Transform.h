@@ -18,15 +18,13 @@ namespace spring
 		Vector3 bottom;
 		Vector3 right;
 		Vector3 left;
-
-		
 	public:
 		Transform();
 
 		Vector3 getForword();
 		Vector3 getBack();
-		Vector3 getTop();
-		Vector3 getBottom();
+		Vector3 getUp();
+		Vector3 getDown();
 		Vector3 getRight();
 		Vector3 getLeft();
 

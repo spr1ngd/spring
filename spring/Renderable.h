@@ -2,6 +2,7 @@
 #include <map>
 #include <vector>
 #include <iostream> 
+#include "console.h"
 
 using namespace std;
 
@@ -11,6 +12,7 @@ namespace spring
 	{
 	private:
 		unsigned long instanceId;
+		unsigned int renderOrder = 2000;
 
 		static unsigned long renderCounts;
 		static std::vector<Renderable*> objects;
@@ -27,7 +29,6 @@ namespace spring
 			this->objects.insert(objects.begin() + insertIndex, object);
 		}
 	public:
-		unsigned int renderOrder = 2000;
 		bool drawAxis = false;
 	public:
 		Renderable() 
@@ -46,6 +47,10 @@ namespace spring
 			}
 			this->objects.erase(this->objects.begin() + removeIndex);
 		}
+
+		void setRenderOrder(unsigned int renderOrder);
+		unsigned int getRenderOrder();
+
 		virtual void Render() = 0;
 		static void Draw();
 	};

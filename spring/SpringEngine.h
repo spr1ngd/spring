@@ -1,6 +1,5 @@
 #pragma once
 
-#include "glm/glm.hpp"
 #include "console.h"
 #include "timer.h"
 #include "mathf.h"

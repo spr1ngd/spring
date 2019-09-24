@@ -259,9 +259,6 @@
     <ClInclude Include="Matrix2x2.h">
       <Filter>头文件\Math</Filter>
     </ClInclude>
-    <ClInclude Include="Image.h">
-      <Filter>头文件\2D</Filter>
-    </ClInclude>
     <ClInclude Include="SpringEngine.h">
       <Filter>头文件\Core</Filter>
     </ClInclude>
@@ -407,9 +404,6 @@
     </ClCompile>
     <ClCompile Include="Matrix2x2.cpp">
       <Filter>源文件\Math</Filter>
-    </ClCompile>
-    <ClCompile Include="Image.cpp">
-      <Filter>源文件\2D</Filter>
     </ClCompile>
     <ClCompile Include="SpringEngine.cpp">
       <Filter>源文件\Core</Filter>
