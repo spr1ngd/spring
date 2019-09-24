@@ -22,7 +22,7 @@ Vector2 Matrix2x2::Scale(Vector2 scale, Vector2 vec2)
 	return scaling * vec2;
 }
 
-Vector2 Matrix2x2::Rotate(float angle, Vector2 axis, Vector2 vec2) 
+Vector2 Matrix2x2::Rotate(float angle,Vector2 vec2) 
 {
 	float radian = Mathf::Radian(angle);
 	float cosine = Mathf::Cos(radian);

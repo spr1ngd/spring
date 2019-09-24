@@ -19,7 +19,7 @@ namespace spring
 	public:
 		Matrix2x2(float m11, float m12, float m21, float m22);
 
-		static Vector2 Rotate(float angle, Vector2 axis, Vector2 vec2);
+		static Vector2 Rotate(float angle,Vector2 vec2);
 		static Vector2 Scale(Vector2 scale, Vector2 vec2);
 		static Vector2 Translate(Vector2 offset, Vector2 vec2);
 

@@ -200,6 +200,7 @@
     <ClInclude Include="FPS.h" />
     <ClInclude Include="Gizmos.h" />
     <ClInclude Include="Graphic.h" />
+    <ClInclude Include="Image.h" />
     <ClInclude Include="Input.h" />
     <ClInclude Include="Json.h" />
     <ClInclude Include="Light.h" />
@@ -226,6 +227,7 @@
     <ClInclude Include="Shader.h" />
     <ClInclude Include="Skybox.h" />
     <ClInclude Include="spring.h" />
+    <ClInclude Include="SpringEngine.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="TextureLoader.h" />
     <ClInclude Include="Timer.h" />
@@ -250,6 +252,7 @@
     <ClCompile Include="FPS.cpp" />
     <ClCompile Include="Gizmos.cpp" />
     <ClCompile Include="Graphic.cpp" />
+    <ClCompile Include="Image.cpp" />
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="Json.cpp" />
     <ClCompile Include="Light.cpp" />
@@ -275,6 +278,7 @@
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="Skybox.cpp" />
     <ClCompile Include="spring.cpp" />
+    <ClCompile Include="SpringEngine.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="TextureLoader.cpp" />
     <ClCompile Include="Timer.cpp" />

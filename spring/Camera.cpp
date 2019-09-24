@@ -29,8 +29,8 @@ void Camera::Render()
 {
 	glm::mat4 view = glm::lookAt(
 		glm::vec3(this->transform->position.x,this->transform->position.y,this->transform->position.z), 
-		glm::vec3(this->center.x,this->center.y,this->center.z), 
-		glm::vec3(this->direction.x,this->direction.y,this->direction.z));
+		glm::vec3(this->center.x,this->center.y,this->center.z), // replace this by transform.back
+		glm::vec3(this->direction.x,this->direction.y,this->direction.z)); // replace this by transform.up
 	// note : perspective fov parameter is radian.
 	glm::mat4 projection = glm::perspective(glm::radians(this->fov), float(Screen::width) / float(Screen::height),this->nearClip, this->farClip);
 	Graphic::VIEW = view;

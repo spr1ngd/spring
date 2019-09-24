@@ -6,34 +6,10 @@
 #include "glew.h"
 #include "wglew.h"
 #include <gl/GL.h> 
+#include "springengine.h"
+#include "spring.h"
 
 // spring engine
-#include "spring.h"
-#include "console.h"
-#include "timer.h"
-#include "mathf.h"
-#include "screen.h"
-#include "environment.h"
-#include "application.h"
-#include "modelloader.h"
-#include "shader.h"
-#include "meshrenderer.h"
-#include "mesh.h"
-#include "material.h"
-#include "camera.h"
-#include "behaviour.h"
-#include "vertex.h"
-#include "input.h"
-#include "renderable.h"
-#include "skybox.h"
-#include "light.h"
-#include "axishelper.h"
-
-// spring engine editor 
-#include "orbitcamera.h"
-#include "firstplayercamera.h"
-#include "fps.h"
-
 #pragma comment (lib,"glfw3.lib")
 #pragma comment (lib,"glew32.lib")
 #pragma comment (lib,"opengl32.lib")
@@ -84,7 +60,7 @@ LRESULT CALLBACK GLWindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 	{
 		float xPos = LOWORD(lParam);
 		float yPos = HIWORD(lParam);
-		Input::mousePosition = Vector2(xPos, yPos);
+		Input::setMousePosition(xPos, yPos);
 	}
 	break;
 
@@ -108,8 +84,7 @@ LRESULT CALLBACK GLWindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 		float delta = (short)HIWORD(wParam) / 120.0f; // windows API return value is multiple of 120
 		float xPos = LOWORD(lParam);
 		float yPos = HIWORD(lParam);
-		Input::mousePosition = Vector2(xPos,yPos);
-		Input::mouseWheelDelta = delta;
+		Input::setMousePosition(xPos, yPos);
 		Input::setMouseWheel(delta);
 	}
 	break;
@@ -393,7 +368,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 
 	Camera camera;
 	camera.clearFlag = Camera::ClearFlag::Skybox;
-	camera.transform->position = Vector3(1.0f,1.0f,1.0f);
+	camera.transform->position = Vector3(0.0f,0.0f,1.0f);
 	camera.center = Vector3(0.0f,0.0f,0.0f);
 	camera.background = Color(31,113,113,255);
 
@@ -402,8 +377,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 #pragma region scene gizmos 
 
 	// axis
-	AxisHelper axishelper;
-	axishelper.Render();
+	/*AxisHelper axishelper;
+	axishelper.Render();*/
 		
 #pragma endregion
 
@@ -492,21 +467,16 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 
 #pragma endregion
 
-#pragma region Mathf test 
-
-	Vector2 vec2(1.0f,0.0f);
-	Vector2 result = spring::Matrix2x2::Rotate(90.0f, Vector2::right, vec2);
-	Console::ErrorFormat("result : (%f,%f)",result.x,result.y);
-
-#pragma endregion
-
-
-
 	for (auto behaviour : Behaviour::behaviours)
 		behaviour.second->Awake(); 
 	float timer = 0.0f;
-
 	Timer::Start();
+
+	Vector2 vec2(1.0f, 0.0f);
+	float speed = 30.0f;
+
+	spring::Gizmos::DrawAxis(Vector3::zero);
+
 	while (true)
 	{
 		if (PeekMessage(&msg, NULL, NULL, NULL, PM_REMOVE))
@@ -524,16 +494,14 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 				
 		// update camera state
 		camera.Render();
-
-		// 物体旋转
-		// model.transform->eulerangle.x += 2.0f;
-		// axishelper.meshRenderer->transform->eulerangle.z += 2.0f;
-
-		// 灯上下移动
 		timer += Timer::deltaTime;
-		float offset = Mathf::Cos(timer) * 3.0f + 5.0f;
-		/*spotLight->transform->position = Vector3(0, offset, 0);
-		lightModel.transform->position = spotLight->transform->position;*/
+
+		float angleDelta = speed * Timer::deltaTime;
+		vec2 = Matrix2x2::Rotate(angleDelta, vec2);
+		/*lightModel.transform->eulerangle.z += angleDelta;
+		if (lightModel.transform->eulerangle.z > 360.0f)
+			lightModel.transform->eulerangle.z -= 360.0f;*/ 
+		
 		skybox.transform->position = Camera::main->transform->position;
 		for (auto behaviour : Behaviour::behaviours)
 			behaviour.second->Update();

@@ -14,6 +14,8 @@ namespace spring
 	private:
 		static vector<AxisHelper*> axisHelpers;
 	public:
+		static void DrawAxis(Vector3 pos);
 		static void DrawLine(Vector2 start,Vector2 end);
+		static void DrawVector(Vector2 vec2);
 	};
 }

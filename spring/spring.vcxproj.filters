@@ -91,6 +91,18 @@
     <Filter Include="源文件\Color">
       <UniqueIdentifier>{3971ca43-a8f9-4cb2-adb6-68460cf4dc9b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="头文件\2D">
+      <UniqueIdentifier>{d8b1cab3-384a-48e7-af92-c62adfc45f20}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\2D">
+      <UniqueIdentifier>{0d8568de-e33b-4397-907d-e09456cf0689}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\Core">
+      <UniqueIdentifier>{a7544856-77d5-4745-9614-0ae37337d366}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\Core">
+      <UniqueIdentifier>{df6e9446-6454-44f0-9435-aafd7cd7d5ea}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="spring.rc">
@@ -140,9 +152,6 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="Transform.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="Application.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="AssetLoader.h">
@@ -250,6 +259,15 @@
     <ClInclude Include="Matrix2x2.h">
       <Filter>头文件\Math</Filter>
     </ClInclude>
+    <ClInclude Include="Image.h">
+      <Filter>头文件\2D</Filter>
+    </ClInclude>
+    <ClInclude Include="SpringEngine.h">
+      <Filter>头文件\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Application.h">
+      <Filter>头文件\Core</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Primitive.cpp">
@@ -268,9 +286,6 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="Transform.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="Application.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="AssetLoader.cpp">
@@ -392,6 +407,15 @@
     </ClCompile>
     <ClCompile Include="Matrix2x2.cpp">
       <Filter>源文件\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Image.cpp">
+      <Filter>源文件\2D</Filter>
+    </ClCompile>
+    <ClCompile Include="SpringEngine.cpp">
+      <Filter>源文件\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Application.cpp">
+      <Filter>源文件\Core</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -93,6 +93,7 @@ namespace spring
 		static MouseInfo* GetMouseInfo(MouseID mouseID);
 	public:
 		static Vector2 mousePosition;
+		static Vector2 mouseDelta;
 		static float mouseWheelDelta;
 
 		static bool GetMouseDown(MouseID mouseId);
@@ -107,5 +108,7 @@ namespace spring
 		static void setKeyCodeState(KeyCode keyCode, InputState state);
 		static void setMouseState(MouseID mouseID, InputState state);
 		static void setMouseWheel(float delta);
+
+		static void setMousePosition(float xPos,float yPos);
 	};
 }
