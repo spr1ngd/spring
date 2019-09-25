@@ -31,6 +31,26 @@ Vector2 Matrix2x2::Rotate(float angle,Vector2 vec2)
 	return rotation * vec2;
 }
 
+Matrix2x2 Matrix2x2::Transpose(const Matrix2x2 mat2) 
+{
+
+}
+
+Matrix2x2 Matrix2x2::Inverse(const Matrix2x2 mat2) 
+{
+
+}
+
+void Matrix2x2::transpose() 
+{
+
+}
+
+void Matrix2x2::inverse()
+{
+
+}
+
 Vector2 Matrix2x2::operator*(const Vector2 vec2) 
 {
 	Vector2 result

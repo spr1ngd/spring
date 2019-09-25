@@ -22,6 +22,11 @@ namespace spring
 		static Vector2 Rotate(float angle,Vector2 vec2);
 		static Vector2 Scale(Vector2 scale, Vector2 vec2);
 		static Vector2 Translate(Vector2 offset, Vector2 vec2);
+		static Matrix2x2 Transpose(const Matrix2x2 mat2);
+		static Matrix2x2 Inverse(const Matrix2x2 mat2);
+
+		void transpose();
+		void inverse();
 
 		Matrix2x2 operator+(Matrix2x2 mat2);
 		Matrix2x2 operator-(Matrix2x2 mat2);
