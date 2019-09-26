@@ -33,7 +33,12 @@ Vector2 Matrix2x2::Rotate(float angle,Vector2 vec2)
 
 Matrix2x2 Matrix2x2::Transpose(const Matrix2x2 mat2) 
 {
-
+	Matrix2x2 result
+	(
+		mat2.m11,mat2.m21,
+		mat2.m12,mat2.m22
+	);
+	return result;
 }
 
 Matrix2x2 Matrix2x2::Inverse(const Matrix2x2 mat2) 
@@ -43,7 +48,11 @@ Matrix2x2 Matrix2x2::Inverse(const Matrix2x2 mat2)
 
 void Matrix2x2::transpose() 
 {
-
+	Matrix2x2 mat2 = Matrix2x2::Transpose(*this);
+	this->m11 = mat2.m11;
+	this->m12 = mat2.m12;
+	this->m21 = mat2.m21;
+	this->m22 = mat2.m22;
 }
 
 void Matrix2x2::inverse()

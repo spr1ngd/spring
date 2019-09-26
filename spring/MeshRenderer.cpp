@@ -59,12 +59,12 @@ void MeshRenderer::Render()
 		Mesh* mesh = &meshes[i];
 		mesh->Draw([&](void)
 			{
-				glm::mat4 model = 
-					glm::translate(glm::mat4(1.0),glm::vec3(this->transform->position.x,this->transform->position.y,this->transform->position.z))*
-					glm::scale(glm::mat4(1.0f),glm::vec3(this->transform->scale.x,this->transform->scale.y,this->transform->scale.z))*
+				glm::mat4 model =
+					glm::rotate(glm::mat4(1.0f), glm::radians(this->transform->eulerangle.z), glm::vec3(0.0f, 0.0f, 1.0f)) *
 					glm::rotate(glm::mat4(1.0f), glm::radians(this->transform->eulerangle.x), glm::vec3(1.0f, 0.0f, 0.0f)) *
 					glm::rotate(glm::mat4(1.0f), glm::radians(this->transform->eulerangle.y), glm::vec3(0.0f, 1.0f, 0.0f)) *
-					glm::rotate(glm::mat4(1.0f), glm::radians(this->transform->eulerangle.z), glm::vec3(0.0f, 0.0f, 1.0f));
+					glm::scale(glm::mat4(1.0f), glm::vec3(this->transform->scale.x, this->transform->scale.y, this->transform->scale.z)) *
+					glm::translate(glm::mat4(1.0), glm::vec3(this->transform->position.x, this->transform->position.y, this->transform->position.z));
 				glm::mat4 nm = glm::inverseTranspose(model);
 
 				GLuint mLocation = this->material->shader->getLocation(MATRIX_M);

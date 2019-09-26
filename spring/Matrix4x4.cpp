@@ -103,3 +103,8 @@ Matrix4x4 Matrix4x4::operator*(const float f)
 	);
 	return result;
 }
+
+Matrix4x4 Matrix4x4::operator*(const Matrix4x4 mat4) 
+{
+
+}
