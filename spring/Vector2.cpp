@@ -1,4 +1,6 @@
 #include "vector2.h"
+#include "vector3.h"
+#include "vector4.h"
 
 using namespace spring;
 
@@ -28,4 +30,19 @@ Vector2 Vector2::operator*(const float multiplicator)
 Vector2 Vector2::operator/(const float dividend) 
 {
 	return Vector2(this->x / dividend, this->y / dividend);
+}
+
+Vector2 Vector2::operator-() 
+{
+	return Vector2(-this->x,-this->y);
+}
+
+Vector2::operator spring::Vector3() 
+{
+	return Vector3(this->x,this->y,0.0f);
+}
+
+Vector2::operator spring::Vector4() 
+{
+	return Vector4(this->x,this->y,0.0f,0.0f);
 }

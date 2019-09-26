@@ -65,12 +65,7 @@ void OrbitCamera::Rotate()
 		return;
 	Console::LogFormat("Orbit camera rotate around center.  offset (%f,%f)",Input::mouseDelta.x,Input::mouseDelta.y);
 
-	// 解决将向量旋转多少度的问题
-	return;
-	Vector3 offset = this->camera->transform->position - this->target;
-	this->camera->transform->position -= offset;
-	this->camera->transform->eulerangle.x += this->rotateSpeed;
-	this->camera->transform->position += Vector3::Normalize(this->camera->transform->eulerangle) * Vector3::Magnitude(offset);
+	// 
 }
 
 void OrbitCamera::Pan()

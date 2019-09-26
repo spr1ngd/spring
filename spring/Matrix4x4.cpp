@@ -45,7 +45,14 @@ Vector3 Matrix4x4::Scale(Vector3 scale, Vector3 vec3)
 
 Vector3 Matrix4x4::Translate(Vector3 offset, Vector3 vec3)
 {
-	return vec3;
+	Matrix4x4 tranlation
+	(
+		1.0f,0.0f,0.0f,offset.x,
+		0.0f,1.0f,0.0f,offset.y,
+		0.0f,0.0f,1.0f,offset.z,
+		0.0f,0.0f,0.0f,1.0f
+	);
+
 }
 
 Matrix4x4 Matrix4x4::Transpose(const Matrix4x4 mat4) 

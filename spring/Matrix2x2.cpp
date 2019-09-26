@@ -43,7 +43,13 @@ Matrix2x2 Matrix2x2::Transpose(const Matrix2x2 mat2)
 
 Matrix2x2 Matrix2x2::Inverse(const Matrix2x2 mat2) 
 {
-
+	float m11, m12, m21, m22;
+	m11 = (1 + (mat2.m12 * mat2.m21) / (mat2.m11 * mat2.m22 - mat2.m12 * mat2.m21)) / mat2.m11;
+	m12 = -(mat2.m21) / (mat2.m11 * mat2.m22 - mat2.m12 * mat2.m21);
+	m21 = (-(mat2.m11 * mat2.m12) / (mat2.m11 * mat2.m22 - mat2.m21 * mat2.m12)) / mat2.m11;
+	m22 = mat2.m11 / (mat2.m11 * mat2.m22 - mat2.m21 * mat2.m12);
+	Matrix2x2 result(m11,m12,m21,m22);
+	return result;
 }
 
 void Matrix2x2::transpose() 
@@ -57,7 +63,11 @@ void Matrix2x2::transpose()
 
 void Matrix2x2::inverse()
 {
-
+	Matrix2x2 inverse = Matrix2x2::Inverse(*this);
+	this->m11 = inverse.m11;
+	this->m12 = inverse.m12;
+	this->m21 = inverse.m21;
+	this->m22 = inverse.m22;
 }
 
 Vector2 Matrix2x2::operator*(const Vector2 vec2) 

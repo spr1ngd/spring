@@ -1,4 +1,6 @@
-#include "Vector3.h"
+#include "vector2.h"
+#include "vector3.h"
+#include "vector4.h"
 
 using namespace spring; 
 
@@ -57,6 +59,11 @@ Vector3 Vector3::operator-(const Vector3 vec3)
 	return Vector3(this->x - vec3.x, this->y - vec3.y, this->z - vec3.z);
 }
 
+Vector3 Vector3::operator-() 
+{
+	return Vector3(-this->x,-this->y,-this->y);
+}
+
 Vector3 Vector3::operator*(const float multiplicand)
 {
 	return Vector3(this->x * multiplicand, this->y * multiplicand, this->z * multiplicand);
@@ -105,4 +112,14 @@ void Vector3::operator=( const Vector3& vec3 )
 bool Vector3::operator==( const Vector3& vec3 )   
 {
 	return (this->x == vec3.x) && (this->y == vec3.y) && (this->z == vec3.z);
+}
+
+Vector3::operator spring::Vector2() 
+{
+	return Vector2(this->x,this->y);
+}
+
+Vector3::operator spring::Vector4() 
+{
+	return Vector4(this->x,this->y,this->z,0.0f);
 }

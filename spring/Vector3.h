@@ -3,6 +3,8 @@
 
 namespace spring 
 {
+	class Vector2;
+	class Vector4;
 	class Vector3
 	{
 	public:
@@ -45,6 +47,7 @@ namespace spring
 		Vector3 operator*(const float multiplicand);
 		Vector3 operator+(const Vector3 plus);
 		Vector3 operator-(const Vector3 minus);
+		Vector3 operator-();
 		void operator+=(const Vector3& plus);
 		void operator-=(const Vector3& minus);
 		void operator/=(const float dividend);
@@ -57,5 +60,8 @@ namespace spring
 		static float Dot(const Vector3 a, const Vector3 b);
 		static Vector3 Cross(const Vector3 a, const Vector3 b);
 		static Vector3 Lerp(const Vector3 a, const Vector3 b, const float value);
+
+		operator Vector2();
+		operator Vector4();
 	};
 }
