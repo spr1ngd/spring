@@ -3,24 +3,35 @@
 
 A LONG TRIP.
 
-## objective
+## TODO:
 
-- a tiny material editor
+- orbit camera 
+    - zoom
+    - pan
+    - rotate with a point
 
-## processing
+- load .fbx / .obj / .gltf model, use spring engine diffuse shader.
+    - supports directional light
+    - supports spot light
+    - supports point light
+    - specualr
+    - supports transparency (fade/cutto mode)
 
-- build base framework 
-- use assimp library load variety models. learn how to use assimp
+- 2d text rendering 
+    - supports chinese.
 
-## finished 
-
-- initialize window program.
-
-## issue
-
-- import quaternion and matrix for transform rotate
-- import shadow system for spring engine.
-- how to shared shader codes in different shaders.
+- scene serialize and deserialize (JSON format and binary format.)
+    - scene serialize
+        - engine environment setting
+        - objects
+            - lights
+            - 3d models
+    - scene deserialize
+        - engine environment setting
+        - objects
+            - lights
+            - 3d models
+    
 
 # spring engine real-time screenshot
 

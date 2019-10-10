@@ -41,6 +41,8 @@ Vector3 Matrix4x4::Scale(Vector3 scale, Vector3 vec3)
 		0.0f, 0.0f, scale.z, 0.0f,
 		0.0f, 0.0f, 0.0f, 0.0f
 	);
+	// todo:
+	return vec3;
 }
 
 Vector3 Matrix4x4::Translate(Vector3 offset, Vector3 vec3)
@@ -52,17 +54,18 @@ Vector3 Matrix4x4::Translate(Vector3 offset, Vector3 vec3)
 		0.0f,0.0f,1.0f,offset.z,
 		0.0f,0.0f,0.0f,1.0f
 	);
-
+	// todo:
+	return vec3;
 }
 
 Matrix4x4 Matrix4x4::Transpose(const Matrix4x4 mat4) 
-{
-
+{ 
+	return mat4;
 }
 
 Matrix4x4 Matrix4x4::Inverse(const Matrix4x4 mat4) 
 {
-
+	return mat4;
 }
 
 void Matrix4x4::transpose() 
@@ -113,5 +116,5 @@ Matrix4x4 Matrix4x4::operator*(const float f)
 
 Matrix4x4 Matrix4x4::operator*(const Matrix4x4 mat4) 
 {
-
+	return mat4;
 }
