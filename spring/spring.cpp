@@ -496,11 +496,11 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 		camera.Render();
 		timer += Timer::deltaTime;
 
-		float angleDelta = speed * Timer::deltaTime;
-		// vec2 = Matrix2x2::Rotate(angleDelta, vec2);
-		lightModel.transform->eulerangle.z += angleDelta;
-		if (lightModel.transform->eulerangle.z > 360.0f)
-			lightModel.transform->eulerangle.z -= 360.0f;
+		//float angleDelta = speed * Timer::deltaTime;
+		//// vec2 = Matrix2x2::Rotate(angleDelta, vec2);
+		//lightModel.transform->eulerangle.z += angleDelta;
+		//if (lightModel.transform->eulerangle.z > 360.0f)
+		//	lightModel.transform->eulerangle.z -= 360.0f;
 		
 		Gizmos::Render();
 		skybox.transform->position = Camera::main->transform->position;

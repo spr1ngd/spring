@@ -1,6 +1,7 @@
 #include "orbitcamera.h"
 #include "console.h"
 #include "input.h"
+#include "matrix4x4.h"
 
 using namespace spring;
 using namespace spring::editor;
@@ -64,8 +65,14 @@ void OrbitCamera::Rotate()
 	if (!this->enableRotate)
 		return;
 	Console::LogFormat("Orbit camera rotate around center.  offset (%f,%f)",Input::mouseDelta.x,Input::mouseDelta.y);
+	Vector3 distance = this->camera->transform->position - this->target;
+	Matrix4x4 t = Matrix4x4::Translate(-distance.x, -distance.y, -distance.z);
+	// todo : rotate around z
+	// todo : rotate around x
+	Matrix4x4 ry = Matrix4x4::RotateY(Input::mouseDelta.x / 100.0f);
+	Matrix4x4 rt = Matrix4x4::Translate(distance.x, distance.y, distance.z);
 
-	// 
+	this->camera->transform->position = rt * ry * t * this->camera->transform->position;
 }
 
 void OrbitCamera::Pan()

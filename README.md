@@ -32,8 +32,11 @@ A LONG TRIP.
             - lights
             - 3d models
     
+## ISSUES
 
-# spring engine real-time screenshot
+- distance between orbit camera and target can not less than zero.
+
+## spring engine real-time screenshot
 
 -   diffuse material without shadow
     

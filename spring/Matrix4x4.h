@@ -1,7 +1,9 @@
 #pragma once
 #include <glm/glm.hpp>
+#include "vector2.h"
 #include "vector3.h"
 #include "vector4.h"
+#include "mathf.h"
 
 namespace spring 
 {
@@ -26,8 +28,16 @@ namespace spring
 			float m41, float m42, float m43, float m44);
 
 		static Vector3 Rotate(float angle,Vector3 axis,Vector3 vec3);
+		static Matrix4x4 RotateX(float angle);
+		static Matrix4x4 RotateY(float angle);
+		static Matrix4x4 RotateZ(float angle);
+
 		static Vector3 Scale(Vector3 scale,Vector3 vec3);
+		static Matrix4x4 Scale(float x,float y,float z);
+
 		static Vector3 Translate(Vector3 offset,Vector3 vec3);
+		static Matrix4x4 Translate(float x,float y,float z);
+
 		static Matrix4x4 Transpose(const Matrix4x4 mat4);
 		static Matrix4x4 Inverse(const Matrix4x4 mat4);
 
@@ -39,5 +49,9 @@ namespace spring
 		Matrix4x4 operator-(const Matrix4x4 mat4);
 		Matrix4x4 operator*(const Matrix4x4 mat4);
 		Matrix4x4 operator*(const float f);
+
+		Vector2 operator*(const Vector2 vec2);
+		Vector3 operator*(const Vector3 vec3);
+		Vector4 operator*(const Vector4 vec4);
 	};
 }
