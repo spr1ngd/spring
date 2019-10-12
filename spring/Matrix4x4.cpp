@@ -35,8 +35,9 @@ Vector3 Matrix4x4::Rotate(float angle,Vector3 axis,Vector3 vec3)
 
 Matrix4x4 Matrix4x4::RotateX(float angle) 
 {
-	float sinine = Mathf::Sin(angle);
-	float cosine = Mathf::Cos(angle);
+	float radian = angle / 180.0f * Mathf::pi;
+	float sinine = Mathf::Sin(radian);
+	float cosine = Mathf::Cos(radian);
 	Matrix4x4 result
 	(
 		1.0f, 0.0f, 0.0f, 0.0f,
@@ -49,13 +50,14 @@ Matrix4x4 Matrix4x4::RotateX(float angle)
 
 Matrix4x4 Matrix4x4::RotateY(float angle) 
 {
-	float sinine = Mathf::Sin(angle);
-	float cosine = Mathf::Cos(angle);
+	float radian = angle / 180.0f * Mathf::pi;
+	float sinine = Mathf::Sin(radian);
+	float cosine = Mathf::Cos(radian);
 	Matrix4x4 result
 	(
-		cosine, 0.0f, -sinine, 0.0f,
+		cosine, 0.0f, sinine, 0.0f,
 		0.0f, 1.0f, 0.0f, 0.0f,
-		sinine, 0.0f, cosine, 0.0f,
+		-sinine, 0.0f, cosine, 0.0f,
 		0.0f, 0.0f, 0.0f, 1.0f
 	);
 	return result;
@@ -63,8 +65,9 @@ Matrix4x4 Matrix4x4::RotateY(float angle)
 
 Matrix4x4 Matrix4x4::RotateZ(float angle) 
 {
-	float sinine = Mathf::Sin(angle);
-	float cosine = Mathf::Cos(angle);
+	float radian = angle / 180.0f * Mathf::pi;
+	float sinine = Mathf::Sin(radian);
+	float cosine = Mathf::Cos(radian);
 	Matrix4x4 result
 	(
 		cosine, sinine, 0.0f, 0.0f,

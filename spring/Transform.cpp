@@ -1,5 +1,6 @@
 #include "transform.h"
 #include "gizmos.h"
+#include "matrix4x4.h"
 
 using namespace spring;
 
@@ -10,37 +11,52 @@ Transform::Transform()
 
 Vector3 Transform::getForword()
 {
-	return Vector3::forward;
+	Matrix4x4 T = Matrix4x4::Translate(-this->position.x, -this->position.y, -this->position.z);
+	Matrix4x4 RZ = Matrix4x4::RotateZ(-this->eulerangle.z);
+	Matrix4x4 RX = Matrix4x4::RotateX(this->eulerangle.x);
+	Matrix4x4 RY = Matrix4x4::RotateY(this->eulerangle.y);
+	Matrix4x4 IT = Matrix4x4::Translate(this->position.x,this->position.y,this->position.z);
+	return IT * RY * RX * RZ * T * this->forword;
 }
 
 Vector3 Transform::getBack()
 {
-	return Vector3::back;
+	return -this->getForword();
 }
 
 Vector3 Transform::getUp()
 {
-	return Vector3::up;
+	Matrix4x4 T = Matrix4x4::Translate(-this->position.x, -this->position.y, -this->position.z);
+	Matrix4x4 RZ = Matrix4x4::RotateZ(-this->eulerangle.z);
+	Matrix4x4 RX = Matrix4x4::RotateX(this->eulerangle.x);
+	Matrix4x4 RY = Matrix4x4::RotateY(this->eulerangle.y);
+	Matrix4x4 IT = Matrix4x4::Translate(this->position.x, this->position.y, this->position.z);
+	return IT * RY * RX * RZ * T * this->up;
 }
 
 Vector3 Transform::getDown()
 {
-	return Vector3::down;
+	return -this->getUp();
 }
 
 Vector3 Transform::getRight()
 {
-	return Vector3::right;
+	Matrix4x4 T = Matrix4x4::Translate(-this->position.x, -this->position.y, -this->position.z);
+	Matrix4x4 RZ = Matrix4x4::RotateZ(-this->eulerangle.z);
+	Matrix4x4 RX = Matrix4x4::RotateX(this->eulerangle.x);
+	Matrix4x4 RY = Matrix4x4::RotateY(this->eulerangle.y);
+	Matrix4x4 IT = Matrix4x4::Translate(this->position.x, this->position.y, this->position.z);
+	return IT * RY * RX * RZ * T * this->right;
 }
 
 Vector3 Transform::getLeft()
 {
-	return Vector3::left;
+	return -this->getRight();
 }
 
 void Transform::LookAt(Vector3 target, Vector3 worldUp)
 {
-	// todo : use matrix to rotate transform
+	
 }
 
 void Transform::RotateAround(Vector3 point, Vector3 axis, float angel) 

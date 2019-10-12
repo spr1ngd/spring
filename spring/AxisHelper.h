@@ -26,12 +26,12 @@ namespace spring
 		Mesh* mesh;
 		MeshRenderer* meshRenderer;
 	private:
-
 		void RenderAxis();
 		void RenderRotator();
 		void RenderScaler();
 	public:
 		AxisHelper(Transform* transform);
 		void Render();
+		void SetGizmosMode(unsigned int mode);
 	};
 }

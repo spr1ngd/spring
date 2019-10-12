@@ -26,6 +26,9 @@
 #include "firstplayercamera.h"
 #include "fps.h"
 
+#define GIZMOS_GLOBAL 0
+#define GIZMOS_LOCAL 1
+
 namespace spring
 {
 	class SpringEngine 
