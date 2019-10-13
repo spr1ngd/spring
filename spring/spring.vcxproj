@@ -200,8 +200,9 @@
     <ClInclude Include="FPS.h" />
     <ClInclude Include="Gizmos.h" />
     <ClInclude Include="Graphic.h" />
+    <ClInclude Include="IJsonSerializer.h" />
     <ClInclude Include="Input.h" />
-    <ClInclude Include="Json.h" />
+    <ClInclude Include="JsonMapper.h" />
     <ClInclude Include="Light.h" />
     <ClInclude Include="Material.h" />
     <ClInclude Include="MaterialTexture.h" />
@@ -251,8 +252,9 @@
     <ClCompile Include="FPS.cpp" />
     <ClCompile Include="Gizmos.cpp" />
     <ClCompile Include="Graphic.cpp" />
+    <ClCompile Include="IJsonSerializer.cpp" />
     <ClCompile Include="Input.cpp" />
-    <ClCompile Include="Json.cpp" />
+    <ClCompile Include="JsonMapper.cpp" />
     <ClCompile Include="Light.cpp" />
     <ClCompile Include="Material.cpp" />
     <ClCompile Include="MaterialTexture.cpp" />

@@ -205,9 +205,6 @@
     <ClInclude Include="Scene.h">
       <Filter>头文件\Scene</Filter>
     </ClInclude>
-    <ClInclude Include="Json.h">
-      <Filter>头文件\Serialize\Json</Filter>
-    </ClInclude>
     <ClInclude Include="Vector3.h">
       <Filter>头文件\Math</Filter>
     </ClInclude>
@@ -264,6 +261,12 @@
     </ClInclude>
     <ClInclude Include="Application.h">
       <Filter>头文件\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="IJsonSerializer.h">
+      <Filter>头文件\Serialize\Json</Filter>
+    </ClInclude>
+    <ClInclude Include="JsonMapper.h">
+      <Filter>头文件\Serialize\Json</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -351,9 +354,6 @@
     <ClCompile Include="Scene.cpp">
       <Filter>源文件\Scene</Filter>
     </ClCompile>
-    <ClCompile Include="Json.cpp">
-      <Filter>源文件\Serialize\Json</Filter>
-    </ClCompile>
     <ClCompile Include="Vector2.cpp">
       <Filter>源文件\Math</Filter>
     </ClCompile>
@@ -410,6 +410,12 @@
     </ClCompile>
     <ClCompile Include="Application.cpp">
       <Filter>源文件\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="IJsonSerializer.cpp">
+      <Filter>源文件\Serialize\Json</Filter>
+    </ClCompile>
+    <ClCompile Include="JsonMapper.cpp">
+      <Filter>源文件\Serialize\Json</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

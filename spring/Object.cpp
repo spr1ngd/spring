@@ -18,6 +18,7 @@ const char* Object::ToString()
 
 Object* Object::Instantiate(Object obj) 
 {
+	// todo 
 	return nullptr;
 }
 
@@ -29,4 +30,15 @@ void Object::Destroy()
 unsigned long Object::GetInstanceID() 
 {
 	return Object::instanceCounts++;
+}
+
+Json::Value Object::Serialize()
+{
+	Json::Value result;
+	return result;
+}
+
+void Object::Deserialize(Json::Value jsonData)
+{
+
 }

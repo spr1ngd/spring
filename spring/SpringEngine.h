@@ -19,7 +19,7 @@
 #include "renderable.h"
 #include "skybox.h"
 #include "light.h"
-#include "axishelper.h"
+#include "axishelper.h" 
 
 // spring engine editor 
 #include "orbitcamera.h"
@@ -27,7 +27,7 @@
 #include "fps.h"
 
 #define GIZMOS_GLOBAL 0
-#define GIZMOS_LOCAL 1
+#define GIZMOS_LOCAL 1 
 
 namespace spring
 {
