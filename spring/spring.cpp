@@ -368,9 +368,9 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 
 	Camera camera;
 	camera.clearFlag = Camera::ClearFlag::Skybox;
-	camera.transform->position = Vector3(2.0f,2.0f,2.0f);
-	camera.center = Vector3(0.0f,0.0f,0.0f);
 	camera.background = Color(31,113,113,255);
+	camera.transform->position = Vector3(2.0f,2.0f,2.0f);
+	camera.transform->LookAt(Vector3::zero);
 
 #pragma endregion
 
@@ -420,7 +420,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 	lightModel.meshes = loader.meshes;
 	lightModel.textures = loader.loadedTextures;
 	lightModel.Init();
-	lightModel.transform->scale = Vector3(.3f);
+	lightModel.transform->scale = Vector3(1.0f);
 	// lightModel.transform->position = spotLight->transform->position;
 	lightModel.material->shader->setColor(MAIN_COLOR, Color::yellow);
 
@@ -496,11 +496,11 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 		camera.Render();
 		timer += Timer::deltaTime;
 
-		float angleDelta = speed * Timer::deltaTime;
-		// vec2 = Matrix2x2::Rotate(angleDelta, vec2);
-		lightModel.transform->eulerangle.z += angleDelta;
-		if (lightModel.transform->eulerangle.z > 360.0f)
-			lightModel.transform->eulerangle.z -= 360.0f;
+		//float angleDelta = speed * Timer::deltaTime;
+		//// vec2 = Matrix2x2::Rotate(angleDelta, vec2);
+		//lightModel.transform->eulerangle.z += angleDelta;
+		//if (lightModel.transform->eulerangle.z > 360.0f)
+		//	lightModel.transform->eulerangle.z -= 360.0f;
 		
 		Gizmos::Render();
 		skybox.transform->position = Camera::main->transform->position;

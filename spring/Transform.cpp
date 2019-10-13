@@ -1,6 +1,7 @@
 #include "transform.h"
 #include "gizmos.h"
 #include "matrix4x4.h"
+#include "console.h"
 
 using namespace spring;
 
@@ -54,9 +55,16 @@ Vector3 Transform::getLeft()
 	return -this->getRight();
 }
 
-void Transform::LookAt(Vector3 target, Vector3 worldUp)
+void Transform::LookAt(Vector3 target,bool isLocal)
 {
-	
+	Vector3 src = this->Forword;
+	Vector3 dst = Vector3::Normalize(target - this->position);
+	float angle = Mathf::Acos(Vector3::Dot(src, dst));
+	Matrix4x4 T = Matrix4x4::Translate(-this->position.x, -this->position.y, -this->position.z);
+	Matrix4x4 IT = Matrix4x4::Translate(this->position.x, this->position.y, this->position.z);
+	Matrix4x4 R = Matrix4x4::RotateY(angle);
+	this->Forword = /*IT **/ R */* T **/ this->Forword;
+	Console::ErrorFormat("forward %f,%f,%f",this->Forword.x,this->Forword.y,this->Forword.z);
 }
 
 void Transform::RotateAround(Vector3 point, Vector3 axis, float angel) 

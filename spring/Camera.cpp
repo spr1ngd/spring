@@ -9,7 +9,6 @@ Camera* Camera::main;
 Camera::Camera() 
 {
 	this->transform = new Transform();
-	this->center = Vector3(0.0f,0.0f,-1.0f);
 	this->direction = Vector3(0.0f,1.0f,0.0f);
 	this->background = Color(123,134,125,255);
 	Camera::main = this;
@@ -27,10 +26,12 @@ void Camera::LookAt(const Vector3* target)
 
 void Camera::Render() 
 {
+	Vector3 viewCenter = this->transform->position + this->transform->Forword;
+	Vector3 up = this->transform->getUp();
 	glm::mat4 view = glm::lookAt(
-		glm::vec3(this->transform->position.x,this->transform->position.y,this->transform->position.z), 
-		glm::vec3(this->center.x,this->center.y,this->center.z), // replace this by transform.back
-		glm::vec3(this->direction.x,this->direction.y,this->direction.z)); // replace this by transform.up
+		glm::vec3(this->transform->position.x, this->transform->position.y, this->transform->position.z),
+		glm::vec3(viewCenter.x, viewCenter.y, viewCenter.z),
+		glm::vec3(up.x, up.y, up.z));
 	// note : perspective fov parameter is radian.
 	glm::mat4 projection = glm::perspective(glm::radians(this->fov), float(Screen::width) / float(Screen::height),this->nearClip, this->farClip);
 	Graphic::VIEW = view;

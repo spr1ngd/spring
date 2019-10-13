@@ -64,15 +64,17 @@ void OrbitCamera::Rotate()
 {
 	if (!this->enableRotate)
 		return;
-	Console::LogFormat("Orbit camera rotate around center.  offset (%f,%f)",Input::mouseDelta.x,Input::mouseDelta.y);
 	Vector3 distance = this->camera->transform->position - this->target;
-	Matrix4x4 t = Matrix4x4::Translate(-distance.x, -distance.y, -distance.z);
-	// todo : rotate around z
-	// todo : rotate around x
-	Matrix4x4 ry = Matrix4x4::RotateY(Input::mouseDelta.x / 100.0f);
-	Matrix4x4 rt = Matrix4x4::Translate(distance.x, distance.y, distance.z);
+	Matrix4x4 T = Matrix4x4::Translate(-distance.x, -distance.y, -distance.z);
+	Matrix4x4 RY = Matrix4x4::RotateY(Input::mouseDelta.x / 10.0f * rotateSpeed);
+	Vector3 axis = this->camera->transform->getRight();
+	// Console::LogFormat("rotate axis %f,%f,%f", axis.x, axis.y, axis.z);
+	// Console::ErrorFormat("camera pos %f,%f,%f", this->camera->transform->position.x, this->camera->transform->position.y, this->camera->transform->position.z);
+	Matrix4x4 RR = Matrix4x4::Rotate(Input::mouseDelta.y / 10.0f * rotateSpeed, axis);
+	Matrix4x4 IT = Matrix4x4::Translate(distance.x, distance.y, distance.z);
 
-	this->camera->transform->position = rt * ry * t * this->camera->transform->position;
+	this->camera->transform->position = IT * RY /** RR */* T * this->camera->transform->position;
+	// this->camera->transform->LookAt(Vector3::zero);
 }
 
 void OrbitCamera::Pan()
