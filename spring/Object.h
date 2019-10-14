@@ -12,8 +12,8 @@ namespace spring
 		static unsigned long instanceCounts;
 	protected:
 		unsigned long instanceId;
-		Json::Value Serialize() override;
-		void Deserialize(Json::Value jsonData) override;
+	/*	Json::Value Serialize() override;
+		void Deserialize(Json::Value jsonData) override;*/
 	public:
 		const char* name;
 

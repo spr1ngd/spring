@@ -103,6 +103,9 @@
     <Filter Include="头文件\Core">
       <UniqueIdentifier>{df6e9446-6454-44f0-9435-aafd7cd7d5ea}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Sample">
+      <UniqueIdentifier>{bcdd2a7f-d5bd-4a1f-a2f5-fa51b688f9aa}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="spring.rc">
@@ -268,6 +271,12 @@
     <ClInclude Include="JsonMapper.h">
       <Filter>头文件\Serialize\Json</Filter>
     </ClInclude>
+    <ClInclude Include="Matrix4x4Sample.h">
+      <Filter>Sample</Filter>
+    </ClInclude>
+    <ClInclude Include="Sample.h">
+      <Filter>Sample</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Primitive.cpp">
@@ -416,6 +425,9 @@
     </ClCompile>
     <ClCompile Include="JsonMapper.cpp">
       <Filter>源文件\Serialize\Json</Filter>
+    </ClCompile>
+    <ClCompile Include="Sample.cpp">
+      <Filter>Sample</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

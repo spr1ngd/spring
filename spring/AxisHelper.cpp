@@ -12,10 +12,10 @@ AxisHelper::AxisHelper(Transform* trans)
 	this->material = new Material("res/shader/vertex/vertexcolor.vs", "res/shader/vertex/vertexcolor.fs");
 	this->material->name = "axis_color";
 	this->material->renderMode = Material::Fill;	
-	this->meshRenderer = new MeshRenderer(this->material);
+	this->meshRenderer = new MeshRenderer(*this->material);
 	this->SetGizmosMode(Gizmos::GetMode());
-	this->meshRenderer->material->alphaTest = false;
-	this->meshRenderer->material->depthTest = false;
+	this->meshRenderer->material.alphaTest = false;
+	this->meshRenderer->material.depthTest = false;
 	this->meshRenderer->setRenderOrder(5000);
 }
 

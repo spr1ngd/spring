@@ -17,10 +17,10 @@ namespace spring
 		Transform* transform;
 		vector<Mesh> meshes;
 		vector<Texture> textures;
-		Material* material;
+		Material material;
 
 		MeshRenderer();
-		MeshRenderer(Material* mateiral);
+		MeshRenderer(Material mateiral);
 		void Init();
 		void Render() override;
 	};

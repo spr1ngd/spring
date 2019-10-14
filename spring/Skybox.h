@@ -14,10 +14,10 @@ namespace spring
 		GLuint cubemap;
 	public:
 		Transform* transform;
-		Material* material;
+		Material material;
 		vector<Mesh> meshes;
 		vector<Texture> textures;
-		Skybox(const char* skyboxName, Material* material = nullptr);
+		Skybox(const char* skyboxName, Material material);
 
 		void Init();
 		void Render() override;

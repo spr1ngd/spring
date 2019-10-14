@@ -200,5 +200,5 @@ void main()
     vec4 texColor = texture(MainTextureData.texture,texcoord);
 
     FragColor += ambient;
-    FragColor += texColor;
+    FragColor *= texColor;
 }

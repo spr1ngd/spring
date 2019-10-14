@@ -1,4 +1,5 @@
-#include "Behaviour.h"
+#include "behaviour.h"
+#include "console.h"
 
 using namespace spring; 
 

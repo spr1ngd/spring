@@ -15,11 +15,8 @@ void Renderable::setRenderOrder(unsigned int renderOrder)
 		return a->renderOrder < b->renderOrder;
 	};
 	sort(this->objects.begin(), this->objects.end(), sortFunc);
-	Console::ErrorFormat("after sort");
-	for (Renderable* item : objects)
-	{
-		Console::LogFormat("render order %d ",item->renderOrder);
-	}
+	/*for (Renderable* item : objects)
+		Console::LogFormat("render order %d ", item->renderOrder);*/
 }
 
 unsigned int Renderable::getRenderOrder() 

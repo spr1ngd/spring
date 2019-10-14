@@ -64,7 +64,7 @@ void Transform::LookAt(Vector3 target,bool isLocal)
 	Matrix4x4 IT = Matrix4x4::Translate(this->position.x, this->position.y, this->position.z);
 	Matrix4x4 R = Matrix4x4::RotateY(angle);
 	this->Forword = /*IT **/ R */* T **/ this->Forword;
-	Console::ErrorFormat("forward %f,%f,%f",this->Forword.x,this->Forword.y,this->Forword.z);
+	// Console::ErrorFormat("forward %f,%f,%f",this->Forword.x,this->Forword.y,this->Forword.z);
 }
 
 void Transform::RotateAround(Vector3 point, Vector3 axis, float angel) 

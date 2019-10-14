@@ -209,6 +209,7 @@
     <ClInclude Include="Mathf.h" />
     <ClInclude Include="Matrix2x2.h" />
     <ClInclude Include="Matrix4x4.h" />
+    <ClInclude Include="Matrix4x4Sample.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="MeshRenderer.h" />
     <ClInclude Include="ModelLoader.h" />
@@ -222,6 +223,7 @@
     <ClInclude Include="RenderOrder.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="Resources.h" />
+    <ClInclude Include="Sample.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="Screen.h" />
     <ClInclude Include="Shader.h" />
@@ -273,6 +275,7 @@
     <ClCompile Include="Renderable.cpp" />
     <ClCompile Include="RenderOrder.cpp" />
     <ClCompile Include="Resources.cpp" />
+    <ClCompile Include="Sample.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="Screen.cpp" />
     <ClCompile Include="Shader.cpp" />

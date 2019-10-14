@@ -8,6 +8,7 @@
 #include <gl/GL.h> 
 #include "springengine.h"
 #include "spring.h"
+#include "sample.h"
 
 // spring engine
 #pragma comment (lib,"glfw3.lib")
@@ -333,149 +334,15 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 	UpdateWindow(hwnd);
 
 	glEnable(GL_MULTISAMPLE);
-	glEnable(GL_BLEND);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-	Application app;
-	app.Initialize(); 
-
-	auto createLight = [&]( Light::Type lightType,Color lightColor ,float intensity ,Vector3 position,Vector3 eulerangle )
-	{
-		Light* light = new Light();
-		light->type = lightType;
-		light->color = lightColor;
-		light->intensity = intensity;
-		light->transform->eulerangle = eulerangle;
-		light->transform->position = position;
-		return light;
-	};
-
-	//Color(255, 244, 214, 255)
-#pragma region directional light 
-
-	Environment::ambient.color = Color(75,75,75,255);
-
-	Light* light = createLight(Light::Type::Directional, Color(255, 244, 214, 255), 0.7f, Vector3(10.0f, 10.0f, 10.0f), Vector3::down);
-	//Light* pointLigh1 = createLight(Light::Type::Point, Color::red, 0.6f, Vector3(5.0f, 0.0f, 0.0f), Vector3::left);
-	//Light* pointLigh2 = createLight(Light::Type::Point, Color::green, 0.6f, Vector3(-5.0f, 0.0f, 0.0f), Vector3::right);
-	//Light* pointLigh3 = createLight(Light::Type::Point, Color::blue, 0.6f, Vector3(0.0f, 0.0f, 5.0f), Vector3::back);
-	//Light* pointLigh4 = createLight(Light::Type::Point, Color::green, 0.6f, Vector3(0.0f, 0.0f, -5.0f), Vector3::forward);
-	//Light* spotLight = createLight(Light::Type::Spot, Color::yellow, 1.3f, Vector3(0.0f, 6.0f, 0.0f), Vector3::bottom);
-
-#pragma endregion
-
-#pragma region scene camera setting
-
-	Camera camera;
-	camera.clearFlag = Camera::ClearFlag::Skybox;
-	camera.background = Color(31,113,113,255);
-	camera.transform->position = Vector3(2.0f,2.0f,2.0f);
-	camera.transform->LookAt(Vector3::zero);
-
-#pragma endregion
-
-#pragma region scene gizmos 
-
-	// axis
-	/*AxisHelper axishelper;
-	axishelper.Render();*/
-		
-#pragma endregion
-
-
-#pragma region skybox rendering
-
-	Material skyboxMaterial("res/shader/skybox/6 Sided.vs", "res/shader/skybox/6 Sided.fs");
-	spring::Skybox skybox("6 Sided", &skyboxMaterial);
-	skybox.Init();
-
-#pragma endregion
-
-#pragma region draw triangle by encapsuled object
-
-	//FirstPlayerCamera firstplayer;//todo : test it working state.
-	//firstplayer.moveSpeed = 0.1f;
-
-	OrbitCamera orbit;
-	orbit.target = Vector3::zero;
-	orbit.zoomSpeed = 0.05f;
-
-	// draw floor
-	//ModelLoader floorLoader = ModelLoader();
-	//floorLoader.Load("res/model/obj/quad.obj");
-	//Material floorMaterial("res/shader/diffuse/diffuse.vs","res/shader/diffuse/diffuse.fs");
-	//floorMaterial.name = "floor";
-	//MeshRenderer floor(&floorMaterial);
-	//floor.meshes = floorLoader.meshes;
-	//floor.Init();
-	//floor.transform->scale = Vector3(8.0f,8.0f,8.0f);
-	//floor.transform->eulerangle = Vector3(-90.0f,0.0f,0.0f);
-
-	// draw light model
-	ModelLoader loader = ModelLoader();
-	loader.Load("res/model/obj/cube.obj");
-	Material lightModelMat("res/shader/unlit/color.vs", "res/shader/unlit/color.fs");
-	lightModelMat.name = "color";
-	MeshRenderer lightModel(&lightModelMat);
-	lightModel.meshes = loader.meshes;
-	lightModel.textures = loader.loadedTextures;
-	lightModel.Init();
-	lightModel.transform->scale = Vector3(1.0f);
-	// lightModel.transform->position = spotLight->transform->position;
-	lightModel.material->shader->setColor(MAIN_COLOR, Color::yellow);
-
-	// draw a sphere
+// 	glEnable(GL_BLEND);
+// 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	
-
-	// TextureLoader textureLoader;
-	// GLuint texture = textureLoader.Load("res/texture/carbon_fiber.jpg");
-	// model.material->shader->setTexture("MainTextureData.texture", texture);
-	// model.material->shader->setTilling("MainTextureData.texture", Vector2(10.0f,10.0f));
-
-	ModelLoader modelLoader = ModelLoader();
-	modelLoader.Load("res/model/fbx/sphere.fbx");
-
-	// todo : delete pointers
-	vector<Material*> mats;
-	vector<MeshRenderer*> renderers;
-
-	int sphereCount = 1;
-	for (int i = 0; i < sphereCount; i++)
-	{
-		for (int j = 0; j < sphereCount; j++)
-		{
-			Material* mat = new Material("res/shader/diffuse/diffuse.vs", "res/shader/diffuse/transparency.fs");
-			mat->name = "diffuse";
-			mat->renderMode = Material::Fill;
-			mats.push_back(mat);
-
-			MeshRenderer*meshRenderer = new MeshRenderer(mat);
-			meshRenderer->meshes = modelLoader.meshes;
-			meshRenderer->textures = modelLoader.loadedTextures;
-			meshRenderer->material->cullface = Material::CullFace::Back;
-			meshRenderer->Init();
-			meshRenderer->transform->position = Vector3(-10.0f + i * 2.0f, 0.0, -10.0f + j * 2.0f);
-			meshRenderer->transform->scale = Vector3(1.0f);
-			meshRenderer->transform->eulerangle = Vector3(-90.0f, 0.0f, 0.0f);
-			meshRenderer->material->shader->setColor(MAIN_COLOR, Color(204, 204, 204, 128));
-			meshRenderer->material->shader->setColor("Specular_Color", Color::white);
-			meshRenderer->material->shader->setFloat("Specular_Intensity", 1.0f);
-			meshRenderer->material->shader->setFloat("Specular_Attenuation", 64.0f);
-			renderers.push_back(meshRenderer);
-		}
-	}
-
-#pragma endregion
+	// draw sample scene
+	Sample* sample = new Sample();
 
 	for (auto behaviour : Behaviour::behaviours)
 		behaviour.second->Awake(); 
-	float timer = 0.0f;
 	Timer::Start();
-
-	Vector2 vec2(1.0f, 0.0f);
-	float speed = 5.0f; 
-
-	Gizmos::DrawAxis(lightModel.transform);
 
 	while (true)
 	{
@@ -490,29 +357,15 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 			TranslateMessage(&msg);
 			DispatchMessage(&msg);
 		} 
-		Timer::Time();
-				
-		// update camera state
-		camera.Render();
-		timer += Timer::deltaTime;
 
-		//float angleDelta = speed * Timer::deltaTime;
-		//// vec2 = Matrix2x2::Rotate(angleDelta, vec2);
-		//lightModel.transform->eulerangle.z += angleDelta;
-		//if (lightModel.transform->eulerangle.z > 360.0f)
-		//	lightModel.transform->eulerangle.z -= 360.0f;
-		
+		Timer::Time();
 		Gizmos::Render();
-		skybox.transform->position = Camera::main->transform->position;
 		for (auto behaviour : Behaviour::behaviours)
 			behaviour.second->Update();
-
-		// note : draw all object inherited Renderable.
 		Renderable::Draw();
 		// FPS::CalculateFramePerSecond();
-
-		// reset mouse wheel delta 
 		Input::setMouseWheel(0.0f);
+
 		glFinish();
 		SwapBuffers(dc);
 	}

@@ -6,7 +6,7 @@ namespace spring
 	class IJsonSerializer
 	{
 	public:
-		virtual Json::Value Serialize() = 0;
-		virtual void Deserialize(Json::Value jsonData) = 0;
+		/*virtual Json::Value Serialize() = 0;
+		virtual void Deserialize(Json::Value jsonData) = 0;*/
 	};
 }
