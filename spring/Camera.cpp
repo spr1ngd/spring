@@ -26,7 +26,7 @@ void Camera::LookAt(const Vector3* target)
 
 void Camera::Render() 
 {
-	Vector3 viewCenter = this->transform->position + this->transform->Forword;
+	Vector3 viewCenter;// = this->transform->position + this->transform->Forword;
 	viewCenter = Vector3::zero;
 	Vector3 up = this->transform->getUp();
 	glm::mat4 view = glm::lookAt(

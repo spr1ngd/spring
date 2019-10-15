@@ -39,6 +39,7 @@ public:
 		earth->meshes = loader.meshes;
 		earth->textures = loader.loadedTextures;
 		earth->Init();
+		earth->transform->scale = Vector3(1.0f);
 		earth->transform->position = Vector3(10.0f, 0.0f, 0.0f);
 		auto earthTexture = textureLoader.Load("res/texture/earth.jpg");
 		earth->material.shader->setTexture("MainTextureData.texture", earthTexture);
@@ -46,11 +47,27 @@ public:
 		earth->material.shader->setColor("Specular_Color", Color::white);
 		earth->material.shader->setFloat("Specular_Intensity", 0.0f);
 		earth->material.shader->setFloat("Specular_Attenuation", 64.0f);
+
+		sun->transform->eulerangle.z = -10.0f;
+
+		Gizmos::DrawAxis(sun->transform,Vector3(5.0f));
+		Gizmos::DrawAxis(earth->transform);
 	}
+
+	float angle = 0.0f;
+
 	void Update() override 
 	{
+		// todo : 为什么scale导致position错误
+		// 1. 地球自转
+		// earth->transform->eulerangle.y += 2.0f;
+		// 2. 地球绕太阳转
 
+		// 3. 太阳自转
+		// sun->transform->eulerangle.y += 0.12f;
+		sun->transform->RotateAround(Vector3::up, angle += 2.0f);
 	}
+
 	void Destroy() override 
 	{
 

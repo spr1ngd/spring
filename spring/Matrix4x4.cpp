@@ -53,8 +53,8 @@ Matrix4x4 Matrix4x4::RotateX(float angle)
 	Matrix4x4 result
 	(
 		1.0f, 0.0f, 0.0f, 0.0f,
-		0.0f, cosine, sinine, 0.0f,
-		0.0f, -sinine, cosine, 0.0f,
+		0.0f, cosine, -sinine, 0.0f,
+		0.0f, sinine, cosine, 0.0f,
 		0.0f, 0.0f, 0.0f, 1.0f
 	);
 	return result;
@@ -67,9 +67,9 @@ Matrix4x4 Matrix4x4::RotateY(float angle)
 	float cosine = Mathf::Cos(radian);
 	Matrix4x4 result
 	(
-		cosine, 0.0f, -sinine, 0.0f,
+		cosine, 0.0f, sinine, 0.0f,
 		0.0f, 1.0f, 0.0f, 0.0f,
-		sinine, 0.0f, cosine, 0.0f,
+		-sinine, 0.0f, cosine, 0.0f,
 		0.0f, 0.0f, 0.0f, 1.0f
 	);
 	return result;

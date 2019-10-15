@@ -15,7 +15,7 @@ namespace spring
 		static unsigned int mode;
 	public:
 		static void DrawAxis(Vector3 pos);
-		static void DrawAxis(Transform* transform);
+		static void DrawAxis(Transform* transform,Vector3 size = Vector3::one);
 		static void DrawLine(Vector2 start,Vector2 end);
 		static void DrawVector(Vector2 vec2);
 

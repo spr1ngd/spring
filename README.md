@@ -38,6 +38,7 @@ A LONG TRIP.
 ## ISSUES
 
 - distance between orbit camera and target can not less than zero.
+- keep the size of axis helper the same ,whereever camera is
 
 ## spring engine real-time screenshot
 

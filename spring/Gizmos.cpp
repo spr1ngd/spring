@@ -12,9 +12,10 @@ void Gizmos::DrawAxis(Vector3 pos)
 
 }
 
-void Gizmos::DrawAxis(Transform* transform)
+void Gizmos::DrawAxis(Transform* transform,Vector3 size)
 {
 	AxisHelper* axis = new AxisHelper(transform);
+	axis->meshRenderer->transform->scale = size;
 	axisHelpers.push_back(axis);
 }
 
