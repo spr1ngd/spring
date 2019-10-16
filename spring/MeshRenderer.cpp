@@ -54,9 +54,6 @@ void MeshRenderer::Render()
 	this->material.EnableCullFace();
 
 	this->material.shader->use();
-	glm::vec3 zAxis = glm::vec3(this->transform->getForword().x, this->transform->getForword().y, this->transform->getForword().z);
-	glm::vec3 xAxis = glm::vec3(this->transform->getRight().x, this->transform->getRight().y, this->transform->getRight().z);
-	glm::vec3 yAxis = glm::vec3(this->transform->getUp().x, this->transform->getUp().y, this->transform->getUp().z);
 	for (unsigned int i = 0; i < this->meshes.size(); i++) 
 	{
 		Mesh* mesh = &meshes[i];
@@ -64,9 +61,9 @@ void MeshRenderer::Render()
 			{
 				glm::mat4 model =
 					glm::scale(glm::mat4(1.0f), glm::vec3(this->transform->scale.x, this->transform->scale.y, this->transform->scale.z)) *
-					glm::rotate(glm::mat4(1.0f), glm::radians(this->transform->eulerangle.z),zAxis) *
-					glm::rotate(glm::mat4(1.0f), glm::radians(this->transform->eulerangle.x),xAxis) *
-					glm::rotate(glm::mat4(1.0f), glm::radians(this->transform->eulerangle.y),yAxis) *
+					glm::rotate(glm::mat4(1.0f), glm::radians(this->transform->eulerangle.z), glm::vec3(0.0f, 0.0f, 1.0f)) *
+					glm::rotate(glm::mat4(1.0f), glm::radians(this->transform->eulerangle.x), glm::vec3(1.0f, 0.0f, 0.0f)) *
+					glm::rotate(glm::mat4(1.0f), glm::radians(this->transform->eulerangle.y), glm::vec3(0.0f, 1.0f, 0.0f)) *
 					glm::translate(glm::mat4(1.0), glm::vec3(this->transform->position.x, this->transform->position.y, this->transform->position.z));
 				glm::mat4 nm = glm::inverseTranspose(model);
 

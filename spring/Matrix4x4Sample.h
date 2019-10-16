@@ -48,15 +48,15 @@ public:
 		earth->material.shader->setFloat("Specular_Intensity", 0.0f);
 		earth->material.shader->setFloat("Specular_Attenuation", 64.0f);
 
-		sun->transform->eulerangle.z = -10.0f;
-
 		Gizmos::DrawAxis(sun->transform,Vector3(5.0f));
 		Gizmos::DrawAxis(earth->transform);
+
+		sun->transform->SetEulerangle(Vector3(0.0f,0.0f,-15.0f));
 	}
 
 	float angle = 0.0f;
 
-	void Update() override 
+	void Update() override
 	{
 		// todo : 为什么scale导致position错误
 		// 1. 地球自转
@@ -64,8 +64,12 @@ public:
 		// 2. 地球绕太阳转
 
 		// 3. 太阳自转
-		// sun->transform->eulerangle.y += 0.12f;
-		sun->transform->RotateAround(Vector3::up, angle += 2.0f);
+		const Vector3 eulerangle = sun->transform->GetEulerangle();
+		angle += 0.5f;
+		if (angle > 360.0f)
+			angle -= 360.0f;
+		Vector3 euler = Vector3(eulerangle.x, angle, eulerangle.z);
+		sun->transform->SetEulerangle(euler);
 	}
 
 	void Destroy() override 
