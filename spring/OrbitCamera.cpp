@@ -67,7 +67,7 @@ void OrbitCamera::Rotate()
 	Vector3 distance = this->camera->transform->position - this->target;
 	Matrix4x4 T = Matrix4x4::Translate(-distance.x, -distance.y, -distance.z);
 	Matrix4x4 RY = Matrix4x4::RotateY(Input::mouseDelta.x / 10.0f * rotateSpeed);
-	Vector3 axis = this->camera->transform->getRight();
+	Vector3 axis = this->camera->transform->right;
 	// Console::LogFormat("rotate axis %f,%f,%f", axis.x, axis.y, axis.z);
 	// Console::ErrorFormat("camera pos %f,%f,%f", this->camera->transform->position.x, this->camera->transform->position.y, this->camera->transform->position.z);
 	Matrix4x4 RR = Matrix4x4::Rotate(Input::mouseDelta.y / 10.0f * rotateSpeed, axis);

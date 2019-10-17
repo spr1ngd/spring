@@ -7,44 +7,14 @@ using namespace spring;
 Transform::Transform() 
 {
 
-} 
-
-Vector3 Transform::getForword()
-{
-	return this->forword;
-}
-
-Vector3 Transform::getBack()
-{
-	return -this->getForword();
-}
-
-Vector3 Transform::getUp()
-{
-	return this->up;
-}
-
-Vector3 Transform::getDown()
-{
-	return -this->getUp();
-}
-
-Vector3 Transform::getRight()
-{
-	return this->right;
-}
-
-Vector3 Transform::getLeft()
-{
-	return -this->getRight();
-}
+}  
 
 void Transform::SetEulerangle(Vector3 eulerangle)
 {
 	Matrix4x4 RZ = Matrix4x4::RotateZ(eulerangle.z);
 	Matrix4x4 RX = Matrix4x4::RotateX(eulerangle.x);
 	Matrix4x4 RY = Matrix4x4::RotateY(eulerangle.y);
-	this->rotationMatrix = RY * RX * RZ;
+	this->rotationMatrix =  RY * RX * RZ;
 	this->right = this->rotationMatrix * this->right;
 	this->up = this->rotationMatrix * this->up;
 	this->forword = this->rotationMatrix * this->forword;
@@ -63,10 +33,19 @@ void Transform::LookAt(Vector3 target,bool isLocal)
 
 }
 
-void Transform::RotateAround(Vector3 axis, float angle)
+void Transform::Rotate(Vector3 axis, float angle)
 {
-	Matrix4x4 T = Matrix4x4::Translate(-this->position.x, -this->position.y, -this->position.z);
-	Matrix4x4 IT = Matrix4x4::Translate(this->position.x, this->position.y, this->position.z);
+	// rotate to inertial coordinate
+	// distinguish between local coordinate and global coordinate
+}
 
-	//
+void Transform::RotateAround(Vector3 point,Vector3 axis, float angle)
+{
+	Vector3 offset = this->position - point;
+	Matrix4x4 T = Matrix4x4::Translate(-offset.x, -offset.y, -offset.z);
+	Matrix4x4 IT = Matrix4x4::Translate(offset.x, offset.y, offset.z);
+	// todo : Matrix4x4 rotate has bug in x and z axis.
+	Matrix4x4 R = Matrix4x4::Rotate(angle, axis);
+	Matrix4x4 mix = IT * R * T;
+	this->position = mix * this->position;
 }

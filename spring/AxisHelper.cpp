@@ -72,7 +72,7 @@ void AxisHelper::SetGizmosMode(unsigned int mode)
 	if (mode == GIZMOS_LOCAL) 
 	{
 		// todo : direction of rotation is different
-		xEnd.vertex = transform->position + transform->getRight();
+		xEnd.vertex = transform->position + transform->right;
 	}
 	else
 	{
@@ -91,7 +91,7 @@ void AxisHelper::SetGizmosMode(unsigned int mode)
 	Vertex yEnd;
 	if (mode == GIZMOS_LOCAL)
 	{
-		yEnd.vertex = transform->position + transform->getUp();
+		yEnd.vertex = transform->position + transform->up;
 	}
 	else 
 	{
@@ -110,7 +110,7 @@ void AxisHelper::SetGizmosMode(unsigned int mode)
 	Vertex zEnd;
 	if (mode == GIZMOS_LOCAL) 
 	{
-		zEnd.vertex = transform->position + transform->getForword();
+		zEnd.vertex = transform->position + transform->forword;
 	}
 	else 
 	{

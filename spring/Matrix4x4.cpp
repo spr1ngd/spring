@@ -30,6 +30,26 @@ Matrix4x4::Matrix4x4(float m11, float m12, float m13, float m14, float m21, floa
 	this->m44 = m44;
 }
 
+Matrix4x4::Matrix4x4(const Matrix4x4& mat4) 
+{
+	this->m11 = mat4.m11;
+	this->m12 = mat4.m12;
+	this->m13 = mat4.m13;
+	this->m14 = mat4.m14;
+	this->m21 = mat4.m21;
+	this->m22 = mat4.m22;
+	this->m23 = mat4.m23;
+	this->m24 = mat4.m24;
+	this->m31 = mat4.m31;
+	this->m32 = mat4.m32;
+	this->m33 = mat4.m33;
+	this->m34 = mat4.m34;
+	this->m41 = mat4.m41;
+	this->m42 = mat4.m42;
+	this->m43 = mat4.m43;
+	this->m44 = mat4.m44;
+}
+
 float& Matrix4x4::operator[](int index) 
 {
 	return this->m[index];
@@ -43,6 +63,7 @@ Vector3 Matrix4x4::Rotate(float angle,Vector3 axis,Vector3 vec3)
 
 Matrix4x4 Matrix4x4::Rotate(float angle, Vector3 axis)
 { 
+	// todo : test this method 
 	float alpha = Mathf::Angle(Mathf::Acos(Mathf::Abs(axis.z) / Mathf::Sqrt(Mathf::Pow(axis.x, 2.0f) + Mathf::Pow(axis.y, 2.0f))));
 	Matrix4x4 RX = Matrix4x4::RotateX(alpha);
 	float beta = Mathf::Angle(Mathf::Acos(Mathf::Sqrt(axis.y * axis.y + axis.z * axis.z) / Mathf::Sqrt(axis.x * axis.x + axis.y + axis.y + axis.z * axis.z)));
@@ -148,8 +169,14 @@ Matrix4x4 Matrix4x4::Translate(float x, float y, float z)
 
 Matrix4x4 Matrix4x4::Transpose(const Matrix4x4 mat4) 
 { 
-	// todo 
-	return mat4;
+	Matrix4x4 result
+	(
+		mat4.m11, mat4.m21, mat4.m31, mat4.m41,
+		mat4.m12, mat4.m22, mat4.m32, mat4.m42,
+		mat4.m13, mat4.m23, mat4.m33, mat4.m43,
+		mat4.m14, mat4.m24, mat4.m34, mat4.m44
+	);
+	return result;
 }
 
 Matrix4x4 Matrix4x4::Inverse(const Matrix4x4 mat4) 
@@ -160,7 +187,23 @@ Matrix4x4 Matrix4x4::Inverse(const Matrix4x4 mat4)
 
 void Matrix4x4::transpose() 
 {
-	// todo 
+	auto mat4 = Matrix4x4::Transpose(*this);
+	this->m11 = mat4.m11;
+	this->m12 = mat4.m12;
+	this->m13 = mat4.m13;
+	this->m14 = mat4.m14;
+	this->m21 = mat4.m21;
+	this->m22 = mat4.m22;
+	this->m23 = mat4.m23;
+	this->m24 = mat4.m24;
+	this->m31 = mat4.m31;
+	this->m32 = mat4.m32;
+	this->m33 = mat4.m33;
+	this->m34 = mat4.m34;
+	this->m41 = mat4.m41;
+	this->m42 = mat4.m42;
+	this->m43 = mat4.m43;
+	this->m44 = mat4.m44;
 }
 
 void Matrix4x4::inverse() 

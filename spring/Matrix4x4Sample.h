@@ -39,8 +39,8 @@ public:
 		earth->meshes = loader.meshes;
 		earth->textures = loader.loadedTextures;
 		earth->Init();
-		earth->transform->scale = Vector3(1.0f);
-		earth->transform->position = Vector3(10.0f, 0.0f, 0.0f);
+		earth->transform->scale = Vector3(0.5f);
+		earth->transform->position = Vector3(15.0f, 0.0f, 0.0f);
 		auto earthTexture = textureLoader.Load("res/texture/earth.jpg");
 		earth->material.shader->setTexture("MainTextureData.texture", earthTexture);
 		earth->material.shader->setColor(MAIN_COLOR, Color(204, 204, 204, 128));
@@ -48,28 +48,41 @@ public:
 		earth->material.shader->setFloat("Specular_Intensity", 0.0f);
 		earth->material.shader->setFloat("Specular_Attenuation", 64.0f);
 
-		Gizmos::DrawAxis(sun->transform,Vector3(5.0f));
-		Gizmos::DrawAxis(earth->transform);
+		// todo fix : why axis helper
+		// Gizmos::DrawAxis(sun->transform,Vector3(5.0f));
+		// Gizmos::DrawAxis(earth->transform);
 
-		sun->transform->SetEulerangle(Vector3(0.0f,0.0f,-15.0f));
+		// sun->transform->SetEulerangle(Vector3(0.0f,0.0f,-15.0f));
 	}
 
-	float angle = 0.0f;
+	float sunRotate = 0.0f;
+	float earthRotate = 0.0f;
+	float revolution = 0.0f;
 
 	void Update() override
 	{
-		// todo : 为什么scale导致position错误
-		// 1. 地球自转
-		// earth->transform->eulerangle.y += 2.0f;
-		// 2. 地球绕太阳转
-
-		// 3. 太阳自转
+		// 1. 太阳自转
 		const Vector3 eulerangle = sun->transform->GetEulerangle();
-		angle += 0.5f;
-		if (angle > 360.0f)
-			angle -= 360.0f;
-		Vector3 euler = Vector3(eulerangle.x, angle, eulerangle.z);
+		sunRotate += 0.5f;
+		if (sunRotate > 360.0f)
+			sunRotate -= 360.0f;
+		Vector3 euler = Vector3(eulerangle.x, sunRotate, eulerangle.z);
 		sun->transform->SetEulerangle(euler);
+
+		// 2. 地球自转
+		const Vector3 ee = earth->transform->GetEulerangle();
+		earthRotate += 1.5f;
+		if (earthRotate > 360.0f)
+			earthRotate -= 360.0f;
+		Vector3 earthEuler = Vector3(ee.x,earthRotate,ee.z);
+		earth->transform->SetEulerangle(earthEuler);
+
+		// 3. 地球绕太阳转 rotate around sun->transform->up
+		// calculate earth.transform.position
+		revolution += 1.0f;
+		if (revolution > 360.0f)
+			revolution -= 360.0f;
+		earth->transform->RotateAround(sun->transform->position,sun->transform->up,0.1f);
 	}
 
 	void Destroy() override 
