@@ -82,21 +82,18 @@ void Gizmos::DrawCircle(Vector3 pos, Vector3 up, float radius, unsigned int smoo
 
 	Vector3 rotateAxis = Vector3::Normalize(up);
 	Gizmos::color = Colorf::megenta;
-	Gizmos::DrawLine(Vector3::zero, rotateAxis);
-	Gizmos::DrawLine(Vector3::zero, Vector3::right);
 	Vector3 helper = Vector3::Normalize(Vector3::Cross(rotateAxis, Vector3::right)); // helper is a vertical vector of up
-	Gizmos::DrawLine(Vector3::zero, helper);
 	float perAngle = 360.0f / Mathf::Clamp(smoothness, 12, 120);
 
 	for (unsigned int i = 0; i < smoothness; i++)
 	{
 		Vertex vertex;
-		Vector3 base = helper;// *radius;
+		Vector3 base = helper;
 		float angle = perAngle * i;
 		Matrix4x4 R = Matrix4x4::Rotate(angle, rotateAxis);
 		base = R * base;
-		Gizmos::DrawLine(Vector3::zero, base);
-		vertex.vertex =base;  // pos +
+		vertex.vertex = pos + base * radius;
+		vertex.color = Gizmos::color;
 		vertices.push_back(vertex);
 		indices.push_back(i);
 	}

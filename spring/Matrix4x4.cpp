@@ -66,15 +66,14 @@ Matrix4x4 Matrix4x4::Rotate(float angle, Vector3 axis)
 	float cosAlpha = axis.z / ((sqrtYZ == 0.0f) ? 1.0f : sqrtYZ);
 	float ALPHA = Mathf::Angle(Mathf::Acos(cosAlpha));
 
-	Matrix4x4 rx = Matrix4x4::RotateX(ALPHA);
-
 	float cosBeta = Mathf::Sqrt(axis.y * axis.y + axis.z * axis.z) / Vector3::Magnitude(axis);
 	float BETA = Mathf::Angle(Mathf::Acos(cosBeta));
 
-	Matrix4x4 ry = Matrix4x4::RotateY(BETA);
+	Matrix4x4 rx = Matrix4x4::RotateX(ALPHA);
+	Matrix4x4 ry = Matrix4x4::RotateY(-BETA);
 	Matrix4x4 rz = Matrix4x4::RotateZ(angle);
 	Matrix4x4 irx = Matrix4x4::RotateX(-ALPHA);
-	Matrix4x4 iry = Matrix4x4::RotateY(-BETA);
+	Matrix4x4 iry = Matrix4x4::RotateY(BETA);
 	auto result = irx * iry * rz * ry * rx;
 	return result;
 }
