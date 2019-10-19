@@ -46,11 +46,6 @@ namespace spring
 		Material();
 		Material(const char*verexShaderFile,const char*fragmentShaderFile);
 		Material(Shader* shader);
-
-		// todo : set value for shader 's attribute and uniform 
-		float* GetVec3( const char* nameID );
-		void SetVec3( const char* nameID,float* value);
-
 		void EnableCullFace() 
 		{
 			switch (this->cullface) 
@@ -75,5 +70,9 @@ namespace spring
 				break;
 			}
 		}
+
+		// todo : set value for shader 's attribute and uniform 
+		float* GetVec3( const char* nameID );
+		void SetVec3( const char* nameID,float* value);
 	};
 }

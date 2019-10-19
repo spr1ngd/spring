@@ -52,7 +52,14 @@ public:
 		Gizmos::DrawAxis(sun->transform,Vector3(5.0f));
 		// Gizmos::DrawAxis(earth->transform);
 
-		sun->transform->SetEulerangle(Vector3(0.0f,0.0f,-15.0f));
+		// Gizmos::color = Colorf::cyan;
+		// Gizmos::DrawLine(Vector3(0.0f, 0.0f, 0.0f), Vector3(20.0f, 20.0f, 20.0f));
+
+		// sun->transform->SetEulerangle(Vector3(0.0f,0.0f,-15.0f));
+		Gizmos::color = Colorf::megenta;
+		Gizmos::DrawLine(Vector3(5.0f), Vector3(6.0f));
+		Gizmos::color = Colorf::red;
+		Gizmos::DrawCircle(Vector3(5.0f,5.0f,5.0), Vector3::up, 6.0f, 12);
 	}
 
 	float sunRotate = 0.0f;
@@ -84,7 +91,7 @@ public:
 		if (revolution > 360.0f)
 			revolution -= 360.0f;
 		earth->transform->RotateAround(sun->transform->position,/*sun->transform->up*/ Vector3(-1.0f,1.0f,-1.0f) ,2.0f);
-		Console::LogFormat("%f,%f,%f",earth->transform->position.x,earth->transform->position.y,earth->transform->position.z);
+// 		Console::LogFormat("%f,%f,%f",earth->transform->position.x,earth->transform->position.y,earth->transform->position.z);
 	}
 
 	void Destroy() override 

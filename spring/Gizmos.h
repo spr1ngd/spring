@@ -2,6 +2,7 @@
 #include <vector>
 #include "vector2.h"
 #include "axishelper.h"
+#include "space.h"
 
 using namespace std;
 
@@ -11,13 +12,21 @@ namespace spring
 	class Gizmos
 	{
 	private:
+		Material* material;
+		Mesh* mesh;
+		MeshRenderer* meshrenderer;
+
+		static vector<Gizmos*> gizmos;
 		static vector<AxisHelper*> axisHelpers;
 		static unsigned int mode;
+		static Space space;
 	public:
+		static Colorf color;
 		static void DrawAxis(Vector3 pos);
 		static void DrawAxis(Transform* transform,Vector3 size = Vector3::one);
-		static void DrawLine(Vector2 start,Vector2 end);
-		static void DrawVector(Vector2 vec2);
+
+		static void DrawLine(Vector3 start, Vector3 end);
+		static void DrawCircle(Vector3 pos,Vector3 up,float radius,unsigned int smoothness = 12);
 
 		static void SetMode(unsigned int mode);
 		static unsigned int GetMode();

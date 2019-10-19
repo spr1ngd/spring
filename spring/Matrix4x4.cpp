@@ -57,7 +57,6 @@ float& Matrix4x4::operator[](int index)
 
 Vector3 Matrix4x4::Rotate(float angle,Vector3 axis,Vector3 vec3)
 {
-	// todo 
 	return vec3;
 }
 

@@ -228,6 +228,7 @@
     <ClInclude Include="Screen.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="Skybox.h" />
+    <ClInclude Include="Space.h" />
     <ClInclude Include="spring.h" />
     <ClInclude Include="SpringEngine.h" />
     <ClInclude Include="Texture.h" />
