@@ -1,5 +1,6 @@
 #include "meshrenderer.h"
 #include "graphic.h"
+#include "matrix4x4.h"
 
 using namespace spring;
 
@@ -59,6 +60,11 @@ void MeshRenderer::Render()
 		Mesh* mesh = &meshes[i];
 		mesh->Draw([&](void)
 			{
+				Matrix4x4 T = Matrix4x4::Translate(this->transform->position.x, this->transform->position.y, this->transform->position.z);
+				Matrix4x4 R = this->transform->rotationMatrix;
+				Matrix4x4 S = Matrix4x4::Scale(this->transform->scale.x, this->transform->scale.y, this->transform->scale.z);
+				Matrix4x4 MODEL = T * R * S;
+
 				glm::mat4 model =
 					glm::translate(glm::mat4(1.0), glm::vec3(this->transform->position.x, this->transform->position.y, this->transform->position.z)) * 
 					glm::rotate(glm::mat4(1.0f), glm::radians(this->transform->eulerangle.z), glm::vec3(0.0f, 0.0f, 1.0f)) *
@@ -69,6 +75,7 @@ void MeshRenderer::Render()
 
 				GLuint mLocation = this->material.shader->getLocation(MATRIX_M);
 				glUniformMatrix4fv(mLocation, 1, GL_FALSE, glm::value_ptr(model));
+				// glUniformMatrix4fv(mLocation, 1, GL_FALSE, MODEL);
 
 				GLuint nmLocation = this->material.shader->getLocation(MATRIX_NM);
 				glUniformMatrix4fv(nmLocation,1,GL_FALSE,glm::value_ptr(nm));

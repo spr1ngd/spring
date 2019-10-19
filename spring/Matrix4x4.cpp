@@ -63,15 +63,21 @@ Vector3 Matrix4x4::Rotate(float angle,Vector3 axis,Vector3 vec3)
 
 Matrix4x4 Matrix4x4::Rotate(float angle, Vector3 axis)
 { 
-	// todo : test this method 
-	float alpha = Mathf::Angle(Mathf::Acos(Mathf::Abs(axis.z) / Mathf::Sqrt(Mathf::Pow(axis.x, 2.0f) + Mathf::Pow(axis.y, 2.0f))));
-	Matrix4x4 RX = Matrix4x4::RotateX(alpha);
-	float beta = Mathf::Angle(Mathf::Acos(Mathf::Sqrt(axis.y * axis.y + axis.z * axis.z) / Mathf::Sqrt(axis.x * axis.x + axis.y + axis.y + axis.z * axis.z)));
-	Matrix4x4 RY = Matrix4x4::RotateY(-beta);
-	Matrix4x4 IRX = Matrix4x4::RotateX(-alpha);
-	Matrix4x4 IRY = Matrix4x4::RotateY(beta);
-	Matrix4x4 RZ = Matrix4x4::RotateZ(angle);
-	return IRX * IRY * RZ * RY * RX;
+	float sqrtYZ = Mathf::Sqrt(axis.y * axis.y + axis.z * axis.z);
+	float cosAlpha = axis.z / ((sqrtYZ == 0.0f) ? 1.0f : sqrtYZ);
+	float ALPHA = Mathf::Angle(Mathf::Acos(cosAlpha));
+
+	Matrix4x4 rx = Matrix4x4::RotateX(ALPHA);
+
+	float cosBeta = Mathf::Sqrt(axis.y * axis.y + axis.z * axis.z) / Vector3::Magnitude(axis);
+	float BETA = Mathf::Angle(Mathf::Acos(cosBeta));
+
+	Matrix4x4 ry = Matrix4x4::RotateY(BETA);
+	Matrix4x4 rz = Matrix4x4::RotateZ(angle);
+	Matrix4x4 irx = Matrix4x4::RotateX(-ALPHA);
+	Matrix4x4 iry = Matrix4x4::RotateY(-BETA);
+	auto result = irx * iry * rz * ry * rx;
+	return result;
 }
 
 Matrix4x4 Matrix4x4::RotateX(float angle) 
@@ -307,5 +313,17 @@ Vector4 Matrix4x4::operator*(const Vector4 vec4)
 		this->m31 * vec4.x + this->m32 * vec4.y + this->m33 * vec4.z + this->m34 * vec4.w,
 		this->m41 * vec4.x + this->m42 * vec4.y + this->m43 * vec4.z + this->m44 * vec4.w
 	);
+	return result;
+}
+
+Matrix4x4::operator float* () 
+{
+	float* result = new float[16] 
+	{
+		this->m11,this->m12,this->m13,this->m14,
+		this->m21,this->m22,this->m23,this->m24,
+		this->m31,this->m32,this->m33,this->m34,
+		this->m41,this->m42,this->m43,this->m44,
+	};
 	return result;
 }

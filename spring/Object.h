@@ -18,7 +18,7 @@ namespace spring
 		const char* name;
 
 		Object();
-		const char* ToString();
+		virtual const char* ToString();
 		unsigned long GetInstanceID();
 		static Object* Instantiate(Object obj);
 		static void Destroy();

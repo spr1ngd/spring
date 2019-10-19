@@ -11,8 +11,8 @@ namespace spring
 	{
 	private:
 
-		Matrix4x4 rotationMatrix = Matrix4x4::indentity;
 	public: 
+		Matrix4x4 rotationMatrix = Matrix4x4::indentity;
 		Vector3 up = Vector3::up;
 		Vector3 right = Vector3::right;
 		Vector3 forword = Vector3::forward;

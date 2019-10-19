@@ -57,5 +57,6 @@ namespace spring
 		Vector2 operator*(const Vector2 vec2);
 		Vector3 operator*(const Vector3 vec3);
 		Vector4 operator*(const Vector4 vec4);
+		operator float* ();
 	};
 }

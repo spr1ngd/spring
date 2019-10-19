@@ -40,7 +40,7 @@ public:
 		earth->textures = loader.loadedTextures;
 		earth->Init();
 		earth->transform->scale = Vector3(0.5f);
-		earth->transform->position = Vector3(15.0f, 0.0f, 0.0f);
+		earth->transform->position = Vector3(5.0f, 0.0f, 0.0f);
 		auto earthTexture = textureLoader.Load("res/texture/earth.jpg");
 		earth->material.shader->setTexture("MainTextureData.texture", earthTexture);
 		earth->material.shader->setColor(MAIN_COLOR, Color(204, 204, 204, 128));
@@ -49,10 +49,10 @@ public:
 		earth->material.shader->setFloat("Specular_Attenuation", 64.0f);
 
 		// todo fix : why axis helper
-		// Gizmos::DrawAxis(sun->transform,Vector3(5.0f));
+		Gizmos::DrawAxis(sun->transform,Vector3(5.0f));
 		// Gizmos::DrawAxis(earth->transform);
 
-		// sun->transform->SetEulerangle(Vector3(0.0f,0.0f,-15.0f));
+		sun->transform->SetEulerangle(Vector3(0.0f,0.0f,-15.0f));
 	}
 
 	float sunRotate = 0.0f;
@@ -66,8 +66,9 @@ public:
 		sunRotate += 0.5f;
 		if (sunRotate > 360.0f)
 			sunRotate -= 360.0f;
-		Vector3 euler = Vector3(eulerangle.x, sunRotate, eulerangle.z);
-		sun->transform->SetEulerangle(euler);
+		Vector3 eulerY = Vector3(eulerangle.x, sunRotate, eulerangle.z);
+		// sun->transform->SetEulerangle(eulerY);
+		// sun->transform->Rotate(sun->transform->up, sunRotate);
 
 		// 2. 地球自转
 		const Vector3 ee = earth->transform->GetEulerangle();
@@ -75,14 +76,15 @@ public:
 		if (earthRotate > 360.0f)
 			earthRotate -= 360.0f;
 		Vector3 earthEuler = Vector3(ee.x,earthRotate,ee.z);
-		earth->transform->SetEulerangle(earthEuler);
+		// earth->transform->SetEulerangle(earthEuler);
 
 		// 3. 地球绕太阳转 rotate around sun->transform->up
 		// calculate earth.transform.position
-		revolution += 1.0f;
+		revolution += 5.0f;
 		if (revolution > 360.0f)
 			revolution -= 360.0f;
-		earth->transform->RotateAround(sun->transform->position,sun->transform->up,0.1f);
+		earth->transform->RotateAround(sun->transform->position,/*sun->transform->up*/ Vector3(-1.0f,1.0f,-1.0f) ,2.0f);
+		Console::LogFormat("%f,%f,%f",earth->transform->position.x,earth->transform->position.y,earth->transform->position.z);
 	}
 
 	void Destroy() override 
