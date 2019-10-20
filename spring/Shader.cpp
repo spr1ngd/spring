@@ -420,7 +420,7 @@ void Shader::setEngineEnvironment()
 			this->setFloat(quadraticStr.c_str(), light->quadratic);
 			this->setFloat(cutoffStr.c_str(), glm::cos(glm::radians(light->spotAngle / 2.0f)));
 			this->setFloat(outerCutoffStr.c_str(), glm::cos(glm::radians(light->outterAngle / 2.0f)));
-			this->setVec3(directionStr.c_str(), light->transform->eulerangle);
+			this->setVec3(directionStr.c_str(), light->transform->GetEulerangle());
 			spotLightCount++;
 		}
 		else 

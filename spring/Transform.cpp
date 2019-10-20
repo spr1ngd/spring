@@ -11,9 +11,9 @@ Transform::Transform()
 
 void Transform::SetEulerangle(Vector3 eulerangle)
 { 
-	Matrix4x4 RZ = Matrix4x4::RotateZ(eulerangle.z); // Matrix4x4::Rotate(eulerangle.z, Vector3::forward); 
-	Matrix4x4 RX = Matrix4x4::RotateX(eulerangle.x); // Matrix4x4::Rotate(eulerangle.x, Vector3::right);   
-	Matrix4x4 RY = Matrix4x4::RotateY(eulerangle.y); // Matrix4x4::Rotate(eulerangle.y, Vector3::up);      
+	Matrix4x4 RZ = Matrix4x4::RotateZ(eulerangle.z);
+	Matrix4x4 RX = Matrix4x4::RotateX(eulerangle.x);
+	Matrix4x4 RY = Matrix4x4::RotateY(eulerangle.y);
 	this->rotationMatrix = RY * RX * RZ;
 	this->right = this->rotationMatrix * this->right;
 	this->up = this->rotationMatrix * this->up;
@@ -45,8 +45,14 @@ void Transform::Rotate(Vector3 axis, float angle)
 	// this->right = this->rotationMatrix * this->right;
 	// this->up = this->rotationMatrix * this->up;
 	// this->forword = this->rotationMatrix * this->forword;
-	this->position = IT * R * T * this->position;
+	// this->position = IT * R * T * this->position;
 	// sync to eulerangle
+
+
+	// 在当前旋转矩阵上 乘以新的旋转矩阵
+	this->rotationMatrix = IT * R * T * this->rotationMatrix;
+	// 利用旋转矩阵推算出当前欧拉角，但是可能会推算出多个欧拉角吧？取正负绝对值最小的
+	// 要检查万向锁问题
 }
 
 void Transform::RotateAround(Vector3 point,Vector3 axis, float angle)

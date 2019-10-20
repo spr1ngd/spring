@@ -40,7 +40,7 @@ public:
 		earth->textures = loader.loadedTextures;
 		earth->Init();
 		earth->transform->scale = Vector3(0.5f);
-		earth->transform->position = Vector3(5.0f, 0.0f, 0.0f);
+		// earth->transform->position = Vector3(6.0f, 0.0f, 0.0f);
 		auto earthTexture = textureLoader.Load("res/texture/earth.jpg");
 		earth->material.shader->setTexture("MainTextureData.texture", earthTexture);
 		earth->material.shader->setColor(MAIN_COLOR, Color(204, 204, 204, 128));
@@ -49,19 +49,12 @@ public:
 		earth->material.shader->setFloat("Specular_Attenuation", 64.0f);
 
 		// todo fix : why axis helper
-		Gizmos::DrawAxis(sun->transform,Vector3(5.0f));
-		// Gizmos::DrawAxis(earth->transform);
+		Gizmos::DrawAxis(sun->transform,Vector3(6.0f));
+		// Gizmos::DrawAxis(earth->transform); 
 
-		Gizmos::color = Colorf::cyan;
-		Gizmos::DrawLine(Vector3(0.0f, 0.0f, 0.0f), Vector3(20.0f, 20.0f, 20.0f));
-
-		// sun->transform->SetEulerangle(Vector3(0.0f,0.0f,-15.0f));
-
-		Gizmos::color = Colorf::red;
-		for (int i = 0; i < 6; i++) 
-		{
-			Gizmos::DrawCircle(Vector3(5.0f, 5.0f, 5.0) + Vector3(1.0f) * i , Vector3::one, 6.0f - i, 120);
-		}
+		sun->transform->SetEulerangle(Vector3(0.0f,0.0f,-15.0f));
+		earth->transform->position = sun->transform->position + sun->transform->right * 15.0f;
+		Gizmos::DrawCircle(sun->transform->position, sun->transform->up, 15.0f, 120);
 	}
 
 	float sunRotate = 0.0f;
@@ -76,8 +69,8 @@ public:
 		if (sunRotate > 360.0f)
 			sunRotate -= 360.0f;
 		Vector3 eulerY = Vector3(eulerangle.x, sunRotate, eulerangle.z);
+		// todo : 太阳自转应该绕着自己的y轴进行旋转
 		// sun->transform->SetEulerangle(eulerY);
-		// sun->transform->Rotate(sun->transform->up, sunRotate);
 
 		// 2. 地球自转
 		const Vector3 ee = earth->transform->GetEulerangle();
@@ -85,15 +78,13 @@ public:
 		if (earthRotate > 360.0f)
 			earthRotate -= 360.0f;
 		Vector3 earthEuler = Vector3(ee.x,earthRotate,ee.z);
-		// earth->transform->SetEulerangle(earthEuler);
+		earth->transform->SetEulerangle(earthEuler);
 
-		// 3. 地球绕太阳转 rotate around sun->transform->up
-		// calculate earth.transform.position
+		// 3. 地球绕太阳转
 		revolution += 5.0f;
 		if (revolution > 360.0f)
 			revolution -= 360.0f;
-		earth->transform->RotateAround(sun->transform->position,/*sun->transform->up*/ Vector3(-1.0f,1.0f,-1.0f) ,2.0f);
-// 		Console::LogFormat("%f,%f,%f",earth->transform->position.x,earth->transform->position.y,earth->transform->position.z);
+		earth->transform->RotateAround(sun->transform->position,sun->transform->up,1.0f); 
 	}
 
 	void Destroy() override 

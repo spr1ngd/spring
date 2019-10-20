@@ -44,7 +44,7 @@ void AxisHelper::Render()
 	/*if (gizmosMode == GIZMOS_LOCAL)
 		this->meshRenderer->transform->eulerangle = this->transform->eulerangle;
 	else*/
-		this->meshRenderer->transform->eulerangle = Vector3::zero;
+		this->meshRenderer->transform->SetEulerangle(Vector3::zero);
 	switch (this->mode) 
 	{
 	case AxisHelper::Mode::Axis:

@@ -30,7 +30,7 @@ void Sample::Awake()
 		light->type = lightType;
 		light->color = lightColor;
 		light->intensity = intensity;
-		light->transform->eulerangle = eulerangle;
+		light->transform->SetEulerangle(eulerangle);
 		light->transform->position = position;
 		return light;
 	};
@@ -102,7 +102,7 @@ void Sample::Awake()
 				meshRenderer->Init();
 				meshRenderer->transform->position = Vector3(-10.0f + i * 2.0f, 0.0, -10.0f + j * 2.0f);
 				meshRenderer->transform->scale = Vector3(1.0f);
-				meshRenderer->transform->eulerangle = Vector3(-90.0f, 0.0f, 0.0f);
+				meshRenderer->transform->SetEulerangle(Vector3(-90.0f, 0.0f, 0.0f));
 				meshRenderer->material.shader->setColor(MAIN_COLOR, Color(204, 204, 204, 128));
 				meshRenderer->material.shader->setColor("Specular_Color", Color::white);
 				meshRenderer->material.shader->setFloat("Specular_Intensity", 1.0f);
@@ -126,9 +126,9 @@ void Sample::Update()
 	if (enable) 
 	{
 		float angleDelta = speed * Timer::deltaTime;
-		lightModel->transform->eulerangle.z += angleDelta;
+		/*lightModel->transform->eulerangle.z += angleDelta;
 		if (lightModel->transform->eulerangle.z > 360.0f)
-			lightModel->transform->eulerangle.z -= 360.0f;
+			lightModel->transform->eulerangle.z -= 360.0f;*/
 	}
 }
 
