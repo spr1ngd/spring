@@ -1,6 +1,7 @@
 #pragma once
 #include "mathf.h"
 #include "vector3.h"
+#include "matrix4x4.h"
 
 namespace spring 
 {
@@ -17,12 +18,10 @@ namespace spring
 		static Quaternion indentity;
 	public:
 		Quaternion(float x = 0.0f, float y = 0.0f, float z = 0.0f, float w = 1.0f);
-
-		float Angle() const;
+		 
 		float Magnitude() const;
-		void Normalize();
-		Vector3 AngleAxis() const;
-		Vector3 Eulerangle() const ;
+		void Normalize(); 
+		Vector3 EulerAngle() const ;
 
 		static Quaternion RotateX(float theta);
 		static Quaternion RotateY(float theta);
@@ -30,11 +29,17 @@ namespace spring
 		static Quaternion Rotate(Vector3 axis,float theta);
 
 		static Quaternion Euler(const Vector3& eulerangle);
-		static Quaternion Normalize(const Quaternion &quaternion);
-		static Quaternion Conjugate(const Quaternion &quaternion);
+		static Quaternion Euler(float x, float y, float z);
+		static Quaternion Normalize(const Quaternion& rotation);
+		static Quaternion Conjugate(const Quaternion& rotation);
 
-		Quaternion operator*(const Quaternion &a);
-		Quaternion operator*=(const Quaternion &a);
+		static Matrix4x4 ToRotationMatrix(const Quaternion& rotation);
+
+		Quaternion operator*(const Quaternion& a);
+		Quaternion operator*=(const Quaternion& a);
+		Vector3 operator*(const Vector3& vec3);
+
+		const char* ToString();
 	};
 }
 

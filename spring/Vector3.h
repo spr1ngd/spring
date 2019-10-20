@@ -55,11 +55,12 @@ namespace spring
 		void operator=(const Vector3& vec3);
 		bool operator==(const Vector3& vec3);
 		
-		static float Magnitude(const Vector3 vec3);
+		static float Magnitude(const Vector3& vec3);
 		static Vector3 Normalize(Vector3 vec3);
-		static float Dot(const Vector3 a, const Vector3 b);
-		static Vector3 Cross(const Vector3 a, const Vector3 b);
-		static Vector3 Lerp(const Vector3 a, const Vector3 b, const float value);
+		static float Distance(const Vector3& a,const Vector3& b);
+		static float Dot(const Vector3& a, const Vector3& b);
+		static Vector3 Cross(const Vector3& a, const Vector3& b);
+		static Vector3 Lerp(const Vector3& a, const Vector3& b, const float value);
 
 		operator Vector2();
 		operator Vector4();

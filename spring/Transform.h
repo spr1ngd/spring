@@ -1,9 +1,9 @@
 #pragma once
 #include "glm/glm.hpp"
 #include "node.h"
+#include "quaternion.h"
 #include "vector3.h"
 #include "matrix4x4.h"
-#include "quaternion.h"
 
 namespace spring
 { 
@@ -11,6 +11,7 @@ namespace spring
 	{
 	private:
 		Vector3 eulerangle = Vector3::zero;
+		Quaternion rotation = Quaternion::indentity;
 
 	public: 
 		Matrix4x4 rotationMatrix = Matrix4x4::indentity;
@@ -20,12 +21,20 @@ namespace spring
 		Vector3 position = Vector3::zero;
 		Vector3 scale = Vector3::one;
 
-		Quaternion quaternion = Quaternion::indentity;
 	public:
 		Transform(); 
 
 		void SetEulerangle(Vector3 eulerangle);
-		const Vector3 GetEulerangle();
+		const Vector3& GetEulerangle();
+
+		void SetRotation(Quaternion rotation);
+		const Quaternion& GetRotation();
+
+		void SetPosition(Vector3 position);
+		const Vector3& GetPosition();
+
+		void SetScale(Vector3 scale);
+		const Vector3& GetScale();
 
 		void LookAt(Vector3 target,bool isLocal = true);
 		void Rotate(Vector3 axis,float angle);

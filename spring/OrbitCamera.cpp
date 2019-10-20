@@ -1,7 +1,7 @@
 #include "orbitcamera.h"
 #include "console.h"
 #include "input.h"
-#include "matrix4x4.h"
+#include "mathf.h"
 
 using namespace spring;
 using namespace spring::editor;
@@ -54,6 +54,7 @@ void OrbitCamera::Update()
 void OrbitCamera::Zoom()
 {
 	this->enableZoom = Input::mouseWheelDelta != 0.0f;
+	this->distance = Vector3::Distance(this->target, this->camera->transform->GetPosition());
 	if (!this->enableZoom)
 		return;
 	Vector3 direction = Vector3::Normalize(this->target - this->camera->transform->position) * Input::mouseWheelDelta;
@@ -64,17 +65,20 @@ void OrbitCamera::Rotate()
 {
 	if (!this->enableRotate)
 		return;
-	Vector3 distance = this->camera->transform->position - this->target;
-	Matrix4x4 T = Matrix4x4::Translate(-distance.x, -distance.y, -distance.z);
-	Matrix4x4 RY = Matrix4x4::RotateY(Input::mouseDelta.x / 10.0f * rotateSpeed);
-	Vector3 axis = this->camera->transform->right;
-	// Console::LogFormat("rotate axis %f,%f,%f", axis.x, axis.y, axis.z);
-	// Console::ErrorFormat("camera pos %f,%f,%f", this->camera->transform->position.x, this->camera->transform->position.y, this->camera->transform->position.z);
-	Matrix4x4 RR = Matrix4x4::Rotate(Input::mouseDelta.y / 10.0f * rotateSpeed, axis);
-	Matrix4x4 IT = Matrix4x4::Translate(distance.x, distance.y, distance.z);
 
-	this->camera->transform->position = IT * RY /** RR */* T * this->camera->transform->position;
-	// this->camera->transform->LookAt(Vector3::zero);
+	float minY = -20.0f;
+	float maxY = 80.0f; 
+
+	float x = Input::mouseDelta.x / 10.0f * rotateSpeed;
+	float y = Input::mouseDelta.y / 10.0f * rotateSpeed;
+
+	y = Mathf::Clamp(y, minY, maxY);
+	Quaternion rotation = Quaternion::Euler(y, x, 0.0f);
+
+	Vector3 negativeDistance = Vector3(0.0f,0.0f,-this->distance);
+	Vector3 position = rotation * negativeDistance + this->target;
+	this->camera->transform->SetRotation(rotation);
+	this->camera->transform->SetPosition(position);
 }
 
 void OrbitCamera::Pan()

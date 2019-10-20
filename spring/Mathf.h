@@ -39,6 +39,10 @@ namespace spring
 		{
 			return atan(tan);
 		}
+		static float Atan2(float y, float x)
+		{
+			return atan2(y, x);
+		}
 
 		static float Radian(float angle) 
 		{

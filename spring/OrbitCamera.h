@@ -25,6 +25,7 @@ namespace spring
 			float zoomSpeed = 0.5f;
 			float panSpeed = 0.1f;
 			float moveSpeed = 1.0f;
+			float distance = 1.0f;
 
 			OrbitCamera();
 			void Awake() override;

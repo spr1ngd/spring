@@ -19,13 +19,44 @@ void Transform::SetEulerangle(Vector3 eulerangle)
 	this->up = this->rotationMatrix * this->up;
 	this->forword = this->rotationMatrix * this->forword;
 	this->eulerangle = eulerangle;
-
-	// todo : update quaternion
+	
+	// todo : update rotation 
 }
 
-const Vector3 Transform::GetEulerangle() 
+const Vector3& Transform::GetEulerangle() 
 {
 	return this->eulerangle;
+}
+
+void Transform::SetRotation(Quaternion rotation) 
+{
+	this->rotation = rotation;
+	// todo : update eulerangle and rotation matrix
+}
+
+const Quaternion& Transform::GetRotation() 
+{
+	return this->rotation;
+}
+
+void Transform::SetPosition(Vector3 position) 
+{
+	this->position = position;
+}
+
+const Vector3& Transform::GetPosition() 
+{
+	return this->position;
+}
+
+void Transform::SetScale(Vector3 scale) 
+{
+	this->scale = scale;
+}
+
+const Vector3& Transform::GetScale() 
+{
+	return this->scale;
 }
 
 void Transform::LookAt(Vector3 target,bool isLocal)

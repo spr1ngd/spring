@@ -1,6 +1,7 @@
 #include "vector2.h"
 #include "vector3.h"
 #include "vector4.h"
+#include "mathf.h"
 
 using namespace spring; 
 
@@ -13,7 +14,7 @@ const Vector3 Vector3::right = Vector3(1.0f,0.0f,0.0f);
 const Vector3 Vector3::forward = Vector3(0.0f,0.0f,1.0f);
 const Vector3 Vector3::back = Vector3(0.0f,0.0f,-1.0f);
 
-float Vector3::Magnitude(const Vector3 vec3)
+float Vector3::Magnitude(const Vector3& vec3)
 {
 	return sqrtf(vec3.x * vec3.x + vec3.y * vec3.y + vec3.z * vec3.z);
 }
@@ -27,7 +28,15 @@ Vector3 Vector3::Normalize(Vector3 vec3)
 	return normalize;
 }
 
-float Vector3::Dot(const Vector3 a,const Vector3 b)
+float Vector3::Distance(const Vector3& a, const Vector3& b) 
+{
+	return Mathf::Sqrt( 
+		Mathf::Pow(a.x-b.x,2.0f) +
+		Mathf::Pow(a.y-b.y,2.0f) + 
+		Mathf::Pow(a.z-b.z,2.0f));
+}
+
+float Vector3::Dot(const Vector3& a,const Vector3& b)
 {
 	float multiValue = a.x * b.x + a.y * b.y + a.z * b.z;
 	float aMagnitude = Vector3::Magnitude(a);
@@ -36,12 +45,12 @@ float Vector3::Dot(const Vector3 a,const Vector3 b)
 	return result;
 }
 
-Vector3 Vector3::Cross(const Vector3 a,const Vector3 b)
+Vector3 Vector3::Cross(const Vector3& a,const Vector3& b)
 {
 	return Vector3(a.y * b.z - b.y * a.z, a.z * b.x - b.z * a.x, a.x * b.y - b.x * a.y);
 }
 
-Vector3 Vector3::Lerp(const Vector3 a, const Vector3 b,const float value)
+Vector3 Vector3::Lerp(const Vector3& a, const Vector3& b,const float value)
 {
 	float oneMinus = 1 - value;
 	return Vector3(a.x * value + b.x * oneMinus,
