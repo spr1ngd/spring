@@ -58,12 +58,12 @@ void Sample::Awake()
 	camera = new Camera();
 	camera->clearFlag = Camera::ClearFlag::Skybox;
 	camera->background = Color(31, 113, 113, 255);
-	camera->transform->position = Vector3(16.0f, 16.0f, 16.0f);
+	camera->transform->SetPosition(Vector3(0.0f, 0.0f, 25.0f));
 	camera->transform->LookAt(Vector3::zero);
 
 	orbit = new OrbitCamera();
 	orbit->target = Vector3::zero;
-	orbit->zoomSpeed = 0.25f;
+	orbit->zoomSpeed = 1.0f;
 
 #pragma endregion
 

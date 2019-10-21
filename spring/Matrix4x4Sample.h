@@ -52,7 +52,7 @@ public:
 		Gizmos::DrawAxis(sun->transform,Vector3(6.0f));
 		// Gizmos::DrawAxis(earth->transform); 
 
-		sun->transform->SetEulerangle(Vector3(0.0f,0.0f,-15.0f));
+		// sun->transform->SetEulerangle(Vector3(0.0f,0.0f,15.0f));
 		earth->transform->position = sun->transform->position + sun->transform->right * 15.0f;
 		Gizmos::DrawCircle(sun->transform->position, sun->transform->up, 15.0f, 120);
 

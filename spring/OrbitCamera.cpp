@@ -7,6 +7,7 @@ using namespace spring;
 using namespace spring::editor;
 
 Vector2 mouseOffset = Vector2::zero;
+float x = 0.0f, y = 0.0f;
 
 OrbitCamera::OrbitCamera() 
 {
@@ -15,7 +16,10 @@ OrbitCamera::OrbitCamera()
 
 void OrbitCamera::Awake() 
 {
-
+	auto euler = this->camera->transform->GetEulerangle();
+	x = euler.x;
+	y = euler.y;
+	this->distance = Vector3::Distance(this->target, this->camera->transform->GetPosition());
 }
 
 void OrbitCamera::Destroy() 
@@ -24,10 +28,10 @@ void OrbitCamera::Destroy()
 }
 
 void OrbitCamera::Update() 
-{   
-	this->Zoom();
+{    
 	if (Input::GetMouseDown(MouseID::LEFT)) 
 	{
+
 	}
 	if (Input::GetMouse(MouseID::LEFT)) 
 	{
@@ -54,11 +58,11 @@ void OrbitCamera::Update()
 void OrbitCamera::Zoom()
 {
 	this->enableZoom = Input::mouseWheelDelta != 0.0f;
-	this->distance = Vector3::Distance(this->target, this->camera->transform->GetPosition());
 	if (!this->enableZoom)
 		return;
-	Vector3 direction = Vector3::Normalize(this->target - this->camera->transform->position) * Input::mouseWheelDelta;
-	this->camera->transform->position += direction * zoomSpeed;
+	this->distance = Mathf::Clamp(this->distance - Input::mouseWheelDelta * zoomSpeed,this->minDistance,this->maxDistance);
+	Vector3 direction = Vector3::Normalize(this->camera->transform->position - this->target);
+	this->camera->transform->position = direction * this->distance;
 }
 
 void OrbitCamera::Rotate()
@@ -66,19 +70,20 @@ void OrbitCamera::Rotate()
 	if (!this->enableRotate)
 		return;
 
-	float minY = -20.0f;
-	float maxY = 80.0f; 
+	float minY = -80.0f;
+	float maxY = 20.0f;
 
-	float x = Input::mouseDelta.x / 10.0f * rotateSpeed;
-	float y = Input::mouseDelta.y / 10.0f * rotateSpeed;
+	x -= Input::mouseDelta.x / 10.0f * rotateSpeed;
+	y += Input::mouseDelta.y / 10.0f * rotateSpeed;
 
 	y = Mathf::Clamp(y, minY, maxY);
-	Quaternion rotation = Quaternion::Euler(y, x, 0.0f);
+	Quaternion rotation = Quaternion::Euler(x, y, 0.0f);
 
-	Vector3 negativeDistance = Vector3(0.0f,0.0f,-this->distance);
+	Vector3 negativeDistance = Vector3(0.0f,0.0f,this->distance);
 	Vector3 position = rotation * negativeDistance + this->target;
 	this->camera->transform->SetRotation(rotation);
 	this->camera->transform->SetPosition(position);
+
 }
 
 void OrbitCamera::Pan()

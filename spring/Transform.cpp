@@ -61,7 +61,8 @@ const Vector3& Transform::GetScale()
 
 void Transform::LookAt(Vector3 target,bool isLocal)
 {
-
+	// todo : 
+	// set transform eulerangle.
 }
 
 void Transform::Rotate(Vector3 axis, float angle)
