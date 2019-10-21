@@ -31,6 +31,7 @@ const Vector3& Transform::GetEulerangle()
 void Transform::SetRotation(Quaternion rotation) 
 {
 	this->rotation = rotation;
+	this->eulerangle = this->rotation.EulerAngle();
 	// todo : update eulerangle and rotation matrix
 }
 

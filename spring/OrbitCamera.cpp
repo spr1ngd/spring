@@ -90,6 +90,14 @@ void OrbitCamera::Pan()
 { 
 	if (!this->enablePan)
 		return;
-	// todo : calculate transform.right after transform.eulerangle changed.
-	// todo : what's the different between Quaternion and Euler angle.
+
+	float deltaX = Input::mouseDelta.x / 10.0f * this->panSpeed;
+	float deltaY = Input::mouseDelta.y / 10.0f * this->panSpeed;
+
+	// vector3::cross can not get right pan direction.
+	Vector3 offsetX = -this->camera->transform->right * deltaX;
+	Vector3 offsetY = this->camera->transform->up * deltaY;
+	Vector3 pos = offsetX + this->camera->transform->GetPosition();
+	this->camera->transform->SetPosition(pos);
+	this->target = this->target + offsetX;
 }
