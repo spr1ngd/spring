@@ -82,6 +82,7 @@ void Gizmos::DrawCircle(Vector3 pos, Vector3 up, float radius, unsigned int smoo
 
 	Vector3 rotateAxis = Vector3::Normalize(up);
 	Gizmos::color = Colorf::megenta;
+	// error : Vector3::Cross can not sure vertical vector direction.
 	Vector3 helper = Vector3::Normalize(Vector3::Cross(rotateAxis, Vector3::right)); // helper is a vertical vector of up
 	float perAngle = 360.0f / Mathf::Clamp(smoothness, 12, 120);
 

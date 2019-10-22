@@ -26,12 +26,10 @@ void Camera::LookAt(const Vector3* target)
 
 void Camera::Render() 
 {
-	Vector3 viewCenter;// = this->transform->position + this->transform->Forword;
-	viewCenter = Vector3::zero;
 	Vector3 up = this->transform->up;
 	glm::mat4 view = glm::lookAt(
 		glm::vec3(this->transform->position.x, this->transform->position.y, this->transform->position.z),
-		glm::vec3(viewCenter.x, viewCenter.y, viewCenter.z),
+		glm::vec3(this->center.x, this->center.y, this->center.z),
 		glm::vec3(up.x, up.y, up.z));
 	// note : perspective fov parameter is radian.
 	glm::mat4 projection = glm::perspective(glm::radians(this->fov), float(Screen::width) / float(Screen::height),this->nearClip, this->farClip);

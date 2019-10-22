@@ -53,6 +53,7 @@ void OrbitCamera::Update()
 	this->Zoom();
 	this->Rotate();
 	this->Pan();
+	this->camera->center = this->target;
 } 
 
 void OrbitCamera::Zoom()
@@ -87,17 +88,16 @@ void OrbitCamera::Rotate()
 }
 
 void OrbitCamera::Pan()
-{ 
+{
 	if (!this->enablePan)
 		return;
 
 	float deltaX = Input::mouseDelta.x / 10.0f * this->panSpeed;
-	float deltaY = Input::mouseDelta.y / 10.0f * this->panSpeed;
-
-	// vector3::cross can not get right pan direction.
+	float deltaZ = Input::mouseDelta.y / 10.0f * this->panSpeed; 
 	Vector3 offsetX = -this->camera->transform->right * deltaX;
-	Vector3 offsetY = this->camera->transform->up * deltaY;
-	Vector3 pos = offsetX + this->camera->transform->GetPosition();
+	Vector3 offsetZ = this->camera->transform->forword * deltaZ;
+	Vector3 offset = offsetX + offsetZ;
+	Vector3 pos = offset + this->camera->transform->GetPosition();
+	this->target = offset + this->target;
 	this->camera->transform->SetPosition(pos);
-	this->target = this->target + offsetX;
 }

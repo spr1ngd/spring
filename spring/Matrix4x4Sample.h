@@ -49,20 +49,12 @@ public:
 		earth->material.shader->setFloat("Specular_Attenuation", 64.0f);
 
 		// todo fix : why axis helper
-		Gizmos::DrawAxis(sun->transform,Vector3(6.0f));
 		// Gizmos::DrawAxis(earth->transform); 
 
-		// sun->transform->SetEulerangle(Vector3(0.0f,0.0f,15.0f));
+		sun->transform->SetEulerangle(Vector3(0.0f,0.0f,60.0f));
+		Gizmos::DrawAxis(sun->transform,Vector3(6.0f));
 		earth->transform->position = sun->transform->position + sun->transform->right * 15.0f;
 		Gizmos::DrawCircle(sun->transform->position, sun->transform->up, 15.0f, 120);
-
-		Quaternion quaternion = Quaternion::Euler(10.0f, 20.0f, 30.0f);
-		Console::ErrorFormat("%f,%f,%f,%f",quaternion.w,quaternion.x,quaternion.y,quaternion.z);
-		auto euler = quaternion.EulerAngle();
-		Console::ErrorFormat("%f,%f,%f", euler.x, euler.y, euler.z);
-		Vector3 eulerangle = Vector3(10.0f);
-		auto vec3 = quaternion* eulerangle;
-		Console::ErrorFormat("%f,%f,%f",vec3.x,vec3.y,vec3.z);
 	}
 
 	float sunRotate = 0.0f;
@@ -92,7 +84,7 @@ public:
 		revolution += 5.0f;
 		if (revolution > 360.0f)
 			revolution -= 360.0f;
-		earth->transform->RotateAround(sun->transform->position,sun->transform->up,1.0f); 
+		// earth->transform->RotateAround(sun->transform->position,sun->transform->up,1.0f); 
 	}
 
 	void Destroy() override 

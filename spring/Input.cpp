@@ -156,7 +156,7 @@ float Input::GetMouseWheel()
 
 void Input::setMousePosition(float xPos, float yPos) 
 {
-	Vector2 newMousePosition = Vector2(xPos,yPos);
+	Vector2 newMousePosition = Vector2(xPos, yPos);
 	Input::mouseDelta = Vector2(newMousePosition.x - Input::mousePosition.x,Input::mousePosition.y - newMousePosition.y);
 	Input::mousePosition = newMousePosition;
 }

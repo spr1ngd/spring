@@ -9,6 +9,7 @@
 #include "springengine.h"
 #include "spring.h"
 #include "sample.h"
+#include "vector2.h"
 
 // spring engine
 #pragma comment (lib,"glfw3.lib")
@@ -19,7 +20,8 @@ using namespace spring;
 using namespace spring::editor;
 
 LRESULT CALLBACK GLWindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
-{ 
+{  
+	// Input::setMousePosition(Input::mousePosition.x,Input::mousePosition.y);
 	switch (msg)
 	{
 	case WM_CLOSE:
@@ -83,9 +85,9 @@ LRESULT CALLBACK GLWindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 	{
 		float fwKey = LOWORD(wParam);
 		float delta = (short)HIWORD(wParam) / 120.0f; // windows API return value is multiple of 120
-		float xPos = LOWORD(lParam);
+		/*float xPos = LOWORD(lParam);
 		float yPos = HIWORD(lParam);
-		Input::setMousePosition(xPos, yPos);
+		Input::setMousePosition(xPos, yPos);*/
 		Input::setMouseWheel(delta);
 	}
 	break;
@@ -365,6 +367,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 		Renderable::Draw();
 		// FPS::CalculateFramePerSecond();
 		Input::setMouseWheel(0.0f);
+		Input::mouseDelta = Vector2::zero;
 
 		glFinish();
 		SwapBuffers(dc);

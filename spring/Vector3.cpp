@@ -70,7 +70,7 @@ Vector3 Vector3::operator-(const Vector3 vec3)
 
 Vector3 Vector3::operator-() 
 {
-	return Vector3(-this->x,-this->y,-this->y);
+	return Vector3(-this->x,-this->y,-this->z);
 }
 
 Vector3 Vector3::operator*(const float multiplicand)

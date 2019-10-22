@@ -62,7 +62,7 @@ void Sample::Awake()
 	camera->transform->LookAt(Vector3::zero);
 
 	orbit = new OrbitCamera();
-	orbit->target = Vector3::zero;
+	orbit->target = Vector3(0.0f, 0.0f, 0.0f);// Vector3::zero;
 	orbit->zoomSpeed = 1.0f;
 
 #pragma endregion
