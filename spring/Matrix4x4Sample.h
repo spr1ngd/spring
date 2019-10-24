@@ -24,7 +24,7 @@ public:
 		sun->textures = loader.loadedTextures;
 		sun->Init();
 		sun->transform->position = Vector3::zero;
-		sun->transform->scale = Vector3(5.0f,5.0f,5.0f);
+		sun->transform->scale = Vector3(1.0f);
 		TextureLoader textureLoader;
 		auto sunTexture = textureLoader.Load("res/texture/sun.jpg");
 		sun->material.shader->setTexture("MainTextureData.texture", sunTexture);
@@ -52,8 +52,14 @@ public:
 		// Gizmos::DrawAxis(earth->transform); 
 
 		sun->transform->SetEulerangle(Vector3(0.0f,0.0f,60.0f));
-		Gizmos::DrawAxis(sun->transform,Vector3(6.0f));
+		sun->transform->SetPosition(Vector3(5.0f,0.0f,0.0f));
+		Gizmos::DrawAxis(sun->transform,Vector3(2.0f)); // todo : error . axis helper scale cause axis helper position error.
 		earth->transform->position = sun->transform->position + sun->transform->right * 15.0f;
+
+		auto pos = sun->transform->GetPosition();
+		Gizmos::color = Colorf::white;
+		Gizmos::DrawLine(sun->transform->GetPosition(), pos + sun->transform->up * 10);
+
 		Gizmos::DrawCircle(sun->transform->position, sun->transform->up, 15.0f, 120);
 	}
 
@@ -84,7 +90,10 @@ public:
 		revolution += 5.0f;
 		if (revolution > 360.0f)
 			revolution -= 360.0f;
-		// earth->transform->RotateAround(sun->transform->position,sun->transform->up,1.0f); 
+		earth->transform->RotateAround(sun->transform->position,Vector3::Normalize(Vector3(10.0f, 20.0f, 30.0f)),1.0f);
+
+		auto pos = earth->transform->GetPosition();
+		Console::ErrorFormat("%f,%f,%f",pos.x,pos.y,pos.z);
 	}
 
 	void Destroy() override 

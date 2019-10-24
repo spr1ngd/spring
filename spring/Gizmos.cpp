@@ -19,7 +19,7 @@ void Gizmos::DrawAxis(Vector3 pos)
 void Gizmos::DrawAxis(Transform* transform,Vector3 size)
 {
 	AxisHelper* axis = new AxisHelper(transform);
-	axis->meshRenderer->transform->scale = size;
+	axis->meshRenderer->transform->SetScale(size);
 	axisHelpers.push_back(axis);
 }
 
@@ -82,17 +82,22 @@ void Gizmos::DrawCircle(Vector3 pos, Vector3 up, float radius, unsigned int smoo
 
 	Vector3 rotateAxis = Vector3::Normalize(up);
 	Gizmos::color = Colorf::megenta;
-	// error : Vector3::Cross can not sure vertical vector direction.
-	Vector3 helper = Vector3::Normalize(Vector3::Cross(rotateAxis, Vector3::right)); // helper is a vertical vector of up
+	Vector3 helper = Vector3::Normalize(Vector3::Cross(rotateAxis, Vector3::right));
+
+	Gizmos::DrawLine(pos, pos + helper);
+
 	float perAngle = 360.0f / Mathf::Clamp(smoothness, 12, 120);
+
+	Matrix4x4 T = Matrix4x4::Translate(-pos.x, -pos.y, -pos.z);
+	Matrix4x4 IT = Matrix4x4::Translate(pos.x, pos.y, pos.z);
 
 	for (unsigned int i = 0; i < smoothness; i++)
 	{
 		Vertex vertex;
 		Vector3 base = helper;
 		float angle = perAngle * i;
-		Matrix4x4 R = Matrix4x4::Rotate(angle, rotateAxis);
-		base = R * base;
+		Matrix4x4 R = Matrix4x4::Rotate(angle, up);
+		base = IT * R * T * base;
 		vertex.vertex = pos + base * radius;
 		vertex.color = Gizmos::color;
 		vertices.push_back(vertex);

@@ -60,10 +60,10 @@ void MeshRenderer::Render()
 		Mesh* mesh = &meshes[i];
 		mesh->Draw([&](void)
 			{
-				Matrix4x4 T = Matrix4x4::Translate(this->transform->position.x, this->transform->position.y, this->transform->position.z);
+				/*Matrix4x4 T = Matrix4x4::Translate(this->transform->position.x, this->transform->position.y, this->transform->position.z);
 				Matrix4x4 R = this->transform->rotationMatrix;
 				Matrix4x4 S = Matrix4x4::Scale(this->transform->scale.x, this->transform->scale.y, this->transform->scale.z);
-				Matrix4x4 MODEL = T * R * S;
+				Matrix4x4 MODEL = T * R * S;*/
 
 				glm::mat4 model =
 					glm::translate(glm::mat4(1.0), glm::vec3(this->transform->position.x, this->transform->position.y, this->transform->position.z)) * 
