@@ -5,6 +5,8 @@
 #include "light.h"
 #include "camera.h"
 #include <string>
+#include "texture.h"
+#include "textureloader.h"
 
 using namespace std;
 using namespace spring;
@@ -347,6 +349,7 @@ void Shader::setShaderValues()
 void Shader::setEngineEnvironment() 
 {
 	this->setColor(AMBIENT_COLOR,Environment::ambient.color);
+	this->setTexture("MainTextureData.texture", TextureLoader::GenPureWhiteTexture()->textureId);
 
 #pragma region set light for shaders , todo : read shaders properties name from shader file.
 

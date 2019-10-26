@@ -1,10 +1,12 @@
 #include "sample.h"
 #include "matrix4x4sample.h"
+#include "example.h"
 
 using namespace spring;
 using namespace spring::editor;
 
 Matrix4x4Sample* matrix4x4Sample;
+Example* example;
 
 bool enabled = false;
 Camera* camera;
@@ -20,6 +22,7 @@ float speed = 5.0f;
 Sample::Sample() 
 {
 	matrix4x4Sample = new Matrix4x4Sample();
+	example = new Example();
 }
 
 void Sample::Awake()
@@ -64,7 +67,6 @@ void Sample::Awake()
 	orbit = new OrbitCamera();
 	orbit->target = Vector3(0.0f, 0.0f, 0.0f);// Vector3::zero;
 	orbit->zoomSpeed = 1.0f;
-	orbit->
 
 	// world position coordinate
 	// Gizmos::DrawAxis(Vector3::zero, Vector3(3.0f));

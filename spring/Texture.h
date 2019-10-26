@@ -4,6 +4,7 @@
 
 namespace spring 
 {
+	class TextureLoader;
 	class Texture 
 	{
 	private:
@@ -14,16 +15,7 @@ namespace spring
 		const char* textureType = "";
 
 		Texture();
-		Texture(const char* filePath)
-		{
-			loader = TextureLoader();
-			this->textureId = loader.Load(filePath);
-		}
-
-		void Load( const char* filePath ) 
-		{
-			loader = TextureLoader();
-			this->textureId = loader.Load(filePath);
-		};
+		Texture(const char* filePath);
+		void Load(const char* filePath);
 	};
 }

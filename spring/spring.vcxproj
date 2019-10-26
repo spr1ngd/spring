@@ -195,6 +195,7 @@
     <ClInclude Include="Colorf.h" />
     <ClInclude Include="Console.h" />
     <ClInclude Include="Environment.h" />
+    <ClInclude Include="Example.h" />
     <ClInclude Include="FileIO.h" />
     <ClInclude Include="FirstPlayerCamera.h" />
     <ClInclude Include="FPS.h" />

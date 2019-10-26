@@ -6,7 +6,7 @@ using namespace spring;
 class Matrix4x4Sample : public Behaviour
 {
 private:
-	bool enabled = true;
+	bool enabled = false;
 	MeshRenderer* sun;
 	MeshRenderer* earth;
 	Vector3 sunRotateAxis;
@@ -65,6 +65,8 @@ public:
 
 	void Update() override
 	{
+		if (!this->enabled)
+			return;
 		// 1. Ì«Ñô×Ô×ª
 		const Vector3 eulerangle = sun->transform->GetEulerangle();
 		sunRotate += 0.5f;

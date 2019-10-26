@@ -4,6 +4,11 @@
 using namespace spring;
 using namespace std; 
 
+ModelLoader::ModelLoader()
+{
+
+}
+
 void ModelLoader::processNode(aiNode* node, const aiScene* scene) 
 {
 	for (unsigned int i = 0; i < node->mNumMeshes; i++) 
@@ -37,6 +42,7 @@ vector<Texture> ModelLoader::loadMaterialTextures(aiMaterial*mateiral,aiTextureT
 			Texture tex;
 			tex.textureType = typeName.c_str();
 			tex.textureName = str.C_Str();
+			Console::LogFormat("[ModelLoader] : load texture : %s",tex.textureName);
 			string filePath = directory + '/' + str.C_Str();
 			tex.Load(filePath.c_str());
 		}
@@ -132,12 +138,8 @@ Mesh ModelLoader::processMesh( aiMesh*mesh,const aiScene*scene )
 
 #pragma endregion
 
+	Console::LogFormat("[ModelLoader] : load mesh %s load textures %d ",mesh->mName.C_Str(),textures.size());
 	return Mesh(vertices, indices, textures);
-}
-
-ModelLoader::ModelLoader() 
-{
-
 }
 
 void ModelLoader::Load(const string filePath) 

@@ -277,6 +277,12 @@
     <ClInclude Include="Sample.h">
       <Filter>Sample</Filter>
     </ClInclude>
+    <ClInclude Include="Space.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Example.h">
+      <Filter>Sample</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Primitive.cpp">

@@ -52,7 +52,7 @@ void OrbitCamera::Update()
 
 	this->Zoom();
 	this->Rotate();
-	this->Pan();
+	// this->Pan();
 	this->camera->center = this->target;
 } 
 

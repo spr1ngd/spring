@@ -1,14 +1,56 @@
 #include "textureLoader.h"
 #include "soil.h"
+#include "texture.h"
 
 #pragma comment(lib,"soil.lib")
 
 using namespace std;
 using namespace spring;
 
+std::map<const char*, Texture*> TextureLoader::textures;
+
 TextureLoader::TextureLoader() 
 {
 
+}
+
+bool TextureLoader::IsExist(const char* filePath, Texture* texture) 
+{
+	texture = textures[filePath];
+	return texture != nullptr;
+}
+
+void TextureLoader::Caching(const char* filePath, Texture* texture) 
+{
+	auto cache = textures.find(filePath);
+	if (cache != textures.end())
+		return;
+	textures.insert(std::pair<const char*, Texture*>(filePath, texture));
+}
+
+Texture* TextureLoader::GenPureWhiteTexture()
+{
+	const char* textureName = "__spring__engine__pure__white__texture__";
+	Texture* texture = nullptr;
+	if (!IsExist(textureName, texture)) 
+	{
+		texture = new Texture();
+		texture->textureName = textureName;
+		texture->textureType = "pure color";
+		GLuint tex;
+		glGenTextures(1, &tex);
+		glBindTexture(GL_TEXTURE_2D, tex);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		unsigned char* data = new unsigned char[4]{ 255,255,255,255 };
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 1, 1, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+		delete[] data;
+		texture->textureId = tex;
+		Caching(textureName, texture);
+	}
+	return texture;
 }
 
 GLuint TextureLoader::Load(const char* filePath) 
