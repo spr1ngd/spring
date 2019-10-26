@@ -14,7 +14,7 @@ namespace spring
 		// todo : renderable composite this object.
 	private:
 		Material* material;
-		Transform* transform;
+		Transform* target;
 	public:
 		enum Mode 
 		{

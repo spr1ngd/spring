@@ -15,9 +15,9 @@ void Transform::SetEulerangle(Vector3 eulerangle)
 	Matrix4x4 RX = Matrix4x4::RotateX(eulerangle.x);
 	Matrix4x4 RY = Matrix4x4::RotateY(eulerangle.y);
 	this->rotationMatrix = RY * RX * RZ;
-	this->right = this->rotationMatrix * this->right;
-	this->up = this->rotationMatrix * this->up;
-	this->forword = this->rotationMatrix * this->forword;
+	this->right = this->rotationMatrix * Vector3::right;
+	this->up = this->rotationMatrix * Vector3::up;
+	this->forword = this->rotationMatrix * Vector3::forward;
 	this->eulerangle = eulerangle;
 	
 	// todo : update rotation 

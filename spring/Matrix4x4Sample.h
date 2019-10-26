@@ -54,13 +54,13 @@ public:
 		sun->transform->SetEulerangle(Vector3(0.0f,0.0f,60.0f));
 		sun->transform->SetPosition(Vector3(5.0f,0.0f,0.0f));
 		Gizmos::DrawAxis(sun->transform,Vector3(2.0f)); // todo : error . axis helper scale cause axis helper position error.
-		earth->transform->position = sun->transform->position + sun->transform->right * 15.0f;
 
+
+		/*earth->transform->position = sun->transform->position + sun->transform->right * 15.0f;
 		auto pos = sun->transform->GetPosition();
 		Gizmos::color = Colorf::white;
 		Gizmos::DrawLine(sun->transform->GetPosition(), pos + sun->transform->up * 10);
-
-		Gizmos::DrawCircle(sun->transform->position, sun->transform->up, 15.0f, 120);
+		Gizmos::DrawCircle(sun->transform->position, sun->transform->up, 15.0f, 120);*/
 	}
 
 	float sunRotate = 0.0f;
@@ -84,16 +84,13 @@ public:
 		if (earthRotate > 360.0f)
 			earthRotate -= 360.0f;
 		Vector3 earthEuler = Vector3(ee.x,earthRotate,ee.z);
-		earth->transform->SetEulerangle(earthEuler);
+		// earth->transform->SetEulerangle(earthEuler);
 
 		// 3. µØÇòÈÆÌ«Ñô×ª
 		revolution += 5.0f;
 		if (revolution > 360.0f)
 			revolution -= 360.0f;
 		earth->transform->RotateAround(sun->transform->position,Vector3::Normalize(Vector3(10.0f, 20.0f, 30.0f)),1.0f);
-
-		auto pos = earth->transform->GetPosition();
-		Console::ErrorFormat("%f,%f,%f",pos.x,pos.y,pos.z);
 	}
 
 	void Destroy() override 

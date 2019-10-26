@@ -7,7 +7,7 @@ using namespace spring;
 
 AxisHelper::AxisHelper(Transform* trans)
 {
-	this->transform = trans;
+	this->target = trans;
 
 	this->material = new Material("res/shader/vertex/vertexcolor.vs", "res/shader/vertex/vertexcolor.fs");
 	this->material->name = "axis_color";
@@ -36,11 +36,14 @@ void AxisHelper::RenderScaler()
 
 void AxisHelper::Render() 
 {
-	if (nullptr == this->transform)
+	if (nullptr == this->target)
 		return;
 	if (nullptr == this->meshRenderer)
 		return;
-	this->meshRenderer->transform->SetEulerangle(Vector3::zero);
+	this->meshRenderer->transform->SetPosition(this->target->GetPosition());
+	auto euler = this->target->GetEulerangle();
+	Console::LogFormat("%f,%f,%f",euler.x,euler.y,euler.z);
+	this->meshRenderer->transform->SetEulerangle(this->target->GetEulerangle());
 	switch (this->mode) 
 	{
 	case AxisHelper::Mode::Axis:
@@ -58,21 +61,22 @@ void AxisHelper::Render()
 }
 
 void AxisHelper::SetGizmosMode(unsigned int mode) 
-{
+{ 
 	vector<Vertex> vertices;
 	vector<unsigned int> indices;
 	// x axis
 	Vertex xStart;
-	xStart.vertex = transform->position;
+	xStart.vertex = Vector3::zero;
 	Vertex xEnd;
+	
 	if (mode == Space::Self) 
 	{
 		// todo : direction of rotation is different
-		xEnd.vertex = transform->position + transform->right;
+		xEnd.vertex = this->meshRenderer->transform->right;
 	}
 	else
 	{
-		xEnd.vertex = transform->position + Vector3::right;
+		xEnd.vertex = Vector3::right;
 	}
 	xStart.color = Colorf::red;
 	xEnd.color = Colorf::red;
@@ -83,15 +87,15 @@ void AxisHelper::SetGizmosMode(unsigned int mode)
 
 	// y axis
 	Vertex yStart;
-	yStart.vertex = transform->position;
+	yStart.vertex = Vector3::zero;
 	Vertex yEnd;
 	if (mode == Space::Self)
 	{
-		yEnd.vertex = transform->position + transform->up;
+		yEnd.vertex = this->meshRenderer->transform->up;
 	}
 	else 
 	{
-		yEnd.vertex = transform->position + Vector3::up;
+		yEnd.vertex = Vector3::up;
 	}
 	yStart.color = Colorf::green;
 	yEnd.color = Colorf::green;
@@ -102,15 +106,15 @@ void AxisHelper::SetGizmosMode(unsigned int mode)
 
 	// z axis
 	Vertex zStart;
-	zStart.vertex = transform->position;
+	zStart.vertex = Vector3::zero;
 	Vertex zEnd;
 	if (mode == Space::Self)
 	{
-		zEnd.vertex = transform->position + transform->forword;
+		zEnd.vertex = this->meshRenderer->transform->forword;
 	}
 	else 
 	{
-		zEnd.vertex = transform->position + Vector3::forward;
+		zEnd.vertex = Vector3::forward;
 	}
 	zStart.color = Colorf::blue;
 	zEnd.color = Colorf::blue;
