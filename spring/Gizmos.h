@@ -18,18 +18,14 @@ namespace spring
 
 		static vector<Gizmos*> gizmos;
 		static vector<AxisHelper*> axisHelpers;
-		static unsigned int mode;
 		static Space space;
 	public:
 		static Colorf color;
-		static void DrawAxis(Vector3 pos);
-		static void DrawAxis(Transform* transform,Vector3 size = Vector3::one);
+		static void DrawAxis(Vector3 pos, Vector3 size = Vector3::one);
+		static void DrawAxis(Transform* transform, Vector3 size = Vector3::one);
 
 		static void DrawLine(Vector3 start, Vector3 end);
 		static void DrawCircle(Vector3 pos,Vector3 up,float radius,unsigned int smoothness = 12);
-
-		static void SetMode(unsigned int mode);
-		static unsigned int GetMode();
 		static void Render();
 	};
 }

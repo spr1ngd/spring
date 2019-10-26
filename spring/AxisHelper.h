@@ -4,6 +4,7 @@
 #include "transform.h"
 #include "meshrenderer.h"
 #include "material.h"
+#include "space.h"
 
 namespace spring 
 {
@@ -15,6 +16,7 @@ namespace spring
 	private:
 		Material* material;
 		Transform* target;
+		Space space;
 	public:
 		enum Mode 
 		{
@@ -30,8 +32,8 @@ namespace spring
 		void RenderRotator();
 		void RenderScaler();
 	public:
-		AxisHelper(Transform* transform);
+		AxisHelper(Vector3 target);
+		AxisHelper(Transform* target,Space space = Space::Self);
 		void Render();
-		void SetGizmosMode(unsigned int mode);
 	};
 }

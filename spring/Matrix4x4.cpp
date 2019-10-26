@@ -62,19 +62,29 @@ Vector3 Matrix4x4::Rotate(float angle,Vector3 axis,Vector3 vec3)
 
 Matrix4x4 Matrix4x4::Rotate(float angle, Vector3 axis)
 { 
-	float sqrtYZ = Mathf::Sqrt(axis.y * axis.y + axis.z * axis.z);
-	float cosAlpha = axis.z / ((sqrtYZ == 0.0f) ? 1.0f : sqrtYZ);
-	float ALPHA = Mathf::Angle(Mathf::Acos(cosAlpha));
+	float u = axis.x;
+	float v = axis.y;
+	float w = axis.z;
 
-	float cosBeta = Mathf::Sqrt(axis.y * axis.y + axis.z * axis.z) / Vector3::Magnitude(axis);
-	float BETA = Mathf::Angle(Mathf::Acos(cosBeta));
-
-	Matrix4x4 rx = Matrix4x4::RotateX(ALPHA);
-	Matrix4x4 ry = Matrix4x4::RotateY(-BETA);
-	Matrix4x4 rz = Matrix4x4::RotateZ(angle);
-	Matrix4x4 irx = Matrix4x4::RotateX(-ALPHA);
-	Matrix4x4 iry = Matrix4x4::RotateY(BETA);
-	auto result = irx * iry * rz * ry * rx;
+	float radian = angle / 180.0f * Mathf::pi;
+	float sinine = Mathf::Sin(radian);
+	float cosine = Mathf::Cos(radian);
+	Matrix4x4 result
+	(
+		u * u + (1 - u * u) * cosine,
+		w * v * (1 - cosine) - w * sinine,
+		u * w * (1 - cosine) + v * sinine,
+		0.0f,
+		w * v * (1 - cosine) + w * sinine,
+		v * v + (1 - v * v) * cosine,
+		v * w * (1 - cosine) - u * sinine,
+		0.0f,
+		u * w * (1 - cosine) - v * sinine,
+		v * w * (1 - cosine) + u * sinine,
+		w * w + (1 - w * w) * cosine,
+		0.0f,
+		0.0f, 0.0f, 0.0f, 1.0f
+	);
 	return result;
 }
 
@@ -91,7 +101,7 @@ Matrix4x4 Matrix4x4::RotateX(float angle)
 		0.0f, 0.0f, 0.0f, 1.0f
 	);
 	return result;
-}
+} 
 
 Matrix4x4 Matrix4x4::RotateY(float angle) 
 {
@@ -106,7 +116,7 @@ Matrix4x4 Matrix4x4::RotateY(float angle)
 		0.0f, 0.0f, 0.0f, 1.0f
 	);
 	return result;
-}
+} 
 
 Matrix4x4 Matrix4x4::RotateZ(float angle) 
 {

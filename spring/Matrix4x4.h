@@ -32,6 +32,7 @@ namespace spring
 
 		static Vector3 Rotate(float angle,Vector3 axis,Vector3 vec3);
 		static Matrix4x4 Rotate(float angle,Vector3 axis);
+		static Matrix4x4 Rotate1(float angle, Vector3 axis);
 		static Matrix4x4 RotateX(float angle);
 		static Matrix4x4 RotateY(float angle);
 		static Matrix4x4 RotateZ(float angle);

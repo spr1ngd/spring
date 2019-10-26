@@ -5,45 +5,45 @@
 
 using namespace spring;
 
-AxisHelper::AxisHelper(Transform* trans)
+AxisHelper::AxisHelper(Vector3 target) 
 {
+	this->space = Space::World;
+	this->target = nullptr;
+
+	this->material = new Material("res/shader/vertex/vertexcolor.vs", "res/shader/vertex/vertexcolor.fs");
+	this->material->name = "axis_color";
+	this->material->renderMode = Material::Fill;
+	this->meshRenderer = new MeshRenderer(*this->material);
+	this->RenderAxis();
+	this->meshRenderer->material.alphaTest = false;
+	this->meshRenderer->material.depthTest = false;
+	this->meshRenderer->setRenderOrder(5000);
+}
+
+AxisHelper::AxisHelper(Transform* trans,Space space)
+{
+	this->space = space;
 	this->target = trans;
 
 	this->material = new Material("res/shader/vertex/vertexcolor.vs", "res/shader/vertex/vertexcolor.fs");
 	this->material->name = "axis_color";
 	this->material->renderMode = Material::Fill;	
 	this->meshRenderer = new MeshRenderer(*this->material);
-	this->SetGizmosMode(Gizmos::GetMode());
+	this->RenderAxis();
 	this->meshRenderer->material.alphaTest = false;
 	this->meshRenderer->material.depthTest = false;
 	this->meshRenderer->setRenderOrder(5000);
 }
 
-void AxisHelper::RenderAxis() 
-{
-	this->SetGizmosMode(Gizmos::GetMode());
-}
-
-void AxisHelper::RenderRotator() 
-{
-
-}
-
-void AxisHelper::RenderScaler() 
-{
-
-}
-
 void AxisHelper::Render() 
 {
-	if (nullptr == this->target)
-		return;
 	if (nullptr == this->meshRenderer)
 		return;
-	this->meshRenderer->transform->SetPosition(this->target->GetPosition());
-	auto euler = this->target->GetEulerangle();
-	Console::LogFormat("%f,%f,%f",euler.x,euler.y,euler.z);
-	this->meshRenderer->transform->SetEulerangle(this->target->GetEulerangle());
+	if (nullptr != this->target)
+	{
+		this->meshRenderer->transform->SetPosition(this->target->GetPosition());
+		this->meshRenderer->transform->SetEulerangle(Vector3::zero);
+	}
 	switch (this->mode) 
 	{
 	case AxisHelper::Mode::Axis:
@@ -60,19 +60,18 @@ void AxisHelper::Render()
 	}
 }
 
-void AxisHelper::SetGizmosMode(unsigned int mode) 
-{ 
+void AxisHelper::RenderAxis() 
+{
 	vector<Vertex> vertices;
 	vector<unsigned int> indices;
 	// x axis
 	Vertex xStart;
 	xStart.vertex = Vector3::zero;
 	Vertex xEnd;
-	
-	if (mode == Space::Self) 
+
+	if (this->space == Space::Self && this->target != nullptr)
 	{
-		// todo : direction of rotation is different
-		xEnd.vertex = this->meshRenderer->transform->right;
+		xEnd.vertex = this->target->right;
 	}
 	else
 	{
@@ -89,11 +88,11 @@ void AxisHelper::SetGizmosMode(unsigned int mode)
 	Vertex yStart;
 	yStart.vertex = Vector3::zero;
 	Vertex yEnd;
-	if (mode == Space::Self)
+	if (this->space == Space::Self && this->target != nullptr)
 	{
-		yEnd.vertex = this->meshRenderer->transform->up;
+		yEnd.vertex = this->target->up;
 	}
-	else 
+	else
 	{
 		yEnd.vertex = Vector3::up;
 	}
@@ -108,11 +107,11 @@ void AxisHelper::SetGizmosMode(unsigned int mode)
 	Vertex zStart;
 	zStart.vertex = Vector3::zero;
 	Vertex zEnd;
-	if (mode == Space::Self)
+	if (this->space == Space::Self && this->target != nullptr)
 	{
-		zEnd.vertex = this->meshRenderer->transform->forword;
+		zEnd.vertex = this->target->forword;
 	}
-	else 
+	else
 	{
 		zEnd.vertex = Vector3::forward;
 	}
@@ -133,4 +132,14 @@ void AxisHelper::SetGizmosMode(unsigned int mode)
 	this->mesh = &mesh;
 	this->meshRenderer->meshes = meshes;
 	this->meshRenderer->Init();
+}
+
+void AxisHelper::RenderRotator()
+{
+
+}
+
+void AxisHelper::RenderScaler()
+{
+
 }

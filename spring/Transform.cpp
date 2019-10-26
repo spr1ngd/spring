@@ -11,16 +11,17 @@ Transform::Transform()
 
 void Transform::SetEulerangle(Vector3 eulerangle)
 { 
+	Matrix4x4 T = Matrix4x4::Translate(-this->position.x, -this->position.y, -this->position.z);
+	Matrix4x4 IT = Matrix4x4::Translate(this->position.x,this->position.y,this->position.z);
 	Matrix4x4 RZ = Matrix4x4::RotateZ(eulerangle.z);
 	Matrix4x4 RX = Matrix4x4::RotateX(eulerangle.x);
 	Matrix4x4 RY = Matrix4x4::RotateY(eulerangle.y);
-	this->rotationMatrix = RY * RX * RZ;
+	this->rotationMatrix = IT * RY * RX * RZ * T;
 	this->right = this->rotationMatrix * Vector3::right;
 	this->up = this->rotationMatrix * Vector3::up;
 	this->forword = this->rotationMatrix * Vector3::forward;
 	this->eulerangle = eulerangle;
-	
-	// todo : update rotation 
+	this->rotation = Quaternion::Euler(this->eulerangle);
 }
 
 const Vector3& Transform::GetEulerangle() 
@@ -75,11 +76,11 @@ void Transform::Rotate(Vector3 axis, float angle)
 
 void Transform::RotateAround(Vector3 point,Vector3 axis, float angle)
 {
-	Vector3 offset = this->position - point;
+	Vector3 offset = this->position - point; 
 	Matrix4x4 T = Matrix4x4::Translate(-offset.x, -offset.y, -offset.z);
 	Matrix4x4 IT = Matrix4x4::Translate(offset.x, offset.y, offset.z);
-	axis = Vector3::Normalize(axis);
+	// axis = Vector3::Normalize(axis);
 	Matrix4x4 R = Matrix4x4::Rotate(angle, axis);
 	Matrix4x4 mix = IT * R * T;
-	this->position = mix * this->position;
+	this->position = point + mix * offset;
 }

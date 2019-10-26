@@ -9,9 +9,10 @@ private:
 	bool enabled = true;
 	MeshRenderer* sun;
 	MeshRenderer* earth;
+	Vector3 sunRotateAxis;
 public:
 	void Awake() override 
-	{
+	{ 
 		if (!enabled)
 			return;
 		ModelLoader loader = ModelLoader();
@@ -24,7 +25,7 @@ public:
 		sun->textures = loader.loadedTextures;
 		sun->Init();
 		sun->transform->position = Vector3::zero;
-		sun->transform->scale = Vector3(1.0f);
+		sun->transform->scale = Vector3(5.0f);
 		TextureLoader textureLoader;
 		auto sunTexture = textureLoader.Load("res/texture/sun.jpg");
 		sun->material.shader->setTexture("MainTextureData.texture", sunTexture);
@@ -48,19 +49,14 @@ public:
 		earth->material.shader->setFloat("Specular_Intensity", 0.0f);
 		earth->material.shader->setFloat("Specular_Attenuation", 64.0f);
 
-		// todo fix : why axis helper
-		// Gizmos::DrawAxis(earth->transform); 
+		sun->transform->SetEulerangle(Vector3(0.0f,0.0f,-15.0f));
+		sun->transform->SetPosition(Vector3(0.0f,0.0f,0.0f)); 
 
-		sun->transform->SetEulerangle(Vector3(0.0f,0.0f,60.0f));
-		sun->transform->SetPosition(Vector3(5.0f,0.0f,0.0f));
-		Gizmos::DrawAxis(sun->transform,Vector3(2.0f)); // todo : error . axis helper scale cause axis helper position error.
+		// Gizmos::DrawAxis(sun->transform, Vector3(15.0f));
 
-
-		/*earth->transform->position = sun->transform->position + sun->transform->right * 15.0f;
-		auto pos = sun->transform->GetPosition();
-		Gizmos::color = Colorf::white;
-		Gizmos::DrawLine(sun->transform->GetPosition(), pos + sun->transform->up * 10);
-		Gizmos::DrawCircle(sun->transform->position, sun->transform->up, 15.0f, 120);*/
+		earth->transform->position = sun->transform->position + sun->transform->right * 15.0f;
+		Gizmos::DrawCircle(sun->transform->GetPosition(), sun->transform->up, 15.0f, 120);
+		sunRotateAxis = sun->transform->up;
 	}
 
 	float sunRotate = 0.0f;
@@ -75,7 +71,6 @@ public:
 		if (sunRotate > 360.0f)
 			sunRotate -= 360.0f;
 		Vector3 eulerY = Vector3(eulerangle.x, sunRotate, eulerangle.z);
-		// todo : 太阳自转应该绕着自己的y轴进行旋转
 		// sun->transform->SetEulerangle(eulerY);
 
 		// 2. 地球自转
@@ -84,13 +79,13 @@ public:
 		if (earthRotate > 360.0f)
 			earthRotate -= 360.0f;
 		Vector3 earthEuler = Vector3(ee.x,earthRotate,ee.z);
-		// earth->transform->SetEulerangle(earthEuler);
+		earth->transform->SetEulerangle(earthEuler);
 
 		// 3. 地球绕太阳转
 		revolution += 5.0f;
 		if (revolution > 360.0f)
 			revolution -= 360.0f;
-		earth->transform->RotateAround(sun->transform->position,Vector3::Normalize(Vector3(10.0f, 20.0f, 30.0f)),1.0f);
+		earth->transform->RotateAround(sun->transform->GetPosition(), sun->transform->up, 1.0f);
 	}
 
 	void Destroy() override 

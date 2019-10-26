@@ -4,16 +4,17 @@
 
 using namespace std;
 using namespace spring;
-
-unsigned int Gizmos::mode = 1;
+ 
 vector<AxisHelper*> Gizmos::axisHelpers;
 vector<Gizmos*> Gizmos::gizmos;
 Space Gizmos::space = Space::World;
 Colorf Gizmos::color = Colorf::gray;
 
-void Gizmos::DrawAxis(Vector3 pos)
+void Gizmos::DrawAxis(Vector3 pos , Vector3 size)
 {
-
+	AxisHelper* axis = new AxisHelper(pos);
+	axis->meshRenderer->transform->SetScale(size);
+	axisHelpers.push_back(axis);
 }
 
 void Gizmos::DrawAxis(Transform* transform,Vector3 size)
@@ -81,13 +82,10 @@ void Gizmos::DrawCircle(Vector3 pos, Vector3 up, float radius, unsigned int smoo
 	vector<unsigned int> indices;
 
 	Vector3 rotateAxis = Vector3::Normalize(up);
+	Vector3 helper = Vector3::Normalize(Vector3::Cross(rotateAxis, Vector3::right)); 
+
 	Gizmos::color = Colorf::megenta;
-	Vector3 helper = Vector3::Normalize(Vector3::Cross(rotateAxis, Vector3::right));
-
-	Gizmos::DrawLine(pos, pos + helper);
-
 	float perAngle = 360.0f / Mathf::Clamp(smoothness, 12, 120);
-
 	Matrix4x4 T = Matrix4x4::Translate(-pos.x, -pos.y, -pos.z);
 	Matrix4x4 IT = Matrix4x4::Translate(pos.x, pos.y, pos.z);
 
@@ -114,24 +112,7 @@ void Gizmos::DrawCircle(Vector3 pos, Vector3 up, float radius, unsigned int smoo
 	gizmos->meshrenderer->meshes = meshes;
 	gizmos->meshrenderer->Init();
 	Gizmos::gizmos.push_back(gizmos);
-}
-
-void Gizmos::SetMode(unsigned int mode) 
-{
-	if (Gizmos::mode == mode)
-		return;
-	Gizmos::mode = mode;
-	for (int i = 0; i < sizeof(axisHelpers); i++) 
-	{
-		auto axis = axisHelpers[i];
-		axis->SetGizmosMode(mode);
-	}
-}
-
-unsigned int Gizmos::GetMode() 
-{
-	return mode;
-}
+} 
 
 void Gizmos::Render() 
 {

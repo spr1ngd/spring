@@ -64,6 +64,10 @@ void Sample::Awake()
 	orbit = new OrbitCamera();
 	orbit->target = Vector3(0.0f, 0.0f, 0.0f);// Vector3::zero;
 	orbit->zoomSpeed = 1.0f;
+	orbit->
+
+	// world position coordinate
+	// Gizmos::DrawAxis(Vector3::zero, Vector3(3.0f));
 
 #pragma endregion
 
