@@ -4,6 +4,8 @@
 #include "space.h"
 #include "timer.h"
 #include "mathf.h"
+#include "node.h"
+#include "transform.h"
 #include "gizmos.h"
 #include "screen.h"
 #include "environment.h"

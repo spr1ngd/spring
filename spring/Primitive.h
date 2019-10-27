@@ -9,23 +9,19 @@ namespace spring
 		enum Type
 		{
 			Triangle,
-			Cube,
-			Sphere,
-			Cylinder,
 			Plane,
+			Cube,
+			Cylinder,
+			Sphere,
 		};
 
-		class Cube 
-		{
-
-		};
-
-		class Sphere 
-		{
-
-		};
-
+	private:
+		Mesh* GenTriangle();
+		Mesh* GenPlane();
+		Mesh* GenCube();
+		Mesh* GenCylinder();
+		Mesh* GenSphere();
 	public:
-		Mesh* CreatePrimitive(Primitive::Type type);
+		Mesh* GenPrimitive(Primitive::Type type);
 	};
 }

@@ -14,6 +14,7 @@ namespace spring
 	{
 	private:
 	public:
+		// todo : remove transform out of meshrenderer class.
 		Transform* transform;
 		vector<Mesh> meshes;
 		vector<Texture> textures;

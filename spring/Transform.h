@@ -1,9 +1,9 @@
 #pragma once
 #include "glm/glm.hpp"
-#include "node.h"
 #include "quaternion.h"
 #include "vector3.h"
 #include "matrix4x4.h"
+#include "node.h"
 
 namespace spring
 { 

@@ -283,6 +283,15 @@
     <ClInclude Include="Example.h">
       <Filter>Sample</Filter>
     </ClInclude>
+    <ClInclude Include="FrameBufferObject.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Image.h">
+      <Filter>头文件\2D</Filter>
+    </ClInclude>
+    <ClInclude Include="UIElement.h">
+      <Filter>头文件\2D</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Primitive.cpp">
@@ -434,6 +443,15 @@
     </ClCompile>
     <ClCompile Include="Sample.cpp">
       <Filter>Sample</Filter>
+    </ClCompile>
+    <ClCompile Include="FrameBufferObject.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Image.cpp">
+      <Filter>源文件\2D</Filter>
+    </ClCompile>
+    <ClCompile Include="UIElement.cpp">
+      <Filter>源文件\2D</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

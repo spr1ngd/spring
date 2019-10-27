@@ -1,21 +1,35 @@
 #include "node.h"
+#include "transform.h"
 
 using namespace std;
 using namespace spring;
 
 Node::Node() 
 {
+	
+}
 
+Node::Node(const char* nodeName) 
+{
+	this->name = nodeName;
+}
+
+template <typename T>
+Node* Node::AddNode()
+{
+	T* instance = new T();
+	this->nodes.push_back(instance);
+	return instance;
 }
 
 template <typename T>
 Node* Node::GetNode(T nodeType) 
 {
-	for (Node &node :this->nodes)
+	for (Node* node :this->nodes)
 	{
 		if (typeid(node).name() == typeid(nodeType).name()) 
 		{
-			return &node;
+			return node;
 		}
 	}
 	return nullptr;
@@ -24,7 +38,9 @@ Node* Node::GetNode(T nodeType)
 template <typename T>
 bool Node::TryGetNode( T nodeType ,Node* node)
 {
-
+	Node* node = nullptr;
+	node = this->GetNode(nodeType);
+	return node != nullptr;
 }
 
 Node* Node::GetChild(const char* nodeName) 

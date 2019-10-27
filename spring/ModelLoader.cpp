@@ -1,4 +1,4 @@
-#include "ModelLoader.h"
+#include "modelloader.h"
 #include "console.h"
 
 using namespace spring;
