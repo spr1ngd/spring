@@ -202,6 +202,7 @@
     <ClInclude Include="FrameBufferObject.h" />
     <ClInclude Include="Gizmos.h" />
     <ClInclude Include="Graphic.h" />
+    <ClInclude Include="GUI.h" />
     <ClInclude Include="IJsonSerializer.h" />
     <ClInclude Include="Image.h" />
     <ClInclude Include="Input.h" />
@@ -222,6 +223,7 @@
     <ClInclude Include="OrbitCamera.h" />
     <ClInclude Include="Primitive.h" />
     <ClInclude Include="Quaternion.h" />
+    <ClInclude Include="Rect.h" />
     <ClInclude Include="Renderable.h" />
     <ClInclude Include="RenderOrder.h" />
     <ClInclude Include="Resource.h" />
@@ -260,6 +262,7 @@
     <ClCompile Include="FrameBufferObject.cpp" />
     <ClCompile Include="Gizmos.cpp" />
     <ClCompile Include="Graphic.cpp" />
+    <ClCompile Include="GUI.cpp" />
     <ClCompile Include="IJsonSerializer.cpp" />
     <ClCompile Include="Image.cpp" />
     <ClCompile Include="Input.cpp" />
@@ -279,6 +282,7 @@
     <ClCompile Include="OrbitCamera.cpp" />
     <ClCompile Include="Primitive.cpp" />
     <ClCompile Include="Quaternion.cpp" />
+    <ClCompile Include="Rect.cpp" />
     <ClCompile Include="Renderable.cpp" />
     <ClCompile Include="RenderOrder.cpp" />
     <ClCompile Include="Resources.cpp" />

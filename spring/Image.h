@@ -5,8 +5,11 @@ namespace spring
 {
 	namespace ui 
 	{
-		class Image : UIElement
+		class Image : public UIElement
 		{
+		protected:
+			Image();
+			virtual void GenerateMesh();
 		public:
 			void Render() override;
 		};
