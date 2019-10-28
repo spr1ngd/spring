@@ -14,7 +14,6 @@ Skybox::Skybox(const char* skyboxName, Material material)
 	this->meshes = loader->meshes;
 	this->textures = loader->loadedTextures;
 
-	this->transform = new Transform();
 	this->name = skyboxName;
 	this->material = material;
 	this->material.depthTest = false;

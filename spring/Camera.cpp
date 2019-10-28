@@ -8,7 +8,6 @@ Camera* Camera::main;
 
 Camera::Camera() 
 {
-	this->transform = new Transform();
 	this->direction = Vector3(0.0f,1.0f,0.0f);
 	this->background = Color(123,134,125,255);
 	Camera::main = this;

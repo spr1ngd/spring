@@ -24,7 +24,6 @@ namespace spring
 		};
 
 		spring::Color background;
-		Transform* transform;
 		Vector3 center = Vector3::zero;
 		Vector3 direction;
 		ClearFlag clearFlag = ClearFlag::SolidColor;

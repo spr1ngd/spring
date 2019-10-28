@@ -1,12 +1,12 @@
 #pragma once
 #include <vector>
 #include "object.h"
+#include "transform.h"
 
 using namespace std;
 
 namespace spring 
 { 
-	class Transform;
 	class Node : public Object
 	{
 	private:
@@ -17,10 +17,11 @@ namespace spring
 		vector<Node> children;
 		Transform* transform;
 		
-	public:
+	protected:
 		Node();
 		Node( const char*nodeName );
 
+	public:
 		template <typename T>
 		Node* GetNode(T nodeType);
 

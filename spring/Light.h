@@ -40,8 +40,6 @@ namespace spring
 		// only work in spot light mode
 		float spotAngle = 25.0f;
 		float outterAngle = 70.0f;
-
-		Transform* transform;
 		// todo : light shadow settings
 		static Light* main;
 

@@ -11,7 +11,6 @@ Light::Light()
 {
 	this->type = Light::Type::Directional;
 	this->renderMode = Light::RenderMode::Pixel;
-	this->transform = new Transform();
 	this->color = Color::white;
 	this->intensity = 1.0f;
 	Light::lights.insert(pair<const long,Light*>(this->instanceId,this));

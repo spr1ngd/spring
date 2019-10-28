@@ -6,20 +6,21 @@ using namespace spring;
 
 Node::Node() 
 {
-	
+	this->transform = new Transform();
 }
 
 Node::Node(const char* nodeName) 
 {
 	this->name = nodeName;
+	this->transform = new Transform();
 }
 
 template <typename T>
 Node* Node::AddNode()
 {
 	T* instance = new T();
-	this->nodes.push_back(instance);
-	return instance;
+	this->nodes.push_back((Node*)instance);
+	return (Node*)instance;
 }
 
 template <typename T>

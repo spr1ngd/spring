@@ -13,7 +13,6 @@ namespace spring
 	private:
 		GLuint cubemap;
 	public:
-		Transform* transform;
 		Material material;
 		vector<Mesh> meshes;
 		vector<Texture> textures;

@@ -3,11 +3,11 @@
 #include "quaternion.h"
 #include "vector3.h"
 #include "matrix4x4.h"
-#include "node.h"
 
 namespace spring
 { 
-	class Transform : Node
+	class Node;
+	class Transform
 	{
 	private:
 		Vector3 eulerangle = Vector3::zero;
@@ -21,8 +21,10 @@ namespace spring
 		Vector3 position = Vector3::zero;
 		Vector3 scale = Vector3::one;
 
+	private:
+		friend class Node;
 	public:
-		Transform(); 
+		Transform();
 
 		void SetEulerangle(Vector3 eulerangle);
 		const Vector3& GetEulerangle();

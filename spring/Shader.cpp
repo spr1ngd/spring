@@ -114,8 +114,8 @@ GLuint Shader::getLocation(const char* name)
 void Shader::use() 
 {
 	glUseProgram(this->program);
-	this->setShaderValues();
 	this->setEngineEnvironment();
+	this->setShaderValues();
 }
 
 void Shader::disuse() 
@@ -264,9 +264,6 @@ void Shader::setTexture(const char*name, GLuint texture)
 		this->textures.insert(std::pair<GLuint,MaterialTexture>(location,mt));
 		return;
 	}
-	MaterialTexture mt = this->textures[location];
-	mt.texture = texture;
-	this->textures[location] = mt;
 }
 
 void Shader::setTilling(const char* name, Vector2 tilling) 

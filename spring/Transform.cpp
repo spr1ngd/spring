@@ -7,7 +7,7 @@ using namespace spring;
 Transform::Transform() 
 {
 
-}  
+}
 
 void Transform::SetEulerangle(Vector3 eulerangle)
 { 

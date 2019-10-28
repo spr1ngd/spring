@@ -6,12 +6,10 @@ using namespace spring;
 
 MeshRenderer::MeshRenderer() 
 {
-	this->transform = new Transform();
 }
 
 MeshRenderer::MeshRenderer(Material mateiral)
 {
-	this->transform = new Transform();
 	this->material = mateiral;
 }
 
