@@ -19,7 +19,6 @@ Material::Material(Shader* shader)
 
 Material::Material(const char* verexShaderFile, const char* fragmentShaderFile)
 {
-	Console::Error(verexShaderFile);
 	this->shader = new Shader(verexShaderFile,fragmentShaderFile);
 	Material::Caching(this);
 }

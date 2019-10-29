@@ -55,6 +55,6 @@ public:
 	void OnGUI() 
 	{
 		// todo : created ui 
-		// image = GUI::DrawImage(Rect(0.0f, 0.0f, 200.0f, 200.0f));
+		image = GUI::DrawImage(Rect(0.0f, 0.0f, 200.0f, 200.0f));
 	}
 };

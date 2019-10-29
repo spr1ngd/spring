@@ -15,10 +15,12 @@ void Image::GenerateMesh()
 	// todo : generate ui material
 	if (nullptr == this->material)
 	{
-		Console::ErrorFormat("does not contain ui material.");
-		return;
+		/*Console::ErrorFormat("does not contain ui material.");
+		return;*/
+		Material* uiMaterial = new Material("res/shader/ui/ui.vs","res/shader/ui/ui.fs");
+		this->material = uiMaterial;
 	}
-
+	this->setRenderOrder(10000);
 	Mesh* mesh = new Mesh();
 	vector<Vertex> vertices;
 	vector<unsigned int> indices;
