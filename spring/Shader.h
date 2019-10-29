@@ -45,6 +45,11 @@ namespace spring
 	class Shader
 	{
 	private:
+		static std::vector<Shader*> cachingShaders;
+
+		static void Caching(Shader* shader);
+		static void Flash(Shader* shader);
+	private:
 		std::map<const char*, GLuint> locations;
 		std::map<GLenum, GLuint> shaders;
 		void linkProgram();

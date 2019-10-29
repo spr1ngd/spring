@@ -232,6 +232,7 @@
     <ClInclude Include="Scene.h" />
     <ClInclude Include="Screen.h" />
     <ClInclude Include="Shader.h" />
+    <ClInclude Include="ShaderComplier.h" />
     <ClInclude Include="Skybox.h" />
     <ClInclude Include="Space.h" />
     <ClInclude Include="spring.h" />
@@ -290,6 +291,7 @@
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="Screen.cpp" />
     <ClCompile Include="Shader.cpp" />
+    <ClCompile Include="ShaderComplier.cpp" />
     <ClCompile Include="Skybox.cpp" />
     <ClCompile Include="spring.cpp" />
     <ClCompile Include="SpringEngine.cpp" />

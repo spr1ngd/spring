@@ -32,8 +32,8 @@ void Gizmos::DrawLine(Vector3 origin, Vector3 end)
 	gizmos->material->name = "gizmos";
 	gizmos->material->renderMode = Material::Fill;
 	// mesh renderer
-	gizmos->meshrenderer = new MeshRenderer(*gizmos->material);
-	gizmos->meshrenderer->material.depthTest = false;
+	gizmos->meshrenderer = new MeshRenderer(gizmos->material);
+	gizmos->meshrenderer->material->depthTest = false;
 	gizmos->meshrenderer->setRenderOrder(5000);
 
 	// meshes
@@ -73,8 +73,8 @@ void Gizmos::DrawCircle(Vector3 pos, Vector3 up, float radius, unsigned int smoo
 	gizmos->material = material;
 
 	// meshrenderer
-	gizmos->meshrenderer = new MeshRenderer(*gizmos->material);
-	gizmos->meshrenderer->material.depthTest = false;
+	gizmos->meshrenderer = new MeshRenderer(gizmos->material);
+	gizmos->meshrenderer->material->depthTest = false;
 	gizmos->meshrenderer->setRenderOrder(5000);
 
 	// meshes

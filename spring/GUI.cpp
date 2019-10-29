@@ -3,9 +3,12 @@
 using namespace spring;
 using namespace spring::ui;
 
-vector<UIElement&> GUI::uiElements;
+std::vector<UIElement*> GUI::uiElements;
 
-Image& GUI::DrawImage(Rect& rect) 
+Image* GUI::DrawImage(Rect rect)
 {
-	
+	Image* image = new Image();
+	image->rect = &rect;
+	image->GenerateMesh();
+	return image;
 }

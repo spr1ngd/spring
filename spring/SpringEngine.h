@@ -24,12 +24,6 @@
 #include "light.h"
 #include "axishelper.h"
 
-// spring engine ui module
-#include "rect.h"
-#include "gui.h"
-#include "uielement.h"
-#include "image.h"
-
 // spring engine editor 
 #include "orbitcamera.h"
 #include "firstplayercamera.h"

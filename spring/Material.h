@@ -1,4 +1,5 @@
 #pragma once
+#include <vector>
 #include "shader.h"
 #include "vector3.h"
 
@@ -6,6 +7,11 @@ namespace spring
 {
 	class Material
 	{
+	private:
+		static std::vector<Material*> materials;
+
+		static void Caching(Material* material);
+		static void Flash(Material* material);
 	public:
 		enum CullFace 
 		{

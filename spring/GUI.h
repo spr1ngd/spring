@@ -1,6 +1,8 @@
 #pragma once
 #include <vector>
-#include "springengine.h"
+#include "rect.h"
+#include "uielement.h"
+#include "image.h"
 
 namespace spring 
 {
@@ -9,9 +11,9 @@ namespace spring
 		class GUI 
 		{
 		private:
-			static std::vector<UIElement&> uiElements;
+			static std::vector<UIElement*> uiElements;
 		public:
-			static Image& DrawImage(Rect& rect);
+			static Image* DrawImage(Rect rect);
 		};
 	}
 }

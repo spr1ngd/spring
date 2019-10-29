@@ -81,12 +81,12 @@ void Sample::Awake()
 		ModelLoader loader = ModelLoader();
 		loader.Load("res/model/obj/cube.obj");
 		Material lightModelMat("res/shader/unlit/color.vs", "res/shader/unlit/color.fs");
-		lightModel = new MeshRenderer(lightModelMat);
+		lightModel = new MeshRenderer(&lightModelMat);
 		lightModel->meshes = loader.meshes;
 		lightModel->textures = loader.loadedTextures;
 		lightModel->Init();
 		lightModel->transform->scale = Vector3(1.0f);
-		lightModel->material.shader->setColor(MAIN_COLOR, Color::yellow);
+		lightModel->material->shader->setColor(MAIN_COLOR, Color::yellow);
 
 		ModelLoader modelLoader = ModelLoader();
 		modelLoader.Load("res/model/fbx/sphere.fbx");
@@ -101,18 +101,18 @@ void Sample::Awake()
 				mat->renderMode = Material::Fill;
 				mats.push_back(mat);
 
-				MeshRenderer* meshRenderer = new MeshRenderer(*mat);
+				MeshRenderer* meshRenderer = new MeshRenderer(mat);
 				meshRenderer->meshes = modelLoader.meshes;
 				meshRenderer->textures = modelLoader.loadedTextures;
-				meshRenderer->material.cullface = Material::CullFace::Back;
+				meshRenderer->material->cullface = Material::CullFace::Back;
 				meshRenderer->Init();
 				meshRenderer->transform->position = Vector3(-10.0f + i * 2.0f, 0.0, -10.0f + j * 2.0f);
 				meshRenderer->transform->scale = Vector3(1.0f);
 				meshRenderer->transform->SetEulerangle(Vector3(-90.0f, 0.0f, 0.0f));
-				meshRenderer->material.shader->setColor(MAIN_COLOR, Color(204, 204, 204, 128));
-				meshRenderer->material.shader->setColor("Specular_Color", Color::white);
-				meshRenderer->material.shader->setFloat("Specular_Intensity", 1.0f);
-				meshRenderer->material.shader->setFloat("Specular_Attenuation", 64.0f);
+				meshRenderer->material->shader->setColor(MAIN_COLOR, Color(204, 204, 204, 128));
+				meshRenderer->material->shader->setColor("Specular_Color", Color::white);
+				meshRenderer->material->shader->setFloat("Specular_Intensity", 1.0f);
+				meshRenderer->material->shader->setFloat("Specular_Attenuation", 64.0f);
 				renderers.push_back(meshRenderer);
 			}
 		}

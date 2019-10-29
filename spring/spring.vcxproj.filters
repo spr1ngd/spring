@@ -298,6 +298,9 @@
     <ClInclude Include="Rect.h">
       <Filter>头文件\2D</Filter>
     </ClInclude>
+    <ClInclude Include="ShaderComplier.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Primitive.cpp">
@@ -464,6 +467,9 @@
     </ClCompile>
     <ClCompile Include="Rect.cpp">
       <Filter>源文件\2D</Filter>
+    </ClCompile>
+    <ClCompile Include="ShaderComplier.cpp">
+      <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

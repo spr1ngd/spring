@@ -11,9 +11,12 @@
 using namespace std;
 using namespace spring;
 
+std::vector<Shader*> Shader::cachingShaders;
+
 Shader::Shader() 
 {
 	// todo : use default shader?
+	Shader::Caching(this);
 }
 
 Shader::Shader( const char*vertexShader,const char*fragmentShader ) 
@@ -24,6 +27,7 @@ Shader::Shader( const char*vertexShader,const char*fragmentShader )
 	shaders.insert(pair<GLenum, GLuint>(GL_FRAGMENT_SHADER, fragment));
 	this->linkProgram();
 	this->initializeLocation();
+	Shader::Caching(this);
 }
 
 #pragma region shader program methods
@@ -432,3 +436,21 @@ void Shader::setEngineEnvironment()
 
 #pragma endregion
 }
+
+#pragma region caching | flash
+
+void Shader::Caching(Shader* shader) 
+{
+	cachingShaders.push_back(shader);
+}
+
+void Shader::Flash(Shader* shader) 
+{
+	for (vector<Shader*>::iterator item = cachingShaders.begin(); item != cachingShaders.end();)
+	{
+		cachingShaders.erase(item);
+		return;
+	}
+}
+
+#pragma endregion

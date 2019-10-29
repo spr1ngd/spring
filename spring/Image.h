@@ -8,9 +8,9 @@ namespace spring
 		class Image : public UIElement
 		{
 		protected:
-			Image();
-			virtual void GenerateMesh();
 		public:
+			virtual void GenerateMesh();
+			Image();
 			void Render() override;
 		};
 	}
