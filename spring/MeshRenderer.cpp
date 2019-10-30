@@ -42,13 +42,33 @@ void MeshRenderer::Init()
 void MeshRenderer::Render() 
 {
 	if (this->material->depthTest == true)
+	{
 		glEnable(GL_DEPTH_TEST);
+	}
 	else
+	{
 		glDisable(GL_DEPTH_TEST);
-	if (this->material->alphaTest == true)
+	}
+	
+	if (this->material->alphaTest == true) 
+	{
 		glEnable(GL_ALPHA_TEST);
+		glAlphaFunc(this->material->alphaFunc,this->material->alphaRef);
+	}
+	else 
+	{
+		glDisable(GL_ALPHA_TEST);
+	}
+
+	if (this->material->blend == true)
+	{
+		glEnable(GL_BLEND);
+		glBlendFunc(this->material->srcFactor,this->material->dstFactor);
+	}
 	else
-		glDisable(GL_ALPHA_TEST); 
+	{
+		glDisable(GL_ALPHA_TEST);
+	}
 
 	this->material->EnableCullFace();
 

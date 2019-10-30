@@ -12,7 +12,17 @@ namespace spring
 
 		static void Caching(Material* material);
 		static void Flash(Material* material);
+
+	private:
+		bool alphaTest = false;
+		GLenum alphaFunc = GL_GREATER;
+		float alphaRef = 0.5f;
+
+		bool blend = false;
+		GLenum srcFactor = GL_SRC_ALPHA;
+		GLenum dstFactor = GL_ONE_MINUS_SRC_ALPHA;
 	public:
+		friend class MeshRenderer;
 		enum CullFace 
 		{
 			None,
@@ -32,7 +42,6 @@ namespace spring
 		RenderMode renderMode = RenderMode::Fill;
 
 		bool depthTest = true;
-		bool alphaTest = true;
 
 		GLenum GetPolygonMode( RenderMode renderMode )    
 		{
@@ -52,6 +61,9 @@ namespace spring
 		Material();
 		Material(const char*verexShaderFile,const char*fragmentShaderFile);
 		Material(Shader* shader);
+
+		void AlphaTest( GLenum alphaTestFunc = GL_GREATER,float alphaTestRef = 0.5f );
+		void BlendFunc( GLenum srcFactor = GL_SRC_ALPHA,GLenum dstFactor = GL_ONE_MINUS_SRC_ALPHA);
 		void EnableCullFace() 
 		{
 			switch (this->cullface) 
@@ -76,9 +88,5 @@ namespace spring
 				break;
 			}
 		}
-
-		// todo : set value for shader 's attribute and uniform 
-		float* GetVec3( const char* nameID );
-		void SetVec3( const char* nameID,float* value);
 	};
 }

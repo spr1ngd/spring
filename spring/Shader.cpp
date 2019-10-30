@@ -350,7 +350,8 @@ void Shader::setShaderValues()
 void Shader::setEngineEnvironment() 
 {
 	this->setColor(AMBIENT_COLOR,Environment::ambient.color);
-	this->setTexture("MainTextureData.texture", TextureLoader::GenPureWhiteTexture()->textureId);
+	if( this->textures.size() <= 0 )
+		this->setTexture("MainTextureData.texture", TextureLoader::GenPureWhiteTexture()->textureId);
 
 #pragma region set light for shaders , todo : read shaders properties name from shader file.
 

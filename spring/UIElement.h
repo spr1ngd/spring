@@ -1,4 +1,5 @@
 #pragma once
+#include "color.h"
 #include "rect.h"
 #include "meshrenderer.h"
 
@@ -8,10 +9,12 @@ namespace spring
 	{
 		class UIElement : public MeshRenderer
 		{
-		protected:
+		public:
+			Color color = Color::white;
 		public:
 			UIElement();
 			Rect* rect;
+
 			void Render() override;
 		};
 	}

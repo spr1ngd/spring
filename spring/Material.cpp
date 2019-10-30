@@ -23,14 +23,18 @@ Material::Material(const char* verexShaderFile, const char* fragmentShaderFile)
 	Material::Caching(this);
 }
 
-float* Material::GetVec3(const char* nameID) 
+void Material::AlphaTest(GLenum alphaTestFunc, float alphaTestRef ) 
 {
-	return nullptr;
+	this->alphaTest = true;
+	this->alphaFunc = alphaTestFunc;
+	this->alphaRef = alphaTestRef;
 }
 
-void Material::SetVec3(const char* nameID, float* value) 
+void Material::BlendFunc(GLenum srcFactor, GLenum dstFactor) 
 {
-
+	this->blend = true;
+	this->srcFactor = srcFactor;
+	this->dstFactor = dstFactor;
 }
 
 #pragma region caching and flash material object.

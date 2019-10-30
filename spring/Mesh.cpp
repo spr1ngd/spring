@@ -58,7 +58,8 @@ void Mesh::Draw( function<void()> render )
 	if (nullptr != render)
 		render();
 
-	glDrawElements(GetDrawMode(this->mode), indices.size(), GL_UNSIGNED_INT, 0);
+	auto mode = GetDrawMode(this->mode);
+	glDrawElements(mode, indices.size(), GL_UNSIGNED_INT, (void*)0);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,0);
 	glBindVertexArray(0);
 }

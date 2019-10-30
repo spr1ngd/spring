@@ -8,7 +8,8 @@ UIElement::UIElement()
 	this->rect = new Rect(0.0f, 0.0f, 100.0f, 100.0f);
 }
 
-void UIElement::Render()
+void UIElement::Render() 
 {
-
+	this->material->shader->setColor(MAIN_COLOR, this->color);
+	MeshRenderer::Render();
 }

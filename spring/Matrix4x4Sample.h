@@ -28,7 +28,7 @@ public:
 		sun->transform->scale = Vector3(5.0f);
 		TextureLoader textureLoader;
 		auto sunTexture = textureLoader.Load("res/texture/sun.jpg");
-		sun->material->shader->setTexture("MainTextureData.texture", sunTexture);
+		sun->material->shader->setTexture("MainTextureData.texture", sunTexture->textureId);
 		sun->material->shader->setColor(MAIN_COLOR, Color(204, 204, 204, 128));
 		sun->material->shader->setColor("Specular_Color", Color::white);
 		sun->material->shader->setFloat("Specular_Intensity", 0.0f);
@@ -43,7 +43,7 @@ public:
 		earth->transform->scale = Vector3(0.5f);
 		// earth->transform->position = Vector3(6.0f, 0.0f, 0.0f);
 		auto earthTexture = textureLoader.Load("res/texture/earth.jpg");
-		earth->material->shader->setTexture("MainTextureData.texture", earthTexture);
+		earth->material->shader->setTexture("MainTextureData.texture", earthTexture->textureId);
 		earth->material->shader->setColor(MAIN_COLOR, Color(204, 204, 204, 128));
 		earth->material->shader->setColor("Specular_Color", Color::white);
 		earth->material->shader->setFloat("Specular_Intensity", 0.0f);

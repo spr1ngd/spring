@@ -1,5 +1,6 @@
 #pragma once
 #include "uielement.h"
+#include "texture.h"
 
 namespace spring 
 {
@@ -7,10 +8,11 @@ namespace spring
 	{
 		class Image : public UIElement
 		{
-		protected:
 		public:
-			virtual void GenerateMesh();
+			Texture* texture;
+		public:
 			Image();
+			virtual void GenerateMesh();
 			void Render() override;
 		};
 	}

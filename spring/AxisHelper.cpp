@@ -15,7 +15,6 @@ AxisHelper::AxisHelper(Vector3 target)
 	this->material->renderMode = Material::Fill;
 	this->meshRenderer = new MeshRenderer(this->material);
 	this->RenderAxis();
-	this->meshRenderer->material->alphaTest = false;
 	this->meshRenderer->material->depthTest = false;
 	this->meshRenderer->setRenderOrder(5000);
 }
@@ -30,7 +29,6 @@ AxisHelper::AxisHelper(Transform* trans,Space space)
 	this->material->renderMode = Material::Fill;	
 	this->meshRenderer = new MeshRenderer(this->material);
 	this->RenderAxis();
-	this->meshRenderer->material->alphaTest = false;
 	this->meshRenderer->material->depthTest = false;
 	this->meshRenderer->setRenderOrder(5000);
 }

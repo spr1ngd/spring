@@ -13,7 +13,7 @@ namespace spring
 		Vector3 vertex;
 		Vector3 normal;
 		Vector2 texcoord;
-		Colorf color;
+		Colorf color = Colorf::white;
 		Vector3 tangent;
 		Vector3 bitangent;
 	public:
