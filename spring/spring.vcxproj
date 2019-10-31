@@ -207,6 +207,7 @@
     <ClInclude Include="Image.h" />
     <ClInclude Include="Input.h" />
     <ClInclude Include="JsonMapper.h" />
+    <ClInclude Include="Layer.h" />
     <ClInclude Include="Light.h" />
     <ClInclude Include="Material.h" />
     <ClInclude Include="MaterialTexture.h" />
@@ -224,6 +225,7 @@
     <ClInclude Include="Primitive.h" />
     <ClInclude Include="Quaternion.h" />
     <ClInclude Include="Rect.h" />
+    <ClInclude Include="RectTransform.h" />
     <ClInclude Include="Renderable.h" />
     <ClInclude Include="RenderOrder.h" />
     <ClInclude Include="Resource.h" />
@@ -268,6 +270,7 @@
     <ClCompile Include="Image.cpp" />
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="JsonMapper.cpp" />
+    <ClCompile Include="Layer.cpp" />
     <ClCompile Include="Light.cpp" />
     <ClCompile Include="Material.cpp" />
     <ClCompile Include="MaterialTexture.cpp" />
@@ -284,6 +287,7 @@
     <ClCompile Include="Primitive.cpp" />
     <ClCompile Include="Quaternion.cpp" />
     <ClCompile Include="Rect.cpp" />
+    <ClCompile Include="RectTransform.cpp" />
     <ClCompile Include="Renderable.cpp" />
     <ClCompile Include="RenderOrder.cpp" />
     <ClCompile Include="Resources.cpp" />

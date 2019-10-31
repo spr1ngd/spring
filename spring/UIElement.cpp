@@ -5,7 +5,9 @@ using namespace spring::ui;
 
 UIElement::UIElement()
 {
-	this->rect = new Rect(0.0f, 0.0f, 100.0f, 100.0f);
+	this->layer = Layer::UI;
+	this->rectTransform = new RectTransform();
+	this->rectTransform->transform = this->transform;
 }
 
 void UIElement::Render() 

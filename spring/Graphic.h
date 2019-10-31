@@ -8,6 +8,8 @@ namespace spring
 	{
 	public:
 		static glm::mat4 VIEW;
-		static glm::mat4 PROJECTION;
+		static glm::mat4 PERSPECTIVE_PROJECTION;
+
+		static glm::mat4 ORTHO_PROJECTION;
 	};
 }

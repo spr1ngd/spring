@@ -2,6 +2,7 @@
 
 #include "console.h"
 #include "space.h"
+#include "layer.h"
 #include "timer.h"
 #include "mathf.h"
 #include "node.h"

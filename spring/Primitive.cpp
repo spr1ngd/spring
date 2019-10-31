@@ -17,8 +17,11 @@ Mesh* Primitive::GenPrimitive(Primitive::Type type)
 		return this->GenCylinder();
 	else if (type == Primitive::Sphere) 
 		return this->GenSphere();
-	else 
+	else
+	{
 		Console::ErrorFormat("[springengine::Primitive] : does not support to generate type [%d] primitive.", type);
+		return nullptr;
+	}
 }
 
 Mesh* Primitive::GenTriangle() 

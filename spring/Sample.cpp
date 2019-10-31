@@ -129,7 +129,7 @@ void Sample::Update()
 	timer += Timer::deltaTime;
 	skybox->transform->position = Camera::main->transform->position;
 
-	if (enable) 
+	if (visible) 
 	{
 		float angleDelta = speed * Timer::deltaTime;
 		/*lightModel->transform->eulerangle.z += angleDelta;

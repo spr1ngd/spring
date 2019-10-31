@@ -7,5 +7,7 @@ namespace spring
 	public:
 		static int width;
 		static int height;
+		static float halfWidth;
+		static float halfHeight;
 	};
 }

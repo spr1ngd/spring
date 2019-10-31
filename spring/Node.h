@@ -1,5 +1,6 @@
 #pragma once
 #include <vector>
+#include "layer.h"
 #include "object.h"
 #include "transform.h"
 
@@ -12,7 +13,9 @@ namespace spring
 	private:
 		vector<Node*> nodes;
 	public:
-		bool enable;
+		bool visible;
+		Layer layer = Layer::Default;
+
 		Node* parent;
 		vector<Node> children;
 		Transform* transform;

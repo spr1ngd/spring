@@ -96,7 +96,16 @@ void MeshRenderer::Render()
 				glUniformMatrix4fv(vLocation, 1, GL_FALSE, glm::value_ptr(Graphic::VIEW));
 
 				GLuint pLocation = this->material->shader->getLocation(MATRIX_P);
-				glUniformMatrix4fv(pLocation, 1, GL_FALSE, glm::value_ptr(Graphic::PROJECTION));
+				switch (this->layer)
+				{
+				case Layer::Default:
+					glUniformMatrix4fv(pLocation, 1, GL_FALSE, glm::value_ptr(Graphic::PERSPECTIVE_PROJECTION));
+					break;
+				case Layer::UI:
+					glUniformMatrix4fv(pLocation, 1, GL_FALSE, glm::value_ptr(Graphic::ORTHO_PROJECTION));
+				default:
+					break;
+				}
 			});
 	}
 	this->material->shader->disuse();

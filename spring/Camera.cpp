@@ -33,7 +33,7 @@ void Camera::Render()
 	// note : perspective fov parameter is radian.
 	glm::mat4 projection = glm::perspective(glm::radians(this->fov), float(Screen::width) / float(Screen::height),this->nearClip, this->farClip);
 	Graphic::VIEW = view;
-	Graphic::PROJECTION = projection;
+	Graphic::PERSPECTIVE_PROJECTION = projection;
 
 	switch (this->clearFlag)
 	{
