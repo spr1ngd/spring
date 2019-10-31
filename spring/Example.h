@@ -55,11 +55,11 @@ public:
 	void OnGUI() 
 	{
 		TextureLoader textureLoader;
-		Texture* texture = textureLoader.Load("res/texture/standarduv.jpg");
+		Texture* texture = textureLoader.Load("res/texture/standarduv.jpg",true);
 		image = GUI::DrawImage(Rect(0.0f, 0.0f, 200.0f, 200.0f));
 		image->texture = texture;
 		image->material->depthTest = true;
 		image->material->BlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
-		image->color = Color(255,255,30,100);
+		image->color = Color::white;
 	}
 };

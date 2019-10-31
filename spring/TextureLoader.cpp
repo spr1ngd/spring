@@ -53,16 +53,18 @@ Texture* TextureLoader::GenPureWhiteTexture()
 	return texture;
 }
 
-Texture* TextureLoader::Load(const char* filePath) 
+Texture* TextureLoader::Load(const char* filePath ,bool invertY)
 {
 	this->filePath = filePath;
 	unsigned int flags = SOIL_FLAG_POWER_OF_TWO;
+	if (invertY)
+		flags |= SOIL_FLAG_INVERT_Y;
 	GLuint textureId = SOIL_load_OGL_texture(filePath,0,0,flags);
-	// todo: flag invert y
-	// todo: wrap mode GL_CLAMP_TO_EDGE
 	glBindTexture(GL_TEXTURE_2D, textureId);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glBindTexture(GL_TEXTURE_2D, 0);
 	Texture* texture = new Texture();
 	texture->textureName = filePath;

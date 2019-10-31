@@ -14,7 +14,7 @@ namespace spring
 
 	public:
 		TextureLoader();
-		Texture* Load(const char* filePath);
+		Texture* Load(const char* filePath , bool invertY = false);
 		GLuint LoadCubemap(const std::string filePaths);
 		GLuint LoadCubemap(const char*right,const char*left,const char* top,const char* bottom,const char* back,const char* front);
 
