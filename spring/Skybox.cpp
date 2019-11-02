@@ -16,7 +16,6 @@ Skybox::Skybox(const char* skyboxName, Material material)
 
 	this->name = skyboxName;
 	this->material = material;
-	this->material.depthTest = false;
 	this->setRenderOrder(RenderOrder::Skybox);
 
 	TextureLoader cubemapLoader;
@@ -55,6 +54,8 @@ void Skybox::Render()
 	glDisable(GL_CULL_FACE);
 	glPolygonMode(GL_BACK, GL_FILL);
 
+
+	// todo : render skybox by meshrender 
 	this->material.shader->use();
 	for (unsigned int i = 0; i < this->meshes.size(); i++)
 	{

@@ -3,6 +3,7 @@
 #include "Glm/glm.hpp"
 #include "Glm/ext.hpp"  
 #include <map>
+#include <vector>
 #include "color.h"
 #include "vector3.h"
 #include "vector4.h"

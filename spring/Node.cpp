@@ -60,13 +60,3 @@ void Node::SetParent(Node node)
 	node.parent = this;
 	this->children.insert(this->children.end(), node);
 }
-
-Node* Node::Instantiate(Node node) 
-{
-	return nullptr;
-}
-
-void Node::Destroy()
-{
-	//todo : remove from node tree.
-}

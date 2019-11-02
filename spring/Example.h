@@ -50,8 +50,8 @@ public:
 		Texture* texture = textureLoader.Load("res/texture/spring.png",true);
 		image = GUI::DrawImage(Rect(0.0f, 0.0f, 48, 48));
 		image->texture = texture;
-		image->material->depthTest = true;
-		image->material->BlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
+		image->material->DepthTestFunc(true);
+		image->material->AlphaBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
 		image->color = Color(255,255,255,128);
 		image->rectTransform->SetPivot(Vector2(0.0f,1.0f));
 		image->transform->SetPosition(Vector3(24.0f,Screen::height - 24.0f, 0.0f));

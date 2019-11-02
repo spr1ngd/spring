@@ -14,6 +14,6 @@ namespace spring
 		Behaviour();
 		virtual void Awake();
 		virtual void Update();
-		virtual void Destroy();
+		void Destroy() override;
 	};
 }

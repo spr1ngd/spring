@@ -41,72 +41,59 @@ void MeshRenderer::Init()
 
 void MeshRenderer::Render() 
 {
-	if (this->material->depthTest == true)
-	{
-		glEnable(GL_DEPTH_TEST);
-	}
-	else
-	{
-		glDisable(GL_DEPTH_TEST);
-	}
-	
-	if (this->material->alphaTest == true) 
-	{
-		glEnable(GL_ALPHA_TEST);
-		glAlphaFunc(this->material->alphaFunc,this->material->alphaRef);
-	}
-	else 
-	{
-		glDisable(GL_ALPHA_TEST);
-	}
-
-	if (this->material->blend == true)
-	{
-		glEnable(GL_BLEND);
-		glBlendFunc(this->material->srcFactor,this->material->dstFactor);
-	}
-	else
-	{
-		glDisable(GL_ALPHA_TEST);
-	}
-
+	// todo : move to meshrenderer::init
+	this->material->EnableAlphaTest();
+	this->material->EnableAlphaBlend();
+	this->material->EnableDepthTest();
+	this->material->EnableStencilTest();
 	this->material->EnableCullFace();
 
 	this->material->shader->use();
-	for (unsigned int i = 0; i < this->meshes.size(); i++) 
+
+	// use all camera to render scene
+	for (vector<Camera*>::iterator iter = Camera::cameras.begin(); iter != Camera::cameras.end();iter++)
 	{
-		Mesh* mesh = &meshes[i];
-		mesh->Draw([&](void)
-			{
-				glm::mat4 model =
-					glm::translate(glm::mat4(1.0), glm::vec3(this->transform->position.x, this->transform->position.y, this->transform->position.z)) * 
-					glm::rotate(glm::mat4(1.0f), glm::radians(this->transform->GetEulerangle().z), glm::vec3(0.0f, 0.0f, 1.0f)) *
-					glm::rotate(glm::mat4(1.0f), glm::radians(this->transform->GetEulerangle().x), glm::vec3(1.0f, 0.0f, 0.0f)) *
-					glm::rotate(glm::mat4(1.0f), glm::radians(this->transform->GetEulerangle().y), glm::vec3(0.0f, 1.0f, 0.0f)) * 
-					glm::scale(glm::mat4(1.0f), glm::vec3(this->transform->scale.x, this->transform->scale.y, this->transform->scale.z));
-				glm::mat4 nm = glm::inverseTranspose(model);
+		Camera* camera = *iter;
+		camera->Render();
 
-				GLuint mLocation = this->material->shader->getLocation(MATRIX_M);
-				glUniformMatrix4fv(mLocation, 1, GL_FALSE, glm::value_ptr(model));
+		glm::mat4 view = camera->GetViewMatrix();
+		glm::mat4 projection = camera->GetProjectionMatrix();
 
-				GLuint nmLocation = this->material->shader->getLocation(MATRIX_NM);
-				glUniformMatrix4fv(nmLocation,1,GL_FALSE,glm::value_ptr(nm));
-
-				GLuint vLocation = this->material->shader->getLocation(MATRIX_V);
-				glUniformMatrix4fv(vLocation, 1, GL_FALSE, glm::value_ptr(Graphic::VIEW));
-
-				GLuint pLocation = this->material->shader->getLocation(MATRIX_P);
-				switch (this->layer)
+		for (unsigned int i = 0; i < this->meshes.size(); i++)
+		{
+			Mesh* mesh = &meshes[i];
+			mesh->Draw([&](void)
 				{
-				case Layer::Default:
-					glUniformMatrix4fv(pLocation, 1, GL_FALSE, glm::value_ptr(Graphic::PERSPECTIVE_PROJECTION));
-					break;
-				case Layer::UI:
-					glUniformMatrix4fv(pLocation, 1, GL_FALSE, glm::value_ptr(Graphic::ORTHO_PROJECTION));
-				default:
-					break;
-				}
-			});
+					glm::mat4 model =
+						glm::translate(glm::mat4(1.0), glm::vec3(this->transform->position.x, this->transform->position.y, this->transform->position.z)) *
+						glm::rotate(glm::mat4(1.0f), glm::radians(this->transform->GetEulerangle().z), glm::vec3(0.0f, 0.0f, 1.0f)) *
+						glm::rotate(glm::mat4(1.0f), glm::radians(this->transform->GetEulerangle().x), glm::vec3(1.0f, 0.0f, 0.0f)) *
+						glm::rotate(glm::mat4(1.0f), glm::radians(this->transform->GetEulerangle().y), glm::vec3(0.0f, 1.0f, 0.0f)) *
+						glm::scale(glm::mat4(1.0f), glm::vec3(this->transform->scale.x, this->transform->scale.y, this->transform->scale.z));
+					glm::mat4 nm = glm::inverseTranspose(model);
+
+					GLuint mLocation = this->material->shader->getLocation(MATRIX_M);
+					glUniformMatrix4fv(mLocation, 1, GL_FALSE, glm::value_ptr(model));
+
+					GLuint nmLocation = this->material->shader->getLocation(MATRIX_NM);
+					glUniformMatrix4fv(nmLocation, 1, GL_FALSE, glm::value_ptr(nm));
+
+					GLuint vLocation = this->material->shader->getLocation(MATRIX_V);
+					glUniformMatrix4fv(vLocation, 1, GL_FALSE, glm::value_ptr(view));
+
+					GLuint pLocation = this->material->shader->getLocation(MATRIX_P);
+					switch (this->layer)
+					{
+					case Layer::Default:
+						glUniformMatrix4fv(pLocation, 1, GL_FALSE, glm::value_ptr(projection));
+						break;
+					case Layer::UI:
+						glUniformMatrix4fv(pLocation, 1, GL_FALSE, glm::value_ptr(Graphic::ORTHO_PROJECTION));
+					default:
+						break;
+					}
+				});
+		}
 	}
 	this->material->shader->disuse();
 }

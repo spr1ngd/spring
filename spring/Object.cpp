@@ -11,6 +11,11 @@ Object::Object()
 	this->instanceId = GetInstanceID();
 }
 
+void Object::Destroy() 
+{
+
+}
+
 const char* Object::ToString() 
 {
 	return this->name;
@@ -20,11 +25,6 @@ Object* Object::Instantiate(Object obj)
 {
 	// todo 
 	return nullptr;
-}
-
-void Object::Destroy()
-{
-
 }
 
 unsigned long Object::GetInstanceID() 

@@ -25,9 +25,6 @@ void Image::GenerateMesh()
 	float halfWidth = this->rectTransform->size.x / 2.0f;
 	float halfHeight = this->rectTransform->size.y / 2.0f;
 
-	// halfWidth = 0.5f;
-	// halfHeight = 0.5f;
-
 	Vertex lefttop;
 	lefttop.vertex = Vector3(-halfWidth, halfHeight, 0.0f);
 	lefttop.texcoord = Vector2(0.0f, 1.0f);

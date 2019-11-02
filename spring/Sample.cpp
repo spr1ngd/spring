@@ -1,6 +1,7 @@
 #include "sample.h"
 #include "matrix4x4sample.h"
 #include "example.h"
+#include "skybox.h"
 
 using namespace spring;
 using namespace spring::editor;
@@ -11,7 +12,7 @@ Example* example;
 bool enabled = false;
 Camera* camera;
 OrbitCamera* orbit;
-Skybox* skybox; 
+spring::Skybox* skybox; 
 MeshRenderer* lightModel;
 vector<Material*> mats;
 vector<MeshRenderer*> renderers;
@@ -125,7 +126,6 @@ void Sample::Awake()
 
 void Sample::Update() 
 {
-	camera->Render();
 	timer += Timer::deltaTime;
 	skybox->transform->position = Camera::main->transform->position;
 

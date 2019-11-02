@@ -35,8 +35,6 @@ namespace spring
 		Node* AddNode();
 
 		Node* GetChild(const char*nodeName);
-		void SetParent(const Node node); 
-		static Node* Instantiate(Node node);
-		static void Destroy();
+		void SetParent(const Node node);
 	};
 }

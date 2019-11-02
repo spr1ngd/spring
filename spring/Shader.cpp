@@ -447,10 +447,13 @@ void Shader::Caching(Shader* shader)
 
 void Shader::Flash(Shader* shader) 
 {
-	for (vector<Shader*>::iterator item = cachingShaders.begin(); item != cachingShaders.end();)
+	for (vector<Shader*>::iterator item = cachingShaders.begin(); item != cachingShaders.end();item++)
 	{
-		cachingShaders.erase(item);
-		return;
+		if (*item == shader)
+		{
+			cachingShaders.erase(item);
+			return;
+		}
 	}
 }
 

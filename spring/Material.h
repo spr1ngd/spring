@@ -21,8 +21,14 @@ namespace spring
 		bool blend = false;
 		GLenum srcFactor = GL_SRC_ALPHA;
 		GLenum dstFactor = GL_ONE_MINUS_SRC_ALPHA;
+
+		bool depthTest = true;
+		bool depthWrite = true;
+		GLenum depthFunc = GL_LESS;
+
+		bool stencilTest = false;
+
 	public:
-		friend class MeshRenderer;
 		enum CullFace 
 		{
 			None,
@@ -40,8 +46,6 @@ namespace spring
 		Shader* shader;
 		CullFace cullface = CullFace::None;
 		RenderMode renderMode = RenderMode::Fill;
-
-		bool depthTest = true;
 
 		GLenum GetPolygonMode( RenderMode renderMode )    
 		{
@@ -62,31 +66,19 @@ namespace spring
 		Material(const char*verexShaderFile,const char*fragmentShaderFile);
 		Material(Shader* shader);
 
-		void AlphaTest( GLenum alphaTestFunc = GL_GREATER,float alphaTestRef = 0.5f );
-		void BlendFunc( GLenum srcFactor = GL_SRC_ALPHA,GLenum dstFactor = GL_ONE_MINUS_SRC_ALPHA);
-		void EnableCullFace() 
-		{
-			switch (this->cullface) 
-			{
-			case CullFace::None:
-				glDisable(GL_CULL_FACE);
-				glPolygonMode(GL_FRONT_AND_BACK, GetPolygonMode(renderMode));
-				break;
-			case CullFace::Back:
-				glEnable(GL_CULL_FACE);
-				glCullFace(GL_BACK);
-				glPolygonMode(GL_FRONT, GetPolygonMode(renderMode));
-				break;
-			case CullFace::Front:
-				glEnable(GL_CULL_FACE);
-				glCullFace(GL_FRONT);
-				glPolygonMode(GL_BACK, GetPolygonMode(renderMode));
-				break;
-			case CullFace::FrontAndBack:
-				glEnable(GL_CULL_FACE);
-				glCullFace(GL_FRONT_AND_BACK);
-				break;
-			}
-		}
+		void AlphaTestFunc( GLenum alphaTestFunc = GL_GREATER,float alphaTestRef = 0.5f );
+		void EnableAlphaTest();
+
+		void AlphaBlendFunc( GLenum srcFactor = GL_SRC_ALPHA,GLenum dstFactor = GL_ONE_MINUS_SRC_ALPHA);
+		void EnableAlphaBlend();
+
+		void DepthTestFunc( bool enable, GLenum func = GL_LESS , bool depthWrite = true);
+		void EnableDepthTest();
+
+		void StencilTestFunc();
+		void EnableStencilTest();
+
+		void CullFaceFunc();
+		void EnableCullFace();
 	};
 }

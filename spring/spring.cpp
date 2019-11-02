@@ -10,6 +10,7 @@
 #include "spring.h"
 #include "sample.h"
 #include "vector2.h"
+#include "framebufferobject.h"
 
 // spring engine
 #pragma comment (lib,"glfw3.lib")
@@ -346,6 +347,9 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 		behaviour.second->Awake(); 
 	Timer::Start();
 
+	FrameBufferObject* fbo = FrameBufferObject::GenColorFramebuffer(Screen::width, Screen::height);
+
+
 	while (true)
 	{
 		if (PeekMessage(&msg, NULL, NULL, NULL, PM_REMOVE))
@@ -364,7 +368,21 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 		Gizmos::Render();
 		for (auto behaviour : Behaviour::behaviours)
 			behaviour.second->Update();
-		Renderable::Draw();
+
+		// todo : render time is decided by scene camera count.
+		// todo : iterate camera in scene.
+
+		// todo : render 3d scene object
+		fbo->Bind();
+		Renderable::Draw(0,5000);
+		fbo->Unbind();
+
+		glClearColor(.1f,.4f,.7f,1.0f);
+		glClear(GL_COLOR_BUFFER_BIT);
+
+		// todo : render 2d object , frame buffer object does not contain ui render buffer.
+		Renderable::Draw(5001,20000);
+
 		// FPS::CalculateFramePerSecond();
 		Input::setMouseWheel(0.0f);
 		Input::mouseDelta = Vector2::zero;

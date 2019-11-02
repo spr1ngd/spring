@@ -32,3 +32,13 @@ void Renderable::Draw()
 		object->Render();
 	}
 }
+
+void Renderable::Draw(unsigned int minOrder, unsigned int maxOrder)
+{
+	for (unsigned int i = 0; i < objects.size(); i++)
+	{
+		auto object = objects[i];
+		if( object->renderOrder >= minOrder && object->renderOrder < maxOrder )
+			object->Render();
+	}
+}
