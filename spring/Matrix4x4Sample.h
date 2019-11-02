@@ -19,7 +19,6 @@ public:
 		loader.Load("res/model/obj/sphere.obj");
 
 		Material* sunMaterial = new Material("res/shader/diffuse/diffuse.vs", "res/shader/diffuse/diffuse.fs");
-		sunMaterial->cullface = Material::CullFace::Back;
 		sun = new MeshRenderer(sunMaterial);
 		sun->meshes = loader.meshes;
 		sun->textures = loader.loadedTextures;
@@ -35,7 +34,6 @@ public:
 		sun->material->shader->setFloat("Specular_Attenuation", 64.0f);
 
 		Material* earthMaterial = new Material("res/shader/diffuse/diffuse.vs", "res/shader/diffuse/diffuse.fs");
-		earthMaterial->cullface = Material::CullFace::Back;
 		earth = new MeshRenderer(earthMaterial);
 		earth->meshes = loader.meshes;
 		earth->textures = loader.loadedTextures;

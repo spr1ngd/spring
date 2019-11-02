@@ -26,7 +26,11 @@ namespace spring
 		bool depthWrite = true;
 		GLenum depthFunc = GL_LESS;
 
+		// todo : add stencil test
 		bool stencilTest = false;
+
+		bool cullface = false;
+		GLenum cullfaceFunc = GL_BACK;
 
 	public:
 		enum CullFace 
@@ -44,23 +48,10 @@ namespace spring
 		};
 		const char* name;
 		Shader* shader;
-		CullFace cullface = CullFace::None;
 		RenderMode renderMode = RenderMode::Fill;
 
-		GLenum GetPolygonMode( RenderMode renderMode )    
-		{
-			switch (renderMode)
-			{
-			case spring::Material::Point:
-				return GL_POINT;
-			case spring::Material::Line:
-				return GL_LINE;
-			case spring::Material::Fill:
-				return GL_FILL;
-			default:
-				return GL_FILL;
-			}
-		}
+	private:
+		GLenum GetPolygonMode();
 	public:
 		Material();
 		Material(const char*verexShaderFile,const char*fragmentShaderFile);
@@ -78,7 +69,7 @@ namespace spring
 		void StencilTestFunc();
 		void EnableStencilTest();
 
-		void CullFaceFunc();
+		void CullFaceFunc( bool enabel, GLenum cullface = GL_BACK );
 		void EnableCullFace();
 	};
 }

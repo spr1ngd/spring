@@ -44,8 +44,10 @@ void Sample::Awake()
 
 	Environment::ambient.color = Color(75, 75, 75, 255);
 	 
-	Material skyboxMaterial("res/shader/skybox/6 Sided.vs", "res/shader/skybox/6 Sided.fs");
-	skybox = new Skybox("6 Sided", skyboxMaterial);
+	Material* skyboxMaterial = new Material("res/shader/skybox/6 Sided.vs", "res/shader/skybox/6 Sided.fs");
+	TextureLoader cubemapLoader;
+	auto cubemap = cubemapLoader.LoadCubemap("res/texture/skybox/night");
+	skybox = new Skybox(skyboxMaterial,*cubemap);
 	skybox->Init();
 
 	Light* light = createLight(Light::Type::Directional, Color(255, 244, 214, 255), 0.7f, Vector3(10.0f, 10.0f, 10.0f), Vector3::down);
@@ -105,7 +107,6 @@ void Sample::Awake()
 				MeshRenderer* meshRenderer = new MeshRenderer(mat);
 				meshRenderer->meshes = modelLoader.meshes;
 				meshRenderer->textures = modelLoader.loadedTextures;
-				meshRenderer->material->cullface = Material::CullFace::Back;
 				meshRenderer->Init();
 				meshRenderer->transform->position = Vector3(-10.0f + i * 2.0f, 0.0, -10.0f + j * 2.0f);
 				meshRenderer->transform->scale = Vector3(1.0f);

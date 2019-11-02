@@ -9,6 +9,7 @@
 #include "vector4.h"
 #include "environment.h"
 #include "materialtexture.h"
+#include "cubemap.h"
 
 #define MATRIX_M "M"
 #define MATRIX_V "V"
@@ -67,6 +68,7 @@ namespace spring
 		map<GLuint, glm::mat4> mat4Map;
 
 		map<GLuint, MaterialTexture> textures;
+		map<GLuint, Cubemap> cubemaps;
 
 		void setShaderValues();
 		void setEngineEnvironment();
@@ -93,5 +95,6 @@ namespace spring
 		void setTexture(const char*name, GLuint texture);
 		void setTilling(const char*name, Vector2 tilling);
 		void setOffset(const char*name, Vector2 offset);
+		void setCubemap(const char*name, Cubemap cubemap);
 	};
 }

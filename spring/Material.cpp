@@ -104,32 +104,50 @@ void Material::EnableStencilTest()
 	}
 }
 
-void Material::CullFaceFunc() 
+void Material::CullFaceFunc( bool enable,GLenum cullfaceFunc ) 
 {
+	this->cullface = enable;
+	this->cullfaceFunc = cullfaceFunc;
 	
 }
 void  Material::EnableCullFace() 
 {
-	switch (this->cullface)
+	if (this->cullface == true) 
 	{
-	case CullFace::None:
+		glEnable(GL_CULL_FACE);
+		glCullFace(this->cullfaceFunc);
+	}
+	else 
+	{
 		glDisable(GL_CULL_FACE);
-		glPolygonMode(GL_FRONT_AND_BACK, GetPolygonMode(renderMode));
+	}
+
+	switch (this->cullfaceFunc)
+	{
+	case GL_NONE:
+		glPolygonMode(GL_FRONT_AND_BACK, GetPolygonMode());
 		break;
-	case CullFace::Back:
-		glEnable(GL_CULL_FACE);
-		glCullFace(GL_BACK);
-		glPolygonMode(GL_FRONT, GetPolygonMode(renderMode));
+	case GL_BACK:
+		glPolygonMode(GL_FRONT, GetPolygonMode());
 		break;
-	case CullFace::Front:
-		glEnable(GL_CULL_FACE);
-		glCullFace(GL_FRONT);
-		glPolygonMode(GL_BACK, GetPolygonMode(renderMode));
+	case GL_FRONT:
+		glPolygonMode(GL_BACK, GetPolygonMode());
 		break;
-	case CullFace::FrontAndBack:
-		glEnable(GL_CULL_FACE);
-		glCullFace(GL_FRONT_AND_BACK);
-		break;
+	}
+}
+
+GLenum Material::GetPolygonMode()
+{
+	switch (this->renderMode)
+	{
+	case spring::Material::Point:
+		return GL_POINT;
+	case spring::Material::Line:
+		return GL_LINE;
+	case spring::Material::Fill:
+		return GL_FILL;
+	default:
+		return GL_FILL;
 	}
 }
 

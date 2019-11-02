@@ -1,24 +1,19 @@
 #pragma once
 #include <vector>
-#include "node.h"
-#include "meshrenderer.h"
+#include "cubemap.h"
 #include "material.h"
-#include "transform.h"
-#include "renderable.h"
+#include "meshrenderer.h"
 
 namespace spring
 {
-	class Skybox : public Node, public Renderable
+	class Skybox : public MeshRenderer
 	{
 	private:
-		GLuint cubemap;
+		Cubemap cubemap;
 	public:
-		Material material;
-		vector<Mesh> meshes;
-		vector<Texture> textures;
-		Skybox(const char* skyboxName, Material material);
+		Skybox(Material* material,Cubemap cubmap);
 
-		void Init();
+		void SetCubemap(Cubemap cubemap);
 		void Render() override;
 	};
 }

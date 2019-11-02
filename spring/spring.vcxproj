@@ -194,6 +194,7 @@
     <ClInclude Include="Color.h" />
     <ClInclude Include="Colorf.h" />
     <ClInclude Include="Console.h" />
+    <ClInclude Include="Cubemap.h" />
     <ClInclude Include="Environment.h" />
     <ClInclude Include="Example.h" />
     <ClInclude Include="FileIO.h" />
@@ -257,6 +258,7 @@
     <ClCompile Include="Color.cpp" />
     <ClCompile Include="Colorf.cpp" />
     <ClCompile Include="Console.cpp" />
+    <ClCompile Include="Cubemap.cpp" />
     <ClCompile Include="Environment.cpp" />
     <ClCompile Include="FileIO.cpp" />
     <ClCompile Include="FirstPlayerCamera.cpp" />

@@ -8,6 +8,7 @@ using namespace std;
 using namespace spring;
 
 std::map<const char*, Texture*> TextureLoader::textures;
+std::vector<Cubemap*> TextureLoader::cubemaps;
 
 TextureLoader::TextureLoader() 
 {
@@ -73,7 +74,7 @@ Texture* TextureLoader::Load(const char* filePath ,bool invertY)
 	return texture;
 }
 
-GLuint TextureLoader::LoadCubemap(const std::string filePaths) 
+Cubemap* TextureLoader::LoadCubemap(const std::string filePaths) 
 {
 	const string front = "/front.png\0";
 	const string back = "/back.png\0";
@@ -81,17 +82,16 @@ GLuint TextureLoader::LoadCubemap(const std::string filePaths)
 	const string right = "/right.png\0";
 	const string top = "/top.png\0";
 	const string bottom = "/bottom.png\0";
-	GLuint cubemap = TextureLoader::LoadCubemap(
+	return TextureLoader::LoadCubemap(
 		(filePaths + right).c_str(),
 		(filePaths + left).c_str(),
 		(filePaths + top).c_str(),
 		(filePaths + bottom).c_str(),
 		(filePaths + back).c_str(),
 		(filePaths + front).c_str());
-	return cubemap;
 }
 
-GLuint TextureLoader::LoadCubemap(const char* right, const char* left, const char* top, const char* bottom, const char* back, const char* front)
+Cubemap* TextureLoader::LoadCubemap(const char* right, const char* left, const char* top, const char* bottom, const char* back, const char* front)
 {
 	GLuint cubemap = SOIL_load_OGL_cubemap(right, left, top, bottom, back, front, 0, 0, SOIL_FLAG_POWER_OF_TWO);
 	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
@@ -99,5 +99,8 @@ GLuint TextureLoader::LoadCubemap(const char* right, const char* left, const cha
 	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
-	return cubemap;
+	Cubemap* result = new Cubemap();
+	result->cubemap = cubemap;
+	cubemaps.push_back(result);
+	return result;
 }

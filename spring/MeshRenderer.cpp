@@ -41,6 +41,12 @@ void MeshRenderer::Init()
 
 void MeshRenderer::Render() 
 {
+	if (this->material == nullptr)
+	{
+		Console::Warning("can not render skybox without skybox material,please assign a sky box material.");
+		return;
+	}
+
 	Camera* camera = Camera::current;
 	if (!camera->cullingMask->contains(this->layer))
 		return;

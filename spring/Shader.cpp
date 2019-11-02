@@ -294,6 +294,18 @@ void Shader::setOffset(const char* name, Vector2 offset)
 	}
 }
 
+void Shader::setCubemap(const char* name, Cubemap cubemap)
+{
+	GLuint location = glGetUniformLocation(this->program,name);
+	auto pair = this->cubemaps.find(location);
+	if (pair == this->cubemaps.end())
+	{
+		this->cubemaps[location] = cubemap;
+		return;
+	}
+	this->cubemaps[location] = cubemap;
+}
+
 void Shader::setShaderValues() 
 {
 	for (auto pair : this->ints)
@@ -344,6 +356,12 @@ void Shader::setShaderValues()
 
 		const float offset[2] = { pair.second.offset.x,pair.second.offset.y };
 		glUniform2fv(offsetLocation, 1, offset);
+	}
+
+	for (std::pair<GLuint, Cubemap> pair : this->cubemaps) 
+	{
+		glUniform1i(pair.first, 0);
+		glBindTexture(GL_TEXTURE_CUBE_MAP,pair.second.cubemap);
 	}
 }
 

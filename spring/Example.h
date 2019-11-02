@@ -25,7 +25,6 @@ public:
 		loader.Load("res/model/fbx/747/747-400.fbx");
 
 		Material* sunMaterial = new Material("res/shader/diffuse/diffuse.vs", "res/shader/diffuse/diffuse.fs");
-		sunMaterial->cullface = Material::CullFace::Back;
 		sun = new MeshRenderer(sunMaterial);
 		sun->meshes = loader.meshes;
 		sun->textures = loader.loadedTextures;
@@ -40,7 +39,7 @@ public:
 		sun->material->shader->setFloat("Specular_Intensity", 0.0f);
 		sun->material->shader->setFloat("Specular_Attenuation", 64.0f);
 
-		Camera::main->cullingMask->remove(Layer::Default);
+		// Camera::main->cullingMask->remove(Layer::Default);
 	}
 
 	Image* image;
@@ -61,8 +60,8 @@ public:
 
 	void Update() override
 	{
-		// rotateZ += 1.0f;
-		// image->transform->SetEulerangle(Vector3(0.0f, 0.0f, rotateZ));
+		rotateZ += 1.0f;
+		image->transform->SetEulerangle(Vector3(0.0f, 0.0f, rotateZ));
 	}
 
 	void Destroy() override
