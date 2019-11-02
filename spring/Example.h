@@ -39,6 +39,8 @@ public:
 		sun->material->shader->setColor("Specular_Color", Color::white);
 		sun->material->shader->setFloat("Specular_Intensity", 0.0f);
 		sun->material->shader->setFloat("Specular_Attenuation", 64.0f);
+
+		Camera::main->cullingMask->remove(Layer::Default);
 	}
 
 	Image* image;
@@ -59,8 +61,8 @@ public:
 
 	void Update() override
 	{
-		rotateZ += 1.0f;
-		image->transform->SetEulerangle(Vector3(0.0f, 0.0f, rotateZ));
+		// rotateZ += 1.0f;
+		// image->transform->SetEulerangle(Vector3(0.0f, 0.0f, rotateZ));
 	}
 
 	void Destroy() override

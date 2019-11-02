@@ -11,11 +11,16 @@ namespace spring
 	class Camera : public Node
 	{
 	private:
+		glm::mat4 ViewMatrix;
+		glm::mat4 ProjectionMatrix;
+		glm::mat4 Projection2DMatrix;
+
 		static void CachingCamera(Camera* camera);
 
 	public:
 		static std::vector<Camera*> cameras;
 		static Camera* main;
+		static Camera* current;
 
 		enum Type
 		{
@@ -35,7 +40,7 @@ namespace spring
 		Vector3 direction;
 		ClearFlag clearFlag = ClearFlag::SolidColor;
 		Type cameraType = Type::Perspective;
-		Layer culling = Layer::Everything;
+		LayerMask* cullingMask;
 		float fov = 60.0f;
 		float nearClip = 0.1f;
 		float farClip = 1000.0f; 
@@ -48,6 +53,7 @@ namespace spring
 
 		glm::mat4 GetViewMatrix();
 		glm::mat4 GetProjectionMatrix();
+		glm::mat4 Get2DProjection();
 		void Render();
 		void Destroy() override;
 	};

@@ -71,10 +71,10 @@ void Skybox::Render()
 				glUniformMatrix4fv(mLocation, 1, GL_FALSE, glm::value_ptr(model));
 
 				GLuint vLocation = this->material.shader->getLocation(MATRIX_V);
-				glUniformMatrix4fv(vLocation, 1, GL_FALSE, glm::value_ptr(Graphic::VIEW));
+				glUniformMatrix4fv(vLocation, 1, GL_FALSE, glm::value_ptr(Camera::main->GetViewMatrix()));
 
 				GLuint pLocation = this->material.shader->getLocation(MATRIX_P);
-				glUniformMatrix4fv(pLocation, 1, GL_FALSE, glm::value_ptr(Graphic::PERSPECTIVE_PROJECTION));
+				glUniformMatrix4fv(pLocation, 1, GL_FALSE, glm::value_ptr(Camera::main->GetProjectionMatrix()));
 				 
 				glBindTexture(GL_TEXTURE_CUBE_MAP, cubemap);
 			});

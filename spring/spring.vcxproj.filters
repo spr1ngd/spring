@@ -184,9 +184,6 @@
     <ClInclude Include="Screen.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="Graphic.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="RenderOrder.h">
       <Filter>头文件</Filter>
     </ClInclude>
@@ -370,9 +367,6 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="Screen.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="Graphic.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="RenderOrder.cpp">

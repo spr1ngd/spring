@@ -366,22 +366,19 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 
 		Timer::Time();
 		Gizmos::Render();
+
+		// camera view/projection matrix calculation must be earlier than update method ,otherwise camera's position maybe update late than other transform.
+		for (vector<Camera*>::iterator cam = Camera::cameras.begin(); cam != Camera::cameras.end(); cam++) 
+			(*cam)->Render();
+
 		for (auto behaviour : Behaviour::behaviours)
-			behaviour.second->Update();
+			behaviour.second->Update(); 
 
-		// todo : render time is decided by scene camera count.
-		// todo : iterate camera in scene.
-
-		// todo : render 3d scene object
-		fbo->Bind();
-		Renderable::Draw(0,5000);
-		fbo->Unbind();
-
-		glClearColor(.1f,.4f,.7f,1.0f);
-		glClear(GL_COLOR_BUFFER_BIT);
-
-		// todo : render 2d object , frame buffer object does not contain ui render buffer.
-		Renderable::Draw(5001,20000);
+		for (vector<Camera*>::iterator cam = Camera::cameras.begin(); cam != Camera::cameras.end(); cam++) 
+		{
+			Camera::current = *cam;
+			Renderable::Draw(); // use camera culling and node.layer to determine whether object should be rendered.
+		}
 
 		// FPS::CalculateFramePerSecond();
 		Input::setMouseWheel(0.0f);

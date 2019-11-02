@@ -201,7 +201,6 @@
     <ClInclude Include="FPS.h" />
     <ClInclude Include="FrameBufferObject.h" />
     <ClInclude Include="Gizmos.h" />
-    <ClInclude Include="Graphic.h" />
     <ClInclude Include="GUI.h" />
     <ClInclude Include="IJsonSerializer.h" />
     <ClInclude Include="Image.h" />
@@ -264,7 +263,6 @@
     <ClCompile Include="FPS.cpp" />
     <ClCompile Include="FrameBufferObject.cpp" />
     <ClCompile Include="Gizmos.cpp" />
-    <ClCompile Include="Graphic.cpp" />
     <ClCompile Include="GUI.cpp" />
     <ClCompile Include="IJsonSerializer.cpp" />
     <ClCompile Include="Image.cpp" />
