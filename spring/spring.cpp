@@ -300,6 +300,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 	rect.bottom = (long)Screen::height;
 	// AdjustWinwRect(&rect, WS_OVERLAPPEDWINDOW, FALSE);
 
+	// todo : create a real fixed pixel count window.
 	HWND hwnd = CreateWindowEx(NULL, L"OpenGL", L"spring engine", WS_OVERLAPPEDWINDOW, 100, 100, rect.right - rect.left, rect.bottom - rect.top, NULL, NULL, hInstance, NULL);
 
 	HDC dc = GetDC(hwnd);
@@ -332,6 +333,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 	height = rect.bottom - rect.top;
 
 	glClearColor(41.0f / 255.0f, 71.0f / 255.0f, 121.0f / 255.0f, 1.0f);
+	// todo : width / height is real window's size.
 	glViewport(0, 0, width, height);
 	ShowWindow(hwnd, SW_SHOW);
 	UpdateWindow(hwnd);
@@ -392,12 +394,12 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 			else 
 			{
 				Camera::current->framebuffer->Bind();
-				glClearColor(1.0f, 1.0f, 0.0f, 1.0f);
-				glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+				/*glClearColor(0.8f, 0.8f, 0.1f, 1.0f);
+				glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);*/
 				Renderable::Draw(new unsigned int[1]{0x0001});
 				Camera::current->framebuffer->Unbind();
-				// glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-				// glClearColor(1.0f, 1.0f, 0.0f, 1.0f);
+				glClearColor(0.1f, 0.4f, 0.7f, 1.0f);
+				glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 			}
 		}
 

@@ -56,7 +56,7 @@ void MeshRenderer::Render()
 	this->material->EnableAlphaBlend();
 	this->material->EnableDepthTest();
 	this->material->EnableStencilTest();
-	this->material->EnableCullFace();
+	this->material->EnableCullFace(); 
 
 	this->material->shader->use();
 	for (unsigned int i = 0; i < this->meshes.size(); i++)

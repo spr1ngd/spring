@@ -37,13 +37,13 @@ FrameBufferObject* FrameBufferObject::GenColorFramebuffer(int width, int height,
 	unsigned int colorbuffer;
 	glGenTextures(1, &colorbuffer);
 	glBindTexture(GL_TEXTURE_2D, colorbuffer);
-	glTextureParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_S,GL_CLAMP_TO_EDGE);
-	glTextureParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_T,GL_CLAMP_TO_EDGE);
+	/*glTextureParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_S,GL_CLAMP_TO_EDGE);
+	glTextureParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_T,GL_CLAMP_TO_EDGE);*/
 	glTextureParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	glTextureParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexImage2D(GL_TEXTURE_2D, fbo->level, GL_RGBA, fbo->width, fbo->height, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
-	glBindTexture(GL_TEXTURE_2D,0);
-	glFramebufferTexture2D(GL_FRAMEBUFFER,fbo->attachment,GL_TEXTURE_2D,colorbuffer,fbo->level);
+	glTexImage2D(GL_TEXTURE_2D, /*fbo->level*/0, GL_RGBA, fbo->width, fbo->height, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0);
+	// glBindTexture(GL_TEXTURE_2D,0);
+	glFramebufferTexture2D(GL_FRAMEBUFFER,/*fbo->attachment*/GL_COLOR_ATTACHMENT0,GL_TEXTURE_2D,colorbuffer,/*fbo->level*/0);
 	fbo->colorbuffer = colorbuffer;
 	glBindFramebuffer(GL_FRAMEBUFFER,0);
 

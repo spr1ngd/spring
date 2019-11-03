@@ -1,6 +1,7 @@
 #include "textureLoader.h"
 #include "soil.h"
 #include "texture.h"
+#include "console.h"
 
 #pragma comment(lib,"soil.lib")
 
@@ -71,6 +72,13 @@ Texture* TextureLoader::Load(const char* filePath ,bool invertY)
 	texture->textureId = textureId;
 	Caching(filePath, texture);
 	return texture;
+}
+
+void TextureLoader::SaveToBMP(const char* filePath, int width, int height, const unsigned char* pixels)
+{
+	int result = SOIL_save_image(filePath, SOIL_SAVE_TYPE_BMP, width, height, 4, pixels);
+	if (result == 0)
+		Console::Error("save image failed.");
 }
 
 Cubemap* TextureLoader::LoadCubemap(const std::string filePaths) 

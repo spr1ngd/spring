@@ -14,7 +14,7 @@ class Example : public Behaviour
 private:
 	bool enabled = true;
 	MeshRenderer* sun;
-	FrameBufferObject* framebuffer = FrameBufferObject::GenColorFramebuffer(Screen::width, Screen::height);
+	FrameBufferObject* framebuffer = FrameBufferObject::GenColorFramebuffer(Screen::width, Screen::height,4);
 	Texture* rawTexture = new Texture();
 
 	Image* image;
@@ -50,10 +50,10 @@ public:
 
 		Texture* texture = TextureLoader::Load("res/texture/spring.png", true);
 		image = GUI::DrawImage(Rect(0.0f, 0.0f, Screen::halfWidth, Screen::halfHeight));
-		this->image->texture = texture;
-		// this->image->texture = rawTexture;
-		image->material->DepthTestFunc(true);
-		image->material->AlphaBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		// this->image->texture = texture;
+		this->image->texture = rawTexture;
+		image->material->DepthTestFunc(false);
+		// image->material->AlphaBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		image->color = Color(255, 255, 255, 255);
 		// image->rectTransform->SetPivot(Vector2(0.0f, 1.0f));
 		image->transform->SetPosition(Vector3(Screen::halfWidth,Screen::halfHeight, 0.0f));
@@ -61,7 +61,14 @@ public:
 
 	void OnPostRender() override
 	{
-		// this->image->texture = rawTexture;
+		glBindFramebuffer(GL_FRAMEBUFFER,this->framebuffer->bufferId);
+		unsigned char* pixels = new unsigned char[Screen::width * Screen::height * 4];
+		glReadPixels(0, 0, Screen::width, Screen::height, GL_RGBA, GL_UNSIGNED_BYTE, pixels);
+		TextureLoader::SaveToBMP("res/screen.bmp", Screen::width, Screen::height, pixels);
+		glBindFramebuffer(GL_FRAMEBUFFER,0);
+
+		rawTexture->textureId = framebuffer->colorbuffer;
+		this->image->texture = rawTexture;
 	}
 
 	void Update() override

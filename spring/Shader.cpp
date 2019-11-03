@@ -268,6 +268,7 @@ void Shader::setTexture(const char*name, GLuint texture)
 		this->textures.insert(std::pair<GLuint,MaterialTexture>(location,mt));
 		return;
 	}
+	this->textures[location].texture = texture;
 }
 
 void Shader::setTilling(const char* name, Vector2 tilling) 

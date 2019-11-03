@@ -20,6 +20,8 @@ namespace spring
 		static Cubemap* LoadCubemap(const std::string filePaths);
 		static Cubemap* LoadCubemap(const char* right, const char* left, const char* top, const char* bottom, const char* back, const char* front);
 
+		static void SaveToBMP(const char* filePath, int width, int height, const unsigned char* pixels);
+
 	public:
 		static Texture* GenPureWhiteTexture();
 		static void Caching(const char* filePath ,Texture* texture);
