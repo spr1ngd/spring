@@ -25,3 +25,18 @@ void Behaviour::Destroy()
 {
 
 }
+
+void Behaviour::OnGUI() 
+{
+
+}
+
+void Behaviour::OnPreRender() 
+{
+
+}
+
+void Behaviour::OnPostRender() 
+{
+
+}

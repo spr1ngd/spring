@@ -343,12 +343,13 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 	// draw sample scene
 	Sample* sample = new Sample();
 
+	Timer::Start();
 	for (auto behaviour : Behaviour::behaviours)
 		behaviour.second->Awake(); 
-	Timer::Start();
 
-	FrameBufferObject* fbo = FrameBufferObject::GenColorFramebuffer(Screen::width, Screen::height);
-
+	Camera* uiCamera = new Camera();
+	uiCamera->cullingMask->set(new unsigned int[1]{0x0010});
+	uiCamera->clearFlag = Camera::None;
 
 	while (true)
 	{
@@ -369,16 +370,46 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 
 		// camera view/projection matrix calculation must be earlier than update method ,otherwise camera's position maybe update late than other transform.
 		for (vector<Camera*>::iterator cam = Camera::cameras.begin(); cam != Camera::cameras.end(); cam++) 
-			(*cam)->Render();
+			(*cam)->Update();
 
 		for (auto behaviour : Behaviour::behaviours)
 			behaviour.second->Update(); 
 
+		for (auto behaviour : Behaviour::behaviours)
+			behaviour.second->OnPreRender();
+
 		for (vector<Camera*>::iterator cam = Camera::cameras.begin(); cam != Camera::cameras.end(); cam++) 
 		{
 			Camera::current = *cam;
-			Renderable::Draw(); // use camera culling and node.layer to determine whether object should be rendered.
+			if( Camera::current->cullingMask->contains(Layer::UI) )
+				continue;
+			Camera::current->Render();
+			if (Camera::current->framebuffer == nullptr)
+			{ 
+				// use camera culling and node.layer to determine whether object should be rendered.
+				Renderable::Draw(new unsigned int[1]{ 0x0001 });
+			}
+			else 
+			{
+				Camera::current->framebuffer->Bind();
+				glClearColor(1.0f, 1.0f, 0.0f, 1.0f);
+				glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+				Renderable::Draw(new unsigned int[1]{0x0001});
+				Camera::current->framebuffer->Unbind();
+				// glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+				// glClearColor(1.0f, 1.0f, 0.0f, 1.0f);
+			}
 		}
+
+		for (auto behaviour : Behaviour::behaviours)
+			behaviour.second->OnPostRender();
+
+		for (auto behaviour : Behaviour::behaviours)
+			behaviour.second->OnGUI();
+
+		Camera::current = uiCamera;
+		Camera::current->Render();
+		Renderable::Draw(new unsigned int[1]{ 0x0010 });
 
 		// FPS::CalculateFramePerSecond();
 		Input::setMouseWheel(0.0f);

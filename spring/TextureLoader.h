@@ -16,9 +16,9 @@ namespace spring
 
 	public:
 		TextureLoader();
-		Texture* Load(const char* filePath , bool invertY = false);
-		Cubemap* LoadCubemap(const std::string filePaths);
-		Cubemap* LoadCubemap(const char*right,const char*left,const char* top,const char* bottom,const char* back,const char* front);
+		static Texture* Load(const char* filePath, bool invertY = false);
+		static Cubemap* LoadCubemap(const std::string filePaths);
+		static Cubemap* LoadCubemap(const char* right, const char* left, const char* top, const char* bottom, const char* back, const char* front);
 
 	public:
 		static Texture* GenPureWhiteTexture();

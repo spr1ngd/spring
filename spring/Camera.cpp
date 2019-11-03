@@ -38,7 +38,7 @@ void Camera::LookAt(const Vector3* target)
 
 }
 
-void Camera::Render() 
+void Camera::Update() 
 {
 	Vector3 up = this->transform->up;
 	this->ViewMatrix = glm::lookAt(
@@ -53,7 +53,10 @@ void Camera::Render()
 	else
 		throw new std::invalid_argument("spring engine : camera type invalid.");
 	this->Projection2DMatrix = glm::ortho(0.0f, static_cast<float>(Screen::width), 0.0f, static_cast<float>(Screen::height), -1.0f, 1.0f);
+}
 
+void Camera::Render() 
+{
 	switch (this->clearFlag)
 	{
 	case Camera::ClearFlag::Skybox:

@@ -5,6 +5,7 @@
 #include "transform.h"
 #include "vector3.h"
 #include "color.h"
+#include "framebufferobject.h"
 
 namespace spring 
 {
@@ -45,6 +46,7 @@ namespace spring
 		float nearClip = 0.1f;
 		float farClip = 1000.0f; 
 
+		FrameBufferObject* framebuffer = nullptr;
 	public:
 		Camera();
 
@@ -54,6 +56,7 @@ namespace spring
 		glm::mat4 GetViewMatrix();
 		glm::mat4 GetProjectionMatrix();
 		glm::mat4 Get2DProjection();
+		void Update();
 		void Render();
 		void Destroy() override;
 	};

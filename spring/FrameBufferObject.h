@@ -13,11 +13,13 @@ namespace spring
 
 		FrameBufferObject( int width,int height,GLenum attachment,int level = 0);
 	public:
-		GLuint framebuffer = 0;
+		GLuint bufferId = -1;
 		int width;
 		int height;
 		GLenum attachment = GL_COLOR_ATTACHMENT0;
 		int level = 0;
+
+		GLuint colorbuffer = -1;
 	public:
 		void Bind();
 		void Unbind();

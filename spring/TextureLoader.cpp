@@ -46,7 +46,7 @@ Texture* TextureLoader::GenPureWhiteTexture()
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 		unsigned char* data = new unsigned char[4]{ 255,255,255,255 };
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 1, 1, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 1, 1, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
 		delete[] data;
 		texture->textureId = tex;
 		Caching(textureName, texture);
@@ -56,7 +56,6 @@ Texture* TextureLoader::GenPureWhiteTexture()
 
 Texture* TextureLoader::Load(const char* filePath ,bool invertY)
 {
-	this->filePath = filePath;
 	unsigned int flags = SOIL_FLAG_POWER_OF_TWO;
 	if (invertY)
 		flags |= SOIL_FLAG_INVERT_Y;

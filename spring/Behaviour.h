@@ -15,5 +15,9 @@ namespace spring
 		virtual void Awake();
 		virtual void Update();
 		void Destroy() override;
+
+		virtual void OnGUI();
+		virtual void OnPreRender();
+		virtual void OnPostRender();
 	};
 }

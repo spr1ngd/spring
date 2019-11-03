@@ -53,6 +53,6 @@ namespace spring
 
 		virtual void Render() = 0;
 		static void Draw();
-		static void Draw(unsigned int minOrder, unsigned int maxOrder);
+		static void Draw(unsigned int layers[]);
 	};
 }

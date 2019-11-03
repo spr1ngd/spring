@@ -1,4 +1,5 @@
 #include "framebufferobject.h"
+#include "console.h"
 
 using namespace spring;
 
@@ -14,7 +15,7 @@ FrameBufferObject::FrameBufferObject(int width,int height,GLenum attachment,int 
 
 void FrameBufferObject::Bind() 
 {
-	glBindFramebuffer(GL_FRAMEBUFFER, this->framebuffer);
+	glBindFramebuffer(GL_FRAMEBUFFER, this->bufferId);
 }
 
 void FrameBufferObject::Unbind()
@@ -24,24 +25,34 @@ void FrameBufferObject::Unbind()
 
 void FrameBufferObject::Delete() 
 {
-	glDeleteFramebuffers(1, &this->framebuffer);
+	glDeleteFramebuffers(1, &this->bufferId);
 }
 
 FrameBufferObject* FrameBufferObject::GenColorFramebuffer(int width, int height, int level) 
 {
 	FrameBufferObject* fbo = new FrameBufferObject(width,height,GL_COLOR_ATTACHMENT0,level);
-	glGenFramebuffers(1, &fbo->framebuffer);
+	glGenFramebuffers(1, &fbo->bufferId);
+	glBindFramebuffer(GL_FRAMEBUFFER,fbo->bufferId);
 
-	unsigned int texture;
-	glGenTextures(1, &texture);
-	glBindTexture(GL_TEXTURE_2D, texture);
+	unsigned int colorbuffer;
+	glGenTextures(1, &colorbuffer);
+	glBindTexture(GL_TEXTURE_2D, colorbuffer);
 	glTextureParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_S,GL_CLAMP_TO_EDGE);
 	glTextureParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_T,GL_CLAMP_TO_EDGE);
 	glTextureParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	glTextureParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexImage2D(GL_TEXTURE_2D, fbo->level, GL_RGB, fbo->width, fbo->height, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
-	glFramebufferTexture2D(GL_FRAMEBUFFER,fbo->attachment,GL_TEXTURE_2D,texture,fbo->level);
-	fbo->framebuffer = texture;
+	glTexImage2D(GL_TEXTURE_2D, fbo->level, GL_RGBA, fbo->width, fbo->height, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
+	glBindTexture(GL_TEXTURE_2D,0);
+	glFramebufferTexture2D(GL_FRAMEBUFFER,fbo->attachment,GL_TEXTURE_2D,colorbuffer,fbo->level);
+	fbo->colorbuffer = colorbuffer;
+	glBindFramebuffer(GL_FRAMEBUFFER,0);
+
+	GLenum status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
+	if (status != GL_FRAMEBUFFER_COMPLETE) 
+	{
+		Console::ErrorFormat("[spring engine] : generate color buffer object error.");
+		return nullptr;
+	}
 	framebuffers.push_back(fbo);
 	return fbo;
 }

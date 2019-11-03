@@ -1,5 +1,6 @@
 #include <algorithm>
-#include "renderable.h"
+#include "node.h"
+#include "meshrenderer.h"
 
 using namespace std;
 using namespace spring;
@@ -15,8 +16,6 @@ void Renderable::setRenderOrder(unsigned int renderOrder)
 		return a->renderOrder < b->renderOrder;
 	};
 	sort(this->objects.begin(), this->objects.end(), sortFunc);
-	/*for (Renderable* item : objects)
-		Console::LogFormat("render order %d ", item->renderOrder);*/
 }
 
 unsigned int Renderable::getRenderOrder() 
@@ -33,12 +32,20 @@ void Renderable::Draw()
 	}
 }
 
-void Renderable::Draw(unsigned int minOrder, unsigned int maxOrder)
+void Renderable::Draw(unsigned int layers[]) 
 {
 	for (unsigned int i = 0; i < objects.size(); i++)
 	{
 		auto object = objects[i];
-		if( object->renderOrder > minOrder && object->renderOrder <= maxOrder )
-			object->Render();
+		for (unsigned int j = 0; j < sizeof(layers); j++) 
+		{
+			unsigned int layer = layers[j];
+			auto node = (MeshRenderer*)object;
+			if (node->layer == layer) 
+			{
+				object->Render();
+				break;
+			}
+		}
 	}
 }

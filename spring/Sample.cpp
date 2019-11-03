@@ -45,8 +45,7 @@ void Sample::Awake()
 	Environment::ambient.color = Color(75, 75, 75, 255);
 	 
 	Material* skyboxMaterial = new Material("res/shader/skybox/6 Sided.vs", "res/shader/skybox/6 Sided.fs");
-	TextureLoader cubemapLoader;
-	auto cubemap = cubemapLoader.LoadCubemap("res/texture/skybox/night");
+	auto cubemap = TextureLoader::LoadCubemap("res/texture/skybox/night");
 	skybox = new Skybox(skyboxMaterial,*cubemap);
 	skybox->Init();
 
