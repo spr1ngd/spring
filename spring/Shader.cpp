@@ -347,8 +347,14 @@ void Shader::setShaderValues()
 
 	for (std::pair<GLuint,MaterialTexture> pair : this->textures)
 	{
+		// glBindFramebuffer(GL_FRAMEBUFFER, 1);
+		// unsigned char* pixels = new unsigned char[800 * 600 * 4];
+		// glReadPixels(0, 0, 800, 600, GL_RGBA, GL_UNSIGNED_BYTE, pixels);
+		// TextureLoader::SaveToBMP("res/screen.bmp", 800, 600, pixels);
+		// glBindFramebuffer(GL_FRAMEBUFFER,0);
+
 		glUniform1i(pair.first, 0);
-		glActiveTexture(GL_TEXTURE0);
+		// glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, pair.second.texture);
 		GLuint tillingLocation = glGetUniformLocation(this->program, "MainTextureData.tilling");
 		GLuint offsetLocation = glGetUniformLocation(this->program, "MainTextureData.offset");
