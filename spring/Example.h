@@ -45,29 +45,22 @@ public:
 		sun->material->shader->setFloat("Specular_Attenuation", 64.0f);
 
 		Camera::main->cullingMask->remove(Layer::UI);
-		Camera::main->framebuffer = framebuffer;
+		// Camera::main->framebuffer = framebuffer;
 		rawTexture->textureId = framebuffer->colorbuffer;
 
+		return;
 		Texture* texture = TextureLoader::Load("res/screen.bmp", true);
 		image = GUI::DrawImage(Rect(0.0f, 0.0f, Screen::halfWidth, Screen::halfHeight));
-		// this->image->texture = texture;
-		// framebuffer->colorbuffer = texture->textureId;
+		image->texture = rawTexture;
 		image->material->DepthTestFunc(false);
 		image->color = Color(255, 255, 255, 255);
 		// image->rectTransform->SetPivot(Vector2(0.0f, 1.0f));
-		image->transform->SetPosition(Vector3(Screen::halfWidth,Screen::halfHeight, 0.0f));
+		image->transform->SetPosition(Vector3(Screen::halfWidth, Screen::halfHeight, 0.0f));
 	}
 
 	void OnPostRender() override
-	{
-		glBindFramebuffer(GL_FRAMEBUFFER, this->framebuffer->bufferId);
-		unsigned char* pixels = new unsigned char[Screen::width * Screen::height * 4];
-		glReadPixels(0, 0, Screen::width, Screen::height, GL_RGBA, GL_UNSIGNED_BYTE, pixels);
-		TextureLoader::SaveToBMP("res/screen.bmp", Screen::width, Screen::height, pixels);
-		glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	{ 
 
-		rawTexture->textureId = framebuffer->colorbuffer;
-		this->image->texture = rawTexture;
 	}
 
 	void Update() override

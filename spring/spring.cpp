@@ -366,7 +366,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 			TranslateMessage(&msg);
 			DispatchMessage(&msg);
 		} 
-
 		Timer::Time();
 		Gizmos::Render();
 
@@ -406,8 +405,9 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 			behaviour.second->OnPostRender();
 
 		for (auto behaviour : Behaviour::behaviours)
-			behaviour.second->OnGUI();
+			behaviour.second->OnGUI(); 
 
+		// render ui object.
 		Camera::current = uiCamera;
 		Camera::current->Render();
 		Renderable::Draw(new unsigned int[1]{ 0x0010 });
