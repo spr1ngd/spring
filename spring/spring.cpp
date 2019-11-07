@@ -276,8 +276,8 @@ LRESULT CALLBACK GLWindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPWSTR lpCmdLine, _In_ int nCmdShow)
 {
 	// initialize spring engine configuration.
-	Screen::width = 800;
-	Screen::height = 600;
+	Screen::width = 800 + 16;
+	Screen::height = 600 + 39;
 
 	WNDCLASSEX wndClass;
 	wndClass.cbClsExtra = 0;
@@ -332,8 +332,12 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 	width = rect.right - rect.left;
 	height = rect.bottom - rect.top;
 
+	Screen::width = width;
+	Screen::height = height;
+	Screen::halfWidth = Screen::width / 2.0f;
+	Screen::halfHeight = Screen::height / 2.0f;
+
 	glClearColor(41.0f / 255.0f, 71.0f / 255.0f, 121.0f / 255.0f, 1.0f);
-	// todo : width / height is real window's size.
 	glViewport(0, 0, width, height);
 	ShowWindow(hwnd, SW_SHOW);
 	UpdateWindow(hwnd);

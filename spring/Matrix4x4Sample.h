@@ -6,7 +6,7 @@ using namespace spring;
 class Matrix4x4Sample : public Behaviour
 {
 private:
-	bool enabled =  true;
+	bool enabled =  false;
 	MeshRenderer* sun;
 	MeshRenderer* earth;
 	Vector3 sunRotateAxis;

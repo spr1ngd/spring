@@ -33,13 +33,6 @@ namespace spring
 		GLenum cullfaceFunc = GL_BACK;
 
 	public:
-		enum CullFace 
-		{
-			None,
-			Back,
-			Front,
-			FrontAndBack
-		};
 		enum RenderMode 
 		{
 			Point,

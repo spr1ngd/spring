@@ -13,7 +13,7 @@ class Example : public Behaviour
 {
 private:
 	bool enabled = true;
-	MeshRenderer* sun;
+	MeshRenderer* aircraft;
 	FrameBufferObject* framebuffer = FrameBufferObject::GenColorFramebuffer(Screen::width, Screen::height,0);
 	Texture* rawTexture = new Texture();
 
@@ -30,27 +30,28 @@ public:
 		ModelLoader loader = ModelLoader();
 		loader.Load("res/model/fbx/747/747-400.fbx");
 
-		Material* sunMaterial = new Material("res/shader/diffuse/diffuse.vs", "res/shader/diffuse/diffuse.fs");
-		sun = new MeshRenderer(sunMaterial);
-		sun->meshes = loader.meshes;
-		sun->textures = loader.loadedTextures;
-		sun->Init();
-		sun->transform->position = Vector3::zero;
-		sun->transform->scale = Vector3(5.0f);
+		Material* mat = new Material("res/shader/diffuse/diffuse.vs", "res/shader/diffuse/diffuse.fs");
+		mat->renderMode = Material::RenderMode::Fill;
+		mat->CullFaceFunc(true);
+		aircraft = new MeshRenderer(mat);
+		aircraft->meshes = loader.meshes;
+		aircraft->textures = loader.loadedTextures;
+		aircraft->Init();
+		aircraft->transform->position = Vector3::zero;
+		aircraft->transform->scale = Vector3(5.0f);
 		auto sunTexture = TextureLoader::Load("res/model/fbx/747/747-400 texture.png");
-		// sun->material->shader->setTexture("MainTextureData.texture", sunTexture->textureId);
-		sun->material->shader->setColor(MAIN_COLOR, Color(204, 204, 204, 128));
-		sun->material->shader->setColor("Specular_Color", Color::white);
-		sun->material->shader->setFloat("Specular_Intensity", 0.0f);
-		sun->material->shader->setFloat("Specular_Attenuation", 64.0f);
+		aircraft->material->shader->setTexture("MainTextureData.texture", sunTexture->textureId);
+		aircraft->material->shader->setColor(MAIN_COLOR, Color(204, 204, 204, 128));
+		aircraft->material->shader->setColor("Specular_Color", Color::white);
+		aircraft->material->shader->setFloat("Specular_Intensity", 0.0f);
+		aircraft->material->shader->setFloat("Specular_Attenuation", 64.0f);
 
 		Camera::main->cullingMask->remove(Layer::UI);
-		// Camera::main->framebuffer = framebuffer;
+		Camera::main->framebuffer = framebuffer;
 		rawTexture->textureId = framebuffer->colorbuffer;
-
-		return;
+		 
 		Texture* texture = TextureLoader::Load("res/screen.bmp", true);
-		image = GUI::DrawImage(Rect(0.0f, 0.0f, Screen::halfWidth, Screen::halfHeight));
+		image = GUI::DrawImage(Rect(0.0f, 0.0f, Screen::width, Screen::height));
 		image->texture = rawTexture;
 		image->material->DepthTestFunc(false);
 		image->color = Color(255, 255, 255, 255);
