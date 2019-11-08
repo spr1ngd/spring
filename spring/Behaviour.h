@@ -1,4 +1,6 @@
 #pragma once
+#include "framebufferobject.h"
+#include "material.h"
 #include "node.h"
 #include <map>
 

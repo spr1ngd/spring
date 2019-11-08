@@ -52,6 +52,7 @@ public:
 		 
 		Texture* texture = TextureLoader::Load("res/screen.bmp", true);
 		image = GUI::DrawImage(Rect(0.0f, 0.0f, Screen::width, Screen::height));
+		image->material = new Material("res/shader/ui/postprocessing/depth.vs","res/shader/ui/postprocessing/depth.fs");
 		image->texture = rawTexture;
 		image->material->DepthTestFunc(false);
 		image->color = Color(255, 255, 255, 255);
@@ -60,8 +61,16 @@ public:
 	}
 
 	void OnPostRender() override
-	{ 
+	{  
+		//FrameBufferObject* post = FrameBufferObject::GenColorFramebuffer(framebuffer->width, framebuffer->height);
+		//glBindFramebuffer(GL_FRAMEBUFFER,post->bufferId);
 
+		//// todo : render buffer.colorbuffer use material 
+
+		//glBindFramebuffer(GL_FRAMEBUFFER,0);
+		//this->rawTexture->textureId = post->colorbuffer;
+		//this->image->texture = this->rawTexture;
+		//post->Delete();
 	}
 
 	void Update() override

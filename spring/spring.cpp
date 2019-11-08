@@ -343,8 +343,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 	UpdateWindow(hwnd);
 
 	glEnable(GL_MULTISAMPLE);
-// 	glEnable(GL_BLEND);
-// 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	
 	// draw sample scene
 	Sample* sample = new Sample();

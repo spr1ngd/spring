@@ -36,7 +36,7 @@ void Behaviour::OnPreRender()
 
 }
 
-void Behaviour::OnPostRender() 
+void Behaviour::OnPostRender()
 {
 
 }
