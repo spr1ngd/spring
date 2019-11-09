@@ -17,8 +17,7 @@ private:
 	FrameBufferObject* framebuffer = FrameBufferObject::GenColorFramebuffer(Screen::width, Screen::height,0);
 	Texture* rawTexture = new Texture();
 
-	Image* image;
-	float rotateZ = 0.0f;
+	Image* image; 
 
 public:
 	void Awake() override
@@ -52,7 +51,10 @@ public:
 		 
 		Texture* texture = TextureLoader::Load("res/screen.bmp", true);
 		image = GUI::DrawImage(Rect(0.0f, 0.0f, Screen::width, Screen::height));
-		image->material = new Material("res/shader/ui/postprocessing/depth.vs","res/shader/ui/postprocessing/depth.fs");
+		// image->material = new Material("res/shader/ui/default.vs","res/shader/ui/postprocessing/opposition.fs");
+		// image->material = new Material("res/shader/ui/default.vs", "res/shader/ui/postprocessing/grayscale.fs");
+		// image->material = new Material("res/shader/ui/default.vs", "res/shader/ui/postprocessing/edgedetecion.fs");
+		image->material = new Material("res/shader/ui/default.vs", "res/shader/ui/postprocessing/blur.fs");
 		image->texture = rawTexture;
 		image->material->DepthTestFunc(false);
 		image->color = Color(255, 255, 255, 255);
@@ -61,22 +63,13 @@ public:
 	}
 
 	void OnPostRender() override
-	{  
-		//FrameBufferObject* post = FrameBufferObject::GenColorFramebuffer(framebuffer->width, framebuffer->height);
-		//glBindFramebuffer(GL_FRAMEBUFFER,post->bufferId);
+	{   
 
-		//// todo : render buffer.colorbuffer use material 
-
-		//glBindFramebuffer(GL_FRAMEBUFFER,0);
-		//this->rawTexture->textureId = post->colorbuffer;
-		//this->image->texture = this->rawTexture;
-		//post->Delete();
 	}
 
 	void Update() override
 	{
-		rotateZ += 1.0f;
-		// image->transform->SetEulerangle(Vector3(0.0f, 0.0f, rotateZ));
+
 	}
 
 	void Destroy() override
