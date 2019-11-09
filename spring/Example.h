@@ -16,11 +16,13 @@ private:
 	bool enabled = true;
 	MeshRenderer* aircraft;
 
-	// FrameBufferObject* framebuffer = FrameBufferObject::GenColorFramebuffer(Screen::width, Screen::height,0);
-	FrameBufferObject* framebuffer = FrameBufferObject::GenDepthFramebuffer(Screen::width, Screen::height);
+	FrameBufferObject* framebuffer = FrameBufferObject::GenColorFramebuffer(Screen::width, Screen::height,0);
 	Texture* rawTexture = new Texture();
 
 	Image* image; 
+
+	Image* leftbttom;
+	Image* rightbottom;
 
 public:
 	void Awake() override
@@ -53,17 +55,39 @@ public:
 		rawTexture->textureId = framebuffer->buffer;
 		 
 		Texture* texture = TextureLoader::Load("res/screen.bmp", true);
-		image = GUI::DrawImage(Rect(0.0f, 0.0f, (float)Screen::width, (float)Screen::height));
+		image = GUI::DrawImage(Rect(0.0f, 0.0f, (float)Screen::halfWidth, (float)Screen::halfHeight));
 		image->material = new Material("res/shader/ui/default.vs", "res/shader/ui/default.fs");
 		// image->material = new Material("res/shader/ui/default.vs","res/shader/ui/postprocessing/opposition.fs");
 		// image->material = new Material("res/shader/ui/default.vs", "res/shader/ui/postprocessing/grayscale.fs");
 		// image->material = new Material("res/shader/ui/default.vs", "res/shader/ui/postprocessing/edgedetecion.fs");
 		// image->material = new Material("res/shader/ui/default.vs", "res/shader/ui/postprocessing/blur.fs");
 		image->texture = rawTexture;
+		image->material->AlphaBlendFunc();
 		image->material->DepthTestFunc(false);
-		image->color = Color(255, 255, 255, 255);
-		// image->rectTransform->SetPivot(Vector2(0.0f, 1.0f));
-		image->transform->SetPosition(Vector3(Screen::halfWidth, Screen::halfHeight, 0.0f));
+		image->color = Color(255, 255, 255, 128);
+		image->transform->SetPosition(Vector3(Screen::halfWidth / 2.0f, Screen::halfHeight * 1.5f, 0.0f));
+
+		leftbttom = GUI::DrawImage(Rect(0.0f, 0.0f, (float)Screen::halfWidth, (float)Screen::halfHeight));
+		// leftbttom->material = new Material("res/shader/ui/default.vs","res/shader/ui/postprocessing/opposition.fs");
+		// leftbttom->material = new Material("res/shader/ui/default.vs", "res/shader/ui/postprocessing/grayscale.fs");
+		leftbttom->material = new Material("res/shader/ui/default.vs", "res/shader/ui/postprocessing/edgedetecion.fs");
+		// leftbttom->material = new Material("res/shader/ui/default.vs", "res/shader/ui/postprocessing/blur.fs");
+		leftbttom->texture = rawTexture;
+		leftbttom->material->AlphaBlendFunc();
+		leftbttom->material->DepthTestFunc(false);
+		leftbttom->color = Color(255, 255, 255, 128);
+		leftbttom->transform->SetPosition(Vector3(Screen::halfWidth / 2.0f, Screen::halfHeight * 0.5f, 0.0f));
+
+		rightbottom = GUI::DrawImage(Rect(0.0f, 0.0f, (float)Screen::halfWidth, (float)Screen::halfHeight));
+		// rightbottom->material = new Material("res/shader/ui/default.vs","res/shader/ui/postprocessing/opposition.fs");
+		// rightbottom->material = new Material("res/shader/ui/default.vs", "res/shader/ui/postprocessing/grayscale.fs");
+		// rightbottom->material = new Material("res/shader/ui/default.vs", "res/shader/ui/postprocessing/edgedetecion.fs");
+		rightbottom->material = new Material("res/shader/ui/default.vs", "res/shader/ui/postprocessing/blur.fs");
+		rightbottom->texture = rawTexture;
+		rightbottom->material->AlphaBlendFunc();
+		rightbottom->material->DepthTestFunc(false);
+		rightbottom->color = Color(255, 255, 255, 128);
+		rightbottom->transform->SetPosition(Vector3(Screen::halfWidth * 1.5f, Screen::halfHeight * 0.5f, 0.0f));
 	}
 
 	void OnPostRender() override

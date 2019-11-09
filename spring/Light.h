@@ -37,7 +37,7 @@ namespace spring
 		};
 
 	public:
-		static map<const long, Light*> lights;
+		static vector<Light*> lights;
 		static Light* main;
 
 		Light::RenderMode renderMode = Light::RenderMode::Auto;
@@ -61,7 +61,6 @@ namespace spring
 	public:
 		Light();
 
-		void CastShadow();
-		// glm::mat4 GetViewMatrix();
+		static void CastShadow();
 	};
 }

@@ -396,9 +396,8 @@ void Shader::setLighting()
 	int directionalLightCount = 0;
 	int pointLightCount = 0;
 	int spotLightCount = 0;
-	for (std::pair<const long, Light*> lightItem : Light::lights)
+	for (auto light : Light::lights)
 	{
-		auto light = lightItem.second;
 		if (light->type == Light::Type::Directional)
 		{
 			string arrayName = "dirLights";

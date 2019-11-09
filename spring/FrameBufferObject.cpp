@@ -68,33 +68,33 @@ FrameBufferObject* FrameBufferObject::GenColorFramebuffer(int width, int height,
 FrameBufferObject* FrameBufferObject::GenDepthFramebuffer(int width, int height) 
 {
 	FrameBufferObject* fbo = new FrameBufferObject(width, height,GL_DEPTH_ATTACHMENT,0);
-	unsigned int framebuffer;
-	glGenFramebuffers(1,&framebuffer);
-	glBindFramebuffer(GL_FRAMEBUFFER, framebuffer);
-
-	unsigned int depthbuffer;
+	GLuint framebuffer;
+	glGenFramebuffers(1, &framebuffer);
+	// - Create depth texture
+	GLuint depthbuffer;
 	glGenTextures(1, &depthbuffer);
-	glBindTexture(GL_TEXTURE_2D,depthbuffer);
-	glTexImage2D(GL_TEXTURE_2D, fbo->level, GL_DEPTH_COMPONENT, fbo->width, fbo->height, 0, GL_DEPTH_COMPONENT, GL_UNSIGNED_BYTE, NULL);
+	glBindTexture(GL_TEXTURE_2D, depthbuffer);
+
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, fbo->width, fbo->height, 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, depthbuffer, fbo->level);
+
+	glBindFramebuffer(GL_FRAMEBUFFER, framebuffer);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, depthbuffer, 0);
 	glDrawBuffer(GL_NONE);
 	glReadBuffer(GL_NONE);
-	glBindTexture(GL_TEXTURE_2D, 0); 
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
 	GLenum status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
-	if (status != GL_FRAMEBUFFER_COMPLETE) 
+	if (status != GL_FRAMEBUFFER_COMPLETE)
 	{
 		Console::ErrorFormat("[spring engine] : generate depth buffer object error : (0x%x)", status);
 		return nullptr;
 	}
-
 	fbo->bufferId = framebuffer;
 	fbo->buffer = depthbuffer;
-	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	framebuffers.push_back(fbo);
 	return fbo;
 }

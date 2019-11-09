@@ -1,6 +1,7 @@
 #include "textureLoader.h"
 #include "soil.h"
 #include "texture.h"
+#include "screen.h"
 #include "console.h"
 
 #pragma comment(lib,"soil.lib")
@@ -72,6 +73,13 @@ Texture* TextureLoader::Load(const char* filePath ,bool invertY)
 	texture->textureId = textureId;
 	Caching(filePath, texture);
 	return texture;
+}
+
+void TextureLoader::SaveToBMP(const char* filepath) 
+{
+	unsigned char* pixels = new unsigned char[Screen::width * Screen::height * 4];
+	glReadPixels(0, 0, Screen::width, Screen::height, GL_RGBA, GL_UNSIGNED_BYTE, pixels);
+	TextureLoader::SaveToBMP(filepath, Screen::width, Screen::height, pixels);
 }
 
 void TextureLoader::SaveToBMP(const char* filePath, int width, int height, const unsigned char* pixels)

@@ -10,7 +10,7 @@ Matrix4x4Sample* matrix4x4Sample;
 Example* example;
 
 bool enabled = false;
-bool renderSkybox = false;
+bool renderSkybox = true;
 
 Camera* camera;
 OrbitCamera* orbit;
@@ -37,7 +37,7 @@ void Sample::Awake()
 		light->color = lightColor;
 		light->intensity = intensity;
 		light->transform->SetEulerangle(eulerangle);
-		light->transform->position = position;
+		light->transform->SetPosition(position);
 		return light;
 	};
 

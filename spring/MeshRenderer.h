@@ -7,6 +7,7 @@
 #include "texture.h"
 #include "renderable.h"
 #include "material.h"
+#include "camera.h"
 
 namespace spring 
 {
@@ -22,6 +23,7 @@ namespace spring
 		MeshRenderer(Material* mateiral);
 		void Init();
 		void Render() override;
-		void Render( glm::mat4 view);
+		void Render( glm::mat4 view , glm::mat4 projection);
+		void Render( Camera* camera );
 	};
 }

@@ -2,11 +2,13 @@
 #include <glm/glm.hpp>
 #include "light.h"
 #include "screen.h"
+#include "camera.h"
+#include "meshrenderer.h"
 
 using namespace std;
 using namespace spring;
 
-map<const long, Light*> Light::lights;
+vector< Light*> Light::lights;
 Light* Light::main;
 
 Light::Light()
@@ -16,20 +18,45 @@ Light::Light()
 	this->color = Color::white;
 	this->intensity = 1.0f;
 	this->cullingMask = new LayerMask();
+	this->cullingMask->remove(0x0010);
 	this->shadowType = ShadowType::HardShadow;
 
 	if (lights.size() == 0)
 		Light::main = this;
-	Light::lights.insert(pair<const long,Light*>(this->instanceId,this));
+	Light::lights.push_back(this);
 }
 
 void Light::CastShadow() 
 {
-	if (this->shadowType == Light::NoShadow)
-		return;
-	if( this->shadow == nullptr )
-		this->shadow = FrameBufferObject::GenDepthFramebuffer(Screen::width, Screen::height);
+	Camera* camera = Camera::main;
+	Material* depth = new Material("res/shader/shadow/shadow.vs", "res/shader/shadow/shadow.fs");
+	for (Light* light : Light::lights)
+	{
+		if (light->shadowType == Light::NoShadow)
+			continue;
+		if (light->shadow == nullptr)
+			light->shadow = FrameBufferObject::GenDepthFramebuffer(Screen::width, Screen::height);
 
-	// get view matrix
-	// get projection matrix
+		Vector3 srcPosition = camera->transform->GetPosition();
+		Vector3 srcEulerangle = camera->transform->GetEulerangle();
+		/*camera->transform->SetPosition(light->transform->GetPosition());
+		camera->transform->SetEulerangle(light->transform->GetEulerangle());*/
+
+		glBindFramebuffer(GL_FRAMEBUFFER,light->shadow->bufferId);
+		glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		Renderable::Draw(new unsigned int[1]{ 0x0001 }, [&](MeshRenderer* renderer)
+			{
+				Material* srcMaterial = renderer->material;
+				renderer->material = depth;
+				renderer->Render(camera);
+				renderer->material = srcMaterial;
+			});
+		glBindFramebuffer(GL_FRAMEBUFFER,0);
+
+		camera->transform->SetPosition(srcPosition);
+		camera->transform->SetEulerangle(srcEulerangle);
+	}
+	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
