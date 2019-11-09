@@ -201,6 +201,7 @@
     <ClInclude Include="FirstPlayerCamera.h" />
     <ClInclude Include="FPS.h" />
     <ClInclude Include="FrameBufferObject.h" />
+    <ClInclude Include="FullScreenRenderer.h" />
     <ClInclude Include="Gizmos.h" />
     <ClInclude Include="GUI.h" />
     <ClInclude Include="IJsonSerializer.h" />
@@ -264,6 +265,7 @@
     <ClCompile Include="FirstPlayerCamera.cpp" />
     <ClCompile Include="FPS.cpp" />
     <ClCompile Include="FrameBufferObject.cpp" />
+    <ClCompile Include="FullScreenRenderer.cpp" />
     <ClCompile Include="Gizmos.cpp" />
     <ClCompile Include="GUI.cpp" />
     <ClCompile Include="IJsonSerializer.cpp" />

@@ -14,6 +14,7 @@ void main()
 {
     Texcoord = texcoord;
     Color = color;
-
-    gl_Position = P * M * vec4(vertex.xy,0.0,1.0);
+    
+    //  P * M * 
+    gl_Position =vec4(vertex.xy,0.0,1.0);
 }

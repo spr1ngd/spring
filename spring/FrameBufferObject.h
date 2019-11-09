@@ -11,7 +11,6 @@ namespace spring
 	private:		
 		static vector<FrameBufferObject*> framebuffers;
 
-		FrameBufferObject( int width,int height,GLenum attachment,int level = 0);
 	public:
 		GLuint bufferId = -1;
 		int width;
@@ -19,8 +18,10 @@ namespace spring
 		GLenum attachment = GL_COLOR_ATTACHMENT0;
 		int level = 0;
 
-		GLuint colorbuffer = -1;
+		GLuint buffer = -1;
 	public:
+		FrameBufferObject( int width,int height,GLenum attachment,int level = 0);
+
 		void Bind();
 		void Unbind();
 		void Delete();

@@ -29,7 +29,7 @@ namespace spring
 		// todo : add stencil test
 		bool stencilTest = false;
 
-		bool cullface = false;
+		bool cullface = true;
 		GLenum cullfaceFunc = GL_BACK;
 
 	public:
@@ -42,6 +42,10 @@ namespace spring
 		const char* name;
 		Shader* shader;
 		RenderMode renderMode = RenderMode::Fill;
+
+		// shadow setting
+		bool castShadow = true;
+		bool receiveShadow = true;
 
 	private:
 		GLenum GetPolygonMode();

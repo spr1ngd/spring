@@ -10,6 +10,8 @@ Matrix4x4Sample* matrix4x4Sample;
 Example* example;
 
 bool enabled = false;
+bool renderSkybox = false;
+
 Camera* camera;
 OrbitCamera* orbit;
 spring::Skybox* skybox; 
@@ -44,10 +46,13 @@ void Sample::Awake()
 
 	Environment::ambient.color = Color(75, 75, 75, 255);
 	 
-	Material* skyboxMaterial = new Material("res/shader/skybox/6 Sided.vs", "res/shader/skybox/6 Sided.fs");
-	auto cubemap = TextureLoader::LoadCubemap("res/texture/skybox/night");
-	skybox = new Skybox(skyboxMaterial,*cubemap);
-	skybox->Init();
+	if (renderSkybox) 
+	{ 
+		Material* skyboxMaterial = new Material("res/shader/skybox/6 Sided.vs", "res/shader/skybox/6 Sided.fs");
+		auto cubemap = TextureLoader::LoadCubemap("res/texture/skybox/night");
+		skybox = new Skybox(skyboxMaterial, *cubemap);
+		skybox->Init();
+	}
 
 	Light* light = createLight(Light::Type::Directional, Color(255, 244, 214, 255), 0.7f, Vector3(10.0f, 10.0f, 10.0f), Vector3::down);
 	//Light* pointLigh1 = createLight(Light::Type::Point, Color::red, 0.6f, Vector3(5.0f, 0.0f, 0.0f), Vector3::left);
@@ -127,7 +132,8 @@ void Sample::Awake()
 void Sample::Update() 
 {
 	timer += Timer::deltaTime;
-	skybox->transform->position = Camera::main->transform->position;
+	if( renderSkybox )
+		skybox->transform->position = Camera::main->transform->position;
 
 	if (visible) 
 	{

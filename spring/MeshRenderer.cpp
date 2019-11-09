@@ -96,3 +96,52 @@ void MeshRenderer::Render()
 	}
 	this->material->shader->disuse();
 }
+
+void MeshRenderer::Render( glm::mat4 view )
+{
+	if (this->material == nullptr)
+	{
+		Console::Warning("can not render skybox without skybox material,please assign a sky box material.");
+		return;
+	}
+
+	Camera* camera = Camera::current;
+	if (!camera->cullingMask->contains(this->layer))
+		return;
+
+	// todo : move to meshrenderer::init
+	//this->material->EnableAlphaTest();
+	//this->material->EnableAlphaBlend();
+	//this->material->EnableDepthTest();
+	//this->material->EnableStencilTest();
+	//this->material->EnableCullFace();
+
+	this->material->shader->use();
+	for (unsigned int i = 0; i < this->meshes.size(); i++)
+	{
+		Mesh* mesh = &meshes[i];
+		mesh->Draw([&](void)
+			{
+				glm::mat4 model =
+					glm::translate(glm::mat4(1.0), glm::vec3(this->transform->position.x, this->transform->position.y, this->transform->position.z)) *
+					glm::rotate(glm::mat4(1.0f), glm::radians(this->transform->GetEulerangle().z), glm::vec3(0.0f, 0.0f, 1.0f)) *
+					glm::rotate(glm::mat4(1.0f), glm::radians(this->transform->GetEulerangle().x), glm::vec3(1.0f, 0.0f, 0.0f)) *
+					glm::rotate(glm::mat4(1.0f), glm::radians(this->transform->GetEulerangle().y), glm::vec3(0.0f, 1.0f, 0.0f)) *
+					glm::scale(glm::mat4(1.0f), glm::vec3(this->transform->scale.x, this->transform->scale.y, this->transform->scale.z));
+				glm::mat4 nm = glm::inverseTranspose(model);
+
+				GLuint mLocation = this->material->shader->getLocation(MATRIX_M);
+				glUniformMatrix4fv(mLocation, 1, GL_FALSE, glm::value_ptr(model));
+
+				GLuint nmLocation = this->material->shader->getLocation(MATRIX_NM);
+				glUniformMatrix4fv(nmLocation, 1, GL_FALSE, glm::value_ptr(nm));
+
+				GLuint vLocation = this->material->shader->getLocation(MATRIX_V);
+				glUniformMatrix4fv(vLocation, 1, GL_FALSE, glm::value_ptr(view));
+
+				// GLuint pLocation = this->material->shader->getLocation(MATRIX_P);
+				// glUniformMatrix4fv(pLocation, 1, GL_FALSE, glm::value_ptr(projection));
+			});
+	}
+	this->material->shader->disuse();
+}

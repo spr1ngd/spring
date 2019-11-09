@@ -22,5 +22,6 @@ namespace spring
 		MeshRenderer(Material* mateiral);
 		void Init();
 		void Render() override;
+		void Render( glm::mat4 view);
 	};
 }

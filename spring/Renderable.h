@@ -2,12 +2,14 @@
 #include <map>
 #include <vector>
 #include <iostream> 
+#include <functional>
 #include "console.h"
 
 using namespace std;
 
 namespace spring 
 {
+	class MeshRenderer;
 	class Renderable 
 	{
 	private:
@@ -53,6 +55,7 @@ namespace spring
 
 		virtual void Render() = 0;
 		static void Draw();
-		static void Draw(unsigned int layers[]);
+		static void Draw(unsigned int* layers);
+		static void Draw(unsigned int* layers , std::function<void(MeshRenderer*)> func);
 	};
 }

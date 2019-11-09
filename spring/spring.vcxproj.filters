@@ -106,6 +106,12 @@
     <Filter Include="Sample">
       <UniqueIdentifier>{bcdd2a7f-d5bd-4a1f-a2f5-fa51b688f9aa}</UniqueIdentifier>
     </Filter>
+    <Filter Include="头文件\PostProcessing">
+      <UniqueIdentifier>{5104e45f-37a0-4d03-9ca8-809154ec09d4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\PostProcessing">
+      <UniqueIdentifier>{a6ceda8c-2cec-445a-a73f-2c51bcf212f8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="spring.rc">
@@ -304,6 +310,12 @@
     <ClInclude Include="RectTransform.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="Cubemap.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="FullScreenRenderer.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Primitive.cpp">
@@ -475,6 +487,12 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="RectTransform.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Cubemap.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="FullScreenRenderer.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

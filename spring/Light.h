@@ -1,10 +1,13 @@
 #pragma once
 #include <map>
+#include <glm/glm.hpp>
 #include "node.h"
 #include "color.h"
 #include "transform.h"
 #include "vector3.h"
 #include "vector4.h"
+#include "framebufferobject.h"
+#include "layer.h"
 
 using namespace std;
 
@@ -26,8 +29,17 @@ namespace spring
 			Pixel,
 			Vertex
 		};
+		enum ShadowType 
+		{
+			NoShadow,
+			HardShadow,
+			SoftShadow
+		};
+
 	public:
 		static map<const long, Light*> lights;
+		static Light* main;
+
 		Light::RenderMode renderMode = Light::RenderMode::Auto;
 		Light::Type type = Light::Type::Directional;
 		Color color = Color::white;
@@ -40,10 +52,16 @@ namespace spring
 		// only work in spot light mode
 		float spotAngle = 25.0f;
 		float outterAngle = 70.0f;
-		// todo : light shadow settings
-		static Light* main;
+
+		// shadow setting
+		LayerMask* cullingMask;
+		ShadowType shadowType = ShadowType::HardShadow;
+		FrameBufferObject* shadow;
 
 	public:
 		Light();
+
+		void CastShadow();
+		// glm::mat4 GetViewMatrix();
 	};
 }

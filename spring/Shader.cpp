@@ -118,6 +118,7 @@ GLuint Shader::getLocation(const char* name)
 void Shader::use() 
 {
 	glUseProgram(this->program);
+	this->setLighting();
 	this->setEngineEnvironment();
 	this->setShaderValues();
 }
@@ -377,9 +378,10 @@ void Shader::setEngineEnvironment()
 	this->setColor(AMBIENT_COLOR,Environment::ambient.color);
 	if( this->textures.size() <= 0 )
 		this->setTexture("MainTextureData.texture", TextureLoader::GenPureWhiteTexture()->textureId);
+}
 
-#pragma region set light for shaders , todo : read shaders properties name from shader file.
-
+void Shader::setLighting() 
+{
 	string intensity = "intensity";
 	string color = "color";
 	string position = "position";
@@ -394,17 +396,17 @@ void Shader::setEngineEnvironment()
 	int directionalLightCount = 0;
 	int pointLightCount = 0;
 	int spotLightCount = 0;
-	for (std::pair<const long,Light*> lightItem : Light::lights) 
+	for (std::pair<const long, Light*> lightItem : Light::lights)
 	{
 		auto light = lightItem.second;
-		if (light->type == Light::Type::Directional) 
+		if (light->type == Light::Type::Directional)
 		{
 			string arrayName = "dirLights";
 			std::string intensityStr = arrayName + '[' + to_string(directionalLightCount) + "]." + intensity;
 			std::string positionStr = arrayName + '[' + to_string(directionalLightCount) + "]." + position;
 			std::string colorStr = arrayName + '[' + to_string(directionalLightCount) + "]." + color;
 			this->setFloat(intensityStr.c_str(), light->intensity);
-			this->setVec3(positionStr.c_str(),light->transform->position);
+			this->setVec3(positionStr.c_str(), light->transform->position);
 			this->setColor(colorStr.c_str(), light->color);
 			directionalLightCount++;
 		}
@@ -453,14 +455,12 @@ void Shader::setEngineEnvironment()
 			this->setVec3(directionStr.c_str(), light->transform->GetEulerangle());
 			spotLightCount++;
 		}
-		else 
+		else
 		{
 
-		} 
+		}
 		this->setVec3(CAMERA_POSITION, Camera::main->transform->position);
 	}
-
-#pragma endregion
 }
 
 #pragma region caching | flash

@@ -10,7 +10,7 @@
 #include "spring.h"
 #include "sample.h"
 #include "vector2.h"
-#include "framebufferobject.h"
+#include "fullscreenrenderer.h"
 
 // spring engine
 #pragma comment (lib,"glfw3.lib")
@@ -355,6 +355,59 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 	uiCamera->cullingMask->set(new unsigned int[1]{0x0010});
 	uiCamera->clearFlag = Camera::None;
 
+	FullScreenRenderer* fullscreen = new FullScreenRenderer(FullScreenRenderer::FullScreenRenderType::Depth);
+
+	FrameBufferObject* colorbuffer = FrameBufferObject::GenColorFramebuffer(Screen::width, Screen::height, 0);
+
+	const GLuint SHADOW_WIDTH = 800, SHADOW_HEIGHT = 600;
+	GLuint depthMapFBO;
+	glGenFramebuffers(1, &depthMapFBO);
+	// - Create depth texture
+	GLuint depthMap;
+	glGenTextures(1, &depthMap);
+	glBindTexture(GL_TEXTURE_2D, depthMap);
+
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, SHADOW_WIDTH, SHADOW_HEIGHT, 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+
+	glBindFramebuffer(GL_FRAMEBUFFER, depthMapFBO);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, depthMap, 0);
+	glDrawBuffer(GL_NONE);
+	glReadBuffer(GL_NONE);
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+	// Material* depth = new Material("res/shader/unlit/color.vs", "res/shader/unlit/color.fs");
+	Material* depth = new Material("res/shader/shadow/shadow.vs","res/shader/shadow/shadow.fs");
+	Shader* shader = new Shader("res/shader/ui/default.vs","res/shader/ui/default.fs");
+	GLuint quadVAO = 0;
+	GLuint quadVBO;
+	auto RenderQuad = [&]()
+	{
+		if (quadVAO == 0)
+		{
+			GLfloat quadVertices[] = {
+				// Positions        // Texture Coords
+				-1.0f,  1.0f, 0.0f,  0.0f, 1.0f,
+				-1.0f, -1.0f, 0.0f,  0.0f, 0.0f,
+				 1.0f,  1.0f, 0.0f,  1.0f, 1.0f,
+				 1.0f, -1.0f, 0.0f,  1.0f, 0.0f,
+			};
+			// Setup plane VAO
+			glGenVertexArrays(1, &quadVAO);
+			glGenBuffers(1, &quadVBO);
+			glBindVertexArray(quadVAO);
+			glBindBuffer(GL_ARRAY_BUFFER, quadVBO);
+			glBufferData(GL_ARRAY_BUFFER, sizeof(quadVertices), &quadVertices, GL_STATIC_DRAW);
+			glEnableVertexAttribArray(0);
+			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (GLvoid*)0);
+			glEnableVertexAttribArray(1);
+			glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (GLvoid*)(3 * sizeof(GLfloat)));
+		}
+	};
+
 	while (true)
 	{
 		if (PeekMessage(&msg, NULL, NULL, NULL, PM_REMOVE))
@@ -379,40 +432,62 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 			behaviour.second->Update(); 
 
 		for (auto behaviour : Behaviour::behaviours)
-			behaviour.second->OnPreRender();
+			behaviour.second->OnPreRender(); 
 
-		for (vector<Camera*>::iterator cam = Camera::cameras.begin(); cam != Camera::cameras.end(); cam++) 
+		for (vector<Camera*>::iterator cam = Camera::cameras.begin(); cam != Camera::cameras.end(); cam++)
 		{
 			Camera::current = *cam;
-			if( Camera::current->cullingMask->contains(Layer::UI) )
+			if (Camera::current->cullingMask->contains(Layer::UI))
 				continue;
 			Camera::current->Render();
 			if (Camera::current->framebuffer == nullptr)
-			{ 
+			{
 				// use camera culling and node.layer to determine whether object should be rendered.
 				Renderable::Draw(new unsigned int[1]{ 0x0001 });
 			}
-			else 
+			else
 			{
-				Camera::current->framebuffer->Bind();
+				
+				//glBindFramebuffer(GL_FRAMEBUFFER, colorbuffer->bufferId);
+				 glBindFramebuffer(GL_FRAMEBUFFER, depthMapFBO);
+				// Camera::current->framebuffer->Bind();
 				glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-				Renderable::Draw(new unsigned int[1]{0x0001});
-				Camera::current->framebuffer->Unbind();
-				glClearColor(0.1f, 0.4f, 0.7f, 1.0f);
-				glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+				Renderable::Draw(new unsigned int[1]{ 0x0001 }, [&](MeshRenderer* mr)
+					{
+						mr->material = depth;
+						mr->Render();
+					});
+				// Camera::current->framebuffer->Unbind();
+
+				// unsigned char* pixels = new unsigned char[Screen::width * Screen::height * 4];
+				// glReadPixels(0, 0, Screen::width, Screen::height, GL_RGBA, GL_UNSIGNED_BYTE, pixels);
+				// TextureLoader::SaveToBMP("res/screendepth.bmp", Screen::width, Screen::height, pixels);
+
+				glBindFramebuffer(GL_FRAMEBUFFER, 0);
+				/*glClearColor(0.1f, 0.4f, 0.7f, 1.0f);
+				glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);*/
 			}
 		}
 
-		for (auto behaviour : Behaviour::behaviours)
-			behaviour.second->OnPostRender();
+		// for (auto behaviour : Behaviour::behaviours)
+		// 	behaviour.second->OnPostRender();
+		// 
+		// for (auto behaviour : Behaviour::behaviours)
+		// 	behaviour.second->OnGUI();
+		// 
+		// // render ui object.
+		// Camera::current = uiCamera;
+		// Camera::current->Render();
+		// Renderable::Draw(new unsigned int[1]{ 0x0010 });
 
-		for (auto behaviour : Behaviour::behaviours)
-			behaviour.second->OnGUI(); 
-
-		// render ui object.
-		Camera::current = uiCamera;
-		Camera::current->Render();
-		Renderable::Draw(new unsigned int[1]{ 0x0010 });
+		shader->use();
+		RenderQuad();
+		glBindVertexArray(quadVAO);
+		glBindTexture(GL_TEXTURE_2D, depthMap);
+		// glBindTexture(GL_TEXTURE_2D, colorbuffer->buffer);
+		glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+		glBindVertexArray(0);
+		shader->disuse();
 
 		// FPS::CalculateFramePerSecond();
 		Input::setMouseWheel(0.0f);

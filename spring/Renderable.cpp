@@ -32,7 +32,7 @@ void Renderable::Draw()
 	}
 }
 
-void Renderable::Draw(unsigned int layers[]) 
+void Renderable::Draw(unsigned int* layers) 
 {
 	for (unsigned int i = 0; i < objects.size(); i++)
 	{
@@ -44,6 +44,25 @@ void Renderable::Draw(unsigned int layers[])
 			if (node->layer == layer) 
 			{
 				object->Render();
+				break;
+			}
+		}
+	}
+}
+
+void Renderable::Draw(unsigned int* layers , std::function<void(MeshRenderer*)> func)
+{
+	for (unsigned int i = 0; i < objects.size(); i++)
+	{
+		auto object = objects[i];
+		for (unsigned int j = 0; j < sizeof(layers); j++)
+		{
+			unsigned int layer = layers[j];
+			auto node = (MeshRenderer*)object;
+			if (node->layer == layer)
+			{
+				if (nullptr != func)
+					func(node);
 				break;
 			}
 		}

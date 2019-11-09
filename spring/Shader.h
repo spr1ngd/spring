@@ -72,6 +72,7 @@ namespace spring
 
 		void setShaderValues();
 		void setEngineEnvironment();
+		void setLighting();
 
 	public:
 		GLuint program;

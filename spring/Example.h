@@ -5,6 +5,7 @@
 #include "image.h"
 #include "console.h"
 #include "time.h"
+#include "fullscreenrenderer.h"
 
 using namespace spring;
 using namespace spring::ui;
@@ -14,7 +15,9 @@ class Example : public Behaviour
 private:
 	bool enabled = true;
 	MeshRenderer* aircraft;
-	FrameBufferObject* framebuffer = FrameBufferObject::GenColorFramebuffer(Screen::width, Screen::height,0);
+
+	// FrameBufferObject* framebuffer = FrameBufferObject::GenColorFramebuffer(Screen::width, Screen::height,0);
+	FrameBufferObject* framebuffer = FrameBufferObject::GenDepthFramebuffer(Screen::width, Screen::height);
 	Texture* rawTexture = new Texture();
 
 	Image* image; 
@@ -47,14 +50,15 @@ public:
 
 		Camera::main->cullingMask->remove(Layer::UI);
 		Camera::main->framebuffer = framebuffer;
-		rawTexture->textureId = framebuffer->colorbuffer;
+		rawTexture->textureId = framebuffer->buffer;
 		 
 		Texture* texture = TextureLoader::Load("res/screen.bmp", true);
-		image = GUI::DrawImage(Rect(0.0f, 0.0f, Screen::width, Screen::height));
+		image = GUI::DrawImage(Rect(0.0f, 0.0f, (float)Screen::width, (float)Screen::height));
+		image->material = new Material("res/shader/ui/default.vs", "res/shader/ui/default.fs");
 		// image->material = new Material("res/shader/ui/default.vs","res/shader/ui/postprocessing/opposition.fs");
 		// image->material = new Material("res/shader/ui/default.vs", "res/shader/ui/postprocessing/grayscale.fs");
 		// image->material = new Material("res/shader/ui/default.vs", "res/shader/ui/postprocessing/edgedetecion.fs");
-		image->material = new Material("res/shader/ui/default.vs", "res/shader/ui/postprocessing/blur.fs");
+		// image->material = new Material("res/shader/ui/default.vs", "res/shader/ui/postprocessing/blur.fs");
 		image->texture = rawTexture;
 		image->material->DepthTestFunc(false);
 		image->color = Color(255, 255, 255, 255);
