@@ -29,6 +29,10 @@ Light::Light()
 void Light::CastShadow() 
 {
 	Camera* camera = Camera::main;
+	Camera::Type srcCameraType = camera->cameraType;
+	Vector3 srcPosition = camera->transform->GetPosition();
+	Vector3 srcEulerangle = camera->transform->GetEulerangle();
+	camera->cameraType = Camera::Type::Orthographic;
 	Material* depth = new Material("res/shader/shadow/shadow.vs", "res/shader/shadow/shadow.fs");
 	for (Light* light : Light::lights)
 	{
@@ -37,10 +41,10 @@ void Light::CastShadow()
 		if (light->shadow == nullptr)
 			light->shadow = FrameBufferObject::GenDepthFramebuffer(Screen::width, Screen::height);
 
-		Vector3 srcPosition = camera->transform->GetPosition();
-		Vector3 srcEulerangle = camera->transform->GetEulerangle();
-		/*camera->transform->SetPosition(light->transform->GetPosition());
-		camera->transform->SetEulerangle(light->transform->GetEulerangle());*/
+		camera->transform->SetPosition(light->transform->GetPosition());
+		camera->transform->SetEulerangle(light->transform->GetEulerangle());
+		camera->Update();// update camera's view matrix and projection matrix.
+		light->lightSpaceMatrix = camera->GetProjectionMatrix() * camera->GetViewMatrix();
 
 		glBindFramebuffer(GL_FRAMEBUFFER,light->shadow->bufferId);
 		glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
@@ -53,10 +57,10 @@ void Light::CastShadow()
 				renderer->material = srcMaterial;
 			});
 		glBindFramebuffer(GL_FRAMEBUFFER,0);
-
-		camera->transform->SetPosition(srcPosition);
-		camera->transform->SetEulerangle(srcEulerangle);
 	}
 	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	camera->cameraType = srcCameraType;
+	camera->transform->SetPosition(srcPosition);
+	camera->transform->SetEulerangle(srcEulerangle);
 }

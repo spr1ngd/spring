@@ -346,22 +346,16 @@ void Shader::setShaderValues()
 		glUniformMatrix4fv(pair.first, 1, GL_FALSE, glm::value_ptr(pair.second));
 	}
 
+	unsigned int textureIndex = 0;
 	for (std::pair<GLuint,MaterialTexture> pair : this->textures)
 	{
-		// glBindFramebuffer(GL_FRAMEBUFFER, 1);
-		// unsigned char* pixels = new unsigned char[800 * 600 * 4];
-		// glReadPixels(0, 0, 800, 600, GL_RGBA, GL_UNSIGNED_BYTE, pixels);
-		// TextureLoader::SaveToBMP("res/screen.bmp", 800, 600, pixels);
-		// glBindFramebuffer(GL_FRAMEBUFFER,0);
-
 		glUniform1i(pair.first, 0);
-		// glActiveTexture(GL_TEXTURE0);
+		glActiveTexture(GL_TEXTURE0 + textureIndex++);
 		glBindTexture(GL_TEXTURE_2D, pair.second.texture);
 		GLuint tillingLocation = glGetUniformLocation(this->program, "MainTextureData.tilling");
 		GLuint offsetLocation = glGetUniformLocation(this->program, "MainTextureData.offset");
 		const float tilling[2] = {pair.second.tilling.x,pair.second.tilling.y};
 		glUniform2fv(tillingLocation,1, tilling);
-
 		const float offset[2] = { pair.second.offset.x,pair.second.offset.y };
 		glUniform2fv(offsetLocation, 1, offset);
 	}
@@ -459,6 +453,15 @@ void Shader::setLighting()
 
 		}
 		this->setVec3(CAMERA_POSITION, Camera::main->transform->position);
+
+		// add light shadow map for shader program
+		if (light->shadowType != Light::NoShadow)
+		{
+			GLuint shadowmap = light->shadow->buffer;
+			this->setTexture(SHADOWMAP, shadowmap);
+			// set light space matrix.
+			this->setMat4("LightSpaceMatrix",light->lightSpaceMatrix);
+		}
 	}
 }
 

@@ -48,14 +48,15 @@ struct PointLight
 }; 
 
 uniform vec4 Main_Color;
+uniform sampler2D Main_Texture;
 uniform vec4 AmbientColor;
 uniform vec4 Specular_Color;
 uniform float Specular_Attenuation;
 uniform float Specular_Intensity;
 
 uniform vec3 CameraPosition; 
-
 uniform TextureData MainTextureData;
+uniform sampler2D ShadowMap;
 uniform DirectionalLight dirLights[LIGHT_DIRECTIONAL_COUNT];
 uniform SpotLight spotLights[LIGHT_SPOT_COUNT];
 uniform PointLight pointLights[LIGHT_POINT_COUNT];
@@ -63,6 +64,7 @@ uniform PointLight pointLights[LIGHT_POINT_COUNT];
 in vec4 WorldPos;
 in vec3 WorldNormal;
 in vec2 Texcoord; 
+in vec4 LightSpacePos;
 
 vec4 calcDirectionalLight(DirectionalLight lightData)
 {
@@ -170,6 +172,17 @@ vec4 calcPointLight( PointLight lightData )
     return OUT;
 } 
 
+float castShadow( vec4 lightSpacePos )
+{
+    vec3 projCoords = lightSpacePos.xyz / lightSpacePos.w;
+    projCoords = projCoords * 0.5 + vec3(0.5);
+    float closestDepth = texture(ShadowMap,projCoords.xy).r;
+    float currentDepth = projCoords.z;
+    float bias = 0.005;
+    float shadow = currentDepth - bias > closestDepth ? 1.0 : 0.0;
+    return shadow;
+}
+
 float calcMod( float a,float b )
 {
     return a - b * floor(a / b);
@@ -179,26 +192,30 @@ void main()
 {
     // ambient 
     vec4 ambient = AmbientColor;
+    vec3 lighting = vec3(0.0);
     
     for( int i = 0 ; i < LIGHT_DIRECTIONAL_COUNT;i++ )
     {
-        FragColor += calcDirectionalLight(dirLights[i]);
+        lighting += calcDirectionalLight(dirLights[i]).rgb;
+        // directional light shadow map sampler
+        float shadow = 1 - castShadow(LightSpacePos);
+        lighting *= shadow;
     }
 
     for( int i = 0 ; i < LIGHT_SPOT_COUNT;i++ )
     {
-        FragColor += calcSpotLight(spotLights[i]);
+        lighting += calcSpotLight(spotLights[i]).rgb;
     }
 
     for( int i = 0 ; i < LIGHT_POINT_COUNT;i++ )
     {
-        FragColor += calcPointLight(pointLights[i]);
-    } 
-
-    FragColor += ambient;
-
+        lighting += calcPointLight(pointLights[i]).rgb;
+    }
+    lighting += ambient.rgb;
+    
+    // texture sample
     vec2 offsetUV = Texcoord + MainTextureData.offset;
     vec2 texcoord = vec2( calcMod(offsetUV.x * MainTextureData.tilling.x,1.0),calcMod(offsetUV.y * MainTextureData.tilling.y ,1.0) ) ;
     vec4 texColor = texture(MainTextureData.texture,texcoord);
-    FragColor *= texColor;
+    FragColor = vec4(lighting,1.0);
 }

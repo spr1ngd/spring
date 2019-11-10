@@ -7,14 +7,17 @@ uniform mat4 M;
 uniform mat4 V;
 uniform mat4 P;
 uniform mat4 NM;
+uniform mat4 LightSpaceMatrix;
 
 out vec4 WorldPos;
 out vec3 WorldNormal;
 out vec2 Texcoord;
+out vec4 LightSpacePos;
 
 void main()
 {
     WorldPos = M * vec4(vertex,1.0);    
+    LightSpacePos = LightSpaceMatrix * WorldPos;
     WorldNormal = mat3(NM)*normal;
     Texcoord = texcoord;
     gl_Position = P * V * WorldPos;    

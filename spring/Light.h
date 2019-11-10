@@ -56,6 +56,7 @@ namespace spring
 		// shadow setting
 		LayerMask* cullingMask;
 		ShadowType shadowType = ShadowType::HardShadow;
+		glm::mat4 lightSpaceMatrix;
 		FrameBufferObject* shadow;
 
 	public:

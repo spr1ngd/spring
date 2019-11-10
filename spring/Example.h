@@ -14,23 +14,30 @@ class Example : public Behaviour
 {
 private:
 	bool enabled = true;
+	bool drawGround = true;
+	bool drawFourFrame = false;
 	MeshRenderer* aircraft;
 
 	FrameBufferObject* framebuffer = FrameBufferObject::GenColorFramebuffer(Screen::width, Screen::height,0);
+
+	Texture* texture = TextureLoader::Load("res/texture/grass.jpg", true);
 	Texture* rawTexture = new Texture();
 
 	Image* image; 
-
 	Image* leftbttom;
 	Image* rightbottom;
+
+	MeshRenderer* ground;
 
 public:
 	void Awake() override
 	{
-		OnGUI();
-
 		if (!enabled)
 			return;
+
+		if (this->drawGround)
+			this->DrawGround();
+
 		ModelLoader loader = ModelLoader();
 		loader.Load("res/model/fbx/747/747-400.fbx");
 
@@ -51,48 +58,69 @@ public:
 		aircraft->material->shader->setFloat("Specular_Attenuation", 64.0f);
 
 		Camera::main->cullingMask->remove(Layer::UI);
-		Camera::main->framebuffer = framebuffer;
-		rawTexture->textureId = framebuffer->buffer;
+		// Camera::main->framebuffer = framebuffer;
+		// rawTexture->textureId = framebuffer->buffer;
 		 
-		Texture* texture = TextureLoader::Load("res/screen.bmp", true);
-		image = GUI::DrawImage(Rect(0.0f, 0.0f, (float)Screen::halfWidth, (float)Screen::halfHeight));
-		image->material = new Material("res/shader/ui/default.vs", "res/shader/ui/default.fs");
-		// image->material = new Material("res/shader/ui/default.vs","res/shader/ui/postprocessing/opposition.fs");
-		// image->material = new Material("res/shader/ui/default.vs", "res/shader/ui/postprocessing/grayscale.fs");
-		// image->material = new Material("res/shader/ui/default.vs", "res/shader/ui/postprocessing/edgedetecion.fs");
-		// image->material = new Material("res/shader/ui/default.vs", "res/shader/ui/postprocessing/blur.fs");
-		image->texture = rawTexture;
-		image->material->AlphaBlendFunc();
-		image->material->DepthTestFunc(false);
-		image->color = Color(255, 255, 255, 128);
-		image->transform->SetPosition(Vector3(Screen::halfWidth / 2.0f, Screen::halfHeight * 1.5f, 0.0f));
+		if (this->drawFourFrame) 
+		{
+			image = GUI::DrawImage(Rect(0.0f, 0.0f, (float)Screen::halfWidth, (float)Screen::halfHeight));
+			image->material = new Material("res/shader/ui/default.vs", "res/shader/ui/default(detail).fs");
+			image->material->AlphaBlendFunc();
+			image->material->DepthTestFunc(false);
+			image->color = Color(255, 255, 255, 255);
+			image->transform->SetPosition(Vector3(Screen::halfWidth / 2.0f, Screen::halfHeight * 1.5f, 0.0f));
+			image->material->shader->setTexture(MAIN_TEX, sunTexture->textureId);
+			image->material->shader->setTexture(SECONDARY_TEX, texture->textureId);
 
-		leftbttom = GUI::DrawImage(Rect(0.0f, 0.0f, (float)Screen::halfWidth, (float)Screen::halfHeight));
-		// leftbttom->material = new Material("res/shader/ui/default.vs","res/shader/ui/postprocessing/opposition.fs");
-		// leftbttom->material = new Material("res/shader/ui/default.vs", "res/shader/ui/postprocessing/grayscale.fs");
-		leftbttom->material = new Material("res/shader/ui/default.vs", "res/shader/ui/postprocessing/edgedetecion.fs");
-		// leftbttom->material = new Material("res/shader/ui/default.vs", "res/shader/ui/postprocessing/blur.fs");
-		leftbttom->texture = rawTexture;
-		leftbttom->material->AlphaBlendFunc();
-		leftbttom->material->DepthTestFunc(false);
-		leftbttom->color = Color(255, 255, 255, 128);
-		leftbttom->transform->SetPosition(Vector3(Screen::halfWidth / 2.0f, Screen::halfHeight * 0.5f, 0.0f));
-
-		rightbottom = GUI::DrawImage(Rect(0.0f, 0.0f, (float)Screen::halfWidth, (float)Screen::halfHeight));
-		// rightbottom->material = new Material("res/shader/ui/default.vs","res/shader/ui/postprocessing/opposition.fs");
-		// rightbottom->material = new Material("res/shader/ui/default.vs", "res/shader/ui/postprocessing/grayscale.fs");
-		// rightbottom->material = new Material("res/shader/ui/default.vs", "res/shader/ui/postprocessing/edgedetecion.fs");
-		rightbottom->material = new Material("res/shader/ui/default.vs", "res/shader/ui/postprocessing/blur.fs");
-		rightbottom->texture = rawTexture;
-		rightbottom->material->AlphaBlendFunc();
-		rightbottom->material->DepthTestFunc(false);
-		rightbottom->color = Color(255, 255, 255, 128);
-		rightbottom->transform->SetPosition(Vector3(Screen::halfWidth * 1.5f, Screen::halfHeight * 0.5f, 0.0f));
+			// leftbttom = GUI::DrawImage(Rect(0.0f, 0.0f, (float)Screen::halfWidth, (float)Screen::halfHeight));
+			// leftbttom->material = new Material("res/shader/ui/default.vs", "res/shader/ui/postprocessing/edgedetecion.fs");
+			// leftbttom->texture = rawTexture;
+			// leftbttom->material->AlphaBlendFunc();
+			// leftbttom->material->DepthTestFunc(false);
+			// leftbttom->color = Color(255, 255, 255, 128);
+			// leftbttom->transform->SetPosition(Vector3(Screen::halfWidth / 2.0f, Screen::halfHeight * 0.5f, 0.0f));
+			// 
+			// rightbottom = GUI::DrawImage(Rect(0.0f, 0.0f, (float)Screen::halfWidth, (float)Screen::halfHeight));
+			// rightbottom->material = new Material("res/shader/ui/default.vs", "res/shader/ui/postprocessing/blur.fs");
+			// rightbottom->texture = rawTexture;
+			// rightbottom->material->AlphaBlendFunc();
+			// rightbottom->material->DepthTestFunc(false);
+			// rightbottom->color = Color(255, 255, 255, 128);
+			// rightbottom->transform->SetPosition(Vector3(Screen::halfWidth * 1.5f, Screen::halfHeight * 0.5f, 0.0f));
+		}
 	}
 
-	void OnPostRender() override
-	{   
+	void DrawGround() 
+	{
+		ModelLoader* modelloader = new ModelLoader();
+		modelloader->Load("res/model/obj/quad.obj");
 
+		Material* groundMaterial = new Material("res/shader/diffuse/diffuse.vs","res/shader/diffuse/diffuse.fs");
+		ground = new MeshRenderer(groundMaterial);
+		ground->meshes = modelloader->meshes;
+		ground->textures = modelloader->loadedTextures;
+		ground->Init();
+
+		ground->transform->SetScale(Vector3(50.0f));
+		ground->transform->SetPosition(Vector3(0.0f,-2.0f,0.0f));
+		ground->transform->SetEulerangle(Vector3(-90.0f,0.0f,0.0f));
+		ground->material->shader->setColor(MAIN_COLOR,Color::white);
+		Texture* groundTexture = TextureLoader::Load("res/texture/wood.jpg");
+		auto whiteTexture = TextureLoader::GenPureWhiteTexture();
+		ground->material->shader->setTexture("MainTextureData.texture", groundTexture->textureId);
+		ground->material->shader->setColor("Specular_Color", Color::white);
+		ground->material->shader->setFloat("Specular_Intensity", 0.0f);
+		ground->material->shader->setFloat("Specular_Attenuation", 64.0f);
+		// ground->material->shader->setTilling("MainTextureData", Vector2(5, 5));
+	}
+
+	void OnPostRender() 
+	{
+		if (drawFourFrame)
+		{
+			/*rawTexture->textureId = Light::main->shadow->buffer;
+			image->texture = rawTexture;*/
+		}
 	}
 
 	void Update() override

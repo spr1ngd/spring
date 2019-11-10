@@ -353,42 +353,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 
 	Camera* uiCamera = new Camera();
 	uiCamera->cullingMask->set(new unsigned int[1]{0x0010});
-	uiCamera->clearFlag = Camera::None;
-
-	FullScreenRenderer* fullscreen = new FullScreenRenderer(FullScreenRenderer::FullScreenRenderType::Depth);
-	Material* depth = new Material("res/shader/shadow/shadow.vs", "res/shader/shadow/shadow.fs");
-	fullscreen->material = depth;
-
-	FrameBufferObject* depthbuffer = FrameBufferObject::GenDepthFramebuffer(Screen::width, Screen::height);
-	 
-
-	// Material* depth = new Material("res/shader/unlit/color.vs", "res/shader/unlit/color.fs");
-	Shader* shader = new Shader("res/shader/fullscreen/fullscreen.vs","res/shader/fullscreen/fullscreen.fs");
-	GLuint quadVAO = 0;
-	GLuint quadVBO;
-	auto RenderQuad = [&]()
-	{
-		if (quadVAO == 0)
-		{
-			GLfloat quadVertices[] = {
-				// Positions        // Texture Coords
-				-.5f + 0.5f,  .5f + 0.5f, 0.0f,  0.0f, 1.0f,
-				-.5f + 0.5f, -.5f + 0.5f, 0.0f,  0.0f, 0.0f,
-				 .5f + 0.5f,  .5f + 0.5f, 0.0f,  1.0f, 1.0f,
-				 .5f + 0.5f, -.5f + 0.5f, 0.0f,  1.0f, 0.0f,
-			};
-			// Setup plane VAO
-			glGenVertexArrays(1, &quadVAO);
-			glGenBuffers(1, &quadVBO);
-			glBindVertexArray(quadVAO);
-			glBindBuffer(GL_ARRAY_BUFFER, quadVBO);
-			glBufferData(GL_ARRAY_BUFFER, sizeof(quadVertices), &quadVertices, GL_STATIC_DRAW);
-			glEnableVertexAttribArray(0);
-			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (GLvoid*)0);
-			glEnableVertexAttribArray(1);
-			glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (GLvoid*)(3 * sizeof(GLfloat)));
-		}
-	};
+	uiCamera->clearFlag = Camera::None; 
 
 	while (true)
 	{
@@ -406,8 +371,11 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 		Timer::Time();
 		Gizmos::Render();
 
+		// 将灯光阴影优先渲染
+		Light::CastShadow();
+
 		// camera view/projection matrix calculation must be earlier than update method ,otherwise camera's position maybe update late than other transform.
-		for (vector<Camera*>::iterator cam = Camera::cameras.begin(); cam != Camera::cameras.end(); cam++) 
+		for (vector<Camera*>::iterator cam = Camera::cameras.begin(); cam != Camera::cameras.end(); cam++)
 			(*cam)->Update();
 
 		for (auto behaviour : Behaviour::behaviours)
@@ -415,9 +383,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 
 		for (auto behaviour : Behaviour::behaviours)
 			behaviour.second->OnPreRender(); 
-
-		// 将灯光阴影优先渲染
-		Light::CastShadow();
 
 		for (vector<Camera*>::iterator cam = Camera::cameras.begin(); cam != Camera::cameras.end(); cam++)
 		{
@@ -449,15 +414,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 		// render ui object.
 		Camera::current = uiCamera;
 		Camera::current->Render();
-		Renderable::Draw(new unsigned int[1]{ 0x0010 });
-
-		shader->use();
-		RenderQuad();
-		glBindVertexArray(quadVAO);
-		glBindTexture(GL_TEXTURE_2D, Light::main->shadow->buffer);
-		glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
-		glBindVertexArray(0);
-		shader->disuse();
+		Renderable::Draw(new unsigned int[1]{ 0x0010 }); 
 
 		// FPS::CalculateFramePerSecond();
 		Input::setMouseWheel(0.0f);

@@ -10,7 +10,7 @@ Matrix4x4Sample* matrix4x4Sample;
 Example* example;
 
 bool enabled = false;
-bool renderSkybox = true;
+bool renderSkybox = false;
 
 Camera* camera;
 OrbitCamera* orbit;

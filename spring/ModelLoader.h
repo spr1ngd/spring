@@ -24,5 +24,8 @@ namespace spring
 		vector<Mesh> meshes;
 		ModelLoader();
 		void Load(const std::string filePath);
+
+	public:
+		// static void Load();
 	};
 }

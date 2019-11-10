@@ -22,11 +22,13 @@
 #define COLOR "color"
 
 #define MAIN_TEX "Main_Texture"
+#define SECONDARY_TEX "Secondary_Texture"
 #define MAIN_CUBEMAP "Main_Cubemap"
 #define MAIN_COLOR "Main_Color"
 
 // ambient system properties
 #define AMBIENT_COLOR "AmbientColor"
+#define SHADOWMAP "ShadowMap"
 
 // lighting properties
 #define LIGHT_COLOR "light.color"

@@ -56,13 +56,6 @@ void FullScreenRenderer::Render()
 		glm::vec3(0.0f,0.0f,0.0f),
 		glm::vec3(light->transform->up.x,light->transform->up.y,light->transform->up.z));
 	auto projection = glm::ortho(-10.0f, 10.0f, -10.0f, 10.0f, 1.0f, 10.0f);
-	Renderable::Draw((unsigned int*)this->cullingMask, [&](MeshRenderer* renderer)
-		{
-			Material* src = renderer->material;
-			renderer->material = this->material;
-			renderer->Render(view,projection);
-			renderer->material = src;
-		});
 	//glBindFramebuffer(GL_FRAMEBUFFER,0);
 	/*glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);*/
