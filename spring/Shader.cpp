@@ -349,7 +349,7 @@ void Shader::setShaderValues()
 	unsigned int textureIndex = 0;
 	for (std::pair<GLuint,MaterialTexture> pair : this->textures)
 	{
-		glUniform1i(pair.first, 0);
+		glUniform1i(pair.first, textureIndex);
 		glActiveTexture(GL_TEXTURE0 + textureIndex++);
 		glBindTexture(GL_TEXTURE_2D, pair.second.texture);
 		GLuint tillingLocation = glGetUniformLocation(this->program, "MainTextureData.tilling");

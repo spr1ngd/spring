@@ -217,5 +217,5 @@ void main()
     vec2 offsetUV = Texcoord + MainTextureData.offset;
     vec2 texcoord = vec2( calcMod(offsetUV.x * MainTextureData.tilling.x,1.0),calcMod(offsetUV.y * MainTextureData.tilling.y ,1.0) ) ;
     vec4 texColor = texture(MainTextureData.texture,texcoord);
-    FragColor = vec4(lighting,1.0);
+    FragColor = vec4(lighting,1.0) * texColor;
 }

@@ -69,8 +69,8 @@ public:
 			image->material->DepthTestFunc(false);
 			image->color = Color(255, 255, 255, 255);
 			image->transform->SetPosition(Vector3(Screen::halfWidth / 2.0f, Screen::halfHeight * 1.5f, 0.0f));
-			image->material->shader->setTexture(MAIN_TEX, sunTexture->textureId);
-			image->material->shader->setTexture(SECONDARY_TEX, texture->textureId);
+			image->material->shader->setTexture(SECONDARY_TEX, sunTexture->textureId);
+			image->material->shader->setTexture(MAIN_TEX, texture->textureId);
 
 			// leftbttom = GUI::DrawImage(Rect(0.0f, 0.0f, (float)Screen::halfWidth, (float)Screen::halfHeight));
 			// leftbttom->material = new Material("res/shader/ui/default.vs", "res/shader/ui/postprocessing/edgedetecion.fs");
@@ -105,13 +105,13 @@ public:
 		ground->transform->SetPosition(Vector3(0.0f,-2.0f,0.0f));
 		ground->transform->SetEulerangle(Vector3(-90.0f,0.0f,0.0f));
 		ground->material->shader->setColor(MAIN_COLOR,Color::white);
-		Texture* groundTexture = TextureLoader::Load("res/texture/wood.jpg");
+		Texture* groundTexture = TextureLoader::Load("res/texture/grass.jpg");
 		auto whiteTexture = TextureLoader::GenPureWhiteTexture();
 		ground->material->shader->setTexture("MainTextureData.texture", groundTexture->textureId);
 		ground->material->shader->setColor("Specular_Color", Color::white);
 		ground->material->shader->setFloat("Specular_Intensity", 0.0f);
 		ground->material->shader->setFloat("Specular_Attenuation", 64.0f);
-		// ground->material->shader->setTilling("MainTextureData", Vector2(5, 5));
+		ground->material->shader->setTilling("MainTextureData", Vector2(5, 5));
 	}
 
 	void OnPostRender() 
@@ -123,9 +123,15 @@ public:
 		}
 	}
 
+
+	float rotateY = 0.0f;
+
 	void Update() override
 	{
-
+		rotateY += Timer::deltaTime * 15.0f;
+		if (rotateY >= 360.0f)
+			rotateY -= 360.0f;
+		aircraft->transform->SetEulerangle(Vector3(0.0f, rotateY,0.0f));
 	}
 
 	void Destroy() override
