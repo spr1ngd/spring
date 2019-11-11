@@ -14,7 +14,7 @@ bool renderSkybox = true;
 
 Camera* camera;
 OrbitCamera* orbit;
-spring::Skybox* skybox; 
+class::spring::Skybox* skybox; 
 MeshRenderer* lightModel;
 vector<Material*> mats;
 vector<MeshRenderer*> renderers;
@@ -50,7 +50,7 @@ void Sample::Awake()
 	{ 
 		Material* skyboxMaterial = new Material("res/shader/skybox/6 Sided.vs", "res/shader/skybox/6 Sided.fs");
 		auto cubemap = TextureLoader::LoadCubemap("res/texture/skybox/night");
-		skybox = new Skybox(skyboxMaterial, *cubemap);
+		skybox = new class::Skybox(skyboxMaterial, *cubemap);
 		skybox->Init();
 	}
 
@@ -70,6 +70,7 @@ void Sample::Awake()
 	camera->background = Color(31, 113, 113, 255);
 	camera->transform->SetPosition(Vector3(0.0f, 0.0f, 25.0f));
 	camera->transform->LookAt(Vector3::zero);
+	camera->cullingMask->remove(Layer::UI);
 
 	orbit = new OrbitCamera();
 	orbit->target = Vector3(0.0f, 0.0f, 0.0f);// Vector3::zero;

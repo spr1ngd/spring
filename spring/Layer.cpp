@@ -7,6 +7,7 @@ LayerMask::LayerMask()
 {
 	this->add(Layer::Default);
 	this->add(Layer::UI);
+	this->add(Layer::Skybox);
 }
 
 void LayerMask::set(unsigned int layers[]) 

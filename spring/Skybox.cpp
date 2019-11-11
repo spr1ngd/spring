@@ -16,6 +16,7 @@ Skybox::Skybox(Material* material,Cubemap cubemap)
 	this->material->DepthTestFunc(false);
 	this->material->CullFaceFunc(false,GL_FRONT);
 	this->SetCubemap(cubemap);
+	this->layer = Layer::Skybox;
 }
 
 void Skybox::SetCubemap(Cubemap cubemap) 

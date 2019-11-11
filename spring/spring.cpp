@@ -392,13 +392,13 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 			Camera::current->Render();
 			if (Camera::current->framebuffer == nullptr)
 			{
-				Renderable::Draw(new unsigned int[1]{ 0x0001 });
+				Renderable::Draw(new unsigned int[2]{ 0x0001,0x0100 });
 			}
 			else
 			{
 				Camera::current->framebuffer->Bind();
 				glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-				Renderable::Draw(new unsigned int[1]{ 0x0001 });
+				Renderable::Draw(new unsigned int[2]{ 0x0001,0x0100 });
 				Camera::current->framebuffer->Unbind();
 				glClearColor(0.1f, 0.4f, 0.7f, 1.0f);
 				glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);

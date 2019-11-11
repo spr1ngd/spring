@@ -457,10 +457,17 @@ void Shader::setLighting()
 		// add light shadow map for shader program
 		if (light->shadowType != Light::NoShadow)
 		{
-			GLuint shadowmap = light->shadow->buffer;
-			this->setTexture(SHADOWMAP, shadowmap);
-			// set light space matrix.
-			this->setMat4("LightSpaceMatrix",light->lightSpaceMatrix);
+			if (nullptr != light->shadow)
+			{
+				GLuint shadowmap = light->shadow->buffer;
+				this->setTexture(SHADOWMAP, shadowmap);
+				// set light space matrix.
+				this->setMat4("LightSpaceMatrix", light->lightSpaceMatrix);
+			}
+			else
+			{
+				Console::ErrorFormat("[spring engine] Shader : light does not have shadow map.");
+			}
 		}
 	}
 }

@@ -57,7 +57,6 @@ public:
 		aircraft->material->shader->setFloat("Specular_Intensity", 0.0f);
 		aircraft->material->shader->setFloat("Specular_Attenuation", 64.0f);
 
-		Camera::main->cullingMask->remove(Layer::UI);
 		// Camera::main->framebuffer = framebuffer;
 		// rawTexture->textureId = framebuffer->buffer;
 		 
@@ -131,7 +130,7 @@ public:
 		rotateY += Timer::deltaTime * 15.0f;
 		if (rotateY >= 360.0f)
 			rotateY -= 360.0f;
-		aircraft->transform->SetEulerangle(Vector3(0.0f, rotateY,0.0f));
+		aircraft->transform->SetEulerangle(Vector3(0.0f, -rotateY,0.0f));
 	}
 
 	void Destroy() override

@@ -26,7 +26,7 @@ void FullScreenRenderer::Initialize()
 	if (this->type == FullScreenRenderer::Color)  this->buffer = new FrameBufferObject(Screen::width, Screen::height, GL_COLOR_ATTACHMENT0, 0);
 	else  this->buffer = new FrameBufferObject(Screen::width, Screen::height, GL_DEPTH_COMPONENT, 0);
 	this->cullingMask = new LayerMask();
-	this->cullingMask->set(new unsigned int[1]{ Layer::Default });
+	this->cullingMask->set(new unsigned int[2]{ Layer::Default,Layer::Skybox });
 	renderers.push_back(this);
 }
 
