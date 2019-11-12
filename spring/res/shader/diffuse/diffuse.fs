@@ -57,6 +57,7 @@ uniform float Specular_Intensity;
 uniform vec3 CameraPosition; 
 uniform TextureData MainTextureData;
 uniform sampler2D ShadowMap;
+uniform int SampleLevel = 0;
 uniform DirectionalLight dirLights[LIGHT_DIRECTIONAL_COUNT];
 uniform SpotLight spotLights[LIGHT_SPOT_COUNT];
 uniform PointLight pointLights[LIGHT_POINT_COUNT];
@@ -172,14 +173,42 @@ vec4 calcPointLight( PointLight lightData )
     return OUT;
 } 
 
-float castShadow( vec4 lightSpacePos )
+float castShadow( vec4 lightSpacePos , vec3 lightDir)
 {
+    float cosine = dot( WorldNormal, lightDir);
+    if( cosine < 0 )
+        return 0;
+
     vec3 projCoords = lightSpacePos.xyz / lightSpacePos.w;
     projCoords = projCoords * 0.5 + vec3(0.5);
-    float closestDepth = texture(ShadowMap,projCoords.xy).r;
     float currentDepth = projCoords.z;
-    float bias = 0.005;
-    float shadow = currentDepth - bias > closestDepth ? 1.0 : 0.0;
+    float shadow = 0.0;
+    // when world normal dot light dir less than zero , the pixel should not be render light and shadow;
+    // float bias = max(0.05 * (1.0 - max(0,dot( WorldNormal, lightDir))) ,0.005);
+    float bias = 0.01;
+
+    if(  SampleLevel == 0 )
+    {
+        // no shadow multi sample
+        float closestDepth = texture(ShadowMap,projCoords.xy).r;
+        shadow = currentDepth - bias > closestDepth ? 0.0 : 1.0;
+    }
+    else
+    {
+        // shadow map multi sample
+        int min = -SampleLevel / 2;
+        int max = SampleLevel / 2;
+        float base = pow(SampleLevel + 1,2);
+        vec2 texelSize = 1.0 / textureSize(ShadowMap,0);  
+        for( int x = min ; x <= max ; x++ )
+        {
+            for( int y = min; y <= max ;y++ )
+            {
+                float pcfDepth = texture(ShadowMap,projCoords.xy + texelSize * vec2(x,y)).r;
+                shadow += (currentDepth - bias >  pcfDepth ? 0.0 : 1.0) / base;
+            }
+        }
+    }
     return shadow;
 }
 
@@ -198,7 +227,8 @@ void main()
     {
         lighting += calcDirectionalLight(dirLights[i]).rgb;
         // directional light shadow map sampler
-        float shadow = 1 - castShadow(LightSpacePos);
+        vec3 lightDir = normalize(dirLights[i].position.xyz);
+        float shadow = castShadow(LightSpacePos,lightDir);
         lighting *= shadow;
     }
 

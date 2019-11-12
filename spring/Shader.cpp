@@ -369,9 +369,14 @@ void Shader::setShaderValues()
 
 void Shader::setEngineEnvironment() 
 {
-	this->setColor(AMBIENT_COLOR,Environment::ambient.color);
 	if( this->textures.size() <= 0 )
 		this->setTexture("MainTextureData.texture", TextureLoader::GenPureWhiteTexture()->textureId);
+
+	// ambient setting
+	this->setColor(AMBIENT_COLOR,Environment::ambient.color);
+
+	// shadow setting
+	this->setInt(SHADOW_SAMPLELEVEL,Environment::shadow.sample);
 }
 
 void Shader::setLighting() 

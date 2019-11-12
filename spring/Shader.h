@@ -29,6 +29,7 @@
 // ambient system properties
 #define AMBIENT_COLOR "AmbientColor"
 #define SHADOWMAP "ShadowMap"
+#define SHADOW_SAMPLELEVEL "SampleLevel"
 
 // lighting properties
 #define LIGHT_COLOR "light.color"

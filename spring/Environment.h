@@ -16,7 +16,27 @@ namespace spring
 			}
 		};
 
+		class ShadowSetting 
+		{
+		public:
+			enum SampleLevel : int
+			{
+				Disable = 0,
+				Double = 2,
+				Quadruple = 4,
+				Octuple = 8
+			};
+
+			SampleLevel sample = SampleLevel::Disable;
+
+			ShadowSetting()
+			{
+				sample = SampleLevel::Double;
+			}
+		};
+
 	public:
 		static AmbientSetting ambient;
+		static ShadowSetting shadow;
 	};
 }

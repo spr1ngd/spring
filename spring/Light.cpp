@@ -34,6 +34,7 @@ void Light::CastShadow()
 	Vector3 srcEulerangle = camera->transform->GetEulerangle();
 	camera->cameraType = Camera::Type::Orthographic;
 	Material* depth = new Material("res/shader/shadow/shadow.vs", "res/shader/shadow/shadow.fs");
+	// depth->CullFaceFunc(true, GL_FRONT);
 	for (Light* light : Light::lights)
 	{
 		if (light->shadowType == Light::NoShadow)

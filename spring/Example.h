@@ -15,7 +15,8 @@ class Example : public Behaviour
 private:
 	bool enabled = true;
 	bool drawGround = true;
-	bool drawFourFrame = false;
+	bool drawFourFrame = true;
+	bool rotate = false;
 	MeshRenderer* aircraft;
 
 	FrameBufferObject* framebuffer = FrameBufferObject::GenColorFramebuffer(Screen::width, Screen::height,0);
@@ -64,12 +65,14 @@ public:
 		{
 			image = GUI::DrawImage(Rect(0.0f, 0.0f, (float)Screen::halfWidth, (float)Screen::halfHeight));
 			image->material = new Material("res/shader/ui/default.vs", "res/shader/ui/default(detail).fs");
+			// image->material = new Material("res/shader/ui/default.vs", "res/shader/ui/default.fs");
+			// image->texture = sunTexture;
 			image->material->AlphaBlendFunc();
 			image->material->DepthTestFunc(false);
 			image->color = Color(255, 255, 255, 255);
 			image->transform->SetPosition(Vector3(Screen::halfWidth / 2.0f, Screen::halfHeight * 1.5f, 0.0f));
-			image->material->shader->setTexture(SECONDARY_TEX, sunTexture->textureId);
 			image->material->shader->setTexture(MAIN_TEX, texture->textureId);
+			image->material->shader->setTexture(SECONDARY_TEX, sunTexture->textureId);
 
 			// leftbttom = GUI::DrawImage(Rect(0.0f, 0.0f, (float)Screen::halfWidth, (float)Screen::halfHeight));
 			// leftbttom->material = new Material("res/shader/ui/default.vs", "res/shader/ui/postprocessing/edgedetecion.fs");
@@ -122,15 +125,17 @@ public:
 		}
 	}
 
-
 	float rotateY = 0.0f;
 
 	void Update() override
 	{
-		rotateY += Timer::deltaTime * 15.0f;
-		if (rotateY >= 360.0f)
-			rotateY -= 360.0f;
-		aircraft->transform->SetEulerangle(Vector3(0.0f, -rotateY,0.0f));
+		if (rotate)
+		{
+			rotateY += Timer::deltaTime * 15.0f;
+			if (rotateY >= 360.0f)
+				rotateY -= 360.0f;
+			aircraft->transform->SetEulerangle(Vector3(0.0f, -rotateY, 0.0f));
+		}
 	}
 
 	void Destroy() override
