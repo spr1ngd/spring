@@ -87,12 +87,11 @@ void MeshRenderer::Render(Camera* camera)
 				GLuint pLocation = this->material->shader->getLocation(MATRIX_P);
 				switch (this->layer)
 				{
-				case Layer::Default:
-					glUniformMatrix4fv(pLocation, 1, GL_FALSE, glm::value_ptr(camera->GetProjectionMatrix()));
-					break;
 				case Layer::UI:
 					glUniformMatrix4fv(pLocation, 1, GL_FALSE, glm::value_ptr(camera->Get2DProjection()));
+					break;
 				default:
+					glUniformMatrix4fv(pLocation, 1, GL_FALSE, glm::value_ptr(camera->GetProjectionMatrix()));
 					break;
 				}
 			});
