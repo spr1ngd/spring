@@ -28,6 +28,7 @@ Light::Light()
 
 void Light::CastShadow() 
 {
+	// todo : how to promote shadow map resolution
 	Camera* camera = Camera::main;
 	Camera::Type srcCameraType = camera->cameraType;
 	Vector3 srcPosition = camera->transform->GetPosition();

@@ -112,6 +112,9 @@
     <Filter Include="源文件\PostProcessing">
       <UniqueIdentifier>{a6ceda8c-2cec-445a-a73f-2c51bcf212f8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="头文件\FontEngine">
+      <UniqueIdentifier>{a7c46a00-93e4-4214-b7a9-6758aa85c12e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="spring.rc">
@@ -316,6 +319,9 @@
     <ClInclude Include="FullScreenRenderer.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="FontEngine.h">
+      <Filter>头文件\FontEngine</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Primitive.cpp">
@@ -493,6 +499,9 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="FullScreenRenderer.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="FontEngine.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

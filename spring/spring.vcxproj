@@ -82,8 +82,8 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>D:\Project Files\spring\spring\glad\include;D:\Project Files\spring\spring\GLFW;$(IncludePath)</IncludePath>
-    <LibraryPath>D:\Project Files\spring\spring\GLFW;$(LibraryPath)</LibraryPath>
+    <IncludePath>D:\Project Files\spring\spring\freetype;D:\Project Files\spring\spring\glad\include;D:\Project Files\spring\spring\GLFW;$(IncludePath)</IncludePath>
+    <LibraryPath>D:\Project Files\spring\spring\freetype;D:\Project Files\spring\spring\GLFW;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
@@ -141,14 +141,14 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>D:\Project Files\spring\spring\glad\include;D:\Project Files\spring\spring\GLFW;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\Project Files\spring\spring\freetype;D:\Project Files\spring\spring\glad\include;D:\Project Files\spring\spring\GLFW;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>glew32.lib;opengl32.lib;soil.lib;assimp-vc142-mt.lib;glfw3.lib;lib_json.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>glew32.lib;opengl32.lib;soil.lib;assimp-vc142-mt.lib;glfw3.lib;lib_json.lib;freetype.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>editbin /subsystem:console $(OutDir)$(ProjectName).exe</Command>
@@ -199,6 +199,7 @@
     <ClInclude Include="Example.h" />
     <ClInclude Include="FileIO.h" />
     <ClInclude Include="FirstPlayerCamera.h" />
+    <ClInclude Include="FontEngine.h" />
     <ClInclude Include="FPS.h" />
     <ClInclude Include="FrameBufferObject.h" />
     <ClInclude Include="FullScreenRenderer.h" />
@@ -263,6 +264,7 @@
     <ClCompile Include="Environment.cpp" />
     <ClCompile Include="FileIO.cpp" />
     <ClCompile Include="FirstPlayerCamera.cpp" />
+    <ClCompile Include="FontEngine.cpp" />
     <ClCompile Include="FPS.cpp" />
     <ClCompile Include="FrameBufferObject.cpp" />
     <ClCompile Include="FullScreenRenderer.cpp" />

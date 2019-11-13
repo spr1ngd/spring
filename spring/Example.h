@@ -64,10 +64,8 @@ public:
 		if (this->drawFourFrame) 
 		{
 			image = GUI::DrawImage(Rect(0.0f, 0.0f, (float)Screen::halfWidth, (float)Screen::halfHeight));
-			// image->material = new Material("res/shader/ui/default.vs", "res/shader/ui/default(detail).fs");
-			// image->material = new Material("res/shader/ui/default.vs", "res/shader/ui/default.fs");
 			image->material = new Material("res/shader/ui/default.vs", "res/shader/ui/default.fs");
-			image->texture = texture;
+			// image->texture = texture;
 			image->material->AlphaBlendFunc();
 			image->material->DepthTestFunc(false);
 			image->color = Color(255, 255, 255, 255);
@@ -121,8 +119,8 @@ public:
 	{
 		if (drawFourFrame)
 		{
-			/*rawTexture->textureId = Light::main->shadow->buffer;
-			image->texture = rawTexture;*/
+			rawTexture->textureId = Light::main->shadow->buffer;
+			image->texture = rawTexture;
 		}
 	}
 
