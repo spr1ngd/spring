@@ -64,15 +64,16 @@ public:
 		if (this->drawFourFrame) 
 		{
 			image = GUI::DrawImage(Rect(0.0f, 0.0f, (float)Screen::halfWidth, (float)Screen::halfHeight));
-			image->material = new Material("res/shader/ui/default.vs", "res/shader/ui/default(detail).fs");
+			// image->material = new Material("res/shader/ui/default.vs", "res/shader/ui/default(detail).fs");
 			// image->material = new Material("res/shader/ui/default.vs", "res/shader/ui/default.fs");
-			// image->texture = sunTexture;
+			image->material = new Material("res/shader/ui/default.vs", "res/shader/ui/default.fs");
+			image->texture = texture;
 			image->material->AlphaBlendFunc();
 			image->material->DepthTestFunc(false);
 			image->color = Color(255, 255, 255, 255);
 			image->transform->SetPosition(Vector3(Screen::halfWidth / 2.0f, Screen::halfHeight * 1.5f, 0.0f));
-			image->material->shader->setTexture(MAIN_TEX, texture->textureId);
-			image->material->shader->setTexture(SECONDARY_TEX, sunTexture->textureId);
+			//image->material->shader->setTexture(MAIN_TEX, texture->textureId);
+			//image->material->shader->setTexture(SECONDARY_TEX, sunTexture->textureId);
 
 			// leftbttom = GUI::DrawImage(Rect(0.0f, 0.0f, (float)Screen::halfWidth, (float)Screen::halfHeight));
 			// leftbttom->material = new Material("res/shader/ui/default.vs", "res/shader/ui/postprocessing/edgedetecion.fs");

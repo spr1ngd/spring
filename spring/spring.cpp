@@ -352,6 +352,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 		behaviour.second->Awake(); 
 
 	Camera* uiCamera = new Camera();
+	uiCamera->name = "Internal UI Camera";
 	uiCamera->cullingMask->set(new unsigned int[1]{Layer::UI});
 	uiCamera->clearFlag = Camera::None; 
 

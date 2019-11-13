@@ -12,8 +12,8 @@ LayerMask::LayerMask()
 
 void LayerMask::set(unsigned int layers[]) 
 {
-	this->layers.clear();
-	for (int i = 0; i < sizeof(layers); i++)
+	vector<unsigned int>().swap(this->layers);
+	for (int i = 0; i < sizeof(layers) / 4; i++)
 		this->add(layers[i]);
 }
 

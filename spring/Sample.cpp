@@ -66,6 +66,7 @@ void Sample::Awake()
 #pragma region scene camera setting
 
 	camera = new Camera();
+	camera->name = "Main Camera";
 	camera->clearFlag = Camera::ClearFlag::Skybox;
 	camera->background = Color(31, 113, 113, 255);
 	camera->transform->SetPosition(Vector3(0.0f, 0.0f, 25.0f));
