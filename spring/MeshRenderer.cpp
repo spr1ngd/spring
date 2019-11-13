@@ -89,6 +89,7 @@ void MeshRenderer::Render(Camera* camera)
 				{
 				case Layer::UI:
 					glUniformMatrix4fv(pLocation, 1, GL_FALSE, glm::value_ptr(camera->Get2DProjection()));
+					break;
 				default:
 					glUniformMatrix4fv(pLocation, 1, GL_FALSE, glm::value_ptr(camera->GetProjectionMatrix()));
 					break;
