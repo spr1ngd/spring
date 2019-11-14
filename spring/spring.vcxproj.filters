@@ -115,6 +115,9 @@
     <Filter Include="头文件\FontEngine">
       <UniqueIdentifier>{a7c46a00-93e4-4214-b7a9-6758aa85c12e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="源文件\FontEngine">
+      <UniqueIdentifier>{6336b372-bddb-4ac7-8e09-782b5e0c6ba4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="spring.rc">
@@ -322,6 +325,12 @@
     <ClInclude Include="FontEngine.h">
       <Filter>头文件\FontEngine</Filter>
     </ClInclude>
+    <ClInclude Include="Character.h">
+      <Filter>头文件\FontEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="Font.h">
+      <Filter>头文件\FontEngine</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Primitive.cpp">
@@ -502,7 +511,13 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="FontEngine.cpp">
-      <Filter>源文件</Filter>
+      <Filter>源文件\FontEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="Character.cpp">
+      <Filter>源文件\FontEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="Font.cpp">
+      <Filter>源文件\FontEngine</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

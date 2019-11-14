@@ -1,12 +1,12 @@
 #pragma once
-#include "ft2build.h"
-
-#pragma comment (lib,"freetype.lib")
 
 namespace spring 
 {
 	class FontEngine 
 	{
-		
+	public:
+		FontEngine();
+
+		static void LoadFont(const char* fontName);
 	};
 }

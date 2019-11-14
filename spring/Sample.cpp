@@ -2,10 +2,12 @@
 #include "matrix4x4sample.h"
 #include "example.h"
 #include "skybox.h"
+#include "fontengine.h"
 
 using namespace spring;
 using namespace spring::editor;
 
+FontEngine* fontEngine = new FontEngine();
 Matrix4x4Sample* matrix4x4Sample;
 Example* example;
 

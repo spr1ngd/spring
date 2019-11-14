@@ -82,8 +82,8 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>D:\Project Files\spring\spring\freetype;D:\Project Files\spring\spring\glad\include;D:\Project Files\spring\spring\GLFW;$(IncludePath)</IncludePath>
-    <LibraryPath>D:\Project Files\spring\spring\freetype;D:\Project Files\spring\spring\GLFW;$(LibraryPath)</LibraryPath>
+    <IncludePath>D:\Project Files\spring\spring\freetype\include;D:\Project Files\spring\spring\glad\include;D:\Project Files\spring\spring\GLFW;$(IncludePath)</IncludePath>
+    <LibraryPath>D:\Project Files\spring\spring\freetype\win32;D:\Project Files\spring\spring\GLFW;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
@@ -141,7 +141,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>D:\Project Files\spring\spring\freetype;D:\Project Files\spring\spring\glad\include;D:\Project Files\spring\spring\GLFW;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\Project Files\spring\spring\freetype\include;D:\Project Files\spring\spring\glad\include;D:\Project Files\spring\spring\GLFW;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -191,6 +191,7 @@
     <ClInclude Include="AxisHelper.h" />
     <ClInclude Include="Behaviour.h" />
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="Character.h" />
     <ClInclude Include="Color.h" />
     <ClInclude Include="Colorf.h" />
     <ClInclude Include="Console.h" />
@@ -199,6 +200,7 @@
     <ClInclude Include="Example.h" />
     <ClInclude Include="FileIO.h" />
     <ClInclude Include="FirstPlayerCamera.h" />
+    <ClInclude Include="Font.h" />
     <ClInclude Include="FontEngine.h" />
     <ClInclude Include="FPS.h" />
     <ClInclude Include="FrameBufferObject.h" />
@@ -257,6 +259,7 @@
     <ClCompile Include="AxisHelper.cpp" />
     <ClCompile Include="Behaviour.cpp" />
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="Character.cpp" />
     <ClCompile Include="Color.cpp" />
     <ClCompile Include="Colorf.cpp" />
     <ClCompile Include="Console.cpp" />
@@ -264,6 +267,7 @@
     <ClCompile Include="Environment.cpp" />
     <ClCompile Include="FileIO.cpp" />
     <ClCompile Include="FirstPlayerCamera.cpp" />
+    <ClCompile Include="Font.cpp" />
     <ClCompile Include="FontEngine.cpp" />
     <ClCompile Include="FPS.cpp" />
     <ClCompile Include="FrameBufferObject.cpp" />
