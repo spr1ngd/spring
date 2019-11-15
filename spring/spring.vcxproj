@@ -82,8 +82,8 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>D:\Project Files\spring\spring\freetype\include;D:\Project Files\spring\spring\glad\include;D:\Project Files\spring\spring\GLFW;$(IncludePath)</IncludePath>
-    <LibraryPath>D:\Project Files\spring\spring\freetype\win32;D:\Project Files\spring\spring\GLFW;$(LibraryPath)</LibraryPath>
+    <IncludePath>D:\Project Files\spring\spring\glad\include;D:\Project Files\spring\spring\GLFW;$(IncludePath)</IncludePath>
+    <LibraryPath>D:\Project Files\spring\spring\GLFW;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
@@ -141,7 +141,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>D:\Project Files\spring\spring\freetype\include;D:\Project Files\spring\spring\glad\include;D:\Project Files\spring\spring\GLFW;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\Project Files\spring\spring\glad\include;D:\Project Files\spring\spring\GLFW;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -149,6 +149,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>glew32.lib;opengl32.lib;soil.lib;assimp-vc142-mt.lib;glfw3.lib;lib_json.lib;freetype.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>D:\Project Files\spring\spring;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
       <Command>editbin /subsystem:console $(OutDir)$(ProjectName).exe</Command>

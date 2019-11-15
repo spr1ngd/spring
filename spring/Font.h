@@ -12,6 +12,10 @@ namespace spring
 		std::map<char, Character*> characters;
 
 	public:
-		Font(const char* fontName);
+		char* name;
+
+		Font(char* fontName);
+		void AddCharacter(Character* character);
+		void GetCharacter(char c);
 	};
 }

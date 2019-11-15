@@ -7,7 +7,8 @@ namespace spring
 	class Character
 	{
 	public:
-		Texture* character;
+		char c;
+		unsigned int character;
 		Vector2 size;
 		Vector2 bearing;
 		GLuint advance;

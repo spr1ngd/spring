@@ -1,9 +1,21 @@
 #include "font.h"
+#include "fontengine.h"
 
 using namespace std;
 using namespace spring;
 
-Font::Font(const char* fontName)
+Font::Font(char* fontName)
 {
-	// todo : load asset by font engine
+	this->name = fontName;
+	FontEngine::LoadFont(*this);
+}
+
+void Font::AddCharacter(Character* character) 
+{
+
+}
+
+void Font::GetCharacter(char c) 
+{
+
 }

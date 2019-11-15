@@ -1,4 +1,6 @@
 #pragma once
+#include "font.h"
+#include "character.h"
 
 namespace spring 
 {
@@ -7,6 +9,6 @@ namespace spring
 	public:
 		FontEngine();
 
-		static void LoadFont(const char* fontName);
+		static void LoadFont(Font& font);
 	};
 }
