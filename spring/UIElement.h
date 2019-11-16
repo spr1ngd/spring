@@ -16,6 +16,7 @@ namespace spring
 		public:
 			UIElement();
 
+			virtual void GenerateMesh();
 			void Render() override;
 		};
 	}

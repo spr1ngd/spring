@@ -8,7 +8,7 @@ namespace spring
 	{
 	public:
 		char c;
-		unsigned int character;
+		Texture* character;
 		Vector2 size;
 		Vector2 bearing;
 		GLuint advance;

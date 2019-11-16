@@ -15,6 +15,11 @@ MeshRenderer::MeshRenderer(Material* mateiral)
 
 void MeshRenderer::Init() 
 {
+	if (this->material == nullptr)
+	{
+		Console::Warning("can not render skybox without skybox material,please assign a sky box material.");
+		return;
+	}
 	for (unsigned int i = 0; i < this->meshes.size(); i++) 
 	{
 		Mesh* mesh = &meshes[i];
@@ -36,6 +41,11 @@ void MeshRenderer::Init()
 				glEnableVertexAttribArray(colorLocation);
 				glVertexAttribPointer(colorLocation,4,GL_FLOAT,GL_FALSE,sizeof(Vertex),(void*)(sizeof(float) * 8));
 			});
+
+		// todo : refactor these code
+		vector<Texture> textures = mesh->textures;
+		for (vector<Texture>::iterator item = textures.begin(); item != textures.end(); item++) 
+			this->material->shader->setTexture(MAIN_TEX, item->textureId);
 	}
 } 
 

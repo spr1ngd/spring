@@ -15,7 +15,9 @@ class Example : public Behaviour
 private:
 	bool enabled = true;
 	bool drawGround = true;
-	bool drawFourFrame = true;
+	bool drawFourFrame = false;
+	bool drawText = true;
+
 	bool rotate = false;
 	MeshRenderer* aircraft;
 
@@ -27,6 +29,8 @@ private:
 	Image* image; 
 	Image* leftbttom;
 	Image* rightbottom;
+
+	Text* text;
 
 	MeshRenderer* ground;
 
@@ -88,6 +92,18 @@ public:
 			// rightbottom->material->DepthTestFunc(false);
 			// rightbottom->color = Color(255, 255, 255, 128);
 			// rightbottom->transform->SetPosition(Vector3(Screen::halfWidth * 1.5f, Screen::halfHeight * 0.5f, 0.0f));
+		}
+
+		if (this->drawText) 
+		{
+			this->text = GUI::DrawText(Rect(0.0f, 0.0f, 300.0f, 60.0f));
+			this->text->font = new Font("arial.ttf");
+			this->text->material = new Material("res/shader/ui/font.vs", "res/shader/ui/font.fs");
+			this->text->material->AlphaBlendFunc();
+			this->text->material->DepthTestFunc(false);
+			this->text->color = Color::white;
+			this->text->transform->SetPosition(Vector3(Screen::halfWidth / 2.0f, Screen::halfHeight * 1.5f, 0.0f));
+			this->text->SetText("S");
 		}
 	}
 

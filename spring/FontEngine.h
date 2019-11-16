@@ -1,11 +1,15 @@
 #pragma once
-#include "font.h"
+#include <map>
 #include "character.h"
+#include "font.h"
 
 namespace spring 
 {
 	class FontEngine 
 	{
+	private:
+		static std::map<const char*,Font*> fonts;
+
 	public:
 		FontEngine();
 

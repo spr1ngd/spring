@@ -10,6 +10,8 @@
 using namespace std;
 using namespace spring;
 
+std::map<const char*, Font*> FontEngine::fonts;
+
 FontEngine::FontEngine() 
 {
 
@@ -30,47 +32,72 @@ Character* LoadCharacter(FT_Face& face, char c)
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, face->glyph->bitmap.width, face->glyph->bitmap.rows, 0, GL_RED, GL_UNSIGNED_BYTE, face->glyph->bitmap.buffer);
+
+	unsigned int width = face->glyph->bitmap.width;
+	unsigned int height = face->glyph->bitmap.rows;
+	auto buffer = face->glyph->bitmap.buffer;
+
+	//if (nullptr == buffer)
+	//	return nullptr;
+
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, width, height, 0, GL_RED, GL_UNSIGNED_BYTE, face->glyph->bitmap.buffer);
 	glBindTexture(GL_TEXTURE_2D, 0);
 
 	Character* character = new Character();
 	character->c = c;
-	character->size = Vector2(face->glyph->bitmap.width, face->glyph->bitmap.rows);
-	character->bearing = Vector2(face->glyph->bitmap_left, face->glyph->bitmap_top);
+	character->size = Vector2((float)width, (float)height);
+	character->bearing = Vector2((float)face->glyph->bitmap_left, (float)face->glyph->bitmap_top);
 	character->advance = face->glyph->advance.x;
-	character->character = textureId;
+	auto texture = new Texture();
+	texture->textureId = textureId;
+	character->character = texture;
 	return character;
 }
 
 void FontEngine::LoadFont(Font& font)
 {
+	// load cached asset
+	auto cache = fonts.find(font.name);
+	if (cache != fonts.end()) 
+	{
+		font = *cache->second;
+		return;
+	}
+
+	// create new font asset
 	FT_Library ft;
 	if (FT_Init_FreeType(&ft))
 		Console::ErrorFormat("[spring engine] Font engine could not init freetype library.");
 
-	char fontAsset[] = {"res/font/"};
-
-	// todo : 
-	// strcat(fontAsset, fontName);
-	strcat_s(fontAsset, font.name);
-
+	char src[] = { "res/font/\0" };
+	auto srcLen = strlen(src);
+	auto nameLen = strlen(font.name);
+	char* fontAsset = new char[srcLen + nameLen + 1]{};
+	memcpy(fontAsset, src, srcLen);
+	memcpy(fontAsset + srcLen, font.name, nameLen);
 	FT_Face face;
 	if (FT_New_Face(ft, fontAsset, 0, &face))
-		Console::ErrorFormat("[spring engine] Font engine load font %s fail.",font.name);
+		Console::ErrorFormat("[spring engine] Font engine load font %s fail.", font.name);
 
-	FT_Set_Pixel_Sizes(face,0,48);
+	FT_Set_Pixel_Sizes(face, 0, 48);
 
 	for (char c = 0; c < 127; c++)
 	{
 		auto character = LoadCharacter(face, c);
-		if( nullptr == character )
+		if (nullptr == character)
+		{
+			Console::ErrorFormat("[spring engine] : Font engine load character %s failed.",c);
 			continue;
+		}
 		font.AddCharacter(character);
 	}
 
-	Console::LogFormat("[spring engine] Font engine load font %s successfully.",font.name);
+	Console::LogFormat("[spring engine] Font engine load font %s successfully.", font.name);
 	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 
 	FT_Done_Face(face);
 	FT_Done_FreeType(ft);
+
+	// cache font asset
+	fonts[font.name] = &font;
 }

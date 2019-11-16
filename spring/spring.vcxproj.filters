@@ -331,6 +331,9 @@
     <ClInclude Include="Font.h">
       <Filter>头文件\FontEngine</Filter>
     </ClInclude>
+    <ClInclude Include="Text.h">
+      <Filter>头文件\2D</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Primitive.cpp">
@@ -518,6 +521,9 @@
     </ClCompile>
     <ClCompile Include="Font.cpp">
       <Filter>源文件\FontEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="Text.cpp">
+      <Filter>源文件\2D</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

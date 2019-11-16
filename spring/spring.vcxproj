@@ -244,6 +244,7 @@
     <ClInclude Include="Space.h" />
     <ClInclude Include="spring.h" />
     <ClInclude Include="SpringEngine.h" />
+    <ClInclude Include="Text.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="TextureLoader.h" />
     <ClInclude Include="Timer.h" />
@@ -308,6 +309,7 @@
     <ClCompile Include="Skybox.cpp" />
     <ClCompile Include="spring.cpp" />
     <ClCompile Include="SpringEngine.cpp" />
+    <ClCompile Include="Text.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="TextureLoader.cpp" />
     <ClCompile Include="Timer.cpp" />

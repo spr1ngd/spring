@@ -4,7 +4,7 @@
 using namespace std;
 using namespace spring;
 
-Font::Font(char* fontName)
+Font::Font(const char* fontName)
 {
 	this->name = fontName;
 	FontEngine::LoadFont(*this);
@@ -12,10 +12,16 @@ Font::Font(char* fontName)
 
 void Font::AddCharacter(Character* character) 
 {
-
+	std::map<char,Character*>::iterator item = this->characters.find(character->c);
+	if (item != this->characters.end())
+		return;
+	this->characters[character->c] = character;
 }
 
-void Font::GetCharacter(char c) 
+Character* Font::GetCharacter(char c)
 {
-
+	auto item = this->characters.find(c);
+	if (item == this->characters.end())
+		return nullptr;
+	return item->second;
 }

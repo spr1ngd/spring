@@ -8,14 +8,14 @@ namespace spring
 {
 	class Font 
 	{
-	public:
+	private:
 		std::map<char, Character*> characters;
 
 	public:
-		char* name;
+		const char* name;
 
-		Font(char* fontName);
+		Font(const char* fontName);
 		void AddCharacter(Character* character);
-		void GetCharacter(char c);
+		Character* GetCharacter(char c);
 	};
 }

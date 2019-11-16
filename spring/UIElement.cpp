@@ -10,6 +10,11 @@ UIElement::UIElement()
 	this->rectTransform->transform = this->transform;
 }
 
+void UIElement::GenerateMesh() 
+{
+
+}
+
 void UIElement::Render() 
 {
 	this->material->shader->setColor(MAIN_COLOR, this->color);

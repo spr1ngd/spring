@@ -12,7 +12,8 @@ namespace spring
 			Texture* texture;
 		public:
 			Image();
-			virtual void GenerateMesh();
+
+			void GenerateMesh() override;
 			void Render() override;
 		};
 	}
