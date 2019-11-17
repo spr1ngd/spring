@@ -11,5 +11,5 @@ in vec4 Color;
 void main()
 {
     vec4 texColor = texture(Main_Texture,vec2(Texcoord.s,1.0 - Texcoord.t));
-    FragColor = vec4(texColor.r) * Color * Main_Color;
+    FragColor = Color * Main_Color * vec4(texColor.r);
 }

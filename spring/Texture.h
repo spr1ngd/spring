@@ -17,5 +17,6 @@ namespace spring
 		Texture();
 		Texture(const char* filePath);
 		void Load(const char* filePath);
+		void Release();
 	};
 }

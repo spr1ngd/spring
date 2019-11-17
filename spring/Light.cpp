@@ -51,7 +51,7 @@ void Light::CastShadow()
 		glBindFramebuffer(GL_FRAMEBUFFER,light->shadow->bufferId);
 		glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		Renderable::Draw(new unsigned int[1]{ 0x0001 }, [&](MeshRenderer* renderer)
+		Renderable::Draw(1,new unsigned int[1]{ 0x0001 }, [&](MeshRenderer* renderer)
 			{
 				Material* srcMaterial = renderer->material;
 				renderer->material = depth;

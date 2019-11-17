@@ -17,9 +17,21 @@ Vector2 Vector2::operator+(const Vector2 vec2)
 	return Vector2(this->x + vec2.x, this->y + vec2.y);
 }
 
+void Vector2::operator+=(const Vector2 vec2) 
+{
+	this->x += vec2.x;
+	this->y += vec2.y;
+}
+
 Vector2 Vector2::operator-(const Vector2 vec2) 
 {
 	return Vector2(this->x - vec2.x, this->y - vec2.y);
+}
+
+void Vector2::operator-=(const Vector2 vec2)
+{
+	this->x -= vec2.x;
+	this->y -= vec2.y;
 }
 
 Vector2 Vector2::operator*(const float multiplicator) 

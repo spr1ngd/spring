@@ -6,6 +6,7 @@
 #include "console.h"
 #include "time.h"
 #include "fullscreenrenderer.h"
+#include <stdio.h>
 
 using namespace spring;
 using namespace spring::ui;
@@ -18,7 +19,7 @@ private:
 	bool drawFourFrame = false;
 	bool drawText = true;
 
-	bool rotate = false;
+	bool rotate = true;
 	MeshRenderer* aircraft;
 
 	FrameBufferObject* framebuffer = FrameBufferObject::GenColorFramebuffer(Screen::width, Screen::height,0);
@@ -30,6 +31,7 @@ private:
 	Image* leftbttom;
 	Image* rightbottom;
 
+	Text* springEngine;
 	Text* text;
 
 	MeshRenderer* ground;
@@ -96,14 +98,26 @@ public:
 
 		if (this->drawText) 
 		{
-			this->text = GUI::DrawText(Rect(0.0f, 0.0f, 300.0f, 60.0f));
+			this->springEngine = GUI::DrawText(Rect(0.0f, 0.0f, 300.0f, 48.0f));
+			this->springEngine->name = "SpringEngine";
+			this->springEngine->font = new Font("arial.ttf");
+			this->springEngine->material = new Material("res/shader/ui/font.vs", "res/shader/ui/font.fs");
+			this->springEngine->material->AlphaBlendFunc();
+			this->springEngine->material->DepthTestFunc(false);
+			this->springEngine->color = Color::white;
+			this->springEngine->transform->SetPosition(Vector3(0.0f + 150.0f, Screen::height - 48.0f, 0.0f));
+			this->springEngine->color = Color(255,116,0,180);
+			this->springEngine->SetText("Spring Engine.");
+
+			this->text = GUI::DrawText(Rect(0.0f, 0.0f, 120, 24.0f));
+			this->text->name = "FPS";
 			this->text->font = new Font("arial.ttf");
 			this->text->material = new Material("res/shader/ui/font.vs", "res/shader/ui/font.fs");
 			this->text->material->AlphaBlendFunc();
 			this->text->material->DepthTestFunc(false);
-			this->text->color = Color::white;
-			this->text->transform->SetPosition(Vector3(Screen::halfWidth / 2.0f, Screen::halfHeight * 1.5f, 0.0f));
-			this->text->SetText("S");
+			this->text->color = Color(93,221,221,255);
+			this->text->transform->SetScale(Vector3(0.5f));
+			this->text->transform->SetPosition(Vector3(Screen::width - 50.0f, Screen::height - 24.0f, 0.0f));
 		}
 	}
 
@@ -150,6 +164,13 @@ public:
 			if (rotateY >= 360.0f)
 				rotateY -= 360.0f;
 			aircraft->transform->SetEulerangle(Vector3(0.0f, -rotateY, 0.0f));
+
+			if (this->drawText)
+			{
+				char buf[16];
+				sprintf_s(buf, "%s:%d", "FPS", FPS::fps);
+				this->text->SetText(buf);
+			}
 		}
 	}
 

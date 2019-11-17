@@ -29,3 +29,8 @@ void Texture::Load(const char* filePath)
 		this->textureType = texture->textureType;
 	}
 }
+
+void Texture::Release() 
+{
+	
+}

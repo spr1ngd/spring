@@ -27,5 +27,6 @@ namespace spring
 		static Texture* GenPureWhiteTexture();
 		static void Caching(const char* filePath ,Texture* texture);
 		static bool IsExist(const char* filePath ,Texture* texture);
+		static void Release();
 	};
 }

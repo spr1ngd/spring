@@ -55,7 +55,7 @@ namespace spring
 
 		virtual void Render() = 0;
 		static void Draw();
-		static void Draw(unsigned int* layers);
-		static void Draw(unsigned int* layers , std::function<void(MeshRenderer*)> func);
+		static void Draw(unsigned int layerCount, unsigned int* layers);
+		static void Draw(unsigned int layerCount, unsigned int* layers , std::function<void(MeshRenderer*)> func);
 	};
 }

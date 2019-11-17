@@ -1,6 +1,7 @@
 #include <algorithm>
 #include "node.h"
 #include "meshrenderer.h"
+#include "console.h"
 
 using namespace std;
 using namespace spring;
@@ -32,12 +33,14 @@ void Renderable::Draw()
 	}
 }
 
-void Renderable::Draw(unsigned int* layers) 
+void Renderable::Draw(unsigned int layerCount, unsigned int* layers)
 {
+	if (layerCount <= 0)
+		return;
 	for (unsigned int i = 0; i < objects.size(); i++)
 	{
 		auto object = objects[i];
-		for (unsigned int j = 0; j < sizeof(layers); j++) 
+		for (unsigned int j = 0; j < layerCount; j++)
 		{
 			unsigned int layer = layers[j];
 			auto node = (MeshRenderer*)object;
@@ -50,12 +53,14 @@ void Renderable::Draw(unsigned int* layers)
 	}
 }
 
-void Renderable::Draw(unsigned int* layers , std::function<void(MeshRenderer*)> func)
+void Renderable::Draw(unsigned int layerCount, unsigned int* layers , std::function<void(MeshRenderer*)> func)
 {
+	if (layerCount <= 0)
+		return;
 	for (unsigned int i = 0; i < objects.size(); i++)
 	{
 		auto object = objects[i];
-		for (unsigned int j = 0; j < sizeof(layers); j++)
+		for (unsigned int j = 0; j < layerCount; j++)
 		{
 			unsigned int layer = layers[j];
 			auto node = (MeshRenderer*)object;

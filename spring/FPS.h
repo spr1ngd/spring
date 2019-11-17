@@ -16,9 +16,10 @@ namespace spring
 			{
 				float currentFrameTime = GetTickCount() * 0.001f;
 				float elapsedTime = currentFrameTime - lastFrameTime;
-				fps = (int)(1.0f / elapsedTime);
+				int result = (int)(1.0f / elapsedTime);
+				if (result > 0)
+					fps = result;
 				lastFrameTime = currentFrameTime;
-				std::cout << "spring engine FPS " << fps << std::endl;
 			}
 		};
 	}

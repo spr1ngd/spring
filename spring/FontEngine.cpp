@@ -74,6 +74,7 @@ void FontEngine::LoadFont(Font& font)
 	delete[] fontAsset;
 
 	FT_Set_Pixel_Sizes(face, 0, 48);
+	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 	for (byte c = 0; c < 128; c++)
 	{
 		auto character = LoadCharacter(face, c);
@@ -86,8 +87,6 @@ void FontEngine::LoadFont(Font& font)
 	}
 
 	Console::LogFormat("[spring engine] Font engine load font %s successfully.", font.name);
-	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-
 	FT_Done_Face(face);
 	FT_Done_FreeType(ft);
 

@@ -360,6 +360,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 	{
 		if (PeekMessage(&msg, NULL, NULL, NULL, PM_REMOVE))
 		{
+			AssetLoader::Release();
 			if (msg.message == WM_QUIT)
 			{
 				for (auto behaviour : Behaviour::behaviours)
@@ -393,13 +394,13 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 			Camera::current->Render();
 			if (Camera::current->framebuffer == nullptr)
 			{
-				Renderable::Draw(new unsigned int[2]{ 0x0001,0x0100 });
+				Renderable::Draw(2,new unsigned int[2]{ 0x0001,0x0100 });
 			}
 			else
 			{
 				Camera::current->framebuffer->Bind();
 				glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-				Renderable::Draw(new unsigned int[2]{ 0x0001,0x0100 });
+				Renderable::Draw(2,new unsigned int[2]{ 0x0001,0x0100 });
 				Camera::current->framebuffer->Unbind();
 				glClearColor(0.1f, 0.4f, 0.7f, 1.0f);
 				glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -415,9 +416,9 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 		// render ui object.
 		Camera::current = uiCamera;
 		Camera::current->Render();
-		Renderable::Draw(new unsigned int[1]{ 0x0010 }); 
+		Renderable::Draw(1,new unsigned int[1]{ 0x0010 }); 
 
-		// FPS::CalculateFramePerSecond();
+		FPS::CalculateFramePerSecond();
 		Input::setMouseWheel(0.0f);
 		Input::mouseDelta = Vector2::zero;
 

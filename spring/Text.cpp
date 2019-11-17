@@ -24,10 +24,9 @@ string Text::GetText()
 	return this->text;
 }
 
-Mesh* GenerateCharacterMesh(Character* character)
-{
-	float halfWidth = character->size.x / 2.0f;
-	float halfHeight = character->size.y / 2.0f;
+Mesh* GenerateCharacterMesh(Character* character , Vector2 origin )
+{ 
+	Vector2 offset = origin + Vector2(character->bearing.x ,character->bearing.y - character->size.y);
 
 	Mesh* mesh = new Mesh();
 	vector<Vertex> vertices;
@@ -36,25 +35,25 @@ Mesh* GenerateCharacterMesh(Character* character)
 
 	// left top
 	Vertex lefttop;
-	lefttop.vertex = Vector2(-halfWidth,halfHeight);
+	lefttop.vertex = Vector2(0.0f,character->size.y) + offset;
 	lefttop.texcoord = Vector2(0.0f,1.0f);
 	vertices.push_back(lefttop);
 
 	// left bottom
 	Vertex leftbottom;
-	leftbottom.vertex = Vector2(-halfWidth,-halfHeight);
+	leftbottom.vertex = Vector2(0.0f,0.0f) + offset;
 	leftbottom.texcoord = Vector2(0.0f,0.0f);
 	vertices.push_back(leftbottom);
 
 	// right bottom
 	Vertex rightbottom;
-	rightbottom.vertex = Vector2(halfWidth, -halfHeight);
+	rightbottom.vertex = Vector2(character->size.x,0.0f) + offset;
 	rightbottom.texcoord = Vector2(1.0f,0.0f);
 	vertices.push_back(rightbottom);
 
 	// right top
 	Vertex rightop;
-	rightop.vertex = Vector2(halfWidth,halfHeight);
+	rightop.vertex = Vector2(character->size.x,character->size.y) + offset;
 	rightop.texcoord = Vector2(1.0f,1.0f);
 	vertices.push_back(rightop);
 
@@ -82,15 +81,19 @@ void Text::GenerateMesh()
 		this->material = new Material("res/shader/ui/default.vs", "res/shader/ui/default.fs");
 	this->setRenderOrder(10000);
 
+	// todo : delete exist mesh data
+	Vector2 origin = Vector2(-this->rectTransform->size.x / 2.0f,0.0f);
+
 	vector<Mesh> meshes;
 	auto chars = this->text.c_str();
 	int cLen = strlen(chars);
 	for (int i = 0; i < cLen; i++)
 	{
 		char c = chars[i];
-		Character* charcter = this->font->GetCharacter(c);
-		Mesh* mesh = GenerateCharacterMesh(charcter);
+		Character* character = this->font->GetCharacter(c);
+		Mesh* mesh = GenerateCharacterMesh(character,origin);
 		meshes.push_back(*mesh);
+		origin += Vector2((float)character->advance,0.0f);
 	}
 	this->meshes = meshes;
 	this->Init();

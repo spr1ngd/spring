@@ -41,11 +41,6 @@ void MeshRenderer::Init()
 				glEnableVertexAttribArray(colorLocation);
 				glVertexAttribPointer(colorLocation,4,GL_FLOAT,GL_FALSE,sizeof(Vertex),(void*)(sizeof(float) * 8));
 			});
-
-		// todo : refactor these code
-		vector<Texture> textures = mesh->textures;
-		for (vector<Texture>::iterator item = textures.begin(); item != textures.end(); item++) 
-			this->material->shader->setTexture(MAIN_TEX, item->textureId);
 	}
 } 
 
@@ -69,12 +64,20 @@ void MeshRenderer::Render(Camera* camera)
 	this->material->EnableAlphaBlend();
 	this->material->EnableDepthTest();
 	this->material->EnableStencilTest();
-	this->material->EnableCullFace();
+	this->material->EnableCullFace(); 
 
-	this->material->shader->use();
 	for (unsigned int i = 0; i < this->meshes.size(); i++)
 	{
-		Mesh* mesh = &meshes[i];
+		Mesh* mesh = &this->meshes[i];
+
+		// todo : refactor these code
+		if (mesh->textures.size() > 0)
+		{
+			vector<Texture> textures = mesh->textures;
+			this->material->shader->setTexture(MAIN_TEX, textures[0].textureId);
+		}
+
+		this->material->shader->use();
 		mesh->Draw([&](void)
 			{
 				glm::mat4 model =
@@ -104,7 +107,8 @@ void MeshRenderer::Render(Camera* camera)
 					glUniformMatrix4fv(pLocation, 1, GL_FALSE, glm::value_ptr(camera->GetProjectionMatrix()));
 					break;
 				}
-			});
+			}); 
+
+		this->material->shader->disuse();
 	}
-	this->material->shader->disuse();
 }

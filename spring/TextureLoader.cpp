@@ -31,6 +31,14 @@ void TextureLoader::Caching(const char* filePath, Texture* texture)
 	textures.insert(std::pair<const char*, Texture*>(filePath, texture));
 }
 
+void TextureLoader::Release() 
+{
+	if (textures.size() <= 0)
+		return;
+	for (auto kv : textures)
+		(&kv)->second->Release();
+}
+
 Texture* TextureLoader::GenPureWhiteTexture()
 {
 	const char* textureName = "__spring__engine__pure__white__texture__";
@@ -80,6 +88,7 @@ void TextureLoader::SaveToBMP(const char* filepath)
 	unsigned char* pixels = new unsigned char[Screen::width * Screen::height * 4];
 	glReadPixels(0, 0, Screen::width, Screen::height, GL_RGBA, GL_UNSIGNED_BYTE, pixels);
 	TextureLoader::SaveToBMP(filepath, Screen::width, Screen::height, pixels);
+	delete[] pixels;
 }
 
 void TextureLoader::SaveToBMP(const char* filePath, int width, int height, const unsigned char* pixels)
