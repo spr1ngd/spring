@@ -89,11 +89,11 @@ void Text::GenerateMesh()
 	int cLen = strlen(chars);
 	for (int i = 0; i < cLen; i++)
 	{
-		char c = chars[i];
-		Character* character = this->font->GetCharacter(c);
+		Character* character = this->font->GetCharacter(chars[i]);
 		Mesh* mesh = GenerateCharacterMesh(character,origin);
-		meshes.push_back(*mesh);
 		origin += Vector2((float)character->advance,0.0f);
+		meshes.push_back(*mesh);
+		delete mesh;
 	}
 	this->meshes = meshes;
 	this->Init();

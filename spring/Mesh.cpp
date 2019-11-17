@@ -1,10 +1,16 @@
 #include "mesh.h" 
+#include "console.h"
 
 using namespace spring;
 
 Mesh::Mesh() 
 {
 
+}
+
+Mesh::~Mesh() 
+{
+	
 }
 
 Mesh::Mesh(vector<Vertex> vertices, vector<unsigned int>indices, vector<Texture> textures) 

@@ -67,6 +67,7 @@ namespace spring
 
 		GLuint VAO, VBO, EBO;
 		Mesh();
+		~Mesh();
 		Mesh(vector<Vertex> vertices,vector<unsigned int>indices,vector<Texture> textures);
 
 		void Init(function<void()> setting);

@@ -10,6 +10,7 @@ using namespace spring;
 
 vector< Light*> Light::lights;
 Light* Light::main;
+Material* Light::depthMaterial;
 
 Light::Light()
 {
@@ -24,6 +25,9 @@ Light::Light()
 	if (lights.size() == 0)
 		Light::main = this;
 	Light::lights.push_back(this);
+
+	if( nullptr == depthMaterial )
+		depthMaterial = new Material("res/shader/shadow/shadow.vs", "res/shader/shadow/shadow.fs");
 }
 
 void Light::CastShadow() 
@@ -34,7 +38,6 @@ void Light::CastShadow()
 	Vector3 srcPosition = camera->transform->GetPosition();
 	Vector3 srcEulerangle = camera->transform->GetEulerangle();
 	camera->cameraType = Camera::Type::Orthographic;
-	Material* depth = new Material("res/shader/shadow/shadow.vs", "res/shader/shadow/shadow.fs");
 	// depth->CullFaceFunc(true, GL_FRONT);
 	for (Light* light : Light::lights)
 	{
@@ -54,7 +57,7 @@ void Light::CastShadow()
 		Renderable::Draw(1,new unsigned int[1]{ 0x0001 }, [&](MeshRenderer* renderer)
 			{
 				Material* srcMaterial = renderer->material;
-				renderer->material = depth;
+				renderer->material = depthMaterial;
 				renderer->Render(camera);
 				renderer->material = srcMaterial;
 			});

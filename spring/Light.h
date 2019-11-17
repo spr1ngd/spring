@@ -6,6 +6,7 @@
 #include "transform.h"
 #include "vector3.h"
 #include "vector4.h"
+#include "material.h"
 #include "framebufferobject.h"
 #include "layer.h"
 
@@ -35,6 +36,9 @@ namespace spring
 			HardShadow,
 			SoftShadow
 		};
+
+	private:
+		static Material* depthMaterial;
 
 	public:
 		static vector<Light*> lights;

@@ -351,9 +351,12 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 	for (auto behaviour : Behaviour::behaviours)
 		behaviour.second->Awake(); 
 
+	unsigned int* uiRenderLayer = new unsigned int[1]{ Layer::UI };
+	unsigned int* defaultRenderLayer = new unsigned int[2]{ Layer::Default,Layer::Skybox };
+
 	Camera* uiCamera = new Camera();
 	uiCamera->name = "Internal UI Camera";
-	uiCamera->cullingMask->set(new unsigned int[1]{Layer::UI});
+	uiCamera->cullingMask->set(uiRenderLayer);
 	uiCamera->clearFlag = Camera::None; 
 
 	while (true)
@@ -394,13 +397,13 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 			Camera::current->Render();
 			if (Camera::current->framebuffer == nullptr)
 			{
-				Renderable::Draw(2,new unsigned int[2]{ 0x0001,0x0100 });
+				Renderable::Draw(2, defaultRenderLayer);
 			}
 			else
 			{
 				Camera::current->framebuffer->Bind();
 				glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-				Renderable::Draw(2,new unsigned int[2]{ 0x0001,0x0100 });
+				Renderable::Draw(2, defaultRenderLayer);
 				Camera::current->framebuffer->Unbind();
 				glClearColor(0.1f, 0.4f, 0.7f, 1.0f);
 				glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -416,7 +419,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 		// render ui object.
 		Camera::current = uiCamera;
 		Camera::current->Render();
-		Renderable::Draw(1,new unsigned int[1]{ 0x0010 }); 
+		Renderable::Draw(1,uiRenderLayer); 
 
 		FPS::CalculateFramePerSecond();
 		Input::setMouseWheel(0.0f);

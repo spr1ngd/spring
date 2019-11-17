@@ -80,11 +80,13 @@ FrameBufferObject* FrameBufferObject::GenDepthFramebuffer(int width, int height)
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
-	glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, new float[4]{ 1.0f,1.0f ,1.0,1.0f });
+	float* buffer = new float[4]{ 1.0f,1.0f ,1.0,1.0f };
+	glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, buffer);
 	glBindFramebuffer(GL_FRAMEBUFFER, framebuffer);
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, depthbuffer, 0);
 	glDrawBuffer(GL_NONE);
 	glReadBuffer(GL_NONE);
+	delete[] buffer;
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
 	GLenum status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
