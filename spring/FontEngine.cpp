@@ -28,26 +28,19 @@ Character* LoadCharacter(FT_Face& face, char c)
 	GLuint textureId;
 	glGenTextures(1, &textureId);
 	glBindTexture(GL_TEXTURE_2D, textureId);
+	unsigned int width = face->glyph->bitmap.width;
+	unsigned int height = face->glyph->bitmap.rows;
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, width, height, 0, GL_RED, GL_UNSIGNED_BYTE, face->glyph->bitmap.buffer);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 
-	unsigned int width = face->glyph->bitmap.width;
-	unsigned int height = face->glyph->bitmap.rows;
-	auto buffer = face->glyph->bitmap.buffer;
-
-	//if (nullptr == buffer)
-	//	return nullptr;
-
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, width, height, 0, GL_RED, GL_UNSIGNED_BYTE, face->glyph->bitmap.buffer);
-	glBindTexture(GL_TEXTURE_2D, 0);
-
 	Character* character = new Character();
 	character->c = c;
 	character->size = Vector2((float)width, (float)height);
 	character->bearing = Vector2((float)face->glyph->bitmap_left, (float)face->glyph->bitmap_top);
-	character->advance = face->glyph->advance.x;
+	character->advance = face->glyph->advance.x / 64;
 	auto texture = new Texture();
 	texture->textureId = textureId;
 	character->character = texture;
@@ -78,10 +71,10 @@ void FontEngine::LoadFont(Font& font)
 	FT_Face face;
 	if (FT_New_Face(ft, fontAsset, 0, &face))
 		Console::ErrorFormat("[spring engine] Font engine load font %s fail.", font.name);
+	delete[] fontAsset;
 
 	FT_Set_Pixel_Sizes(face, 0, 48);
-
-	for (char c = 0; c < 127; c++)
+	for (byte c = 0; c < 128; c++)
 	{
 		auto character = LoadCharacter(face, c);
 		if (nullptr == character)
