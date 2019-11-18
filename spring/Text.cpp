@@ -76,28 +76,58 @@ void Text::GenerateMesh()
 		Console::ErrorFormat("[spring engine] : text does not have font.");
 		return;
 	}
-
 	if (nullptr == this->material)
 		this->material = new Material("res/shader/ui/default.vs", "res/shader/ui/default.fs");
 	this->setRenderOrder(10000);
 
-	// todo : delete exist mesh data
 	std::vector<Mesh>().swap(this->meshes);
-
 	Vector2 origin = Vector2(-this->rectTransform->size.x / 2.0f,0.0f);
 	vector<Mesh> meshes;
-	auto chars = this->text.c_str();
-	int cLen = strlen(chars);
-	for (int i = 0; i < cLen; i++)
+
+	if (this->richText == false)
 	{
-		Character* character = this->font->GetCharacter(chars[i]);
-		Mesh* mesh = GenerateCharacterMesh(character,origin);
-		origin += Vector2((float)character->advance,0.0f);
-		meshes.push_back(*mesh);
-		delete mesh;
+		auto chars = this->text.c_str();
+		int cLen = strlen(chars);
+		for (int i = 0; i < cLen; i++)
+		{
+			Character* character = this->font->GetCharacter(chars[i]);
+			Mesh* mesh = GenerateCharacterMesh(character, origin);
+			origin += Vector2((float)character->advance + this->characterSpace, 0.0f);
+			meshes.push_back(*mesh);
+			delete mesh;
+		}
+	}
+	else  // support rich text
+	{
+		// get tags index
+		for (auto tag : this->htmlTags) 
+		{
+			int len = strlen(tag);
+			char* tagBegin = new char[len + 2];
+			memcpy(tagBegin, "<", 1);
+			memcpy(tagBegin + 1, tag, len);
+			memcpy(tagBegin + 1 + len, ">", 1);
+			Console::LogFormat("display tags %s" , tagBegin);
+		}
+
+		auto chars = this->text.c_str();
+		int cLen = strlen(chars);
+		for (int i = 0; i < cLen; i++)
+		{
+			Character* character = this->font->GetCharacter(chars[i]);
+			Mesh* mesh = GenerateCharacterMesh(character, origin);
+			origin += Vector2((float)character->advance + this->characterSpace, 0.0f);
+			meshes.push_back(*mesh);
+			delete mesh;
+		}
 	}
 	this->meshes = meshes;
 	this->Init();
+}
+
+string* Text::parseTags(string text)
+{
+	return nullptr;
 }
 
 void Text::Render() 

@@ -107,6 +107,7 @@ public:
 			this->springEngine->color = Color::white;
 			this->springEngine->transform->SetPosition(Vector3(0.0f + 150.0f, Screen::height - 48.0f, 0.0f));
 			this->springEngine->color = Color(255,116,0,180);
+			this->springEngine->richText = true;
 			this->springEngine->SetText("Spring Engine.");
 
 			this->text = GUI::DrawText(Rect(0.0f, 0.0f, 120, 24.0f));
@@ -155,6 +156,7 @@ public:
 	}
 
 	float rotateY = 0.0f;
+	float characterSpace = 0.0f;
 
 	void Update() override
 	{
@@ -164,6 +166,10 @@ public:
 			if (rotateY >= 360.0f)
 				rotateY -= 360.0f;
 			aircraft->transform->SetEulerangle(Vector3(0.0f, -rotateY, 0.0f));
+
+			characterSpace += Timer::deltaTime * 5.0f;
+			if (characterSpace > 20.0f)
+				characterSpace -= 40.0f;
 
 			if (this->drawText)
 			{
