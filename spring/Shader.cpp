@@ -135,6 +135,7 @@ GLuint Shader::compileShader( GLenum shaderType,const char*shaderFilePath )
 	GLuint shader = glCreateShader(shaderType);
 	glShaderSource(shader, 1, &source,NULL);
 	glCompileShader(shader);
+	delete source;
 	int success;
 	char infoLog[512];
 	glGetShaderiv(shader, GL_COMPILE_STATUS, &success);

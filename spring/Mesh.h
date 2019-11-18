@@ -27,7 +27,15 @@ namespace spring
 			QuadStrip,
 			Polygon
 		};
+		enum DrawType 
+		{
+			StaticDraw,
+			DynamicDraw,
+			StreamDraw
+		};
 	private:
+		bool initialized = false;
+
 		void GenVAO(function<void()> setting);
 		void GenVBO();
 		void GenEBO();
@@ -59,13 +67,28 @@ namespace spring
 				return GL_TRIANGLES;
 			}
 		}
+		GLenum GetDrawUsage()
+		{
+			switch (this->drawType)
+			{
+			case spring::Mesh::StaticDraw:
+				return GL_STATIC_DRAW;
+			case spring::Mesh::DynamicDraw:
+				return GL_DYNAMIC_DRAW;
+			case spring::Mesh::StreamDraw:
+				return GL_STREAM_DRAW;
+			default:
+				return GL_STATIC_DRAW;
+			}
+		}
 	public:
+		DrawType drawType = DrawType::StaticDraw;
 		Mode mode = Mode::Triangles;
 		vector<Vertex> vertices;
 		vector<unsigned int> indices;
 		vector<Texture> textures; 
 
-		GLuint VAO, VBO, EBO;
+		unsigned int VAO = 0, VBO = 0, EBO = 0;
 		Mesh();
 		~Mesh();
 		Mesh(vector<Vertex> vertices,vector<unsigned int>indices,vector<Texture> textures);

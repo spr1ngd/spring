@@ -169,7 +169,7 @@ public:
 			{
 				char buf[16];
 				sprintf_s(buf, "%s:%d", "FPS", FPS::fps);
-				// this->text->SetText(buf);
+				this->text->SetText(buf);
 			}
 		}
 	}

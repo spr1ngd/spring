@@ -77,13 +77,14 @@ void Text::GenerateMesh()
 		return;
 	}
 
-	if (nullptr == this->material) 
+	if (nullptr == this->material)
 		this->material = new Material("res/shader/ui/default.vs", "res/shader/ui/default.fs");
 	this->setRenderOrder(10000);
 
 	// todo : delete exist mesh data
-	Vector2 origin = Vector2(-this->rectTransform->size.x / 2.0f,0.0f);
+	std::vector<Mesh>().swap(this->meshes);
 
+	Vector2 origin = Vector2(-this->rectTransform->size.x / 2.0f,0.0f);
 	vector<Mesh> meshes;
 	auto chars = this->text.c_str();
 	int cLen = strlen(chars);
