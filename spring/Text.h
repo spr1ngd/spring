@@ -14,9 +14,11 @@ namespace spring
 			{
 			public:
 				Character* character;
+				bool isTag = false;
+
+				// properties
 				Color color;
 				float size;
-				bool isTag = false;
 				bool bold = false;
 				bool strike = false;
 				bool underline = false;
@@ -24,11 +26,14 @@ namespace spring
 				bool italic = false;
 				bool anchor = false;
 
-				RichText();
+				RichText() 
+				{
+
+				}
 			};
 
 		private:
-			const char* htmlTags[8] = {"color","size","b","s","u","image","i","a"};
+			const string htmlTags[8] = {"color","size","b","s","u","image","i","a"};
 			string text;
 
 			string* parseTags(string text);

@@ -99,19 +99,43 @@ void Text::GenerateMesh()
 	}
 	else  // support rich text
 	{
+		vector<RichText*> richTexts;
+		auto chars = this->text.c_str();
+		int cLen = strlen(chars);
+		for (int i = 0; i < cLen; i++)
+		{
+			Character* character = this->font->GetCharacter(chars[i]);
+			RichText* richText = new RichText();
+			richText->character = character;
+			richTexts.push_back(richText);
+		}
+
+		string leftBracket = "<";
+		string rightBracket = ">";
+		string slash = "/";
+
+		vector<string> tags;
 		// get tags index
 		for (auto tag : this->htmlTags) 
 		{
-			int len = strlen(tag);
-			char* tagBegin = new char[len + 2];
-			memcpy(tagBegin, "<", 1);
-			memcpy(tagBegin + 1, tag, len);
-			memcpy(tagBegin + 1 + len, ">", 1);
-			Console::LogFormat("display tags %s" , tagBegin);
+			string beginTag = leftBracket + tag + rightBracket;
+			string endTag = leftBracket + slash + tag + rightBracket;
+			tags.push_back(beginTag);
+			tags.push_back(endTag);
 		}
 
-		auto chars = this->text.c_str();
-		int cLen = strlen(chars);
+		for (auto tag : tags) 
+		{
+			Console::ErrorFormat("search %s",tag.c_str());
+
+			int index = 0;
+			while ((index = this->text.find(tag.c_str(), index)) != string::npos)
+			{
+				Console::LogFormat("find %s in %d", tag.c_str(), index);
+				index = index + tag.length();
+			}
+		}
+
 		for (int i = 0; i < cLen; i++)
 		{
 			Character* character = this->font->GetCharacter(chars[i]);
