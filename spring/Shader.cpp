@@ -30,13 +30,29 @@ Shader::Shader( const char*vertexShader,const char*fragmentShader )
 	Shader::Caching(this);
 }
 
+Shader::Shader(const char* vertexShader, const char* fragmentShader, const char* geometryShader) 
+{
+	GLuint vertex = this->compileShader(GL_VERTEX_SHADER, vertexShader);
+	GLuint geometry = this->compileShader(GL_GEOMETRY_SHADER, geometryShader);
+	GLuint fragment = this->compileShader(GL_FRAGMENT_SHADER, fragmentShader);
+	shaders.insert(pair<GLenum, GLuint>(GL_VERTEX_SHADER, vertex));
+	shaders.insert(pair<GLenum, GLuint>(GL_GEOMETRY_SHADER, geometry));
+	shaders.insert(pair<GLenum, GLuint>(GL_FRAGMENT_SHADER, fragment));
+	this->linkProgram();
+	this->initializeLocation();
+	Shader::Caching(this);
+}
+
 #pragma region shader program methods
 
 void Shader::linkProgram()
 {
 	GLuint program = glCreateProgram();
-	glAttachShader(program, this->shaders[GL_VERTEX_SHADER]);
-	glAttachShader(program, this->shaders[GL_FRAGMENT_SHADER]);
+	for (auto pair : shaders)
+	{
+		auto shader = pair.second;
+		glAttachShader(program,shader);
+	}
 	glLinkProgram(program);
 
 	int success;

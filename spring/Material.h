@@ -51,7 +51,8 @@ namespace spring
 		GLenum GetPolygonMode();
 	public:
 		Material();
-		Material(const char*verexShaderFile,const char*fragmentShaderFile);
+		Material(const char*vertexShaderFile,const char*fragmentShaderFile);
+		Material(const char*vertexShaderFile,const char*fragmentShaderFile,const char* geometryShaderFile);
 		Material(Shader* shader);
 
 		void AlphaTestFunc( GLenum alphaTestFunc = GL_GREATER,float alphaTestRef = 0.5f );

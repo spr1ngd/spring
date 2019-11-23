@@ -21,6 +21,7 @@ private:
 
 	bool rotate = true;
 	MeshRenderer* aircraft;
+	MeshRenderer* aircraftNormal;
 
 	FrameBufferObject* framebuffer = FrameBufferObject::GenColorFramebuffer(Screen::width, Screen::height,0);
 
@@ -63,6 +64,23 @@ public:
 		aircraft->material->shader->setColor("Specular_Color", Color::white);
 		aircraft->material->shader->setFloat("Specular_Intensity", 0.0f);
 		aircraft->material->shader->setFloat("Specular_Attenuation", 64.0f);
+
+		// aircraft normal visualization.
+		Material* normalMat = new Material("res/shader/geometry/normal.vs", "res/shader/geometry/normal.fs","res/shader/geometry/normal.gs");
+		normalMat->renderMode = Material::RenderMode::Fill;
+		normalMat->CullFaceFunc(true);
+		aircraftNormal = new MeshRenderer(normalMat);
+		aircraftNormal->meshes = loader.meshes;
+		aircraftNormal->textures = loader.loadedTextures;
+		aircraftNormal->Init();
+		aircraftNormal->transform->position = Vector3::zero;
+		aircraftNormal->transform->scale = Vector3(5.0f);
+		// auto sunTexture = TextureLoader::Load("res/model/fbx/747/747-400 texture.png");
+		// aircraftNormal->material->shader->setTexture("MainTextureData.texture", sunTexture->textureId);
+		// aircraftNormal->material->shader->setColor(MAIN_COLOR, Color(204, 204, 204, 128));
+		// aircraftNormal->material->shader->setColor("Specular_Color", Color::white);
+		// aircraftNormal->material->shader->setFloat("Specular_Intensity", 0.0f);
+		// aircraftNormal->material->shader->setFloat("Specular_Attenuation", 64.0f);
 
 		// Camera::main->framebuffer = framebuffer;
 		// rawTexture->textureId = framebuffer->buffer;
@@ -166,6 +184,7 @@ public:
 			if (rotateY >= 360.0f)
 				rotateY -= 360.0f;
 			aircraft->transform->SetEulerangle(Vector3(0.0f, -rotateY, 0.0f));
+			aircraftNormal->transform->SetEulerangle(Vector3(0.0f, -rotateY, 0.0f));
 
 			characterSpace += Timer::deltaTime * 5.0f;
 			if (characterSpace > 20.0f)

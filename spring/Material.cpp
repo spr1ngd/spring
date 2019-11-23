@@ -23,6 +23,12 @@ Material::Material(const char* verexShaderFile, const char* fragmentShaderFile)
 	Material::Caching(this);
 }
 
+Material::Material(const char* vertexShaderFile, const char* fragmentShaderFile, const char* geometryShaderFile) 
+{
+	this->shader = new Shader(vertexShaderFile,fragmentShaderFile,geometryShaderFile);
+	Material::Caching(this);
+}
+
 void Material::AlphaTestFunc(GLenum alphaTestFunc, float alphaTestRef ) 
 {
 	this->alphaTest = true;

@@ -82,6 +82,8 @@ namespace spring
 
 		Shader();
 		Shader(const char*vertex,const char*fragment );
+		Shader(const char*vertex,const char*fragment,const char* geometry);
+
 		void use();
 		void disuse();
 		GLuint getLocation(const char*name);
