@@ -334,6 +334,9 @@
     <ClInclude Include="Text.h">
       <Filter>头文件\2D</Filter>
     </ClInclude>
+    <ClInclude Include="UniformBuffer.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Primitive.cpp">
@@ -524,6 +527,9 @@
     </ClCompile>
     <ClCompile Include="Text.cpp">
       <Filter>源文件\2D</Filter>
+    </ClCompile>
+    <ClCompile Include="UniformBuffer.cpp">
+      <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

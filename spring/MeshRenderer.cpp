@@ -4,7 +4,7 @@
 
 using namespace spring;
 
-MeshRenderer::MeshRenderer() 
+MeshRenderer::MeshRenderer()
 {
 }
 
@@ -20,6 +20,7 @@ void MeshRenderer::Init()
 		Console::Warning("can not render skybox without skybox material,please assign a sky box material.");
 		return;
 	}
+
 	for (unsigned int i = 0; i < this->meshes.size(); i++) 
 	{
 		Mesh* mesh = &meshes[i];
@@ -66,6 +67,8 @@ void MeshRenderer::Render(Camera* camera)
 	this->material->EnableStencilTest();
 	this->material->EnableCullFace(); 
 
+	unsigned int mat4Size = sizeof(glm::mat4);
+
 	for (unsigned int i = 0; i < this->meshes.size(); i++)
 	{
 		Mesh* mesh = &this->meshes[i];
@@ -77,38 +80,25 @@ void MeshRenderer::Render(Camera* camera)
 			this->material->shader->setTexture(MAIN_TEX, textures[0].textureId);
 		}
 
+		glm::mat4 model =
+			glm::translate(glm::mat4(1.0), glm::vec3(this->transform->position.x, this->transform->position.y, this->transform->position.z)) *
+			glm::rotate(glm::mat4(1.0f), glm::radians(this->transform->GetEulerangle().z), glm::vec3(0.0f, 0.0f, 1.0f)) *
+			glm::rotate(glm::mat4(1.0f), glm::radians(this->transform->GetEulerangle().x), glm::vec3(1.0f, 0.0f, 0.0f)) *
+			glm::rotate(glm::mat4(1.0f), glm::radians(this->transform->GetEulerangle().y), glm::vec3(0.0f, 1.0f, 0.0f)) *
+			glm::scale(glm::mat4(1.0f), glm::vec3(this->transform->scale.x, this->transform->scale.y, this->transform->scale.z));
+		glm::mat4 nm = glm::inverseTranspose(model);
+		glm::mat4 view = camera->GetViewMatrix();
+		glm::mat4 projection;
+		if (this->layer == Layer::UI) projection = camera->Get2DProjection();
+		else projection = camera->GetProjectionMatrix();
+		this->material->shader->setMat4(MATRIX_M, model);
+		this->material->shader->setMat4(MATRIX_NM, nm);
+		this->material->shader->setMat4(MATRIX_V, view);
+		this->material->shader->setMat4(MATRIX_P, projection);
+
+		// draw mesh
 		this->material->shader->use();
-		mesh->Draw([&](void)
-			{
-				glm::mat4 model =
-					glm::translate(glm::mat4(1.0), glm::vec3(this->transform->position.x, this->transform->position.y, this->transform->position.z)) *
-					glm::rotate(glm::mat4(1.0f), glm::radians(this->transform->GetEulerangle().z), glm::vec3(0.0f, 0.0f, 1.0f)) *
-					glm::rotate(glm::mat4(1.0f), glm::radians(this->transform->GetEulerangle().x), glm::vec3(1.0f, 0.0f, 0.0f)) *
-					glm::rotate(glm::mat4(1.0f), glm::radians(this->transform->GetEulerangle().y), glm::vec3(0.0f, 1.0f, 0.0f)) *
-					glm::scale(glm::mat4(1.0f), glm::vec3(this->transform->scale.x, this->transform->scale.y, this->transform->scale.z));
-				glm::mat4 nm = glm::inverseTranspose(model);
-
-				GLuint mLocation = this->material->shader->getLocation(MATRIX_M);
-				glUniformMatrix4fv(mLocation, 1, GL_FALSE, glm::value_ptr(model));
-
-				GLuint nmLocation = this->material->shader->getLocation(MATRIX_NM);
-				glUniformMatrix4fv(nmLocation, 1, GL_FALSE, glm::value_ptr(nm));
-
-				GLuint vLocation = this->material->shader->getLocation(MATRIX_V);
-				glUniformMatrix4fv(vLocation, 1, GL_FALSE, glm::value_ptr(camera->GetViewMatrix()));
-
-				GLuint pLocation = this->material->shader->getLocation(MATRIX_P);
-				switch (this->layer)
-				{
-				case Layer::UI:
-					glUniformMatrix4fv(pLocation, 1, GL_FALSE, glm::value_ptr(camera->Get2DProjection()));
-					break;
-				default:
-					glUniformMatrix4fv(pLocation, 1, GL_FALSE, glm::value_ptr(camera->GetProjectionMatrix()));
-					break;
-				}
-			}); 
-
+		mesh->Draw(); 
 		this->material->shader->disuse();
 	}
 }

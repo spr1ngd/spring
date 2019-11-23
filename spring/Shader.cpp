@@ -125,7 +125,6 @@ void Shader::use()
 
 void Shader::disuse() 
 {
-	glBindTexture(GL_TEXTURE_2D,0);
 	glUseProgram(0);
 }
 

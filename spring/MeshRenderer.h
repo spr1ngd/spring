@@ -20,7 +20,7 @@ namespace spring
 		// todo : replaced vector<Texture> by vector<Texture*>
 		vector<Texture> textures;
 		Material* material;
-
+		
 		MeshRenderer();
 		MeshRenderer(Material* mateiral);
 		void Init();

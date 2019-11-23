@@ -94,6 +94,6 @@ namespace spring
 		Mesh(vector<Vertex> vertices,vector<unsigned int>indices,vector<Texture> textures);
 
 		void Init(function<void()> setting);
-		void Draw(function<void()> render);
+		void Draw(function<void()> render = nullptr );
 	};
 }

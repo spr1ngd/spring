@@ -4,6 +4,13 @@ layout(location = 1) in vec3 normal;
 layout(location = 2) in vec2 texcoord;
 layout(location = 3) in vec4 color;
 
+// layout (std140) uniform MVP
+// {
+//     mat4 M;
+//     mat4 V;
+//     mat4 P;
+// }; 
+
 uniform mat4 M;
 uniform mat4 V;
 uniform mat4 P;

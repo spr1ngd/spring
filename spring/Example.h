@@ -107,7 +107,7 @@ public:
 			this->springEngine->color = Color::white;
 			this->springEngine->transform->SetPosition(Vector3(0.0f + 150.0f, Screen::height - 48.0f, 0.0f));
 			this->springEngine->color = Color(255,116,0,180);
-			this->springEngine->richText = true;
+			// this->springEngine->richText = true;
 			this->springEngine->SetText("<b>S</b>pring <b>E</b>ngine.");
 
 			this->text = GUI::DrawText(Rect(0.0f, 0.0f, 120, 24.0f));
