@@ -6,6 +6,7 @@ using namespace spring;
 
 MeshRenderer::MeshRenderer()
 {
+
 }
 
 MeshRenderer::MeshRenderer(Material* mateiral)
@@ -65,9 +66,7 @@ void MeshRenderer::Render(Camera* camera)
 	this->material->EnableAlphaBlend();
 	this->material->EnableDepthTest();
 	this->material->EnableStencilTest();
-	this->material->EnableCullFace(); 
-
-	unsigned int mat4Size = sizeof(glm::mat4);
+	this->material->EnableCullFace();
 
 	for (unsigned int i = 0; i < this->meshes.size(); i++)
 	{
@@ -98,7 +97,7 @@ void MeshRenderer::Render(Camera* camera)
 
 		// draw mesh
 		this->material->shader->use();
-		mesh->Draw(); 
+		mesh->Draw();
 		this->material->shader->disuse();
 	}
 }

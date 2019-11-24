@@ -47,6 +47,9 @@ namespace spring
 		bool castShadow = true;
 		bool receiveShadow = true;
 
+		// instanced 
+		bool enableGPUInstanced = false;
+
 	private:
 		GLenum GetPolygonMode();
 	public:

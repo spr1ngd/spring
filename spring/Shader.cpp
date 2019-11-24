@@ -131,7 +131,7 @@ GLuint Shader::getLocation(const char* name)
 	return pair->second;
 }
 
-void Shader::use() 
+void Shader::use()
 {
 	glUseProgram(this->program);
 	this->setLighting();
@@ -344,6 +344,13 @@ void Shader::setShaderValues()
 		glUniform4fv(pair.first, 1, value);
 	}
 
+	for (auto pair : this->vec2Map)
+	{
+		Vector2 vec2 = pair.second;
+		const float value[2] = { vec2.x,vec2.y};
+		glUniform2fv(pair.first, 1, value);
+	}
+
 	for (auto pair : this->vec3Map)
 	{
 		Vector3 vec3 = pair.second;
@@ -476,19 +483,22 @@ void Shader::setLighting()
 		}
 		this->setVec3(CAMERA_POSITION, Camera::main->transform->position);
 
-		// add light shadow map for shader program
-		if (light->shadowType != Light::NoShadow)
+		if (this->receiveShadow)
 		{
-			if (nullptr != light->shadow)
+			// add light shadow map for shader program
+			if (light->shadowType != Light::NoShadow)
 			{
-				GLuint shadowmap = light->shadow->buffer;
-				this->setTexture(SHADOWMAP, shadowmap);
-				// set light space matrix.
-				this->setMat4("LightSpaceMatrix", light->lightSpaceMatrix);
-			}
-			else
-			{
-				Console::ErrorFormat("[spring engine] Shader : light does not have shadow map.");
+				if (nullptr != light->shadow)
+				{
+					GLuint shadowmap = light->shadow->buffer;
+					this->setTexture(SHADOWMAP, shadowmap);
+					// set light space matrix.
+					this->setMat4("LightSpaceMatrix", light->lightSpaceMatrix);
+				}
+				else
+				{
+					Console::ErrorFormat("[spring engine] Shader : light does not have shadow map.");
+				}
 			}
 		}
 	}

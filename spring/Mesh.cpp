@@ -61,7 +61,6 @@ void Mesh::GenEBO()
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 }
 
-// todo : remove this method to mesh renderer object
 void Mesh::Draw( function<void()> render )
 {
 	glBindVertexArray(VAO);
@@ -69,9 +68,21 @@ void Mesh::Draw( function<void()> render )
 
 	if (nullptr != render)
 		render();
-
 	auto mode = GetDrawMode(this->mode);
 	glDrawElements(mode, indices.size(), GL_UNSIGNED_INT, (void*)0);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,0);
+	glBindVertexArray(0);
+}
+
+void Mesh::DrawWithGPUInstanced(unsigned int instancedCount,function<void()> render) 
+{
+	glBindVertexArray(VAO);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+
+	if (nullptr != render)
+		render();
+	auto mode = GetDrawMode(this->mode);
+	glDrawElementsInstanced(mode, indices.size(), GL_UNSIGNED_INT,0, 100);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 	glBindVertexArray(0);
 }

@@ -2,12 +2,14 @@
 #include "matrix4x4sample.h"
 #include "example.h"
 #include "skybox.h"
+#include "instancedtechnology.h"
 
 using namespace spring;
 using namespace spring::editor;
 
 Matrix4x4Sample* matrix4x4Sample;
 Example* example;
+InstancedTechnology* instanced;
 
 bool enabled = false;
 bool renderSkybox = true;
@@ -26,6 +28,7 @@ Sample::Sample()
 {
 	matrix4x4Sample = new Matrix4x4Sample();
 	example = new Example();
+	instanced = new InstancedTechnology();
 }
 
 void Sample::Awake()

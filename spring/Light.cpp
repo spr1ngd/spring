@@ -56,10 +56,13 @@ void Light::CastShadow()
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		Renderable::Draw(1,new unsigned int[1]{ 0x0001 }, [&](MeshRenderer* renderer)
 			{
-				Material* srcMaterial = renderer->material;
-				renderer->material = depthMaterial;
-				renderer->Render(camera);
-				renderer->material = srcMaterial;
+				if (renderer->material->castShadow)
+				{
+					Material* srcMaterial = renderer->material;
+					renderer->material = depthMaterial;
+					renderer->Render(camera);
+					renderer->material = srcMaterial;
+				}
 			});
 		glBindFramebuffer(GL_FRAMEBUFFER,0);
 	}

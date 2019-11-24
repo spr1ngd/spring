@@ -1,5 +1,6 @@
 #pragma once
 #include <math.h>
+#include <ctime>
 #include <matrix2x2.h>
 #include <matrix4x4.h>
 
@@ -111,5 +112,27 @@ namespace spring
 		}
 
 		#pragma endregion
+
+#pragma region  Numeric random value
+		 
+		static void RandomSeed()
+		{
+			srand((unsigned int)time(NULL));
+		}
+		static int Random(int min, int max) 
+		{
+			return min + rand() % (max - min);
+		}
+		static unsigned int Random(unsigned int min, unsigned int max) 
+		{
+			return min + rand() % (max - min);
+		}
+		static float Randomf() 
+		{
+			return rand() / float(RAND_MAX);
+		}
+
+#pragma endregion
+
 	};
 }

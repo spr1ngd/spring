@@ -337,6 +337,12 @@
     <ClInclude Include="UniformBuffer.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="InstancedTechnology.h">
+      <Filter>Sample</Filter>
+    </ClInclude>
+    <ClInclude Include="InstancedRenderer.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Primitive.cpp">
@@ -529,6 +535,12 @@
       <Filter>源文件\2D</Filter>
     </ClCompile>
     <ClCompile Include="UniformBuffer.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="InstancedTechnology.cpp">
+      <Filter>Sample</Filter>
+    </ClCompile>
+    <ClCompile Include="InstancedRenderer.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

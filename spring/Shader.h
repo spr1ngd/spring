@@ -79,6 +79,7 @@ namespace spring
 
 	public:
 		GLuint program;
+		bool receiveShadow = true;
 
 		Shader();
 		Shader(const char*vertex,const char*fragment );

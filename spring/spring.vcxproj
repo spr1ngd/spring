@@ -211,6 +211,8 @@
     <ClInclude Include="IJsonSerializer.h" />
     <ClInclude Include="Image.h" />
     <ClInclude Include="Input.h" />
+    <ClInclude Include="InstancedRenderer.h" />
+    <ClInclude Include="InstancedTechnology.h" />
     <ClInclude Include="JsonMapper.h" />
     <ClInclude Include="Layer.h" />
     <ClInclude Include="Light.h" />
@@ -280,6 +282,8 @@
     <ClCompile Include="IJsonSerializer.cpp" />
     <ClCompile Include="Image.cpp" />
     <ClCompile Include="Input.cpp" />
+    <ClCompile Include="InstancedRenderer.cpp" />
+    <ClCompile Include="InstancedTechnology.cpp" />
     <ClCompile Include="JsonMapper.cpp" />
     <ClCompile Include="Layer.cpp" />
     <ClCompile Include="Light.cpp" />

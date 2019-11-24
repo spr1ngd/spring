@@ -19,7 +19,7 @@ private:
 	bool drawFourFrame = false;
 	bool drawText = true;
 
-	bool rotate = true;
+	bool rotate = false;
 	MeshRenderer* aircraft;
 	MeshRenderer* aircraftNormal;
 
@@ -190,12 +190,14 @@ public:
 			if (characterSpace > 20.0f)
 				characterSpace -= 40.0f;
 
-			if (this->drawText)
-			{
-				char buf[16];
-				sprintf_s(buf, "%s:%d", "FPS", FPS::fps);
-				this->text->SetText(buf);
-			}
+			
+		}
+
+		if (this->drawText)
+		{
+			char buf[16];
+			sprintf_s(buf, "%s:%d", "FPS", FPS::fps);
+			this->text->SetText(buf);
 		}
 	}
 

@@ -83,7 +83,8 @@ namespace spring
 		}
 	public:
 		DrawType drawType = DrawType::StaticDraw;
-		Mode mode = Mode::Triangles;
+		Mode mode = Mode::Triangles; 
+
 		vector<Vertex> vertices;
 		vector<unsigned int> indices;
 		vector<Texture> textures; 
@@ -95,5 +96,6 @@ namespace spring
 
 		void Init(function<void()> setting);
 		void Draw(function<void()> render = nullptr );
+		void DrawWithGPUInstanced(unsigned int instancedCount,function<void()> render = nullptr);
 	};
 }
