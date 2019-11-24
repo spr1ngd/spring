@@ -8,6 +8,7 @@ namespace spring
 	{
 	private:
 		std::vector<Transform*> instances;
+		std::vector<glm::mat4> matrixes;
 	public:
 		Mesh mesh;
 

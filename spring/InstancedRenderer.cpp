@@ -48,7 +48,20 @@ void InstancedRenderer::Init()
 			GLuint colorLocation = this->material->shader->getLocation(COLOR);
 			glEnableVertexAttribArray(colorLocation);
 			glVertexAttribPointer(colorLocation, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)(sizeof(float) * 8));
+
 		});
+
+	GLsizei vec4Size = sizeof(glm::vec4);
+	GLsizei mat4Size = sizeof(glm::mat4);
+	unsigned int instanceVBO;
+	glGenBuffers(1, &instanceVBO);
+	glBindBuffer(GL_ARRAY_BUFFER, instanceVBO);
+	glBufferData(GL_ARRAY_BUFFER, mat4Size, &this->matrixes, GL_STATIC_DRAW);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+	GLuint matrixLocation = glGetUniformLocation(this->material->shader->program, "matrix");
+	glEnableVertexAttribArray(matrixLocation + 0);
+	glVertexAttribPointer(matrixLocation + 0, 4, GL_FLOAT, GL_FALSE, mat4Size, (void*)0);
 }
 
 void InstancedRenderer::Render(Camera* camera) 
@@ -75,6 +88,8 @@ void InstancedRenderer::Render(Camera* camera)
 		vector<Texture> textures = mesh->textures;
 		this->material->shader->setTexture(MAIN_TEX, textures[0].textureId);
 	}
+
+	// todo : update matrixes vector.
 
 	glm::mat4 model =
 		glm::translate(glm::mat4(1.0), glm::vec3(this->transform->position.x, this->transform->position.y, this->transform->position.z)) *

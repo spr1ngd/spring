@@ -32,6 +32,10 @@ void InstancedTechnology::Awake()
 	instanceRenderer->Init();
 	Mathf::RandomSeed();
 
+	GLint nrVertexAttrib;
+	glGetIntegerv(GL_MAX_VERTEX_ATTRIBS, &nrVertexAttrib);
+	cout << "从系统支持的顶点属性最大为：" << nrVertexAttrib << endl;
+
 	/*int maxVertUniformsVect;
 	glGetIntegerv(GL_MAX_VERTEX_UNIFORM_VECTORS, &maxVertUniformsVect);
 	Console::LogFormat("%d", maxVertUniformsVect);*/
