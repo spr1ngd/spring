@@ -231,7 +231,6 @@ void main()
         float shadow = castShadow(LightSpacePos,lightDir);
         lighting *= shadow;
     }
-
     for( int i = 0 ; i < LIGHT_SPOT_COUNT;i++ )
     {
         lighting += calcSpotLight(spotLights[i]).rgb;

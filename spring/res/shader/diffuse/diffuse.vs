@@ -23,9 +23,10 @@ out vec4 LightSpacePos;
 
 void main()
 {
+    mat4 nm = inverse(transpose(M));
     WorldPos = M * vec4(vertex,1.0);    
     LightSpacePos = LightSpaceMatrix * WorldPos;
-    WorldNormal = mat3(NM)*normal;
+    WorldNormal = mat3(nm)*normal;
     Texcoord = texcoord;
     gl_Position = P * V * WorldPos;    
 }

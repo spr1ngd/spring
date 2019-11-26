@@ -162,6 +162,8 @@ public:
 
 	void OnPostRender() 
 	{
+		if (!enabled)
+			return;
 		if (drawFourFrame)
 		{
 			rawTexture->textureId = Light::main->shadow->buffer;
@@ -174,6 +176,8 @@ public:
 
 	void Update() override
 	{
+		if (!enabled)
+			return;
 		if (rotate)
 		{
 			rotateY += Timer::deltaTime * 15.0f;

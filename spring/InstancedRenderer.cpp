@@ -95,7 +95,7 @@ void InstancedRenderer::Init()
 	// glBufferData(GL_ARRAY_BUFFER, mat4Size * this->instances.size(), &this->normalmatrixes[0], GL_STATIC_DRAW);
 	// 
 	// glBindVertexArray(mesh->VAO);
-	// GLuint nmLocation = glGetAttribLocation(this->material->shader->program, "nm");
+	// GLuint nmLocation = glGetAttribLocation(this->material->shader->program, "normalMatrix");
 	// glEnableVertexAttribArray(nmLocation + 0);
 	// glVertexAttribPointer(nmLocation + 0, 4, GL_FLOAT, GL_FALSE, mat4Size, (void*)0);
 	// glVertexAttribDivisor(nmLocation + 0, 1);
