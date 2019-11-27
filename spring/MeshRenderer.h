@@ -15,6 +15,7 @@ namespace spring
 	{
 	private:
 	public:
+		bool enableGPUInstance = false;
 		// todo : replaced vector<Mesh> by vector<Mesh*>
 		vector<Mesh> meshes;
 		// todo : replaced vector<Texture> by vector<Texture*>

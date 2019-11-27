@@ -50,9 +50,9 @@ struct PointLight
 uniform vec4 Main_Color;
 uniform sampler2D Main_Texture;
 uniform vec4 AmbientColor;
-uniform vec4 Specular_Color;
-uniform float Specular_Attenuation;
-uniform float Specular_Intensity;
+uniform vec4 Specular_Color = vec4(1.0,1.0,1.0,1.0);
+uniform float Specular_Attenuation = 64.0;
+uniform float Specular_Intensity = 0.0;
 
 uniform vec3 CameraPosition; 
 uniform TextureData MainTextureData;

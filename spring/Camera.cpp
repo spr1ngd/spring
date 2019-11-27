@@ -49,7 +49,7 @@ void Camera::Update()
 	if (this->cameraType == Camera::Perspective)
 		this->ProjectionMatrix = glm::perspective(glm::radians(this->fov), float(Screen::width) / float(Screen::height), this->nearClip, this->farClip);
 	else if (this->cameraType == Camera::Orthographic)
-		this->ProjectionMatrix = glm::ortho(-20.0f,20.0f, -20.0f,20.0f, -10.0f,50.0f);
+		this->ProjectionMatrix = glm::ortho(-50.0f,50.0f, -50.0f,50.0f, -10.0f,50.0f);
 	else
 		throw new std::invalid_argument("spring engine : camera type invalid.");
 	this->Projection2DMatrix = glm::ortho(0.0f, static_cast<float>(Screen::width), 0.0f, static_cast<float>(Screen::height), -1.0f, 1.0f);

@@ -4,6 +4,7 @@
 #include "screen.h"
 #include "camera.h"
 #include "meshrenderer.h"
+#include "instancedrenderer.h"
 
 using namespace std;
 using namespace spring;
@@ -11,6 +12,7 @@ using namespace spring;
 vector< Light*> Light::lights;
 Light* Light::main;
 Material* Light::depthMaterial;
+Material* instanceDepthMaterial;
 
 Light::Light()
 {
@@ -26,8 +28,11 @@ Light::Light()
 		Light::main = this;
 	Light::lights.push_back(this);
 
-	if( nullptr == depthMaterial )
+	if (nullptr == depthMaterial)
+	{
 		depthMaterial = new Material("res/shader/shadow/shadow.vs", "res/shader/shadow/shadow.fs");
+		instanceDepthMaterial = new Material("res/shader/shadow/shadow(instance).vs", "res/shader/shadow/shadow.fs");
+	}
 }
 
 void Light::CastShadow() 
@@ -49,6 +54,8 @@ void Light::CastShadow()
 		camera->transform->SetPosition(light->transform->GetPosition());
 		camera->transform->SetEulerangle(light->transform->GetEulerangle());
 		camera->Update();// update camera's view matrix and projection matrix.
+
+		// todo : fixed light space matrix
 		light->lightSpaceMatrix = camera->GetProjectionMatrix() * camera->GetViewMatrix();
 
 		glBindFramebuffer(GL_FRAMEBUFFER,light->shadow->bufferId);
@@ -59,7 +66,8 @@ void Light::CastShadow()
 				if (renderer->material->castShadow)
 				{
 					Material* srcMaterial = renderer->material;
-					renderer->material = depthMaterial;
+					if( renderer->enableGPUInstance ) renderer->material = instanceDepthMaterial;
+					else renderer->material = depthMaterial;
 					renderer->Render(camera);
 					renderer->material = srcMaterial;
 				}

@@ -2,7 +2,6 @@
 
 layout (location = 0) in vec3 vertex;
 
-
 // layout (std140) uniform MVP
 // {
 //     mat4 M;

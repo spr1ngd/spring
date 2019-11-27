@@ -63,22 +63,27 @@ public:
 		auto sunTexture = TextureLoader::Load("res/model/fbx/747/747-400 texture.png");
 		aircraft->material->shader->setTexture("MainTextureData.texture", sunTexture->textureId);
 		aircraft->material->shader->setColor(MAIN_COLOR, Color(204, 204, 204, 128));
-		aircraft->material->shader->setColor("Specular_Color", Color::white);
+		/*aircraft->material->shader->setColor("Specular_Color", Color::white);
 		aircraft->material->shader->setFloat("Specular_Intensity", 0.0f);
-		aircraft->material->shader->setFloat("Specular_Attenuation", 64.0f);
+		aircraft->material->shader->setFloat("Specular_Attenuation", 64.0f);*/
 
 		// aircraft normal visualization.
 		if (drwaAirCraftNormal) 
 		{
-			Material* normalMat = new Material("res/shader/geometry/normal.vs", "res/shader/geometry/normal.fs", "res/shader/geometry/normal.gs");
+			Material* normalMat = new Material("res/shader/diffuse/diffuse.vs", "res/shader/diffuse/diffuse.fs");
 			normalMat->renderMode = Material::RenderMode::Fill;
 			normalMat->CullFaceFunc(true);
 			aircraftNormal = new MeshRenderer(normalMat);
 			aircraftNormal->meshes = loader.meshes;
 			aircraftNormal->textures = loader.loadedTextures;
 			aircraftNormal->Init();
-			aircraftNormal->transform->position = Vector3::zero;
+			aircraftNormal->transform->position = Vector3(6.0f,0.0f,0.0f);
 			aircraftNormal->transform->scale = Vector3(5.0f);
+			aircraftNormal->material->shader->setTexture("MainTextureData.texture", sunTexture->textureId);
+			aircraftNormal->material->shader->setColor(MAIN_COLOR, Color(204, 204, 204, 128));
+			aircraftNormal->material->shader->setColor("Specular_Color", Color::white);
+			aircraftNormal->material->shader->setFloat("Specular_Intensity", 0.0f);
+			aircraftNormal->material->shader->setFloat("Specular_Attenuation", 64.0f);
 		}
 	
 		if (this->drawFourFrame) 
@@ -90,7 +95,7 @@ public:
 			image->material->DepthTestFunc(false);
 			image->color = Color(255, 255, 255, 255);
 			image->transform->SetPosition(Vector3(Screen::halfWidth / 2.0f, Screen::halfHeight * 1.5f, 0.0f));
-			//image->material->shader->setTexture(MAIN_TEX, texture->textureId);
+		
 			//image->material->shader->setTexture(SECONDARY_TEX, sunTexture->textureId);
 
 			// leftbttom = GUI::DrawImage(Rect(0.0f, 0.0f, (float)Screen::halfWidth, (float)Screen::halfHeight));
@@ -168,6 +173,10 @@ public:
 		{
 			rawTexture->textureId = Light::main->shadow->buffer;
 			image->texture = rawTexture;
+			// image->material->shader->setTexture(MAIN_TEX, Light::main->shadow->buffer);
+
+			// Camera::main->transform->SetPosition(Light::main->transform->GetPosition());
+			// Camera::main->transform->SetEulerangle(Light::main->transform->GetEulerangle());
 		}
 	}
 

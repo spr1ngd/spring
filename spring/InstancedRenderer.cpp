@@ -2,13 +2,18 @@
 
 using namespace spring; 
 
+GLsizei vec4Size = sizeof(glm::vec4);
+GLsizei mat4Size = sizeof(glm::mat4);
+unsigned int instanceVBO;
+
 InstancedRenderer::InstancedRenderer() 
 {
-
+	this->enableGPUInstance = true;
 }
 
 InstancedRenderer::InstancedRenderer(Material* instancedMaterial) 
 {
+	this->enableGPUInstance = true;
 	this->material = instancedMaterial;
 }
 
@@ -60,10 +65,6 @@ void InstancedRenderer::Init()
 			glVertexAttribPointer(colorLocation, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)(sizeof(float) * 8));
 
 		});
-
-	GLsizei vec4Size = sizeof(glm::vec4);
-	GLsizei mat4Size = sizeof(glm::mat4);
-	unsigned int instanceVBO;
 	glGenBuffers(1, &instanceVBO);
 	glBindBuffer(GL_ARRAY_BUFFER, instanceVBO);
 	glBufferData(GL_ARRAY_BUFFER, mat4Size * this->instances.size(), &this->matrixes[0], GL_STATIC_DRAW);
@@ -140,6 +141,29 @@ void InstancedRenderer::Render(Camera* camera)
 		vector<Texture> textures = mesh->textures;
 		this->material->shader->setTexture(MAIN_TEX, textures[0].textureId);
 	}
+
+	glBindBuffer(GL_ARRAY_BUFFER, instanceVBO); 
+	glBufferData(GL_ARRAY_BUFFER, mat4Size * this->instances.size(), &this->matrixes[0], GL_STATIC_DRAW);
+	glBindVertexArray(mesh->VAO);
+	GLuint matrixLocation = glGetAttribLocation(this->material->shader->program, "matrix");
+	glEnableVertexAttribArray(matrixLocation + 0);
+	glVertexAttribPointer(matrixLocation + 0, 4, GL_FLOAT, GL_FALSE, mat4Size, (void*)0);
+	glVertexAttribDivisor(matrixLocation + 0, 1);
+
+	glEnableVertexAttribArray(matrixLocation + 1);
+	glVertexAttribPointer(matrixLocation + 1, 4, GL_FLOAT, GL_FALSE, mat4Size, (void*)(1 * vec4Size));
+	glVertexAttribDivisor(matrixLocation + 1, 1);
+
+	glEnableVertexAttribArray(matrixLocation + 2);
+	glVertexAttribPointer(matrixLocation + 2, 4, GL_FLOAT, GL_FALSE, mat4Size, (void*)(2 * vec4Size));
+	glVertexAttribDivisor(matrixLocation + 2, 1);
+
+	glEnableVertexAttribArray(matrixLocation + 3);
+	glVertexAttribPointer(matrixLocation + 3, 4, GL_FLOAT, GL_FALSE, mat4Size, (void*)(3 * vec4Size));
+	glVertexAttribDivisor(matrixLocation + 3, 1);
+	glBindVertexArray(0);
+
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
 	glm::mat4 view = camera->GetViewMatrix();
 	glm::mat4 projection;
