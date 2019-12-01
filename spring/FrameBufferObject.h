@@ -26,8 +26,10 @@ namespace spring
 		void Unbind();
 		void Delete();
 
+		// color buffer
 		static FrameBufferObject* GenColorFramebuffer(int width,int height,int level = 0);
 		static FrameBufferObject* GenMSColorFramebuffer(int samples, int width, int height);
+		static FrameBufferObject* GenHDRColorFramebuffer(int width, int height, int level = 0);
 
 		static FrameBufferObject* GenDepthFramebuffer(int width, int height);
 		static FrameBufferObject* GenStencilFramebuffer(int width, int height);

@@ -349,6 +349,9 @@
     <ClInclude Include="AntiAliasing.h">
       <Filter>头文件\PostProcessing</Filter>
     </ClInclude>
+    <ClInclude Include="Bloom.h">
+      <Filter>头文件\PostProcessing</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Primitive.cpp">
@@ -553,6 +556,9 @@
       <Filter>源文件\PostProcessing</Filter>
     </ClCompile>
     <ClCompile Include="AntiAliasing.cpp">
+      <Filter>源文件\PostProcessing</Filter>
+    </ClCompile>
+    <ClCompile Include="Bloom.cpp">
       <Filter>源文件\PostProcessing</Filter>
     </ClCompile>
   </ItemGroup>
