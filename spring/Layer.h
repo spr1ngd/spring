@@ -11,6 +11,7 @@ namespace spring
 		Default = 0x00000001,
 		UI = 0x00000010,
 		Skybox = 0x00000100,
+		PostProcessing = 0x00001000,
 		Everything = 0x11111111
 	};
 

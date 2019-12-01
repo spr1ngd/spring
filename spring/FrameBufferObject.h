@@ -27,6 +27,8 @@ namespace spring
 		void Delete();
 
 		static FrameBufferObject* GenColorFramebuffer(int width,int height,int level = 0);
+		static FrameBufferObject* GenMSColorFramebuffer(int samples, int width, int height);
+
 		static FrameBufferObject* GenDepthFramebuffer(int width, int height);
 		static FrameBufferObject* GenStencilFramebuffer(int width, int height);
 	};

@@ -10,6 +10,5 @@ in vec2 Texcoord;
 void main()
 {
     vec4 texColor = texture(Main_Texture,Texcoord);
-    float c = pow(texColor.r,256);
-    FragColor = vec4(c,c,c,1.0);
+    FragColor = texColor;
 }

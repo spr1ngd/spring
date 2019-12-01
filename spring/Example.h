@@ -171,7 +171,8 @@ public:
 			return;
 		if (drawFourFrame)
 		{
-			rawTexture->textureId = Light::main->shadow->buffer;
+			rawTexture->textureId = Camera::main->framebuffer->buffer;
+			// rawTexture->textureId = Light::main->shadow->buffer;
 			image->texture = rawTexture;
 			// image->material->shader->setTexture(MAIN_TEX, Light::main->shadow->buffer);
 

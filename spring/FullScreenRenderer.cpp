@@ -1,62 +1,50 @@
 #include "fullscreenrenderer.h"
-#include "light.h"
-#include "screen.h"
-#include "renderable.h"
-#include "meshrenderer.h"
+#include <vector>
 
 using namespace std;
 using namespace spring;
 
-std::vector<FullScreenRenderer*> FullScreenRenderer::renderers;
-
-FullScreenRenderer::FullScreenRenderer()
+FullScreenRenderer::FullScreenRenderer() 
 {
-	this->type = FullScreenRenderType::Color;
-	this->Initialize();
+	
 }
 
-FullScreenRenderer::FullScreenRenderer(FullScreenRenderType type) 
+void FullScreenRenderer::Init() 
 {
-	this->type = type;
-	this->Initialize();
-}
+	this->layer = Layer::PostProcessing;
+	this->material = new Material("res/shader/fullscreen/fullscreen.vs","res/shader/fullscreen/fullscreen.fs");
 
-void FullScreenRenderer::Initialize() 
-{
-	if (this->type == FullScreenRenderer::Color)  this->buffer = new FrameBufferObject(Screen::width, Screen::height, GL_COLOR_ATTACHMENT0, 0);
-	else  this->buffer = new FrameBufferObject(Screen::width, Screen::height, GL_DEPTH_COMPONENT, 0);
-	this->cullingMask = new LayerMask();
-	this->cullingMask->set(new unsigned int[2]{ Layer::Default,Layer::Skybox });
-	renderers.push_back(this);
-}
+	vector<Mesh> meshes;
+	vector<Vertex> vertices;
+	vector<unsigned int> indices;
 
-void FullScreenRenderer::Destroy() 
-{
-	for (vector<FullScreenRenderer*>::iterator item = renderers.begin(); item != renderers.end(); item++)
-	{
-		FullScreenRenderer* fsr = *item;
-		if (fsr == this)
-		{
-			renderers.erase(item);
-			return;
-		}
-	}
-}
+	Vertex lefttop;
+	lefttop.vertex = Vector3(-1.0f, 1.0f, 0.0f);
+	lefttop.texcoord = Vector2(0.0f, 1.0f);
+	vertices.push_back(lefttop);
 
-void FullScreenRenderer::Render() 
-{
-	if (nullptr == this->material)
-		return;
-	//glBindFramebuffer(GL_FRAMEBUFFER, this->buffer->bufferId);
-	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	Light* light = Light::main;
-	auto view = glm::lookAt(
-		glm::vec3(light->transform->position.x,light->transform->position.y,light->transform->position.z),
-		glm::vec3(0.0f,0.0f,0.0f),
-		glm::vec3(light->transform->up.x,light->transform->up.y,light->transform->up.z));
-	auto projection = glm::ortho(-10.0f, 10.0f, -10.0f, 10.0f, 1.0f, 10.0f);
-	//glBindFramebuffer(GL_FRAMEBUFFER,0);
-	/*glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);*/
+	Vertex leftbottom;
+	leftbottom.vertex = Vector3(-1.0f, -1.0f, 0.0f);
+	leftbottom.texcoord = Vector2(0.0f, 0.0f);
+	vertices.push_back(leftbottom);
+
+	Vertex rightbottom;
+	rightbottom.vertex = Vector3(1.0f, -1.0f, 0.0f);
+	rightbottom.texcoord = Vector2(1.0f, 0.0f);
+	vertices.push_back(rightbottom);
+
+	Vertex righttop;
+	righttop.vertex = Vector3(1.0f, 1.0f, 0.0f);
+	righttop.texcoord = Vector2(1.0f, 1.0f);
+	vertices.push_back(righttop);
+
+	indices = { 0,1,2,2,3,0 };
+
+	Mesh* mesh = new Mesh();
+	mesh->vertices = vertices;
+	mesh->indices = indices;
+	meshes.push_back(*mesh);
+
+	this->meshes = meshes;
+	MeshRenderer::Init();
 }

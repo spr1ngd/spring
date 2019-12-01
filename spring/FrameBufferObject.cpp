@@ -105,3 +105,37 @@ FrameBufferObject* FrameBufferObject::GenStencilFramebuffer(int width, int heigh
 {
 	return nullptr;
 }
+
+FrameBufferObject* FrameBufferObject::GenMSColorFramebuffer(int samples, int width, int height) 
+{
+	FrameBufferObject* fbo = new FrameBufferObject(width, height, GL_COLOR_ATTACHMENT0, 0);
+	unsigned int framebuffer;
+	glGenFramebuffers(1, &framebuffer);
+	glBindFramebuffer(GL_FRAMEBUFFER, framebuffer);
+
+	unsigned int colorbuffer;
+	glGenTextures(1, &colorbuffer);
+	glBindTexture(GL_TEXTURE_2D_MULTISAMPLE, colorbuffer);
+	glTexImage2DMultisample(GL_TEXTURE_2D_MULTISAMPLE, samples, GL_RGB, fbo->width, fbo->height, GL_TRUE);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, fbo->attachment, GL_TEXTURE_2D_MULTISAMPLE, colorbuffer, fbo->level);
+	glBindTexture(GL_TEXTURE_2D_MULTISAMPLE, 0);
+
+	unsigned int renderbuffer;
+	glGenRenderbuffers(1, &renderbuffer);
+	glBindRenderbuffer(GL_RENDERBUFFER, renderbuffer);
+	glRenderbufferStorageMultisample(GL_RENDERBUFFER, samples, GL_DEPTH24_STENCIL8, fbo->width, fbo->height);
+	glBindRenderbuffer(GL_RENDERBUFFER, 0);
+	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, renderbuffer);
+
+	GLenum status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
+	if (status != GL_FRAMEBUFFER_COMPLETE) 
+	{
+		Console::ErrorFormat("[spring engine] : generate multi sample color buffer object error : (0x%x)", status);
+		return nullptr;
+	}
+	fbo->bufferId = framebuffer;
+	fbo->buffer = colorbuffer;
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	framebuffers.push_back(fbo);
+	return fbo;
+}

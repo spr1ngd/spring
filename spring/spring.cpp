@@ -5,12 +5,13 @@
 #include <stdio.h> 
 #include "glew.h"
 #include "wglew.h"
-#include <gl/GL.h> 
+#include <gl/GL.h>
+#include "GLFW/glfw3.h"
 #include "springengine.h"
 #include "spring.h"
 #include "sample.h"
 #include "vector2.h"
-#include "fullscreenrenderer.h"
+#include "postprocessing.h"
 
 // spring engine
 #pragma comment (lib,"glfw3.lib")
@@ -319,6 +320,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 	HGLRC rc = wglCreateContext(dc);
 	wglMakeCurrent(dc, rc);
 	glewInit();
+	glEnable(GL_MULTISAMPLE);
 
 	MSG msg;
 
@@ -341,8 +343,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 	glViewport(0, 0, width, height);
 	ShowWindow(hwnd, SW_SHOW);
 	UpdateWindow(hwnd);
-
-	glEnable(GL_MULTISAMPLE);
 	
 	// draw sample scene
 	Sample* sample = new Sample();
@@ -358,6 +358,12 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 	uiCamera->name = "Internal UI Camera";
 	uiCamera->cullingMask->set(uiRenderLayer);
 	uiCamera->clearFlag = Camera::None; 
+
+	// 0. construct post processing instance.
+	class::PostProcessing* postProcessing = new class::PostProcessing();
+	postProcessing->enabled = true;
+	postProcessing->antiAliasing->enabled = true;
+	postProcessing->PreProcess();
 
 	while (true)
 	{
@@ -389,6 +395,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 		for (auto behaviour : Behaviour::behaviours)
 			behaviour.second->OnPreRender(); 
 
+		// draw 3d scene.
 		for (vector<Camera*>::iterator cam = Camera::cameras.begin(); cam != Camera::cameras.end(); cam++)
 		{
 			Camera::current = *cam;
@@ -410,16 +417,18 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 			}
 		}
 
+		postProcessing->Process();
+
 		for (auto behaviour : Behaviour::behaviours)
 			behaviour.second->OnPostRender();
 
 		for (auto behaviour : Behaviour::behaviours)
 			behaviour.second->OnGUI();
 
-		// render ui object.
+		// render 2d ui object.
 		Camera::current = uiCamera;
 		Camera::current->Render();
-		Renderable::Draw(1,uiRenderLayer); 
+		Renderable::Draw(1,uiRenderLayer);
 
 		FPS::CalculateFramePerSecond();
 		Input::setMouseWheel(0.0f);

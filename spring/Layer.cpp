@@ -8,10 +8,12 @@ LayerMask::LayerMask()
 	this->add(Layer::Default);
 	this->add(Layer::UI);
 	this->add(Layer::Skybox);
+	this->add(Layer::PostProcessing);
 }
 
 void LayerMask::set(unsigned int layers[]) 
 {
+	// issue , error array length
 	vector<unsigned int>().swap(this->layers);
 	for (int i = 0; i < sizeof(layers) / 4; i++)
 		this->add(layers[i]);

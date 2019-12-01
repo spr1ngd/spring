@@ -343,6 +343,12 @@
     <ClInclude Include="InstancedRenderer.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="PostProcessing.h">
+      <Filter>头文件\PostProcessing</Filter>
+    </ClInclude>
+    <ClInclude Include="AntiAliasing.h">
+      <Filter>头文件\PostProcessing</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Primitive.cpp">
@@ -542,6 +548,12 @@
     </ClCompile>
     <ClCompile Include="InstancedRenderer.cpp">
       <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="PostProcessing.cpp">
+      <Filter>源文件\PostProcessing</Filter>
+    </ClCompile>
+    <ClCompile Include="AntiAliasing.cpp">
+      <Filter>源文件\PostProcessing</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

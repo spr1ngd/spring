@@ -76,6 +76,7 @@ void Sample::Awake()
 	camera->transform->SetPosition(Vector3(0.0f, 0.0f, 25.0f));
 	camera->transform->LookAt(Vector3::zero);
 	camera->cullingMask->remove(Layer::UI);
+	Camera::main = camera;
 
 	orbit = new OrbitCamera();
 	orbit->target = Vector3(0.0f, 0.0f, 0.0f);// Vector3::zero;
