@@ -19,6 +19,7 @@ namespace spring
 		int level = 0;
 
 		GLuint buffer = -1;
+		unsigned int* buffers;
 	public:
 		FrameBufferObject( int width,int height,GLenum attachment,int level = 0);
 
@@ -29,7 +30,7 @@ namespace spring
 		// color buffer
 		static FrameBufferObject* GenColorFramebuffer(int width,int height,int level = 0);
 		static FrameBufferObject* GenMSColorFramebuffer(int samples, int width, int height);
-		static FrameBufferObject* GenHDRColorFramebuffer(int width, int height, int level = 0);
+		static FrameBufferObject* GenHDRColorFramebuffer(int width, int height, unsigned int size = 1, int level = 0);
 
 		static FrameBufferObject* GenDepthFramebuffer(int width, int height);
 		static FrameBufferObject* GenStencilFramebuffer(int width, int height);

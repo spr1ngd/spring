@@ -265,11 +265,17 @@ void Shader::setFloat(const char* name, GLfloat value)
 
 void Shader::setColor(const char* name, Color color) 
 {
+	Colorf colorf(color.r / 255.0f, color.g / 255.0f, color.b / 255.0f, color.a / 255.0f);
+	this->setColor(name, colorf);
+}
+
+void Shader::setColor( const char* name, Colorf color )   
+{
 	GLuint location = glGetUniformLocation(this->program, name);
 	auto pair = this->colors.find(location);
 	if (pair == this->colors.end())
 	{
-		this->colors.insert(std::pair<GLuint,Color>(location, color));
+		this->colors.insert(std::pair<GLuint, Colorf>(location, color));
 		return;
 	}
 	this->colors[location] = color;
@@ -339,8 +345,8 @@ void Shader::setShaderValues()
 
 	for (auto pair : this->colors)
 	{
-		Color color = pair.second;
-		const float value[4] = { color.r / 255.0f ,color.g / 255.0f,color.b / 255.0f,color.a / 255.0f };
+		Colorf color = pair.second;
+		const float value[4] = { color.r ,color.g ,color.b,color.a };
 		glUniform4fv(pair.first, 1, value);
 	}
 

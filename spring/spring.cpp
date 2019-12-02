@@ -362,7 +362,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 	// 0. construct post processing instance.
 	class::PostProcessing* postProcessing = new class::PostProcessing();
 	postProcessing->enabled = true;
-	postProcessing->antiAliasing->enabled = true;
+	postProcessing->antiAliasing->enabled = false;
+	postProcessing->bloom->enabled = true;
 	postProcessing->PreProcess();
 
 	while (true)

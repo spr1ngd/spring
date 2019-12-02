@@ -5,7 +5,6 @@
 #include "image.h"
 #include "console.h"
 #include "time.h"
-#include "fullscreenrenderer.h"
 #include <stdio.h>
 
 using namespace spring;
@@ -48,8 +47,8 @@ public:
 			this->DrawGround();
 
 		ModelLoader loader = ModelLoader();
-		// loader.Load("res/model/fbx/747/747-400.fbx");
-		loader.Load("res/model/obj/cube.obj");
+		loader.Load("res/model/fbx/747/747-400.fbx"); 
+		// loader.Load("res/model/obj/cube.obj");
 
 		Material* mat = new Material("res/shader/diffuse/diffuse.vs", "res/shader/diffuse/diffuse.fs");
 		mat->renderMode = Material::RenderMode::Fill;
@@ -62,7 +61,7 @@ public:
 		aircraft->transform->scale = Vector3(5.0f);
 		auto sunTexture = TextureLoader::Load("res/model/fbx/747/747-400 texture.png");
 		aircraft->material->shader->setTexture("MainTextureData.texture", sunTexture->textureId);
-		aircraft->material->shader->setColor(MAIN_COLOR, Color(204, 204, 204, 128));
+		aircraft->material->shader->setColor(MAIN_COLOR, Colorf(5.0f, 5.0f, 5.0f, 1.0f ));
 		/*aircraft->material->shader->setColor("Specular_Color", Color::white);
 		aircraft->material->shader->setFloat("Specular_Intensity", 0.0f);
 		aircraft->material->shader->setFloat("Specular_Attenuation", 64.0f);*/

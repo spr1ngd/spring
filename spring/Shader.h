@@ -62,7 +62,7 @@ namespace spring
 		char* loadShaderFile(const char* shaderFilePath);
 		void initializeLocation();
 
-		map<GLuint, Color> colors;
+		map<GLuint, Colorf> colors;
 		map<GLuint, GLuint> ints;
 		map<GLuint, GLfloat> floats;
 		map<GLuint, Vector2> vec2Map;
@@ -98,6 +98,7 @@ namespace spring
 		void setVec3(const char* name, Vector3 vec3);
 		void setVec4(const char* name, Vector4 vec4);
 		void setColor(const char* name, Color color);
+		void setColor(const char* name, Colorf color);
 
 		void setTexture(const char*name, GLuint texture);
 		void setTilling(const char*name, Vector2 tilling);

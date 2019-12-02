@@ -99,26 +99,29 @@ FrameBufferObject* FrameBufferObject::GenMSColorFramebuffer(int samples, int wid
 	return fbo;
 }
 
-FrameBufferObject* FrameBufferObject::GenHDRColorFramebuffer(int width, int height, int level)
+FrameBufferObject* FrameBufferObject::GenHDRColorFramebuffer(int width, int height, unsigned int size, int level)
 {
 	FrameBufferObject* fbo = new FrameBufferObject(width, height, GL_COLOR_ATTACHMENT0, level);
 	unsigned int framebuffer;
 	glGenFramebuffers(1, &framebuffer);
 	glBindFramebuffer(GL_FRAMEBUFFER, framebuffer);
 
-	unsigned int textureId;
-	glGenTextures(1, &textureId);
-	glBindTexture(GL_TEXTURE_2D, textureId);
-	glTexImage2D(GL_TEXTURE_2D, fbo->level, GL_RGB16F, fbo->width, fbo->height, 0, GL_RGBA, GL_FLOAT, NULL);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-	glFramebufferTexture2D(GL_FRAMEBUFFER, fbo->attachment, GL_TEXTURE_2D, textureId, fbo->level);
-	glBindTexture(GL_TEXTURE_2D, 0);
+	unsigned int* textures = new unsigned int[size];
+	glGenTextures(size, textures);
+	for (unsigned int i = 0; i < size; i++) 
+	{
+		glBindTexture(GL_TEXTURE_2D, textures[i]);
+		glTexImage2D(GL_TEXTURE_2D, fbo->level, GL_RGB16F, fbo->width, fbo->height, 0, GL_RGBA, GL_FLOAT, NULL);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + i, GL_TEXTURE_2D, textures[i], fbo->level);
+		glBindTexture(GL_TEXTURE_2D, 0);
+	}
 
 	unsigned int renderbuffer;
-	glGenRenderbuffers(GL_RENDERBUFFER, &renderbuffer);
+	glGenRenderbuffers(1, &renderbuffer);
 	glBindRenderbuffer(GL_RENDERBUFFER,renderbuffer);
 	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, fbo->width, fbo->height);
 	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, renderbuffer);
@@ -131,9 +134,15 @@ FrameBufferObject* FrameBufferObject::GenHDRColorFramebuffer(int width, int heig
 		return nullptr;
 	}
 	fbo->bufferId = framebuffer;
-	fbo->buffer = textureId;
+	fbo->buffers = textures;
+	GLuint* attachments = new GLuint[size];
+	for (unsigned int i = 0; i < size; i++)
+		attachments[i] = GL_COLOR_ATTACHMENT0 + i;
+	glDrawBuffers(size, attachments);
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	framebuffers.push_back(fbo);
+	// delete[] textures;
+	delete[] attachments;
 	return fbo;
 }
 
