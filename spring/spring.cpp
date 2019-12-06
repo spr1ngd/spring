@@ -463,6 +463,11 @@
 //	return  0;
 //}
 
+
+// dear imgui: standalone example application for GLFW + OpenGL 3, using programmable pipeline
+// If you are new to dear imgui, see examples/README.txt and documentation at the top of imgui.cpp.
+// (GLFW is a cross-platform general purpose library for handling windows, inputs, OpenGL/Vulkan graphics context creation, etc.)
+
 // dear imgui: standalone example application for GLFW + OpenGL 3, using programmable pipeline
 // If you are new to dear imgui, see examples/README.txt and documentation at the top of imgui.cpp.
 // (GLFW is a cross-platform general purpose library for handling windows, inputs, OpenGL/Vulkan graphics context creation, etc.)
@@ -484,10 +489,14 @@
 #include <glad/glad.h>  // Initialize with gladLoadGL()
 #else
 #include IMGUI_IMPL_OPENGL_LOADER_CUSTOM
-#endif
+#endif 
 
 // Include glfw3.h after our OpenGL definitions
 #include <GLFW/glfw3.h>
+
+#pragma comment (lib,"glfw3.lib")
+#pragma comment (lib,"glew32.lib")
+#pragma comment (lib,"opengl32.lib")
 
 // [Win32] Our example includes a copy of glfw3.lib pre-compiled with VS2010 to maximize ease of testing and compatibility with old VS compilers.
 // To link with VS2010-era libraries, VS2015+ requires linking with legacy_stdio_definitions.lib, which we do using this pragma.
@@ -526,7 +535,7 @@ int main(int, char**)
 #endif
 
 	// Create window with graphics context
-	GLFWwindow* window = glfwCreateWindow(1280, 720, "Dear ImGui GLFW+OpenGL3 example", NULL, NULL);
+	GLFWwindow* window = glfwCreateWindow(1280, 720, "SpringEngine", NULL, NULL);
 	if (window == NULL)
 		return 1;
 	glfwMakeContextCurrent(window);
