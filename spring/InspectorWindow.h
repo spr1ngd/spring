@@ -1,14 +1,16 @@
 #pragma once
-#include "springeditor.h"
+#include "editorwindow.h"
 
 namespace spring 
 {
 	namespace editor 
 	{
-		class Inspector : public EditorWindow
+		class InspectorWindow : public EditorWindow
 		{
 		public:
+			InspectorWindow(const char* name, bool openDefault) : EditorWindow(name, openDefault) {}
 
+			void OnDrawWindow() override;
 		};
 	}
 }

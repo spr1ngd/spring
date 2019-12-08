@@ -219,6 +219,7 @@
     <ClInclude Include="Gizmos.h" />
     <ClInclude Include="GUI.h" />
     <ClInclude Include="GUILayout.h" />
+    <ClInclude Include="HierarchyWindow.h" />
     <ClInclude Include="IJsonSerializer.h" />
     <ClInclude Include="Image.h" />
     <ClInclude Include="imconfig.h" />
@@ -258,6 +259,7 @@
     <ClInclude Include="Sample.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="Screen.h" />
+    <ClInclude Include="Selection.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="ShaderComplier.h" />
     <ClInclude Include="Skybox.h" />
@@ -302,6 +304,7 @@
     <ClCompile Include="Gizmos.cpp" />
     <ClCompile Include="GUI.cpp" />
     <ClCompile Include="GUILayout.cpp" />
+    <ClCompile Include="HierarchyWindow.cpp" />
     <ClCompile Include="IJsonSerializer.cpp" />
     <ClCompile Include="Image.cpp" />
     <ClCompile Include="imgui.cpp" />
@@ -340,6 +343,7 @@
     <ClCompile Include="Sample.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="Screen.cpp" />
+    <ClCompile Include="Selection.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="ShaderComplier.cpp" />
     <ClCompile Include="Skybox.cpp" />

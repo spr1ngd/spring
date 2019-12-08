@@ -16,7 +16,6 @@ EditorWindow::EditorWindow(const char* name, bool openDefault )
 void EditorWindow::BeginWindow() 
 {
 	GUILayout::Begin(this->name, &this->enabled, 0);
-	this->OnDrawWindow();
 }
 
 void EditorWindow::OnDrawWindow() 
@@ -68,5 +67,16 @@ void EditorWindow::CloseWindow(EditorWindow* window)
 			EditorWindow::editorWindows.erase(item);
 			break;
 		}
+	}
+}
+
+void EditorWindow::RenderWindows() 
+{
+	for (auto item = editorWindows.begin(); item != editorWindows.end(); item++) 
+	{
+		EditorWindow* window = *item;
+		window->BeginWindow();
+		window->OnDrawWindow();
+		window->EndWindow();
 	}
 }

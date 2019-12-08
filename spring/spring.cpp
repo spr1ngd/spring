@@ -225,6 +225,7 @@ int main(int, char**)
 		ImGui::Image((ImTextureID)Camera::main->framebuffer->bufferId, ImVec2(800, 600), ImVec2(0, 1), ImVec2(1, 0));
 		GUILayout::End();
 
+		SpringEditor::DrawEditor();
 		GUILayout::Render(window);
 		glfwSwapBuffers(window);
 	}

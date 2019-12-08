@@ -24,6 +24,7 @@ namespace spring
 			static EditorWindow* OpenWindow(const char* name,bool openDefault = true);
 			static void CloseWindow(EditorWindow* window);
 			static void CloseWindow(const char* name);
+			static void RenderWindows();
 		};
 	}
 }
