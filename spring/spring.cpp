@@ -1,6 +1,6 @@
-﻿//
-//#define _CRT_SECURE_NO_WARNINGS 
-//
+﻿
+#define _CRT_SECURE_NO_WARNINGS 
+
 //#include "imgui.h"
 //#include "imgui_impl_glfw.h"
 //#include "imgui_impl_opengl3.h"
@@ -461,49 +461,31 @@
 //		SwapBuffers(dc);
 //	}
 //	return  0;
-//}
-
-
-// dear imgui: standalone example application for GLFW + OpenGL 3, using programmable pipeline
-// If you are new to dear imgui, see examples/README.txt and documentation at the top of imgui.cpp.
-// (GLFW is a cross-platform general purpose library for handling windows, inputs, OpenGL/Vulkan graphics context creation, etc.)
-
-// dear imgui: standalone example application for GLFW + OpenGL 3, using programmable pipeline
-// If you are new to dear imgui, see examples/README.txt and documentation at the top of imgui.cpp.
-// (GLFW is a cross-platform general purpose library for handling windows, inputs, OpenGL/Vulkan graphics context creation, etc.)
+//} 
 
 #include "imgui.h"
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_opengl3.h"
 #include <stdio.h>
-
-// About Desktop OpenGL function loaders:
-//  Modern desktop OpenGL doesn't have a standard portable header file to load OpenGL function pointers.
-//  Helper libraries are often used for this purpose! Here we are supporting a few common ones (gl3w, glew, glad).
-//  You may use another loader/header of your choice (glext, glLoadGen, etc.), or chose to manually implement your own.
-#if defined(IMGUI_IMPL_OPENGL_LOADER_GL3W)
-#include <GL/gl3w.h>    // Initialize with gl3wInit()
-#elif defined(IMGUI_IMPL_OPENGL_LOADER_GLEW)
-#include "glew.h"    // Initialize with glewInit()
-#elif defined(IMGUI_IMPL_OPENGL_LOADER_GLAD)
-#include <glad/glad.h>  // Initialize with gladLoadGL()
-#else
-#include IMGUI_IMPL_OPENGL_LOADER_CUSTOM
-#endif 
-
-// Include glfw3.h after our OpenGL definitions
-#include <GLFW/glfw3.h>
+// todo : replaced input module by glfw interfaces.
+// #include <windows.h>
+#include "glew.h"
+#include "wglew.h"
+#include <gl/GL.h>
+#include "GLFW/glfw3.h"
+// todo : integrate spring engine all .h file to springengine.h and clean up solution directory.
+#include "springengine.h"
+#include "spring.h"
+#include "sample.h"
+#include "vector2.h"
+#include "postprocessing.h"
 
 #pragma comment (lib,"glfw3.lib")
 #pragma comment (lib,"glew32.lib")
-#pragma comment (lib,"opengl32.lib")
+#pragma comment (lib,"opengl32.lib") 
 
-// [Win32] Our example includes a copy of glfw3.lib pre-compiled with VS2010 to maximize ease of testing and compatibility with old VS compilers.
-// To link with VS2010-era libraries, VS2015+ requires linking with legacy_stdio_definitions.lib, which we do using this pragma.
-// Your own project should not be affected, as you are likely to link with a newer binary of GLFW that is adequate for your version of Visual Studio.
-#if defined(_MSC_VER) && (_MSC_VER >= 1900) && !defined(IMGUI_DISABLE_WIN32_FUNCTIONS)
-#pragma comment(lib, "legacy_stdio_definitions")
-#endif
+using namespace spring;
+using namespace spring::editor;
 
 static void glfw_error_callback(int error, const char* description)
 {
@@ -512,45 +494,30 @@ static void glfw_error_callback(int error, const char* description)
 
 int main(int, char**)
 {
+	Screen::width = 1280 + 16;
+	Screen::height = 720 + 39;
+
 	// Setup window
 	glfwSetErrorCallback(glfw_error_callback);
 	if (!glfwInit())
 		return 1;
 
-	// Decide GL+GLSL versions
-#if __APPLE__
-	// GL 3.2 + GLSL 150
-	const char* glsl_version = "#version 150";
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 2);
-	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);  // 3.2+ only
-	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);            // Required on Mac
-#else
-	// GL 3.0 + GLSL 130
-	const char* glsl_version = "#version 130";
+	const char* glsl_version = "#version 330";
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
-	//glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);  // 3.2+ only
-	//glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);            // 3.0+ only
-#endif
+	// glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);  // 3.2+ only
+	// glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);            // 3.0+ only
 
+	// todo : add samll icon for window
 	// Create window with graphics context
-	GLFWwindow* window = glfwCreateWindow(1280, 720, "SpringEngine", NULL, NULL);
+	GLFWwindow* window = glfwCreateWindow(Screen::width, Screen::height, "spring engine", NULL, NULL);
 	if (window == NULL)
 		return 1;
 	glfwMakeContextCurrent(window);
 	glfwSwapInterval(1); // Enable vsync
 
 	// Initialize OpenGL loader
-#if defined(IMGUI_IMPL_OPENGL_LOADER_GL3W)
-	bool err = gl3wInit() != 0;
-#elif defined(IMGUI_IMPL_OPENGL_LOADER_GLEW)
 	bool err = glewInit() != GLEW_OK;
-#elif defined(IMGUI_IMPL_OPENGL_LOADER_GLAD)
-	bool err = gladLoadGL() == 0;
-#else
-	bool err = false; // If you use IMGUI_IMPL_OPENGL_LOADER_CUSTOM, your loader is likely to requires some form of initialization.
-#endif
 	if (err)
 	{
 		fprintf(stderr, "Failed to initialize OpenGL loader!\n");
@@ -565,32 +532,43 @@ int main(int, char**)
 	//io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
 
 	// Setup Dear ImGui style
-	ImGui::StyleColorsDark();
-	//ImGui::StyleColorsClassic();
+	ImGui::StyleColorsLight();
 
 	// Setup Platform/Renderer bindings
 	ImGui_ImplGlfw_InitForOpenGL(window, true);
 	ImGui_ImplOpenGL3_Init(glsl_version);
 
-	// Load Fonts
-	// - If no fonts are loaded, dear imgui will use the default font. You can also load multiple fonts and use ImGui::PushFont()/PopFont() to select them.
-	// - AddFontFromFileTTF() will return the ImFont* so you can store it if you need to select the font among multiple.
-	// - If the file cannot be loaded, the function will return NULL. Please handle those errors in your application (e.g. use an assertion, or display an error and quit).
-	// - The fonts will be rasterized at a given size (w/ oversampling) and stored into a texture when calling ImFontAtlas::Build()/GetTexDataAsXXXX(), which ImGui_ImplXXXX_NewFrame below will call.
-	// - Read 'docs/FONTS.txt' for more instructions and details.
-	// - Remember that in C/C++ if you want to include a backslash \ in a string literal you need to write a double backslash \\ !
-	//io.Fonts->AddFontDefault();
-	//io.Fonts->AddFontFromFileTTF("../../misc/fonts/Roboto-Medium.ttf", 16.0f);
-	//io.Fonts->AddFontFromFileTTF("../../misc/fonts/Cousine-Regular.ttf", 15.0f);
-	//io.Fonts->AddFontFromFileTTF("../../misc/fonts/DroidSans.ttf", 16.0f);
-	//io.Fonts->AddFontFromFileTTF("../../misc/fonts/ProggyTiny.ttf", 10.0f);
-	//ImFont* font = io.Fonts->AddFontFromFileTTF("c:\\Windows\\Fonts\\ArialUni.ttf", 18.0f, NULL, io.Fonts->GetGlyphRangesJapanese());
-	//IM_ASSERT(font != NULL);
+	glEnable(GL_MULTISAMPLE);
+	// call the console window.
+	AllocConsole(); 
 
 	// Our state
 	bool show_demo_window = true;
 	bool show_another_window = false;
+	bool bDrawSpringEngineToIMGUI = true;
 	ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
+
+	// draw sample scene
+	Sample* sample = new Sample();
+
+	Timer::Start();
+	for (auto behaviour : Behaviour::behaviours)
+		behaviour.second->Awake();
+
+	unsigned int* uiRenderLayer = new unsigned int[1]{ Layer::UI };
+	unsigned int* defaultRenderLayer = new unsigned int[2]{ Layer::Default,Layer::Skybox };
+
+	Camera* uiCamera = new Camera();
+	uiCamera->name = "Internal UI Camera";
+	uiCamera->cullingMask->set(uiRenderLayer);
+	uiCamera->clearFlag = Camera::None;
+
+	// 0. construct post processing instance.
+	class::PostProcessing* postProcessing = new class::PostProcessing();
+	postProcessing->enabled = false;
+	postProcessing->antiAliasing->enabled = false;
+	postProcessing->bloom->enabled = false;
+	postProcessing->PreProcess();
 
 	// Main loop
 	while (!glfwWindowShouldClose(window))
@@ -644,17 +622,86 @@ int main(int, char**)
 			ImGui::End();
 		}
 
-		// Rendering
+		Timer::Time();
+		Gizmos::Render();
+
+		// 将灯光阴影优先渲染
+		Light::CastShadow();
+
+		// camera view/projection matrix calculation must be earlier than update method ,otherwise camera's position maybe update late than other transform.
+		for (vector<Camera*>::iterator cam = Camera::cameras.begin(); cam != Camera::cameras.end(); cam++)
+			(*cam)->Update();
+
+		for (auto behaviour : Behaviour::behaviours)
+			behaviour.second->Update();
+
+		for (auto behaviour : Behaviour::behaviours)
+			behaviour.second->OnPreRender();
+
+		// draw 3d scene.
+		for (vector<Camera*>::iterator cam = Camera::cameras.begin(); cam != Camera::cameras.end(); cam++)
+		{
+			Camera::current = *cam;
+			if (Camera::current->cullingMask->contains(Layer::UI))
+				continue;
+			Camera::current->Render();
+			if (Camera::current->framebuffer == nullptr)
+			{
+				Renderable::Draw(2, defaultRenderLayer);
+			}
+			else
+			{
+				Camera::current->framebuffer->Bind();
+				glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+				Renderable::Draw(2, defaultRenderLayer);
+				Camera::current->framebuffer->Unbind();
+				glClearColor(0.1f, 0.4f, 0.7f, 1.0f);
+				glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+			}
+		}
+
+		postProcessing->Process();
+
+		for (auto behaviour : Behaviour::behaviours)
+			behaviour.second->OnPostRender();
+
+		for (auto behaviour : Behaviour::behaviours)
+			behaviour.second->OnGUI();
+
+		// render 2d ui object.
+		Camera::current = uiCamera;
+		Camera::current->Render();
+		Renderable::Draw(1, uiRenderLayer);
+
+		FPS::CalculateFramePerSecond();
+		Input::setMouseWheel(0.0f);
+		Input::mouseDelta = Vector2::zero;
+		
+		// todo : important step for spring engine integrate dear imgui.
+		// todo : draw spring engine final render texture to imgui image.
+
+		if (bDrawSpringEngineToIMGUI)
+		{
+			ImGui::Begin("Scene");
+			ImGui::Image((ImTextureID)Camera::main->framebuffer->bufferId, ImVec2(800, 600),ImVec2(0,1),ImVec2(1,0));
+			ImGui::End();
+		}
+
+		// Rendering editor gui
 		ImGui::Render();
 		int display_w, display_h;
 		glfwGetFramebufferSize(window, &display_w, &display_h);
-		glViewport(0, 0, display_w, display_h);
-		glClearColor(clear_color.x, clear_color.y, clear_color.z, clear_color.w);
-		glClear(GL_COLOR_BUFFER_BIT);
+		// glViewport(0, 0, display_w, display_h);
+		// glClearColor(clear_color.x, clear_color.y, clear_color.z, clear_color.w);
+		// glClear(GL_COLOR_BUFFER_BIT);
 		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
 		glfwSwapBuffers(window);
 	}
+
+	AssetLoader::Release();
+	for (auto behaviour : Behaviour::behaviours)
+		behaviour.second->Destroy();
 
 	// Cleanup
 	ImGui_ImplOpenGL3_Shutdown();

@@ -43,6 +43,8 @@ public:
 		if (!enabled)
 			return;
 
+		Camera::main->framebuffer = this->framebuffer;
+
 		if (this->drawGround)
 			this->DrawGround();
 
