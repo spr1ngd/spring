@@ -206,6 +206,7 @@
     <ClInclude Include="Colorf.h" />
     <ClInclude Include="Console.h" />
     <ClInclude Include="Cubemap.h" />
+    <ClInclude Include="EditorWindow.h" />
     <ClInclude Include="Environment.h" />
     <ClInclude Include="Example.h" />
     <ClInclude Include="FileIO.h" />
@@ -217,6 +218,7 @@
     <ClInclude Include="FullScreenRenderer.h" />
     <ClInclude Include="Gizmos.h" />
     <ClInclude Include="GUI.h" />
+    <ClInclude Include="GUILayout.h" />
     <ClInclude Include="IJsonSerializer.h" />
     <ClInclude Include="Image.h" />
     <ClInclude Include="imconfig.h" />
@@ -225,6 +227,7 @@
     <ClInclude Include="imgui_impl_opengl3.h" />
     <ClInclude Include="imgui_internal.h" />
     <ClInclude Include="Input.h" />
+    <ClInclude Include="InspectorWindow.h" />
     <ClInclude Include="InstancedRenderer.h" />
     <ClInclude Include="InstancedTechnology.h" />
     <ClInclude Include="JsonMapper.h" />
@@ -260,6 +263,7 @@
     <ClInclude Include="Skybox.h" />
     <ClInclude Include="Space.h" />
     <ClInclude Include="spring.h" />
+    <ClInclude Include="SpringEditor.h" />
     <ClInclude Include="SpringEngine.h" />
     <ClInclude Include="Text.h" />
     <ClInclude Include="Texture.h" />
@@ -286,6 +290,7 @@
     <ClCompile Include="Colorf.cpp" />
     <ClCompile Include="Console.cpp" />
     <ClCompile Include="Cubemap.cpp" />
+    <ClCompile Include="EditorWindow.cpp" />
     <ClCompile Include="Environment.cpp" />
     <ClCompile Include="FileIO.cpp" />
     <ClCompile Include="FirstPlayerCamera.cpp" />
@@ -296,6 +301,7 @@
     <ClCompile Include="FullScreenRenderer.cpp" />
     <ClCompile Include="Gizmos.cpp" />
     <ClCompile Include="GUI.cpp" />
+    <ClCompile Include="GUILayout.cpp" />
     <ClCompile Include="IJsonSerializer.cpp" />
     <ClCompile Include="Image.cpp" />
     <ClCompile Include="imgui.cpp" />
@@ -305,6 +311,7 @@
     <ClCompile Include="imgui_impl_opengl3.cpp" />
     <ClCompile Include="imgui_widgets.cpp" />
     <ClCompile Include="Input.cpp" />
+    <ClCompile Include="InspectorWindow.cpp" />
     <ClCompile Include="InstancedRenderer.cpp" />
     <ClCompile Include="InstancedTechnology.cpp" />
     <ClCompile Include="JsonMapper.cpp" />
@@ -337,6 +344,7 @@
     <ClCompile Include="ShaderComplier.cpp" />
     <ClCompile Include="Skybox.cpp" />
     <ClCompile Include="spring.cpp" />
+    <ClCompile Include="SpringEditor.cpp" />
     <ClCompile Include="SpringEngine.cpp" />
     <ClCompile Include="Text.cpp" />
     <ClCompile Include="Texture.cpp" />

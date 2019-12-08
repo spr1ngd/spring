@@ -121,6 +121,12 @@
     <Filter Include="imgui">
       <UniqueIdentifier>{175a77c3-a7c9-4a52-8f0b-e5d18172a210}</UniqueIdentifier>
     </Filter>
+    <Filter Include="头文件\2D\editor">
+      <UniqueIdentifier>{d4f47dc8-d8fb-48ee-abc1-0088e78de364}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\2D\editor">
+      <UniqueIdentifier>{e67bd9c7-2d20-4407-a0b8-e58c40563c11}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="spring.rc">
@@ -370,6 +376,18 @@
     <ClInclude Include="imgui_impl_glfw.h">
       <Filter>imgui</Filter>
     </ClInclude>
+    <ClInclude Include="GUILayout.h">
+      <Filter>头文件\2D</Filter>
+    </ClInclude>
+    <ClInclude Include="InspectorWindow.h">
+      <Filter>头文件\2D\editor</Filter>
+    </ClInclude>
+    <ClInclude Include="EditorWindow.h">
+      <Filter>头文件\2D\editor</Filter>
+    </ClInclude>
+    <ClInclude Include="SpringEditor.h">
+      <Filter>头文件\Core</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Primitive.cpp">
@@ -596,6 +614,18 @@
     </ClCompile>
     <ClCompile Include="imgui_demo.cpp">
       <Filter>imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="GUILayout.cpp">
+      <Filter>源文件\2D</Filter>
+    </ClCompile>
+    <ClCompile Include="InspectorWindow.cpp">
+      <Filter>源文件\2D\editor</Filter>
+    </ClCompile>
+    <ClCompile Include="EditorWindow.cpp">
+      <Filter>源文件\2D\editor</Filter>
+    </ClCompile>
+    <ClCompile Include="SpringEditor.cpp">
+      <Filter>源文件\Core</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
