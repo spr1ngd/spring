@@ -10,8 +10,6 @@ namespace spring
 	class Transform
 	{
 	private:
-		Vector3 eulerangle = Vector3::zero;
-		Quaternion rotation = Quaternion::indentity;
 
 	public: 
 		Matrix4x4 rotationMatrix = Matrix4x4::indentity;
@@ -19,6 +17,8 @@ namespace spring
 		Vector3 right = Vector3::right;
 		Vector3 forword = Vector3::forward;
 		Vector3 position = Vector3::zero;
+		Vector3 eulerangle = Vector3::zero;
+		Quaternion rotation = Quaternion::indentity;
 		Vector3 scale = Vector3::one;
 
 	private:

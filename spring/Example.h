@@ -6,6 +6,7 @@
 #include "console.h"
 #include "time.h"
 #include <stdio.h>
+#include "selection.h"
 
 using namespace spring;
 using namespace spring::ui;
@@ -67,6 +68,7 @@ public:
 		/*aircraft->material->shader->setColor("Specular_Color", Color::white);
 		aircraft->material->shader->setFloat("Specular_Intensity", 0.0f);
 		aircraft->material->shader->setFloat("Specular_Attenuation", 64.0f);*/
+		Selection::node = aircraft;
 
 		// aircraft normal visualization.
 		if (drwaAirCraftNormal) 
@@ -195,12 +197,12 @@ public:
 			if (rotateY >= 360.0f)
 				rotateY -= 360.0f;
 			aircraft->transform->SetEulerangle(Vector3(0.0f, -rotateY, 0.0f));
-			if( nullptr != this->aircraftNormal )
+			/*if( nullptr != this->aircraftNormal )
 				aircraftNormal->transform->SetEulerangle(Vector3(0.0f, -rotateY, 0.0f));
 
 			characterSpace += Timer::deltaTime * 5.0f;
 			if (characterSpace > 20.0f)
-				characterSpace -= 40.0f;
+				characterSpace -= 40.0f;*/
 		}
 
 		if (this->drawText)

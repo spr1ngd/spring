@@ -258,6 +258,7 @@
     <ClInclude Include="Resources.h" />
     <ClInclude Include="Sample.h" />
     <ClInclude Include="Scene.h" />
+    <ClInclude Include="SceneWindow.h" />
     <ClInclude Include="Screen.h" />
     <ClInclude Include="Selection.h" />
     <ClInclude Include="Shader.h" />
@@ -342,6 +343,7 @@
     <ClCompile Include="Resources.cpp" />
     <ClCompile Include="Sample.cpp" />
     <ClCompile Include="Scene.cpp" />
+    <ClCompile Include="SceneWindow.cpp" />
     <ClCompile Include="Screen.cpp" />
     <ClCompile Include="Selection.cpp" />
     <ClCompile Include="Shader.cpp" />

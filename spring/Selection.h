@@ -1,17 +1,14 @@
 #pragma once
-//#include "springengine.h"
 #include <functional>
-
+#include "node.h"
 typedef void (*SelectionChanged)();
 
 namespace spring 
 {
 	namespace editor 
 	{
-		class Node;
 		class Selection 
 		{
-		private:
 		public:
 			static Node* node;
 			static Node* nodes;

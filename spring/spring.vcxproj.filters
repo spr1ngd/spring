@@ -394,6 +394,9 @@
     <ClInclude Include="EditorWindow.h">
       <Filter>头文件\Editor</Filter>
     </ClInclude>
+    <ClInclude Include="SceneWindow.h">
+      <Filter>头文件\Editor</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Primitive.cpp">
@@ -637,6 +640,9 @@
       <Filter>源文件\Editor</Filter>
     </ClCompile>
     <ClCompile Include="EditorWindow.cpp">
+      <Filter>源文件\Editor</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneWindow.cpp">
       <Filter>源文件\Editor</Filter>
     </ClCompile>
   </ItemGroup>
