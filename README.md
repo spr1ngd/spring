@@ -3,6 +3,23 @@
 
 A LONG LONG LONG , VERY LONG TRIP.
 
+## TODO: 2019.12.09
+
+- immediate mode graphic user interface
+    - integration dear imgui **(Finished)**
+    - spring engine editor basic windows
+        - scene window **(Basic edition Finished)**
+        - inspector window
+            - transform tree node **(Finished)**
+            - mateiral tree node
+
+- input system upgrade (replaced window api by glfw library , glfw is a cross platform library)
+
+- pick system
+    - pick base on color;
+    - integrate bullet physics engine or PhysX to implement pick base on physics
+    - pick base on ray-obb
+
 ## TODO: 2019.11.10
 
 - shadow system
@@ -12,14 +29,14 @@ A LONG LONG LONG , VERY LONG TRIP.
         - point light
 
     - shadow type
-        - hard shadow
-        - soft shadow
+        - hard shadow **(Finished)**
+        - soft shadow **(Finished)**
 
-    - evironment shadow setting
+    - evironment shadow setting **(Finished)**
 
-- post processing system
-    - bloom
-    - anti-aliasing
+- post processing system **(10%)**
+    - bloom **(50%)**
+    - anti-aliasing **(replaced MSAA by post processing anti-aliasing)**
     - ambient occlusion
     - color correction
 
