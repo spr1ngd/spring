@@ -382,9 +382,6 @@
     <ClInclude Include="SpringEditor.h">
       <Filter>头文件\Core</Filter>
     </ClInclude>
-    <ClInclude Include="HierarchyWindow.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="Selection.h">
       <Filter>头文件\Editor</Filter>
     </ClInclude>
@@ -395,6 +392,9 @@
       <Filter>头文件\Editor</Filter>
     </ClInclude>
     <ClInclude Include="SceneWindow.h">
+      <Filter>头文件\Editor</Filter>
+    </ClInclude>
+    <ClInclude Include="HierarchyWindow.h">
       <Filter>头文件\Editor</Filter>
     </ClInclude>
   </ItemGroup>
@@ -630,9 +630,6 @@
     <ClCompile Include="SpringEditor.cpp">
       <Filter>源文件\Core</Filter>
     </ClCompile>
-    <ClCompile Include="HierarchyWindow.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="Selection.cpp">
       <Filter>源文件\Editor</Filter>
     </ClCompile>
@@ -643,6 +640,9 @@
       <Filter>源文件\Editor</Filter>
     </ClCompile>
     <ClCompile Include="SceneWindow.cpp">
+      <Filter>源文件\Editor</Filter>
+    </ClCompile>
+    <ClCompile Include="HierarchyWindow.cpp">
       <Filter>源文件\Editor</Filter>
     </ClCompile>
   </ItemGroup>

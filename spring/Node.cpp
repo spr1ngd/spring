@@ -4,15 +4,20 @@
 using namespace std;
 using namespace spring;
 
+vector<Node*> Node::allNodes;
+
 Node::Node() 
 {
 	this->transform = new Transform();
+	allNodes.push_back(this);
 }
 
 Node::Node(const char* nodeName) 
 {
 	this->name = nodeName;
 	this->transform = new Transform();
+	allNodes.push_back(this);
+	// todo : how to remove this node?
 }
 
 template <typename T>

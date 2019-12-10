@@ -57,6 +57,7 @@ public:
 		mat->renderMode = Material::RenderMode::Fill;
 		mat->CullFaceFunc(true);
 		aircraft = new MeshRenderer(mat);
+		aircraft->name = "aircraft";
 		aircraft->meshes = loader.meshes;
 		aircraft->textures = loader.loadedTextures;
 		aircraft->Init();

@@ -10,6 +10,9 @@ namespace spring
 { 
 	class Node : public Object
 	{
+	public:
+		static vector<Node*> allNodes;
+
 	private:
 		vector<Node*> nodes;
 	public:
