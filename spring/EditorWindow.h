@@ -9,11 +9,13 @@ namespace spring
 		{
 		private:
 			static std::vector<EditorWindow*> editorWindows;
+		protected:
+			int windowFlags = 0;
 			const char* name;
 			bool enabled = true;
 
-			void BeginWindow();
-			void EndWindow();
+			virtual void BeginWindow();
+			virtual void EndWindow();
 		public:
 			EditorWindow(const char*name, bool openDefault = true);
 

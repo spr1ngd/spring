@@ -8,7 +8,7 @@ namespace spring
 		class SceneWindow : public EditorWindow
 		{
 		public:
-			SceneWindow(const char* name, bool defaultOpen) : EditorWindow(name, defaultOpen) {}
+			SceneWindow(const char* name, bool defaultOpen);
 
 			void OnDrawWindow() override;
 		};

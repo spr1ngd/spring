@@ -7,6 +7,11 @@
 using namespace spring;
 using namespace spring::editor;
 
+InspectorWindow::InspectorWindow(const char* name, bool openDefault) : EditorWindow(name,openDefault)
+{
+	this->windowFlags = ImGuiWindowFlags_NoMove;
+}
+
 void InspectorWindow::OnDrawWindow() 
 {
 	if (nullptr == Selection::node)

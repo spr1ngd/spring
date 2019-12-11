@@ -8,7 +8,7 @@ namespace spring
 		class HierarchyWindow : public EditorWindow
 		{
 		public:
-			HierarchyWindow(const char* name, bool openDefault) : EditorWindow(name,openDefault) {}
+			HierarchyWindow(const char* name, bool openDefault);
 
 			void OnDrawWindow() override;
 		};

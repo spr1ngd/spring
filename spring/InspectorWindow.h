@@ -8,8 +8,7 @@ namespace spring
 		class InspectorWindow : public EditorWindow
 		{
 		public:
-			InspectorWindow(const char* name, bool openDefault) : EditorWindow(name, openDefault) {}
-
+			InspectorWindow(const char* name, bool openDefault);
 			void OnDrawWindow() override;
 		};
 	}

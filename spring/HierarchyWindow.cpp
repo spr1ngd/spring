@@ -6,6 +6,11 @@
 using namespace spring;
 using namespace spring::editor;
 
+HierarchyWindow::HierarchyWindow(const char* name, bool openDefault) : EditorWindow(name, openDefault) 
+{
+	this->windowFlags = ImGuiWindowFlags_NoMove;
+}
+
 void HierarchyWindow::OnDrawWindow() 
 {
 	static ImGuiTreeNodeFlags base_flags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_OpenOnDoubleClick | ImGuiTreeNodeFlags_SpanAvailWidth;

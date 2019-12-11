@@ -15,7 +15,7 @@ EditorWindow::EditorWindow(const char* name, bool openDefault )
 
 void EditorWindow::BeginWindow() 
 {
-	GUILayout::Begin(this->name, &this->enabled, 0);
+	GUILayout::Begin(this->name, &this->enabled, this->windowFlags);
 }
 
 void EditorWindow::OnDrawWindow() 
