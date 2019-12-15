@@ -19,13 +19,13 @@
 #include "camera.h"
 #include "behaviour.h"
 #include "vertex.h"
-#include "input.h"
 #include "renderable.h"
 #include "skybox.h"
 #include "light.h"
 #include "axishelper.h"
+#include "cursor.h"
+#include "input.h"
 
-// spring engine editor 
 #include "orbitcamera.h"
 #include "firstplayercamera.h"
 #include "fps.h"

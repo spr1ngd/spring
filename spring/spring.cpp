@@ -53,6 +53,14 @@ int main(int, char**)
 		return 1;
 	glfwMakeContextCurrent(window);
 	glfwSwapInterval(1); // Enable vsync
+	glfwSetInputMode(window, GLFW_STICKY_KEYS, GLFW_TRUE);
+
+	// glfw input callback 
+	Input::InitializeInput(window);
+
+	// init window cursor display mode.
+	Cursor::InitializeCursor(window);
+	Cursor::SetCursotMode(Cursor::Cursor_Normal);
 
 	// Initialize OpenGL loader
 	bool err = glewInit() != GLEW_OK;
@@ -64,31 +72,13 @@ int main(int, char**)
 
 	// spring editor
 	SpringEditor::Initialize();
-
-	GUILayout::Initialize(window);
-
-	//// Setup Dear ImGui context
-	//IMGUI_CHECKVERSION();
-	//ImGui::CreateContext();
-	//ImGuiIO& io = ImGui::GetIO(); (void)io;
-	////io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
-	////io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
-
-	//// Setup Dear ImGui style
-	//ImGui::StyleColorsLight();
-
-	//// Setup Platform/Renderer bindings
-	//ImGui_ImplGlfw_InitForOpenGL(window, true);
-	//ImGui_ImplOpenGL3_Init(glsl_version);
+	GUILayout::Initialize(window); // TODO: initialize content should be moved to spring editor.
 
 	glEnable(GL_MULTISAMPLE);
-	// call the console window.
 	AllocConsole(); 
 
 	// Our state
 	bool show_demo_window = true;
-	bool bDrawSpringEngineToIMGUI = true;
-	ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
 
 	// draw sample scene
 	Sample* sample = new Sample();
@@ -115,16 +105,10 @@ int main(int, char**)
 	// Main loop
 	while (!glfwWindowShouldClose(window))
 	{
-		// Poll and handle events (inputs, window resize, etc.)
-		// You can read the io.WantCaptureMouse, io.WantCaptureKeyboard flags to tell if dear imgui wants to use your inputs.
-		// - When io.WantCaptureMouse is true, do not dispatch mouse input data to your main application.
-		// - When io.WantCaptureKeyboard is true, do not dispatch keyboard input data to your main application.
-		// Generally you may always pass all inputs to dear imgui, and hide them from your application based on those two flags.
 		glfwPollEvents();
 
 		GUILayout::PreRender();
 
-		// 1. Show the big demo window (Most of the sample code is in ImGui::ShowDemoWindow()! You can browse its code to learn more about Dear ImGui!).
 		if (show_demo_window)
 			ImGui::ShowDemoWindow(&show_demo_window); 
 
@@ -188,6 +172,7 @@ int main(int, char**)
 
 		SpringEditor::DrawEditor();
 		GUILayout::Render(window);
+
 		glfwSwapBuffers(window);
 	}
 
@@ -196,7 +181,7 @@ int main(int, char**)
 	for (auto behaviour : Behaviour::behaviours)
 		behaviour.second->Destroy();
 
-	// Cleanup
+	// Cleanup remove those code to spring editor imgui...controller.
 	ImGui_ImplOpenGL3_Shutdown();
 	ImGui_ImplGlfw_Shutdown();
 	ImGui::DestroyContext();

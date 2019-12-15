@@ -1,4 +1,5 @@
 #include "firstplayercamera.h"
+#include "input.h"
 
 using namespace spring;
 using namespace spring::editor;

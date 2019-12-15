@@ -7,7 +7,7 @@ using namespace spring;
  
 vector<AxisHelper*> Gizmos::axisHelpers;
 vector<Gizmos*> Gizmos::gizmos;
-Space Gizmos::space = Space::World;
+CoordinateSpace Gizmos::space = CoordinateSpace::World;
 Colorf Gizmos::color = Colorf::gray;
 
 void Gizmos::DrawAxis(Vector3 pos , Vector3 size)

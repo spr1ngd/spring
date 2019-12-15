@@ -2,7 +2,7 @@
 
 namespace spring 
 {
-	enum Space 
+	enum CoordinateSpace 
 	{
 		World,
 		Self

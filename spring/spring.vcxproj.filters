@@ -397,6 +397,9 @@
     <ClInclude Include="HierarchyWindow.h">
       <Filter>头文件\Editor</Filter>
     </ClInclude>
+    <ClInclude Include="Cursor.h">
+      <Filter>头文件\Input</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Primitive.cpp">
@@ -644,6 +647,9 @@
     </ClCompile>
     <ClCompile Include="HierarchyWindow.cpp">
       <Filter>源文件\Editor</Filter>
+    </ClCompile>
+    <ClCompile Include="Cursor.cpp">
+      <Filter>源文件\Input</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

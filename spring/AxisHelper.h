@@ -16,7 +16,7 @@ namespace spring
 	private:
 		Material* material;
 		Transform* target;
-		Space space;
+		CoordinateSpace space;
 	public:
 		enum Mode 
 		{
@@ -33,7 +33,7 @@ namespace spring
 		void RenderScaler();
 	public:
 		AxisHelper(Vector3 target);
-		AxisHelper(Transform* target,Space space = Space::Self);
+		AxisHelper(Transform* target, CoordinateSpace space = CoordinateSpace::Self);
 		void Render();
 	};
 }

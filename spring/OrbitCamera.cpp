@@ -29,23 +29,23 @@ void OrbitCamera::Destroy()
 
 void OrbitCamera::Update() 
 {    
-	if (Input::GetMouseDown(MouseID::LEFT)) 
+	if (Input::GetMouseDown(MouseID::MOUSE_LEFT)) 
 	{
 
 	}
-	if (Input::GetMouse(MouseID::LEFT)) 
+	if (Input::GetMouse(MouseID::MOUSE_LEFT)) 
 	{
 		this->enableRotate = true;
 	}
-	if (Input::GetMouseUp(MouseID::LEFT))
+	if (Input::GetMouseUp(MouseID::MOUSE_LEFT))
 	{
 		this->enableRotate = false;
 	}
-	if (Input::GetMouse(MouseID::WHELL)) 
+	if (Input::GetMouse(MouseID::MOUSE_WHEEL)) 
 	{
 		this->enablePan = true;
 	}
-	if (Input::GetMouseUp(MouseID::WHELL))
+	if (Input::GetMouseUp(MouseID::MOUSE_WHEEL))
 	{
 		this->enablePan = false;
 	}

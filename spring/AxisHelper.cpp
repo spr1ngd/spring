@@ -7,7 +7,7 @@ using namespace spring;
 
 AxisHelper::AxisHelper(Vector3 target) 
 {
-	this->space = Space::World;
+	this->space = CoordinateSpace::World;
 	this->target = nullptr;
 
 	this->material = new Material("res/shader/vertex/vertexcolor.vs", "res/shader/vertex/vertexcolor.fs");
@@ -18,7 +18,7 @@ AxisHelper::AxisHelper(Vector3 target)
 	this->meshRenderer->setRenderOrder(5000);
 }
 
-AxisHelper::AxisHelper(Transform* trans,Space space)
+AxisHelper::AxisHelper(Transform* trans, CoordinateSpace space)
 {
 	this->space = space;
 	this->target = trans;
@@ -65,7 +65,7 @@ void AxisHelper::RenderAxis()
 	xStart.vertex = Vector3::zero;
 	Vertex xEnd;
 
-	if (this->space == Space::Self && this->target != nullptr)
+	if (this->space == CoordinateSpace::Self && this->target != nullptr)
 	{
 		xEnd.vertex = this->target->right;
 	}
@@ -84,7 +84,7 @@ void AxisHelper::RenderAxis()
 	Vertex yStart;
 	yStart.vertex = Vector3::zero;
 	Vertex yEnd;
-	if (this->space == Space::Self && this->target != nullptr)
+	if (this->space == CoordinateSpace::Self && this->target != nullptr)
 	{
 		yEnd.vertex = this->target->up;
 	}
@@ -103,7 +103,7 @@ void AxisHelper::RenderAxis()
 	Vertex zStart;
 	zStart.vertex = Vector3::zero;
 	Vertex zEnd;
-	if (this->space == Space::Self && this->target != nullptr)
+	if (this->space == CoordinateSpace::Self && this->target != nullptr)
 	{
 		zEnd.vertex = this->target->forword;
 	}

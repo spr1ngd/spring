@@ -18,7 +18,7 @@ namespace spring
 
 		static vector<Gizmos*> gizmos;
 		static vector<AxisHelper*> axisHelpers;
-		static Space space;
+		static CoordinateSpace space;
 	public:
 		static Colorf color;
 		static void DrawAxis(Vector3 pos, Vector3 size = Vector3::one);
