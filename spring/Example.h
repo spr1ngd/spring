@@ -14,7 +14,7 @@ using namespace spring::ui;
 class Example : public Behaviour
 {
 private:
-	bool enabled = true;
+	bool enabled = false;
 	bool drawGround = true;
 	bool drawFourFrame = false;
 	bool drawText = true;
@@ -41,10 +41,9 @@ private:
 public:
 	void Awake() override
 	{
+		Camera::main->framebuffer = this->framebuffer;
 		if (!enabled)
 			return;
-
-		Camera::main->framebuffer = this->framebuffer;
 
 		if (this->drawGround)
 			this->DrawGround();

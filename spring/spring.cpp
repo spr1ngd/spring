@@ -32,8 +32,8 @@ static void glfw_error_callback(int error, const char* description)
 
 int main(int, char**)
 {
-	Screen::width = 1280 + 16;
-	Screen::height = 720 + 39;
+	Screen::width = 1280;
+	Screen::height = 720;
 
 	// Setup window
 	glfwSetErrorCallback(glfw_error_callback);

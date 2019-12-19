@@ -248,6 +248,7 @@
     <ClInclude Include="NotImplementException.h" />
     <ClInclude Include="Object.h" />
     <ClInclude Include="OrbitCamera.h" />
+    <ClInclude Include="physically_based_rendering.h" />
     <ClInclude Include="PostProcessing.h" />
     <ClInclude Include="Primitive.h" />
     <ClInclude Include="Quaternion.h" />
@@ -335,6 +336,7 @@
     <ClCompile Include="NotImplementException.cpp" />
     <ClCompile Include="Object.cpp" />
     <ClCompile Include="OrbitCamera.cpp" />
+    <ClCompile Include="physically_based_rendering.cpp" />
     <ClCompile Include="PostProcessing.cpp" />
     <ClCompile Include="Primitive.cpp" />
     <ClCompile Include="Quaternion.cpp" />

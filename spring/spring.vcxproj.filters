@@ -103,9 +103,6 @@
     <Filter Include="头文件\Core">
       <UniqueIdentifier>{df6e9446-6454-44f0-9435-aafd7cd7d5ea}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Sample">
-      <UniqueIdentifier>{bcdd2a7f-d5bd-4a1f-a2f5-fa51b688f9aa}</UniqueIdentifier>
-    </Filter>
     <Filter Include="头文件\PostProcessing">
       <UniqueIdentifier>{5104e45f-37a0-4d03-9ca8-809154ec09d4}</UniqueIdentifier>
     </Filter>
@@ -126,6 +123,9 @@
     </Filter>
     <Filter Include="源文件\Editor">
       <UniqueIdentifier>{36d34979-2bee-4223-8781-60f7857475ac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="sample">
+      <UniqueIdentifier>{bcdd2a7f-d5bd-4a1f-a2f5-fa51b688f9aa}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -290,16 +290,16 @@
       <Filter>头文件\Serialize\Json</Filter>
     </ClInclude>
     <ClInclude Include="Matrix4x4Sample.h">
-      <Filter>Sample</Filter>
+      <Filter>sample</Filter>
     </ClInclude>
     <ClInclude Include="Sample.h">
-      <Filter>Sample</Filter>
+      <Filter>sample</Filter>
     </ClInclude>
     <ClInclude Include="Space.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="Example.h">
-      <Filter>Sample</Filter>
+      <Filter>sample</Filter>
     </ClInclude>
     <ClInclude Include="FrameBufferObject.h">
       <Filter>头文件</Filter>
@@ -347,7 +347,7 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="InstancedTechnology.h">
-      <Filter>Sample</Filter>
+      <Filter>sample</Filter>
     </ClInclude>
     <ClInclude Include="InstancedRenderer.h">
       <Filter>头文件</Filter>
@@ -399,6 +399,9 @@
     </ClInclude>
     <ClInclude Include="Cursor.h">
       <Filter>头文件\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="physically_based_rendering.h">
+      <Filter>sample</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -547,7 +550,7 @@
       <Filter>源文件\Serialize\Json</Filter>
     </ClCompile>
     <ClCompile Include="Sample.cpp">
-      <Filter>Sample</Filter>
+      <Filter>sample</Filter>
     </ClCompile>
     <ClCompile Include="FrameBufferObject.cpp">
       <Filter>源文件</Filter>
@@ -595,7 +598,7 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="InstancedTechnology.cpp">
-      <Filter>Sample</Filter>
+      <Filter>sample</Filter>
     </ClCompile>
     <ClCompile Include="InstancedRenderer.cpp">
       <Filter>源文件</Filter>
@@ -650,6 +653,9 @@
     </ClCompile>
     <ClCompile Include="Cursor.cpp">
       <Filter>源文件\Input</Filter>
+    </ClCompile>
+    <ClCompile Include="physically_based_rendering.cpp">
+      <Filter>sample</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

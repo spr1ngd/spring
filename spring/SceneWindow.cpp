@@ -1,5 +1,5 @@
 #include "scenewindow.h"
-#include "camera.h"
+#include "springengine.h"
 #include "imgui.h"
 
 using namespace spring;
@@ -12,5 +12,5 @@ SceneWindow::SceneWindow(const char* name, bool defaultOpen) :EditorWindow(name,
 
 void SceneWindow::OnDrawWindow() 
 {
-	ImGui::Image((ImTextureID) Camera::main->framebuffer->bufferId, ImVec2(800, 600), ImVec2(0, 1), ImVec2(1, 0));
+	ImGui::Image((ImTextureID) Camera::main->framebuffer->bufferId, ImVec2(Screen::width * 0.8f,Screen::height*0.8f), ImVec2(0, 1), ImVec2(1, 0));
 }

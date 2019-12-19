@@ -12,7 +12,7 @@ InstancedRenderer* instanceRendererNormal;
 
 InstancedTechnology::InstancedTechnology() 
 {
-
+	
 }
 
 void InstancedTechnology::Awake() 

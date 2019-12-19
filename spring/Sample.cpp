@@ -3,6 +3,7 @@
 #include "example.h"
 #include "skybox.h"
 #include "instancedtechnology.h"
+#include "physically_based_rendering.h"
 
 using namespace spring;
 using namespace spring::editor;
@@ -10,6 +11,7 @@ using namespace spring::editor;
 Matrix4x4Sample* matrix4x4Sample;
 Example* example;
 InstancedTechnology* instanced;
+physically_based_rendering* pbr;
 
 bool enabled = false;
 bool renderSkybox = true;
@@ -29,6 +31,10 @@ Sample::Sample()
 	matrix4x4Sample = new Matrix4x4Sample();
 	example = new Example();
 	instanced = new InstancedTechnology();
+	pbr = new physically_based_rendering();
+
+	instanced->enabled = false;
+	pbr->enabled = true;
 }
 
 void Sample::Awake()
@@ -57,11 +63,10 @@ void Sample::Awake()
 		skybox->Init();
 	}
 
-	Light* light = createLight(Light::Type::Directional, Color(255, 244, 214, 255), 0.7f, Vector3(10.0f, 10.0f, 10.0f), Vector3::down);
-	light->shadowType = Light::SoftShadow;
-	//Light* pointLigh1 = createLight(Light::Type::Point, Color::red, 0.6f, Vector3(5.0f, 0.0f, 0.0f), Vector3::left);
-	//Light* pointLigh2 = createLight(Light::Type::Point, Color::green, 0.6f, Vector3(-5.0f, 0.0f, 0.0f), Vector3::right);
-	//Light* pointLigh3 = createLight(Light::Type::Point, Color::blue, 0.6f, Vector3(0.0f, 0.0f, 5.0f), Vector3::back);
+	Light* light = createLight(Light::Type::Directional, Color(255, 244, 214, 255), 1.0f, Vector3(10.0f, 10.0f, 10.0f), Vector3::down); light->shadowType = Light::NoShadow;
+	Light* pointLigh1 = createLight(Light::Type::Directional, Color(255, 244, 214, 255), 0.9f, Vector3(5.0f, 0.0f, 0.0f), Vector3::left); pointLigh1->shadowType = Light::NoShadow;
+	Light* pointLigh2 = createLight(Light::Type::Directional, Color(255, 244, 214, 255), 0.8f, Vector3(-5.0f, 0.0f, 0.0f), Vector3::right); pointLigh2->shadowType = Light::NoShadow;
+	Light* pointLigh3 = createLight(Light::Type::Directional, Color(255, 244, 214, 255), 0.2f, Vector3(0.0f, 0.0f, 5.0f), Vector3::back); pointLigh3->shadowType = Light::NoShadow;
 	//Light* pointLigh4 = createLight(Light::Type::Point, Color::green, 0.6f, Vector3(0.0f, 0.0f, -5.0f), Vector3::forward);
 	//Light* spotLight = createLight(Light::Type::Spot, Color::yellow, 1.3f, Vector3(0.0f, 6.0f, 0.0f), Vector3::bottom);
 
