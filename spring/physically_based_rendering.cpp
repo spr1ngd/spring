@@ -24,7 +24,7 @@ void physically_based_rendering::Awake()
 
 	const char* albedo = "albedo";
 	const char* metal = "metal";
-	const char* smoothness = "smoothness";
+	const char* smoothness = "roughness";
 	const char* ambient = "ao";
 
 	Colorf albedoValue = Colorf(1.0f, 0.0f, 0.0f, 1.0f);
@@ -39,12 +39,12 @@ void physically_based_rendering::Awake()
 			// Material* pbs = new Material("res/shader/diffuse/diffuse.vs", "res/shader/diffuse/diffuse.fs");
 			pbs->shader->receiveShadow = false;
 
-			float metalValue = x * 0.1f;
-			float smoothnessValue = y * 0.1f;
+			float smoothnessValue = x * 0.1f;
+			float metalValue = y * 0.1f;
 
 			pbs->shader->setColor(albedo, albedoValue); // 反射率
 			pbs->shader->setFloat(metal, metalValue); // 金属度
-			pbs->shader->setFloat(smoothness,smoothnessValue); //光滑度
+			pbs->shader->setFloat(smoothness,1.0f - smoothnessValue); //光滑度
 			pbs->shader->setColor(ambient, ambientValue); // 环境光照
 
 			MeshRenderer* meshRenderer = new MeshRenderer(pbs);

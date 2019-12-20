@@ -97,3 +97,7 @@ A LONG LONG LONG , VERY LONG TRIP.
 -   diffuse material with shadow
     
     ![diffuse](/screenshot/spring%20engine%20realtime%20screenshot_02.jpg)
+
+-   pbr(basic version)
+    
+    ![pbr_without_antialiasing](/screenshot/spring%20engine%20realtime%20screenshot_03.png)

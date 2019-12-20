@@ -11,8 +11,8 @@ PostProcessing::PostProcessing()
 
 void PostProcessing::Blit() 
 {
-	// glBindFramebuffer(GL_READ_FRAMEBUFFER, this->srcFramebuffer->bufferId);
-	glBindFramebuffer(GL_READ_FRAMEBUFFER, this->srcFramebuffer->buffers[0]);
+	glBindFramebuffer(GL_READ_FRAMEBUFFER, this->srcFramebuffer->bufferId);
+	// glBindFramebuffer(GL_READ_FRAMEBUFFER, this->srcFramebuffer->buffers[0]);
 	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, this->dstFramebuffer->bufferId);
 	glBlitFramebuffer(0, 0, this->srcFramebuffer->width, this->srcFramebuffer->height, 0, 0, this->dstFramebuffer->width, this->dstFramebuffer->height, GL_COLOR_BUFFER_BIT, GL_NEAREST);
 	glBindFramebuffer(GL_FRAMEBUFFER,0);
@@ -41,7 +41,8 @@ void PostProcessing::Process()
 	if (nullptr == this->fsRenderer)
 		return;
 	this->Blit();
-	this->fsRenderer->material->shader->setTexture(MAIN_TEX, this->srcFramebuffer->buffers[0]);
+	this->fsRenderer->material->shader->setTexture(MAIN_TEX, this->srcFramebuffer->bufferId);
+	//this->fsRenderer->material->shader->setTexture(MAIN_TEX, this->srcFramebuffer->buffers[0]);
 	unsigned int* postProcessingLayer = new unsigned int[1]{Layer::PostProcessing};
 	Camera::current = Camera::main;
 	Renderable::Draw(1, postProcessingLayer);
