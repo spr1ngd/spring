@@ -11,9 +11,9 @@ A LONG LONG LONG , VERY LONG TRIP.
         - scene window **(Basic edition Finished)**
         - inspector window
             - transform tree node **(Finished)**
-            - mateiral tree node
+            - mateiral tree node (pbr mateiral inspector node)
 
-- input system upgrade (replaced window api by glfw library , glfw is a cross platform library)
+- input system upgrade (replaced window api by glfw library , glfw is a cross platform library) **(Finished)**
 
 - pick system
     - pick base on color;
@@ -71,11 +71,7 @@ A LONG LONG LONG , VERY LONG TRIP.
         - engine environment setting
         - objects
             - lights
-            - 3d models
-
-
-
-
+            - 3d models 
     
 ## ISSUES
 
