@@ -5,12 +5,12 @@
 
 using namespace spring;
 
-Skybox::Skybox(Material* material,Cubemap cubemap) 
+Skybox::Skybox(Material* material,Cubemap* cubemap) 
 {
-	auto loader = new ModelLoader();
-	// replaced by primitive module.
+	ModelLoader* loader = new ModelLoader();
 	loader->Load("res/model/obj/Cube.obj");
 	this->meshes = loader->meshes;
+	delete loader;
 	this->setRenderOrder(RenderOrder::Skybox);
 	this->material = material;
 	this->material->DepthTestFunc(false);
@@ -19,7 +19,7 @@ Skybox::Skybox(Material* material,Cubemap cubemap)
 	this->layer = Layer::Skybox;
 }
 
-void Skybox::SetCubemap(Cubemap cubemap) 
+void Skybox::SetCubemap(Cubemap* cubemap) 
 {
 	this->cubemap = cubemap;
 	this->material->shader->setCubemap(MAIN_CUBEMAP, this->cubemap);

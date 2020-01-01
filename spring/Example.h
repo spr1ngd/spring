@@ -160,7 +160,7 @@ public:
 		ground->transform->SetEulerangle(Vector3(-90.0f,0.0f,0.0f));
 		ground->material->shader->setColor(MAIN_COLOR,Color::white);
 		Texture* groundTexture = TextureLoader::Load("res/texture/grass.jpg");
-		auto whiteTexture = TextureLoader::GenPureWhiteTexture();
+		auto whiteTexture = TextureLoader::CreatePureWhiteTexture();
 		ground->material->shader->setTexture("MainTextureData.texture", groundTexture->textureId);
 		ground->material->shader->setColor("Specular_Color", Color::white);
 		ground->material->shader->setFloat("Specular_Intensity", 0.0f);

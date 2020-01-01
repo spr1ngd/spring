@@ -7,12 +7,12 @@ namespace spring
 	class TextureLoader;
 	class Texture 
 	{
-	private:
-		TextureLoader loader;
 	public:
 		GLuint textureId = -1;
 		const char* textureName = "";
 		const char* textureType = "";
+		unsigned int width;
+		unsigned int height;
 
 		Texture();
 		Texture(const char* filePath);

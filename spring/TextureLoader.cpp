@@ -39,7 +39,7 @@ void TextureLoader::Release()
 		(&kv)->second->Release();
 }
 
-Texture* TextureLoader::GenPureWhiteTexture()
+Texture* TextureLoader::CreatePureWhiteTexture()
 {
 	const char* textureName = "__spring__engine__pure__white__texture__";
 	Texture* texture = nullptr;
@@ -98,14 +98,39 @@ void TextureLoader::SaveToBMP(const char* filePath, int width, int height, const
 		Console::Error("save image failed.");
 }
 
+#pragma region cubemap
+
+Cubemap* TextureLoader::CreateCubemap(unsigned int width, unsigned int height, unsigned int level)
+{
+	Cubemap* cubemap = new Cubemap();
+	cubemap->level = level;
+	cubemap->width = width;
+	cubemap->height = height;
+	unsigned int cubemapId;
+	glGenTextures(1, &cubemapId);
+	glBindTexture(GL_TEXTURE_CUBE_MAP, cubemapId);
+	for (unsigned int i = 0; i < 6; i++) 
+		glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, cubemap->level, GL_RGB16F, cubemap->width, cubemap->height, 0, GL_RGB, GL_FLOAT, nullptr);
+	glTexParameteri(GL_TEXTURE_CUBE_MAP,GL_TEXTURE_WRAP_S,GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_CUBE_MAP,GL_TEXTURE_WRAP_T,GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_CUBE_MAP,GL_TEXTURE_WRAP_R,GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_CUBE_MAP,GL_TEXTURE_MIN_FILTER,GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_CUBE_MAP,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
+	glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
+	cubemap->cubemap = cubemapId;
+	cubemaps.push_back(cubemap);
+	return cubemap;
+}
+
 Cubemap* TextureLoader::LoadCubemap(const std::string filePaths) 
 {
-	const string front = "/front.png\0";
-	const string back = "/back.png\0";
-	const string left = "/left.png\0";
-	const string right = "/right.png\0";
-	const string top = "/top.png\0";
-	const string bottom = "/bottom.png\0";
+	const string extension = ".png\0";
+	const string front = "/front" + extension;
+	const string back = "/back" + extension;
+	const string left = "/left" + extension;
+	const string right = "/right" + extension;
+	const string top = "/top" + extension;
+	const string bottom = "/bottom" + extension;
 	return TextureLoader::LoadCubemap(
 		(filePaths + right).c_str(),
 		(filePaths + left).c_str(),
@@ -128,3 +153,5 @@ Cubemap* TextureLoader::LoadCubemap(const char* right, const char* left, const c
 	cubemaps.push_back(result);
 	return result;
 }
+
+#pragma endregion

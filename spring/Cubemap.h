@@ -10,6 +10,9 @@ namespace spring
 	{
 	public:
 		GLuint cubemap;
+		unsigned int level;
+		unsigned int width;
+		unsigned int height;
 
 	public:
 		Cubemap();

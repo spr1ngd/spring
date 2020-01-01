@@ -24,7 +24,8 @@ namespace spring
 		static void SaveToBMP(const char* filepath);
 
 	public:
-		static Texture* GenPureWhiteTexture();
+		static Texture* CreatePureWhiteTexture();
+		static Cubemap* CreateCubemap(unsigned int width,unsigned int height,unsigned int level);
 		static void Caching(const char* filePath ,Texture* texture);
 		static bool IsExist(const char* filePath ,Texture* texture);
 		static void Release();

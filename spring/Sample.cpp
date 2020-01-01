@@ -4,6 +4,7 @@
 #include "skybox.h"
 #include "instancedtechnology.h"
 #include "physically_based_rendering.h"
+#include "physicsbasedrendering.h"
 
 using namespace spring;
 using namespace spring::editor;
@@ -58,11 +59,13 @@ void Sample::Awake()
 	if (renderSkybox) 
 	{ 
 		Material* skyboxMaterial = new Material("res/shader/skybox/6 Sided.vs", "res/shader/skybox/6 Sided.fs");
-		auto cubemap = TextureLoader::LoadCubemap("res/texture/skybox/night");
-		skybox = new class::Skybox(skyboxMaterial, *cubemap);
+		auto cubemap = TextureLoader::LoadCubemap("res/texture/skybox/nature");
+		//cubemap = PhysicsBasedRendering::CubemapConvolution(cubemap);
+		skybox = new class::Skybox(skyboxMaterial, cubemap);
+		skybox->name = "__SKYBOX__";
 		skybox->Init();
 	}
-
+	
 	Light* light = createLight(Light::Type::Directional, Color(255, 244, 214, 255), 3.0f, Vector3(10.0f, 10.0f, 20.0f), Vector3::down); light->shadowType = Light::NoShadow;
 	Light* pointLigh1 = createLight(Light::Type::Directional, Color(255, 244, 214, 255), 2.4f, Vector3(10.0f, -10.0f, 20.0f), Vector3::left); pointLigh1->shadowType = Light::NoShadow;
 	Light* pointLigh2 = createLight(Light::Type::Directional, Color(255, 244, 214, 255), 1.8f, Vector3(-10.0f, -10.0f, 20.0f), Vector3::right); pointLigh2->shadowType = Light::NoShadow;

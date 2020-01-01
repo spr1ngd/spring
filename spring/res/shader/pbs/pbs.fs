@@ -3,7 +3,7 @@
 out vec4 FragColor;
 
 #define LIGHT_POINT_COUNT 4
-#define PI 3.14159
+#define PI 3.14159265359
 
 struct DirectionalLight
 {

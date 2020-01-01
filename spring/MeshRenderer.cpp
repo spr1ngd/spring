@@ -53,14 +53,22 @@ void MeshRenderer::Render()
 
 void MeshRenderer::Render(Camera* camera) 
 {
+	if (!camera->cullingMask->contains(this->layer))
+		return;
+	glm::mat4 view = camera->GetViewMatrix();
+	glm::mat4 projection;
+	if (this->layer == Layer::UI) projection = camera->Get2DProjection();
+	else projection = camera->GetProjectionMatrix();
+	this->Render(view, projection);
+}
+
+void MeshRenderer::Render(glm::mat4 view, glm::mat4 projection)
+{
 	if (this->material == nullptr)
 	{
 		Console::Warning("can not render skybox without skybox material,please assign a sky box material.");
 		return;
 	}
-
-	if (!camera->cullingMask->contains(this->layer))
-		return;
 
 	this->material->EnableAlphaTest();
 	this->material->EnableAlphaBlend();
@@ -79,6 +87,7 @@ void MeshRenderer::Render(Camera* camera)
 			this->material->shader->setTexture(MAIN_TEX, textures[0].textureId);
 		}
 
+		// TODO: if model's transform data does not change , model matrix is necessary to recalculate
 		glm::mat4 model =
 			glm::translate(glm::mat4(1.0), glm::vec3(this->transform->position.x, this->transform->position.y, this->transform->position.z)) *
 			glm::rotate(glm::mat4(1.0f), glm::radians(this->transform->GetEulerangle().z), glm::vec3(0.0f, 0.0f, 1.0f)) *
@@ -86,10 +95,6 @@ void MeshRenderer::Render(Camera* camera)
 			glm::rotate(glm::mat4(1.0f), glm::radians(this->transform->GetEulerangle().y), glm::vec3(0.0f, 1.0f, 0.0f)) *
 			glm::scale(glm::mat4(1.0f), glm::vec3(this->transform->scale.x, this->transform->scale.y, this->transform->scale.z));
 		glm::mat4 nm = glm::inverseTranspose(model);
-		glm::mat4 view = camera->GetViewMatrix();
-		glm::mat4 projection;
-		if (this->layer == Layer::UI) projection = camera->Get2DProjection();
-		else projection = camera->GetProjectionMatrix();
 		this->material->shader->setMat4(MATRIX_M, model);
 		this->material->shader->setMat4(MATRIX_NM, nm);
 		this->material->shader->setMat4(MATRIX_V, view);

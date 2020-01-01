@@ -27,5 +27,6 @@ namespace spring
 		virtual void Init();
 		void Render() override;
 		virtual void Render( Camera* camera );
+		virtual void Render( glm::mat4 view ,glm::mat4 projection);
 	};
 }

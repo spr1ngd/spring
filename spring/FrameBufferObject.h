@@ -24,6 +24,7 @@ namespace spring
 		FrameBufferObject( int width,int height,GLenum attachment,int level = 0);
 
 		void Bind();
+		void CubemapCapture(unsigned int index);
 		void Unbind();
 		void Delete();
 

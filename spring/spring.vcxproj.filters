@@ -127,6 +127,12 @@
     <Filter Include="sample">
       <UniqueIdentifier>{bcdd2a7f-d5bd-4a1f-a2f5-fa51b688f9aa}</UniqueIdentifier>
     </Filter>
+    <Filter Include="头文件\PBR">
+      <UniqueIdentifier>{51658189-b7f3-4937-a012-4a7de170ae81}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\PBR">
+      <UniqueIdentifier>{4988deb2-a691-4547-86f0-2cd5f7c2f063}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="spring.rc">
@@ -403,6 +409,9 @@
     <ClInclude Include="physically_based_rendering.h">
       <Filter>sample</Filter>
     </ClInclude>
+    <ClInclude Include="PhysicsBasedRendering.h">
+      <Filter>头文件\PBR</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Primitive.cpp">
@@ -656,6 +665,9 @@
     </ClCompile>
     <ClCompile Include="physically_based_rendering.cpp">
       <Filter>sample</Filter>
+    </ClCompile>
+    <ClCompile Include="PhysicsBasedRendering.cpp">
+      <Filter>源文件\PBR</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

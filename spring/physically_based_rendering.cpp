@@ -17,7 +17,7 @@ physically_based_rendering::physically_based_rendering()
 void physically_based_rendering::Awake() 
 {
 	if (!this->enabled)
-		return;
+		return; 
 
 	ModelLoader* loader = new ModelLoader(); // todo : replaced model loader by resources manager
 	loader->Load("res/model/obj/sphere.obj");

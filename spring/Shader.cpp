@@ -319,7 +319,7 @@ void Shader::setOffset(const char* name, Vector2 offset)
 	}
 }
 
-void Shader::setCubemap(const char* name, Cubemap cubemap)
+void Shader::setCubemap(const char* name, Cubemap* cubemap)
 {
 	GLuint location = glGetUniformLocation(this->program,name);
 	auto pair = this->cubemaps.find(location);
@@ -390,17 +390,17 @@ void Shader::setShaderValues()
 		glUniform2fv(offsetLocation, 1, offset);
 	}
 
-	for (std::pair<GLuint, Cubemap> pair : this->cubemaps) 
+	for (std::pair<GLuint, Cubemap*> pair : this->cubemaps) 
 	{
 		glUniform1i(pair.first, 0);
-		glBindTexture(GL_TEXTURE_CUBE_MAP,pair.second.cubemap);
+		glBindTexture(GL_TEXTURE_CUBE_MAP,pair.second->cubemap);
 	}
 }
 
 void Shader::setEngineEnvironment() 
 {
 	if( this->textures.size() <= 0 )
-		this->setTexture("MainTextureData.texture", TextureLoader::GenPureWhiteTexture()->textureId);
+		this->setTexture("MainTextureData.texture", TextureLoader::CreatePureWhiteTexture()->textureId);
 
 	// ambient setting
 	this->setColor(AMBIENT_COLOR,Environment::ambient.color);
@@ -510,7 +510,29 @@ void Shader::setLighting()
 	}
 }
 
-#pragma region caching | flash
+#pragma region loading | caching | flash
+
+Shader* Shader::Load(const char* vertexShaderName, const char* fragmentShaderName)
+{
+	const char* pathPrefix = "res/shader/";
+	int length = strlen(pathPrefix) + 1;
+	int vsLength = length + strlen(vertexShaderName);
+	int fsLength = length + strlen(fragmentShaderName);
+	char* vs = (char*)malloc(vsLength*sizeof(char));
+	memset(vs, 0, vsLength);
+	strcat_s(vs, length + 1, pathPrefix);
+	strcat_s(vs, vsLength, vertexShaderName);
+
+	char* fs = (char*)malloc(fsLength * sizeof(char));
+	memset(fs, 0, fsLength);
+	strcat_s(fs, length + 1, pathPrefix);
+	strcat_s(fs, fsLength, fragmentShaderName);
+
+	Shader* shader = new Shader(vs, fs);
+	free(vs);
+	free(fs);
+	return shader;
+}
 
 void Shader::Caching(Shader* shader) 
 {

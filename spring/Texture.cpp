@@ -17,7 +17,7 @@ void Texture::Load(const char* filePath)
 	Texture* texture = nullptr;
 	if (!TextureLoader::IsExist(filePath, texture))
 	{
-		loader = TextureLoader();
+		auto loader = TextureLoader();
 		auto texture = loader.Load(filePath);
 		this->textureId = texture->textureId;
 		TextureLoader::Caching(filePath, this);

@@ -54,6 +54,9 @@ namespace spring
 
 		static void Caching(Shader* shader);
 		static void Flash(Shader* shader);
+	public:
+		static Shader* Load(const char* vertexShaderName,const char* fragmentShaderName);
+
 	private:
 		std::map<const char*, GLuint> locations;
 		std::map<GLenum, GLuint> shaders;
@@ -71,7 +74,7 @@ namespace spring
 		map<GLuint, glm::mat4> mat4Map;
 
 		map<GLuint, MaterialTexture> textures;
-		map<GLuint, Cubemap> cubemaps;
+		map<GLuint, Cubemap*> cubemaps;
 
 		void setShaderValues();
 		void setEngineEnvironment();
@@ -103,6 +106,6 @@ namespace spring
 		void setTexture(const char*name, GLuint texture);
 		void setTilling(const char*name, Vector2 tilling);
 		void setOffset(const char*name, Vector2 offset);
-		void setCubemap(const char*name, Cubemap cubemap);
+		void setCubemap(const char*name, Cubemap* cubemap);
 	};
 }
