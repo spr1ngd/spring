@@ -6,9 +6,15 @@ namespace spring
 	class PhysicsBasedRendering
 	{
 	public:
-		// load equirectangular map and transfer it to cubemap
+		static Cubemap* irradiance;
+		static Cubemap* prefilter;
+		static Texture* prebrdf;
+
 		static void LoadEquirectangularMap(const char* path);
-		// folding cubemap
 		static Cubemap* CubemapConvolution(Cubemap* cubemap);
+
+		
+		static Cubemap* PreFilter(Cubemap* cubemap);
+		static Texture* PreBRDF(Cubemap* cubemap);
 	};
 }

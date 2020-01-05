@@ -18,9 +18,14 @@ void FrameBufferObject::Bind()
 	glBindFramebuffer(GL_FRAMEBUFFER, this->bufferId);
 }
 
-void FrameBufferObject::CubemapCapture(unsigned int cubemapId ,unsigned int index) 
+void FrameBufferObject::BindRenderbuffer() 
 {
-	glFramebufferTexture2D(GL_FRAMEBUFFER,this->attachment,GL_TEXTURE_CUBE_MAP_POSITIVE_X + index,cubemapId,this->level);
+	glBindFramebuffer(GL_RENDERBUFFER,this->rbo);
+}
+
+void FrameBufferObject::CubemapCapture(unsigned int cubemapId ,unsigned int index, unsigned int level)
+{
+	glFramebufferTexture2D(GL_FRAMEBUFFER,this->attachment,GL_TEXTURE_CUBE_MAP_POSITIVE_X + index,cubemapId, level);
 }
 
 void FrameBufferObject::Unbind()
@@ -65,6 +70,7 @@ FrameBufferObject* FrameBufferObject::GenColorFramebuffer(int width, int height,
 
 	fbo->bufferId = framebuffer;
 	fbo->buffer = colorbuffer;
+	fbo->rbo = rbo;
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	framebuffers.push_back(fbo);
 	return fbo;
@@ -99,6 +105,7 @@ FrameBufferObject* FrameBufferObject::GenMSColorFramebuffer(int samples, int wid
 	}
 	fbo->bufferId = framebuffer;
 	fbo->buffer = colorbuffer;
+	fbo->rbo = renderbuffer;
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	framebuffers.push_back(fbo);
 	return fbo;
@@ -140,6 +147,7 @@ FrameBufferObject* FrameBufferObject::GenHDRColorFramebuffer(int width, int heig
 	}
 	fbo->bufferId = framebuffer;
 	fbo->buffers = textures;
+	fbo->rbo = renderbuffer;
 	GLuint* attachments = new GLuint[size];
 	for (unsigned int i = 0; i < size; i++)
 		attachments[i] = GL_COLOR_ATTACHMENT0 + i;

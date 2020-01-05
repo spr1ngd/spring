@@ -13,6 +13,7 @@ namespace spring
 
 	public:
 		GLuint bufferId = -1;
+		GLuint rbo = -1;
 		int width;
 		int height;
 		GLenum attachment = GL_COLOR_ATTACHMENT0;
@@ -24,7 +25,8 @@ namespace spring
 		FrameBufferObject( int width,int height,GLenum attachment,int level = 0);
 
 		void Bind();
-		void CubemapCapture(unsigned int cubemapId, unsigned int index);
+		void BindRenderbuffer();
+		void CubemapCapture(unsigned int cubemapId, unsigned int index ,unsigned int level = 0);
 		void Unbind();
 		void Delete();
 

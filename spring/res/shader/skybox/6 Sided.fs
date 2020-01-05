@@ -6,5 +6,6 @@ in vec3 V_Vertex;
 
 void main()
 {
-    FragColor = texture(Main_Cubemap,V_Vertex);
+    // FragColor = texture(Main_Cubemap,V_Vertex);
+    FragColor = textureLod(Main_Cubemap,V_Vertex,0);
 }

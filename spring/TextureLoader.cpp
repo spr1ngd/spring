@@ -100,10 +100,10 @@ void TextureLoader::SaveToBMP(const char* filePath, int width, int height, const
 
 #pragma region cubemap
 
-Cubemap* TextureLoader::CreateCubemap(unsigned int width, unsigned int height, unsigned int level)
+Cubemap* TextureLoader::CreateCubemap(unsigned int width, unsigned int height)
 {
 	Cubemap* cubemap = new Cubemap();
-	cubemap->level = level;
+	cubemap->level = 0;
 	cubemap->width = width;
 	cubemap->height = height;
 	unsigned int cubemapId;
@@ -120,6 +120,28 @@ Cubemap* TextureLoader::CreateCubemap(unsigned int width, unsigned int height, u
 	cubemap->cubemap = cubemapId;
 	cubemaps.push_back(cubemap);
 	return cubemap;
+}
+
+Cubemap* TextureLoader::CreateCubemapMipmap(unsigned int width, unsigned int height) 
+{
+	Cubemap* result = new Cubemap();
+	result->level = 0;
+	result->width = width;
+	result->height = height;
+	unsigned int cubemapId;
+	glGenTextures(1, &cubemapId);
+	glBindTexture(GL_TEXTURE_CUBE_MAP, cubemapId);
+	for (unsigned int i = 0; i < 6; i++)
+		glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, result->level, GL_RGB16F, result->width, result->height, 0, GL_RGB, GL_FLOAT, nullptr);
+	glTexParameteri(GL_TEXTURE_CUBE_MAP,GL_TEXTURE_WRAP_R,GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_CUBE_MAP,GL_TEXTURE_WRAP_S,GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_CUBE_MAP,GL_TEXTURE_WRAP_T,GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_CUBE_MAP,GL_TEXTURE_MIN_FILTER,GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_CUBE_MAP,GL_TEXTURE_MAG_FILTER,GL_LINEAR_MIPMAP_LINEAR);
+	glGenerateMipmap(GL_TEXTURE_CUBE_MAP);
+	result->cubemap = cubemapId;
+	cubemaps.push_back(result);
+	return result;
 }
 
 Cubemap* TextureLoader::LoadCubemap(const std::string filePaths) 

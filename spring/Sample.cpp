@@ -65,8 +65,16 @@ void Sample::Awake()
 		skybox->name = "__SKYBOX__";
 		skybox->Init();
 		// refactor these code to environment class.
-		auto irradianceCubemap = PhysicsBasedRendering::CubemapConvolution(cubemap);
-		skybox->cubemap = irradianceCubemap;
+		Cubemap* irradianceCubemap = PhysicsBasedRendering::CubemapConvolution(cubemap);
+		PhysicsBasedRendering::irradiance = irradianceCubemap;
+
+		Cubemap* prefilter = PhysicsBasedRendering::PreFilter(cubemap);
+		PhysicsBasedRendering::prefilter = prefilter;
+
+		Texture* prebrdf = PhysicsBasedRendering::PreBRDF(cubemap);
+		PhysicsBasedRendering::prebrdf = prebrdf;
+
+		skybox->SetCubemap(prefilter);
 		Skybox::irradianceCubemap = irradianceCubemap;
 	}
 	
