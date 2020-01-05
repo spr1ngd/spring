@@ -24,6 +24,8 @@ namespace spring
 		
 		MeshRenderer();
 		MeshRenderer(Material* mateiral);
+		~MeshRenderer();
+
 		virtual void Init();
 		void Render() override;
 		virtual void Render( Camera* camera );

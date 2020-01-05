@@ -71,8 +71,8 @@ void OrbitCamera::Rotate()
 	if (!this->enableRotate)
 		return;
 
-	float minY = -80.0f;
-	float maxY = 20.0f;
+	float minY = -90.0f;
+	float maxY = 90.0f;
 
 	x -= Input::mouseDelta.x / 10.0f * rotateSpeed;
 	y += Input::mouseDelta.y / 10.0f * rotateSpeed;

@@ -9,8 +9,9 @@ namespace spring
 	class Skybox : public MeshRenderer
 	{
 	private:
-		Cubemap* cubemap;
 	public:
+		static Cubemap* irradianceCubemap;
+		Cubemap* cubemap;
 		Skybox(Material* material,Cubemap* cubmap);
 
 		void SetCubemap(Cubemap* cubemap);

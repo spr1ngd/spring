@@ -16,7 +16,7 @@ class Example : public Behaviour
 private:
 	bool enabled = false;
 	bool drawGround = true;
-	bool drawFourFrame = false;
+	bool drawFourFrame = true;
 	bool drawText = true;
 	bool drwaAirCraftNormal = true;
 

@@ -5,6 +5,8 @@
 
 using namespace spring;
 
+Cubemap* spring::Skybox::irradianceCubemap;
+
 Skybox::Skybox(Material* material,Cubemap* cubemap) 
 {
 	ModelLoader* loader = new ModelLoader();

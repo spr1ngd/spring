@@ -25,6 +25,7 @@
 #include "axishelper.h"
 #include "cursor.h"
 #include "input.h"
+#include "physicsbasedrendering.h"
 
 #include "orbitcamera.h"
 #include "firstplayercamera.h"

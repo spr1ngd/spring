@@ -28,6 +28,8 @@ namespace spring
 		Node( const char*nodeName );
 
 	public:
+		~Node();
+
 		template <typename T>
 		Node* GetNode(T nodeType);
 

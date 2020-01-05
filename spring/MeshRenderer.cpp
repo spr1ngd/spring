@@ -14,6 +14,11 @@ MeshRenderer::MeshRenderer(Material* mateiral)
 	this->material = mateiral;
 }
 
+MeshRenderer::~MeshRenderer() 
+{
+
+}
+
 void MeshRenderer::Init() 
 {
 	if (this->material == nullptr)

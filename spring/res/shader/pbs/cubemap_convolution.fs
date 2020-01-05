@@ -20,13 +20,12 @@ void main()
     {
         for( float theta = 0.0 ; theta < 0.5 * PI ; theta += SAMPLE_DELTA)
         {
-            vec3 spherePos = vec3( cos(phi) * sin(theta),sin(phi)*sin(theta),sin(theta));
+            vec3 spherePos = vec3( cos(phi) * cos(theta),sin(phi)*cos(theta),sin(theta));
             vec3 wPos = spherePos.x * right + spherePos.y * up + spherePos.z * N;
             irradiance += texture(environmentCubemap,wPos).rgb * cos(theta) * sin(theta);
             samples++;   
         }
     }
     irradiance = PI * irradiance * (1.0 / samples);
-    // FragColor = vec4(irradiance,1.0);
-    FragColor = vec4(1.0,0.0,0.0,1.0);
+    FragColor = vec4(irradiance,1.0);
 }

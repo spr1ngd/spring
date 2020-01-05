@@ -18,9 +18,9 @@ void FrameBufferObject::Bind()
 	glBindFramebuffer(GL_FRAMEBUFFER, this->bufferId);
 }
 
-void FrameBufferObject::CubemapCapture(unsigned int index) 
+void FrameBufferObject::CubemapCapture(unsigned int cubemapId ,unsigned int index) 
 {
-	glFramebufferTexture2D(GL_FRAMEBUFFER,this->attachment,GL_TEXTURE_CUBE_MAP_POSITIVE_X + index,this->bufferId,this->level);
+	glFramebufferTexture2D(GL_FRAMEBUFFER,this->attachment,GL_TEXTURE_CUBE_MAP_POSITIVE_X + index,cubemapId,this->level);
 }
 
 void FrameBufferObject::Unbind()

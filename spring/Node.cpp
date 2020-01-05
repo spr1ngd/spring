@@ -17,7 +17,19 @@ Node::Node(const char* nodeName)
 	this->name = nodeName;
 	this->transform = new Transform();
 	allNodes.push_back(this);
-	// todo : how to remove this node?
+}
+
+Node::~Node() 
+{
+	// todo : recalculate node's hierarchy relationship
+	for (auto it = allNodes.begin(); it != allNodes.end(); it++) 
+	{
+		if (*it == this)
+		{
+			allNodes.erase(it);
+			break;
+		}
+	}
 }
 
 template <typename T>

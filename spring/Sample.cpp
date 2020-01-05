@@ -55,15 +55,19 @@ void Sample::Awake()
 #pragma region directional light 
 
 	Environment::ambient.color = Color(75, 75, 75, 255);
-	 
+
 	if (renderSkybox) 
 	{ 
 		Material* skyboxMaterial = new Material("res/shader/skybox/6 Sided.vs", "res/shader/skybox/6 Sided.fs");
 		auto cubemap = TextureLoader::LoadCubemap("res/texture/skybox/nature");
-		//cubemap = PhysicsBasedRendering::CubemapConvolution(cubemap);
+		// auto cubemap = TextureLoader::LoadCubemap("res/texture/skybox/night");
 		skybox = new class::Skybox(skyboxMaterial, cubemap);
 		skybox->name = "__SKYBOX__";
 		skybox->Init();
+		// refactor these code to environment class.
+		auto irradianceCubemap = PhysicsBasedRendering::CubemapConvolution(cubemap);
+		skybox->cubemap = irradianceCubemap;
+		Skybox::irradianceCubemap = irradianceCubemap;
 	}
 	
 	Light* light = createLight(Light::Type::Directional, Color(255, 244, 214, 255), 3.0f, Vector3(10.0f, 10.0f, 20.0f), Vector3::down); light->shadowType = Light::NoShadow;
@@ -147,9 +151,8 @@ void Sample::Awake()
 void Sample::Update() 
 {
 	timer += Timer::deltaTime;
-	if( renderSkybox )
+	if (renderSkybox)
 		skybox->transform->position = Camera::main->transform->position;
-
 	if (visible) 
 	{
 		float angleDelta = speed * Timer::deltaTime;
