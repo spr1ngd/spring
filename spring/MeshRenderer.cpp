@@ -75,6 +75,11 @@ void MeshRenderer::Render(glm::mat4 view, glm::mat4 projection)
 		return;
 	}
 
+	if (this->visible == false)
+	{
+		return;
+	}
+
 	this->material->EnableAlphaTest();
 	this->material->EnableAlphaBlend();
 	this->material->EnableDepthTest();

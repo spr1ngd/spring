@@ -24,6 +24,7 @@ namespace spring
 		static void SaveToBMP(const char* filepath);
 
 	public:
+		static Texture* CreateTexture(unsigned int width,unsigned int height ,unsigned int level = 0);
 		static Texture* CreatePureWhiteTexture();
 		static Cubemap* CreateCubemap(unsigned int width,unsigned int height);
 		static Cubemap* CreateCubemapMipmap(unsigned int width,unsigned int height);

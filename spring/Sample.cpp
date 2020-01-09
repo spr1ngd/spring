@@ -76,6 +76,9 @@ void Sample::Awake()
 
 		skybox->SetCubemap(prefilter);
 		Skybox::irradianceCubemap = irradianceCubemap;
+		Skybox::prefilter = prefilter;
+		Skybox::prebrdf = prebrdf;
+		skybox->visible = true;
 	}
 	
 	Light* light = createLight(Light::Type::Directional, Color(255, 244, 214, 255), 3.0f, Vector3(10.0f, 10.0f, 20.0f), Vector3::down); light->shadowType = Light::NoShadow;
@@ -159,8 +162,11 @@ void Sample::Awake()
 void Sample::Update() 
 {
 	timer += Timer::deltaTime;
+	skybox->material->shader->setFloat("time", timer);
 	if (renderSkybox)
+	{
 		skybox->transform->position = Camera::main->transform->position;
+	}
 	if (visible) 
 	{
 		float angleDelta = speed * Timer::deltaTime;

@@ -2,6 +2,7 @@
 #include "springengine.h"
 #include "gui.h"
 #include "console.h"
+#include "fullscreenrenderer.h"
 
 using namespace spring;
 using namespace spring::ui;
@@ -11,6 +12,7 @@ Cubemap* PhysicsBasedRendering::prefilter;
 Texture* PhysicsBasedRendering::prebrdf;
 
 MeshRenderer* ground;
+float shaderTimer = 0.0f;
 bool init = false;
 
 void DrawGroundxxx()
@@ -120,18 +122,18 @@ Cubemap* PhysicsBasedRendering::PreFilter(Cubemap* cubemap)
 
 	FrameBufferObject* fbo = FrameBufferObject::GenColorFramebuffer(cubemapSize, cubemapSize);
 
-	fbo->BindRenderbuffer();
+	fbo->Bind();
 	for (unsigned int level = 0; level < mipmapLevel; level++) 
 	{
 		float roughness = static_cast<float>(level) / static_cast<float>((mipmapLevel - 1));
 		meshrenderer->material->shader->setFloat("roughness", roughness);
 		Console::WarningFormat("roughness = %f",roughness);
 
-		unsigned int mipmapWidth = static_cast<int>(cubemapSize * Mathf::Pow(0.5f, (float)level));
+		unsigned int mipmapWidth  = static_cast<int>(cubemapSize * Mathf::Pow(0.5f, (float)level));
 		unsigned int minmapHeight = static_cast<int>(cubemapSize * Mathf::Pow(0.5f,(float)level));
+		fbo->BindRenderbuffer();
 		glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, mipmapWidth, minmapHeight);
 		glViewport(0, 0, mipmapWidth, minmapHeight);
-		fbo->Bind();
 		for (unsigned int i = 0; i < 6; i++) 
 		{
 			fbo->CubemapCapture(result->cubemap, i,level);
@@ -140,10 +142,7 @@ Cubemap* PhysicsBasedRendering::PreFilter(Cubemap* cubemap)
 			meshrenderer->Render(views[i], projection);
 		}
 	}
-	fbo->Unbind(); 
-
-	/*DrawGroundxxx();
-	ground->material->shader->setTexture(MAIN_TEX,fbo->buffer );*/
+	fbo->Unbind();
 
 	delete prefilterMaterial;
 	delete prefilterShader;
@@ -153,5 +152,28 @@ Cubemap* PhysicsBasedRendering::PreFilter(Cubemap* cubemap)
 
 Texture* PhysicsBasedRendering::PreBRDF(Cubemap* cubemap)
 {
-	return nullptr;
+	unsigned int textureSize = 512;
+	Texture* result = TextureLoader::CreateTexture(textureSize,textureSize,0); // TODO : replace GL_RGB TO GL_RG16F
+
+	Shader* preBRDFShader = Shader::Load("pbs/prebrdf.vs","pbs/prebrdf.fs");
+	Material* preBRDFMaterial = new Material(preBRDFShader);
+
+	// render a fullscreen quad
+	FullScreenRenderer* fsRenderer = new FullScreenRenderer();
+	fsRenderer->Init();
+	fsRenderer->material = preBRDFMaterial;
+
+	glViewport(0, 0, textureSize, textureSize);
+	FrameBufferObject* fbo = FrameBufferObject::GenColorFramebuffer(textureSize, textureSize, 0);
+	fbo->Bind();
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glClearColor(1.0f,0.0f,0.0f,1.0f);
+	fsRenderer->Render(glm::mat4(0.0),glm::mat4(0.0));
+	fbo->Unbind();
+
+	result->textureId = fbo->buffer;
+	delete preBRDFShader;
+	delete preBRDFMaterial;
+	delete fsRenderer;
+	return result;
 }

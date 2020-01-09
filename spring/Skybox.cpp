@@ -6,6 +6,8 @@
 using namespace spring;
 
 Cubemap* spring::Skybox::irradianceCubemap;
+Cubemap* spring::Skybox::prefilter;
+Texture* spring::Skybox::prebrdf;
 
 Skybox::Skybox(Material* material,Cubemap* cubemap) 
 {

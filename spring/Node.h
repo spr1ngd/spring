@@ -16,7 +16,7 @@ namespace spring
 	private:
 		vector<Node*> nodes;
 	public:
-		bool visible;
+		bool visible = true;
 		Layer layer = Layer::Default;
 
 		Node* parent;

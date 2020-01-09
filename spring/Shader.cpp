@@ -392,7 +392,8 @@ void Shader::setShaderValues()
 
 	for (std::pair<GLuint, Cubemap*> pair : this->cubemaps) 
 	{
-		glUniform1i(pair.first, 0);
+		glUniform1i(pair.first, textureIndex);
+		glActiveTexture(GL_TEXTURE0 + textureIndex++);
 		glBindTexture(GL_TEXTURE_CUBE_MAP,pair.second->cubemap);
 	}
 }

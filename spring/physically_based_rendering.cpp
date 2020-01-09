@@ -27,19 +27,21 @@ void physically_based_rendering::Awake()
 	const char* smoothness = "roughness";
 	const char* ambient = "ao";
 
-	Colorf albedoValue = Colorf(1.0f, 0.0f, 0.0f, 1.0f);
+	Colorf albedoValue = Colorf(.6f, .6f, .6f, 1.0f);
 	Colorf ambientValue = Colorf::white;
+
+	
 
 	for (int x = 0; x < 10; x++) 
 	{
 		for (int y = 0; y < 10; y++) 
 		{
 			Vector3 pos =(Vector3((float)x, (float)y, 0.0f) + Vector3(-5.0f, -5.0f, 0.0f)) * 3.0f;
-
-			Shader* pbs = Shader::Load("pbs/pbs.vs","pbs/pbs.fs");
+			Shader* pbs = Shader::Load("pbs/pbs.vs", "pbs/pbs.fs");
 			Shader* pbsWithIrradiance = Shader::Load("pbs/pbs.vs", "pbs/pbs(irradiance).fs");
+			Shader* ibl = Shader::Load("pbs/pbs.vs", "pbs/pbs(ibl).fs");
 
-			Material* pbsMat = new Material(pbsWithIrradiance);
+			Material* pbsMat = new Material(ibl);
 			// Material* pbs = new Material("res/shader/diffuse/diffuse.vs", "res/shader/diffuse/diffuse.fs");
 			pbsMat->shader->receiveShadow = false;
 
@@ -47,6 +49,9 @@ void physically_based_rendering::Awake()
 			float metalValue = y * 0.1f;
 
 			pbsMat->shader->setCubemap("irradianceMap", Skybox::irradianceCubemap);
+			pbsMat->shader->setCubemap("prefilterMap", Skybox::prefilter);
+			pbsMat->shader->setTexture("prebrdfMap", Skybox::prebrdf->textureId);
+
 			pbsMat->shader->setColor(albedo, albedoValue); // 反射率
 			pbsMat->shader->setFloat(metal, metalValue); // 金属度
 			pbsMat->shader->setFloat(smoothness,1.0f - smoothnessValue); //光滑度
@@ -55,7 +60,7 @@ void physically_based_rendering::Awake()
 			MeshRenderer* meshRenderer = new MeshRenderer(pbsMat);
 			meshRenderer->meshes = loader->meshes;
 			meshRenderer->Init();
-			meshRenderer->name = "pbs";
+			meshRenderer->name = "pbs(ibl)";
 			meshRenderer->transform->SetPosition(pos);
 			spheres.push_back(meshRenderer);
 		}

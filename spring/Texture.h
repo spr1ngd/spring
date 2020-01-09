@@ -13,6 +13,7 @@ namespace spring
 		const char* textureType = "";
 		unsigned int width;
 		unsigned int height;
+		unsigned int mipmapLevel;
 
 		Texture();
 		Texture(const char* filePath);

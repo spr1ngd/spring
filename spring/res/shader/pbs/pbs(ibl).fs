@@ -2,31 +2,165 @@
 
 out vec4 FragColor;
 
+#define LIGHT_POINT_COUNT 4
+#define PI 3.14159265359
+
+struct DirectionalLight
+{
+    vec3 position;
+    vec4 color;
+    float intensity;
+};
+
+uniform vec3 CameraPosition;
+uniform DirectionalLight dirLights[LIGHT_POINT_COUNT];
+
+uniform samplerCube irradianceMap;
+uniform samplerCube prefilterMap;
+uniform sampler2D prebrdfMap;
+uniform vec4 albedo; // 反射率
+uniform float metal; // 金属度：用于菲涅尔方程式的
+uniform float roughness;// 粗糙度：用于法线分布函数和几何函数，用来反映微平面的法线分布和微平面互相产生遮蔽的比率
+uniform vec4 ao; // 环境光照(环境光遮蔽)
+
+in vec4 WorldPos;
+in vec3 Normal;
+in vec2 Texcoord;
+
+// 求解反射率方程
+// calculate BRDF diffuse reflection part 漫反射部分
+vec3 BRDFDiffuse(vec3 kd)
+{
+    return kd*albedo.rgb/PI;
+}
+
+// calculate D (normal distribution functoin) 法线分布函数
+float NDFGGX(vec3 N,vec3 H,float roughness)
+{
+    float NdotH = max(0.0,dot(N,H));
+    float ss = pow(roughness,2);
+    float numerator = ss * ss;
+    float denominator = PI * pow( pow(NdotH,2) * (numerator- 1) + 1 ,2 );
+    return numerator / denominator;
+}
+
+// calculate G (geometry functoin) 几何函数 ： 包含几何遮蔽和几何阴影，以及直接光照和间接光照（IBL Image Based Lighting）
+
+// direct lighting mode 直接光照
+float roughnessInDirectLighting( float roughness )
+{
+    float s1 = roughness + 1;
+    float numerator = pow(s1,2);
+    return numerator / 8;
+}
+// image based lighting mode 间接关照
+float roughnessInImageBasedLighting( float roughness )
+{
+    return pow(roughness,2) / 2;
+}
+// parameters : N(法线),V/L(视角方向或者入射方向),k(光滑度相对于直接关照和间接关照的重映射)
+float GeometrySchlickGGX(vec3 N,vec3 VL,float k)
+{
+    float NDotVL = max(0.0,dot(N,VL));
+    float denominator = NDotVL * (1-k) + k;
+    return NDotVL / denominator;
+}
+
+// Smith法纳入几何遮蔽（视角方向）和几何阴影（光入射方向）
+// parameters : 
+float GeometrySmith( vec3 N,vec3 V,vec3 L,float k)
+{
+    float geometryObstruction = GeometrySchlickGGX(N,V,k);  // 几何遮蔽
+    float geometryShadowing = GeometrySchlickGGX(N,L,k);    // 几何阴影
+    return geometryObstruction * geometryShadowing;
+}
+
+// calculate F (fresnel equation) 菲涅尔方程 : 引入金属度参数来表达金属工作流的概念
+// parameters : N(法线),H(V和L的中间向量) metal(金属度) surfaceColor(表面颜色)
+vec3 FreshnelSchlick(vec3 N,vec3 H)
+{
+    vec3 F0 = vec3(0.04);//基础反射率
+    F0 = mix(F0,albedo.rgb,metal);
+
+    float NdotH = max(0.0,dot(N,H));
+    return F0 + (1-F0)*pow(1-NdotH,5.0);
+}
+
+vec3 FreshnelSchlickRoughness( vec3 N,vec3 H ,float roughess )
+{
+    vec3 F0 = vec3(0.04);//基础反射率
+    F0 = mix(F0,albedo.rgb,metal);
+    float NdotH = max(0.0,dot(N,H));
+    return F0 + (max(vec3(1.0 -roughess),F0)-F0)*pow(1-NdotH,5.0);
+}
+
+// calculate Balancing Coefficient BRDF配平系数
+float BRDFCoefficient( vec3 N,vec3 L,vec3 V )
+{
+    float NdotL = max(0.0,dot(N,L));
+    float NdotV = max(0.0,dot(N,V));
+    return 4 * NdotL * NdotV + 0.001; // 防止为0
+}
+
+// calculate BRDF specular reflection part 镜面反射部分 (包含D,G,F三项公式,以及分母配平公式)
+vec3 BRDFSpecular(vec3 N,vec3 H,vec3 V,vec3 L)
+{
+    float D = NDFGGX(N,H,roughness);
+    float kDirect = roughnessInDirectLighting(roughness);
+    float kIBL = roughnessInImageBasedLighting(roughness);
+    float G = GeometrySmith(N,V,L,kDirect);//基于直接光照的几何函数
+    vec3 F = FreshnelSchlick(N,H);
+    float coefficient = BRDFCoefficient(N,L,V);
+    vec3 BRDF = D*G*F/coefficient;
+    return BRDF;
+}
+
+// 积分过程，每个像素，基于上述所有运算步骤对每束入射光进行积分求解。
 void main()
 {
-    // diffuse part IBL漫反射部分
+    vec3 N = normalize(Normal);
+    vec3 V = normalize(CameraPosition - WorldPos.xyz);
+    vec3 R = reflect(-V,N);
 
-    // 1. 获取辐照度图(立方体纹理格式)，可实现将等距柱状投影图渲染到立方体纹理；
-    // 2. 对立方体纹理预卷积，预计算朝向N的半球中每个方向wi的总平均辐射率；
-    // 3. 利用法线对预计算辐照图纹理结构采样，并与支持光照的pbr算法结合完成ibl漫反射部分
+    vec3 Lo = vec3(0.0);
+    for( int i = 0 ; i < LIGHT_POINT_COUNT; i++ )
+    {
+        DirectionalLight light = dirLights[i];
+        vec4 radiance = light.color * light.intensity; // 光照颜色可考虑衰减参数(平行光目前不考虑衰减)
+        vec3 L = normalize(light.position - WorldPos.xyz);
+        vec3 H = normalize(V + L);
 
-    // specular part IBL镜面反射部分
+        vec3 F = FreshnelSchlick(N,V);
+        vec3 ks = F;
+        vec3 kd = vec3(1.0) - ks;
+        kd *= (1.0-metal); // 金属不具有漫反射特性
 
-    // 利用Epic Games的分割求和近似法实现镜面部分积分卷积
-    // 1. 分割求和近似法将BRDF镜面部分分为 预滤波环境贴图和BRDF预积分
-    // 预滤波卷积
-    // 2.1 预滤波环境贴图采用GGX重要性采样公式（蒙特卡洛积分和低差异序列） 
-    // 2.2 低差异序列算法
-    // 2.3 在循环中使用低差异序列生成采样向量，并对辐照度图进行采样
-    // 2.4 按照不同级别的粗糙度将预滤波结果存储到mipmap的预计算环境贴图中
-    // 2.5 处理预滤波卷积的伪像（高粗糙度立方体纹理接缝线性插值、预滤波卷积亮点）
-    // BRDF预积分
-    // 3.1 对BRDF方程进行配平、拆解得出化解公式
-    // 3.2 对化解后的公式进行预积分并存储到16位浮点格式为GL_RG16的帧缓存中
-    // 合并预滤波卷积和BRDF预积分
-    // 4. 计算菲涅尔系数F，合并计算出镜面反射部分结果
-    
-    // IBL最终计算
+        vec3 d = BRDFDiffuse(kd);
+        vec3 s = BRDFSpecular(N,H,V,L);
+        float NdotL = max(0.0,dot(N,L));
+        vec3 mix = (d + s) * radiance.rgb * NdotL;
+        Lo += mix;
+    }
 
-    // 将镜面计算结果与漫反射部分合并
+    vec3 ks = FreshnelSchlickRoughness(N,V,roughness); // 给菲涅尔反射加入粗糙度影响因子
+    vec3 kd = vec3(1.0) - ks;
+    kd *= (vec3(1.0)-metal);
+    vec3 irradiance = texture(irradianceMap,N).rgb;
+    vec3 diffuse = irradiance * albedo.rgb;
+
+    // ibl specular
+    const float PREFILTER_MAX_LOD = 4.0;
+    vec3 prefilterColor = textureLod(prefilterMap,R,roughness * PREFILTER_MAX_LOD).rgb;
+    float NdotV = max(0.0,dot(N,V));
+    vec2 prefilterUV = vec2(NdotV,roughness);
+    vec2 brdf = texture(prebrdfMap,prefilterUV).rg;
+    vec3 F = FreshnelSchlickRoughness(N,V,roughness);
+    vec3 specularColor = F * brdf.r + vec3(brdf.g);
+    vec3 specular = prefilterColor * specularColor;
+
+    vec3 ambient = ( kd * diffuse + specular) * ao.rgb; 
+    vec3 color = ambient + Lo;
+    color = color / (color + vec3(1.0));
+    color = pow(color,vec3(1.0/2.2));
+    FragColor = vec4(color,1.0);
 }

@@ -26,6 +26,7 @@ namespace spring
 
 		void Bind();
 		void BindRenderbuffer();
+		void CaptureMipmap(unsigned int level=0);
 		void CubemapCapture(unsigned int cubemapId, unsigned int index ,unsigned int level = 0);
 		void Unbind();
 		void Delete();

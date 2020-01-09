@@ -23,6 +23,11 @@ void FrameBufferObject::BindRenderbuffer()
 	glBindFramebuffer(GL_RENDERBUFFER,this->rbo);
 }
 
+void FrameBufferObject::CaptureMipmap(unsigned int level/* =0 */) 
+{
+	glFramebufferTexture2D(GL_FRAMEBUFFER,this->attachment, GL_TEXTURE_2D, this->buffer, level);
+}
+
 void FrameBufferObject::CubemapCapture(unsigned int cubemapId ,unsigned int index, unsigned int level)
 {
 	glFramebufferTexture2D(GL_FRAMEBUFFER,this->attachment,GL_TEXTURE_CUBE_MAP_POSITIVE_X + index,cubemapId, level);

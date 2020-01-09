@@ -3,6 +3,24 @@
 
 A LONG LONG LONG , VERY LONG TRIP.
 
+## TODO: 2020.01.09
+
+- physisc-based rendering system
+    - support all types of lights(directional light/spot light/point light)
+    - support all types of texture
+    
+- support multi rendering mode 
+    - forward rendering mode
+    - deferred rendering mode
+
+- build spring engine
+
+- shader system 
+    - independent shader compiler
+        - support compiling in runtime(recompileing shader and replacing running shader instance)
+        - add error shader , replace shader that encountering error when compiling shader by error shader.
+    - support time type(such as unity shader)
+
 ## TODO: 2019.12.09
 
 - immediate mode graphic user interface
@@ -97,3 +115,7 @@ A LONG LONG LONG , VERY LONG TRIP.
 -   pbr(basic version)
     
     ![pbr_without_antialiasing](/screenshot/spring%20engine%20realtime%20screenshot_03.png)
+
+-   ibl
+    
+    ![ibl_without_antialiasing](/screenshot/spring%20engine%20realtime%20screenshot_04.jpg)
