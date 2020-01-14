@@ -3,6 +3,8 @@
 
 using namespace spring;
 
+class::spring::PostProcessing* PostProcessing::postprocessing;
+
 PostProcessing::PostProcessing()
 {
 	this->antiAliasing = new AntiAliasing();
@@ -41,7 +43,7 @@ void PostProcessing::Process()
 	if (nullptr == this->fsRenderer)
 		return;
 	this->Blit();
-	this->fsRenderer->material->shader->setTexture(MAIN_TEX, this->srcFramebuffer->bufferId);
+	this->fsRenderer->material->shader->setTexture(MAIN_TEX, this->dstFramebuffer->buffer);
 	//this->fsRenderer->material->shader->setTexture(MAIN_TEX, this->srcFramebuffer->buffers[0]);
 	unsigned int* postProcessingLayer = new unsigned int[1]{Layer::PostProcessing};
 	Camera::current = Camera::main;

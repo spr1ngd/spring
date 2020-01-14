@@ -14,11 +14,8 @@ physically_based_rendering::physically_based_rendering()
 	this->enabled = false;
 }
 
-void physically_based_rendering::Awake() 
+void displaySpheres() 
 {
-	if (!this->enabled)
-		return; 
-
 	ModelLoader* loader = new ModelLoader(); // todo : replaced model loader by resources manager
 	loader->Load("res/model/obj/sphere.obj");
 
@@ -30,13 +27,11 @@ void physically_based_rendering::Awake()
 	Colorf albedoValue = Colorf(.6f, .6f, .6f, 1.0f);
 	Colorf ambientValue = Colorf::white;
 
-	
-
-	for (int x = 0; x < 10; x++) 
+	for (int x = 0; x < 10; x++)
 	{
-		for (int y = 0; y < 10; y++) 
+		for (int y = 0; y < 10; y++)
 		{
-			Vector3 pos =(Vector3((float)x, (float)y, 0.0f) + Vector3(-5.0f, -5.0f, 0.0f)) * 3.0f;
+			Vector3 pos = (Vector3((float)x, (float)y, 0.0f) + Vector3(-5.0f, -5.0f, 0.0f)) * 3.0f;
 			Shader* pbs = Shader::Load("pbs/pbs.vs", "pbs/pbs.fs");
 			Shader* pbsWithIrradiance = Shader::Load("pbs/pbs.vs", "pbs/pbs(irradiance).fs");
 			Shader* ibl = Shader::Load("pbs/pbs.vs", "pbs/pbs(ibl).fs");
@@ -54,7 +49,7 @@ void physically_based_rendering::Awake()
 
 			pbsMat->shader->setColor(albedo, albedoValue); // 反射率
 			pbsMat->shader->setFloat(metal, metalValue); // 金属度
-			pbsMat->shader->setFloat(smoothness,1.0f - smoothnessValue); //光滑度
+			pbsMat->shader->setFloat(smoothness, 1.0f - smoothnessValue); //光滑度
 			pbsMat->shader->setColor(ambient, ambientValue); // 环境光照
 
 			MeshRenderer* meshRenderer = new MeshRenderer(pbsMat);
@@ -65,6 +60,63 @@ void physically_based_rendering::Awake()
 			spheres.push_back(meshRenderer);
 		}
 	}
+}
+
+void starFighter() 
+{
+	// Texture* metallicTex = TextureLoader::Load("res/model/fbx/star fighter/StarSparrow_MetallicSmoothness.png");
+	// Texture* normalTex = TextureLoader::Load("res/model/fbx/star fighter/StarSparrow_Normal.png");
+	// Texture* albedoTex = TextureLoader::Load("res/model/fbx/star fighter/StarSparrow_Red.png");
+	// Texture* emissionTex = TextureLoader::Load("res/model/fbx/star fighter/StarSparrow_Emission.png");
+
+	Texture* metallicTex = TextureLoader::Load("res/model/fbx/star fighter 02/StarSparrow_MetallicSmoothness.png");
+	Texture* normalTex = TextureLoader::Load("res/model/fbx/star fighter 02/StarSparrow_Normal.png");
+	Texture* albedoTex = TextureLoader::Load("res/model/fbx/star fighter 02/StarSparrow_Green.png");
+	Texture* emissionTex = TextureLoader::Load("res/model/fbx/star fighter 02/StarSparrow_Emission.png");
+
+	ModelLoader* loader = new ModelLoader();
+	// loader->Load("res/model/fbx/star fighter/star fighter 01.fbx");
+	loader->Load("res/model/fbx/star fighter 02/star fighter 02.fbx");
+	Shader* shader = Shader::Load("pbs/pbs.vs", "pbs/pbs(ibl).fs");
+	Material* material = new Material(shader);
+
+	material->shader->setCubemap("irradianceMap", Skybox::irradianceCubemap);
+	material->shader->setCubemap("prefilterMap", Skybox::prefilter);
+	material->shader->setTexture("prebrdfMap", Skybox::prebrdf->textureId);
+
+	material->shader->setTexture("metallicTex", metallicTex->textureId);
+	material->shader->setTexture("normalTex", normalTex->textureId);
+	material->shader->setTexture("albedoTex", albedoTex->textureId);
+	material->shader->setTexture("emissionTex", emissionTex->textureId);
+
+	Colorf albedoValue = Colorf::white;
+	Colorf ambientValue = Colorf::white;
+	const char* albedo = "albedo";
+	const char* metal = "metal";
+	const char* roughness = "roughness";
+	const char* ambient = "ao";
+	material->shader->setColor(albedo, albedoValue); // 反射率
+	material->shader->setFloat(metal, 1.0f); // 金属度
+	material->shader->setFloat(roughness, 0.1f); // 粗糙度
+	material->shader->setColor(ambient, ambientValue); // 环境光照
+
+	MeshRenderer* fighter = new MeshRenderer(material);
+	fighter->meshes = loader->meshes;
+	fighter->Init();
+	fighter->name = "star fighter 01";
+	fighter->transform->position = Vector3::zero;
+	fighter->transform->scale = Vector3(0.06f);
+
+	delete loader;
+}
+
+void physically_based_rendering::Awake() 
+{
+	if (!this->enabled)
+		return; 
+
+	// displaySpheres();
+	starFighter();
 }
 
 void physically_based_rendering::Update() 

@@ -97,10 +97,13 @@ int main(int, char**)
 
 	// 0. construct post processing instance.
 	class::PostProcessing* postProcessing = new class::PostProcessing();
-	postProcessing->enabled = false;
-	postProcessing->antiAliasing->enabled = false;
+	postProcessing->enabled = true;
+	postProcessing->antiAliasing->enabled = true;
+	postProcessing->antiAliasing->samples = 16;
 	postProcessing->bloom->enabled = false;
 	postProcessing->PreProcess();
+	if( postProcessing->enabled )
+		PostProcessing::postprocessing = postProcessing;
 
 	// Main loop
 	while (!glfwWindowShouldClose(window))

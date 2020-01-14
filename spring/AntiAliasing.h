@@ -6,7 +6,7 @@ namespace spring
 	{
 	public:
 		bool enabled = false;
-		unsigned int samples = 4;
+		unsigned int samples = 0;
 
 		AntiAliasing();
 	};

@@ -10,12 +10,13 @@ namespace spring
 	class PostProcessing
 	{
 	private:
+
+		void Blit();
+	public:
 		FullScreenRenderer* fsRenderer;
 		FrameBufferObject* srcFramebuffer;
 		FrameBufferObject* dstFramebuffer;
 
-		void Blit();
-	public:
 		bool enabled;
 		AntiAliasing* antiAliasing;
 		Bloom* bloom;
@@ -23,5 +24,7 @@ namespace spring
 		PostProcessing();
 		void PreProcess();
 		void Process();
+	public:
+		static PostProcessing* postprocessing;
 	};
 }

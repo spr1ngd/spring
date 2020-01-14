@@ -8,7 +8,7 @@ namespace spring
 		// special resource load.
 	public:
 		template<typename T>
-		static T Load(const char* resource) 
+		static T* Load(const char* resource) 
 		{
 			
 		}

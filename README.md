@@ -104,6 +104,14 @@ A LONG LONG LONG , VERY LONG TRIP.
 
 ## spring engine real-time screenshot
 
+-   pbr
+    
+    ![ibl_with_antialiasing](/screenshot/spring%20engine%20realtime%20screenshot_05.png)
+
+-   ibl
+    
+    ![ibl_without_antialiasing](/screenshot/spring%20engine%20realtime%20screenshot_04.jpg)
+
 -   diffuse material without shadow
     
     ![diffuse](/screenshot/spring%20engine%20realtime%20screenshot_01.PNG)
@@ -115,7 +123,3 @@ A LONG LONG LONG , VERY LONG TRIP.
 -   pbr(basic version)
     
     ![pbr_without_antialiasing](/screenshot/spring%20engine%20realtime%20screenshot_03.png)
-
--   ibl
-    
-    ![ibl_without_antialiasing](/screenshot/spring%20engine%20realtime%20screenshot_04.jpg)
