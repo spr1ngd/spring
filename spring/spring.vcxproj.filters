@@ -133,6 +133,12 @@
     <Filter Include="源文件\PBR">
       <UniqueIdentifier>{4988deb2-a691-4547-86f0-2cd5f7c2f063}</UniqueIdentifier>
     </Filter>
+    <Filter Include="头文件\Renderer">
+      <UniqueIdentifier>{8417e728-098a-441c-aa59-8d557be53742}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\Renderer">
+      <UniqueIdentifier>{9f7be10b-2e85-4424-9335-213f7056fc3c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="spring.rc">
@@ -412,6 +418,9 @@
     <ClInclude Include="PhysicsBasedRendering.h">
       <Filter>头文件\PBR</Filter>
     </ClInclude>
+    <ClInclude Include="ParticleRenderer.h">
+      <Filter>头文件\Renderer</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Primitive.cpp">
@@ -668,6 +677,9 @@
     </ClCompile>
     <ClCompile Include="PhysicsBasedRendering.cpp">
       <Filter>源文件\PBR</Filter>
+    </ClCompile>
+    <ClCompile Include="ParticleRenderer.cpp">
+      <Filter>源文件\Renderer</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

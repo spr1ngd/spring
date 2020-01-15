@@ -121,7 +121,7 @@ void InstancedRenderer::Render(Camera* camera)
 {
 	if (this->material == nullptr)
 	{
-		Console::Warning("can not render skybox without skybox material,please assign a sky box material.");
+		Console::Warning("can not render without material,please assign a material.");
 		return;
 	}
 
@@ -145,6 +145,7 @@ void InstancedRenderer::Render(Camera* camera)
 	glBindBuffer(GL_ARRAY_BUFFER, instanceVBO); 
 	glBufferData(GL_ARRAY_BUFFER, mat4Size * this->instances.size(), &this->matrixes[0], GL_STATIC_DRAW);
 	glBindVertexArray(mesh->VAO);
+
 	GLuint matrixLocation = glGetAttribLocation(this->material->shader->program, "matrix");
 	glEnableVertexAttribArray(matrixLocation + 0);
 	glVertexAttribPointer(matrixLocation + 0, 4, GL_FLOAT, GL_FALSE, mat4Size, (void*)0);
