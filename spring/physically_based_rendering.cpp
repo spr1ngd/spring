@@ -2,6 +2,8 @@
 #include "springengine.h"
 #include <vector>
 #include <string>
+#include "particlerenderer.h"
+#include "particle.h"
 
 using namespace spring;
 using namespace spring::editor;
@@ -110,13 +112,22 @@ void starFighter()
 	delete loader;
 }
 
+void generateParticle() 
+{
+	ParticleRenderer* particle = new ParticleRenderer();
+	particle->Init();
+	particle->name = "Particle System";
+	Console::LogFormat("particle renderer initialize...");
+}
+
 void physically_based_rendering::Awake() 
 {
 	if (!this->enabled)
 		return; 
 
 	// displaySpheres();
-	starFighter();
+	generateParticle();
+	// starFighter();
 }
 
 void physically_based_rendering::Update() 

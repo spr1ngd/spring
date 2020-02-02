@@ -139,6 +139,12 @@
     <Filter Include="源文件\Renderer">
       <UniqueIdentifier>{9f7be10b-2e85-4424-9335-213f7056fc3c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="头文件\Renderer\Particle">
+      <UniqueIdentifier>{073f3d63-76d8-4778-8924-a604b88fb190}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\Renderer\Particle">
+      <UniqueIdentifier>{531a95ec-ea93-4322-85cc-7f28d1eeca7a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="spring.rc">
@@ -419,7 +425,10 @@
       <Filter>头文件\PBR</Filter>
     </ClInclude>
     <ClInclude Include="ParticleRenderer.h">
-      <Filter>头文件\Renderer</Filter>
+      <Filter>头文件\Renderer\Particle</Filter>
+    </ClInclude>
+    <ClInclude Include="Particle.h">
+      <Filter>头文件\Renderer\Particle</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -679,7 +688,10 @@
       <Filter>源文件\PBR</Filter>
     </ClCompile>
     <ClCompile Include="ParticleRenderer.cpp">
-      <Filter>源文件\Renderer</Filter>
+      <Filter>源文件\Renderer\Particle</Filter>
+    </ClCompile>
+    <ClCompile Include="Particle.cpp">
+      <Filter>源文件\Renderer\Particle</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

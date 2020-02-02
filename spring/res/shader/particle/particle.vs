@@ -13,5 +13,5 @@ void main()
 {
     WorldPos = mat3(M) * vertex;
     Texcoord = texcoord;
-    gl_Position = P * WorldPos;
+    gl_Position = P * vec4(WorldPos,1.0);
 }

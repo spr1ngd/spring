@@ -10,5 +10,6 @@ in vec2 Texcoord;
 
 void main()
 {
-    FragColor = texture(Main_Texture,Texcoord) * Main_Color;
+    // FragColor = texture(Main_Texture,Texcoord) * Main_Color;
+    FragColor = vec4(1.0);
 }

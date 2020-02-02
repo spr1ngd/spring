@@ -17,6 +17,7 @@
 #include "sample.h"
 #include "vector2.h"
 #include "postprocessing.h"
+#include "particlerenderer.h"
 
 #pragma comment (lib,"glfw3.lib")
 #pragma comment (lib,"glew32.lib")
@@ -127,6 +128,7 @@ int main(int, char**)
 
 		for (auto behaviour : Behaviour::behaviours)
 			behaviour.second->Update();
+		ParticleRenderer::Update();
 
 		for (auto behaviour : Behaviour::behaviours)
 			behaviour.second->OnPreRender();
