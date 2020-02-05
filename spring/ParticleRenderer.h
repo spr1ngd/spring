@@ -18,12 +18,20 @@ namespace spring
 		// 2. over life time , recycle particles and regenerate it
 		// 3. random particle properties
 		// 4. use particle shader render it
-		bool playing = true;
+		vector<Colorf> colors;
+		vector<Vector4> transforms;
 
 		static Particle* emit(Particle*);
 		static Particle* generate();
 
 	public:
+		Mesh* mesh;
+
+		unsigned int vbo;
+		unsigned int vao;
+		unsigned int ibo;
+
+		bool playing = true;
 		bool runIn2D = false;
 		unsigned int maxNumber = 1000;
 		unsigned int existingNumber = 0;

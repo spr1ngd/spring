@@ -162,7 +162,7 @@ void Sample::Awake()
 void Sample::Update() 
 {
 	timer += Timer::deltaTime;
-	skybox->material->shader->setFloat("time", timer);
+	// skybox->material->shader->setFloat("time", timer);
 	if (renderSkybox)
 	{
 		skybox->transform->position = Camera::main->transform->position;

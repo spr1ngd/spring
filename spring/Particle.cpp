@@ -5,11 +5,6 @@ using namespace spring;
 Particle::Particle() 
 {
 	this->setting = ParticleSetting();
-
-	this->setting.size = Vector3::one;
-}
-
-void Particle::Render() 
-{
-
+	this->setting.color = Colorf::white;
+	this->setting.size = 1.0f;
 }

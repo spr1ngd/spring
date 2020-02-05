@@ -123,6 +123,16 @@ void Shader::initializeLocation()
 
 }
 
+unsigned int Shader::getAttribLocation(const char* name) 
+{
+	return glGetAttribLocation(this->program, name);
+}
+
+unsigned int Shader::getUniformLocation(const char* name) 
+{
+	return glGetUniformLocation(this->program,name);
+}
+
 GLuint Shader::getLocation(const char* name)
 {
 	auto pair = this->locations.find(name);

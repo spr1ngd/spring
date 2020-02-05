@@ -12,18 +12,15 @@ namespace spring
 			float existingTime;
 			float velocity;
 			float acceleration;
+			float size;
 			Colorf color;
-			Vector3 size;
 			Vector3 position;
 			Vector3 eulerangle;
 		};
 
 	public:
 		ParticleSetting setting;
-		Material* material;
-		Mesh* mesh;
 
 		Particle();
-		void Render();
 	};
 }

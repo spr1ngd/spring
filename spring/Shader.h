@@ -91,6 +91,8 @@ namespace spring
 		void use();
 		void disuse();
 		GLuint getLocation(const char*name);
+		unsigned int getAttribLocation(const char* name);
+		unsigned int getUniformLocation(const char* name);
 
 		void setBool(const char* name, GLboolean value);
 		void setInt(const char* name, GLint value);

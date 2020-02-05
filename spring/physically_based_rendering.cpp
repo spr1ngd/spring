@@ -115,7 +115,6 @@ void starFighter()
 void generateParticle() 
 {
 	ParticleRenderer* particle = new ParticleRenderer();
-	particle->Init();
 	particle->name = "Particle System";
 	Console::LogFormat("particle renderer initialize...");
 }
