@@ -11,7 +11,7 @@ ParticleRenderer::ParticleRenderer()
 	Shader* particle = Shader::Load("particle/particle.vs","particle/particle.fs");
 	Material* particleMaterial = new Material(particle);
 	this->material = particleMaterial;
-	this->maxNumber = 5;
+	this->maxNumber = 100;
 	this->Init();
 	particles.push_back(this);
 }
@@ -93,11 +93,9 @@ void ParticleRenderer::Update()
 
 Particle* ParticleRenderer::emit(Particle* particle)
 {
-	Mathf::RandomSeed();
+	
 	// todo : generate random particle properties
 	// particle->setting
-	particle->setting.size = static_cast<float>(Mathf::Random(1,3));
-	particle->setting.position = Vector3(Mathf::Randomf() * 5.0f);
 	return particle;
 }
 
@@ -115,14 +113,16 @@ Particle* ParticleRenderer::generate()
 void ParticleRenderer::Init() 
 {
 	//// 初始化第一个粒子
-
+	Mathf::RandomSeed();
 	// FIXED : 生成的例子的状态不够随机，因为Mathf::Randomf函数有问题，在短时间内进行随机时，无法产生随机数
 	for (unsigned int i = 0; i < this->maxNumber; i++)
 	{
 		Particle* particle = generate();
 		particle = emit(particle);
+		particle->setting.size = static_cast<float>(Mathf::Randomf(0.25f,2.0f));
+		particle->setting.position = Vector3(Mathf::Randomf(-5.0f, 5.0f), Mathf::Randomf(-5.0f, 5.0f), Mathf::Randomf(-5.0f, 5.0f));
 		this->usingParticles.push_back(particle);
-		this->colors.push_back(Colorf::cyan);
+		this->colors.push_back(/*Colorf(Mathf::Randomf(), Mathf::Randomf(), Mathf::Randomf(), Mathf::Randomf())*/Colorf::white);
 		this->transforms.push_back(Vector4(particle->setting.position.x, particle->setting.position.y, particle->setting.position.z, particle->setting.size));
 		this->existingNumber++;
 	}
@@ -187,7 +187,7 @@ void ParticleRenderer::Init()
 	unsigned int colorLocation = this->material->shader->getLocation(COLOR);
 	glEnableVertexAttribArray(colorLocation);
 	glVertexAttribPointer(colorLocation, 4, GL_FLOAT, GL_FALSE, sizeof(Colorf), (void*)0);
-	glVertexAttribDivisor(colorBuffer, 4);
+	glVertexAttribDivisor(colorLocation, 1);
 
 	// 变换缓存
 	unsigned int transformBuffer;
@@ -199,7 +199,7 @@ void ParticleRenderer::Init()
 	unsigned int transformLocation = this->material->shader->getAttribLocation("transform");
 	glEnableVertexAttribArray(transformLocation);
 	glVertexAttribPointer(transformLocation, 4, GL_FLOAT, GL_FALSE, sizeof(Vector4), (void*)0);
-	glVertexAttribDivisor(transformLocation, 4);
+	glVertexAttribDivisor(transformLocation, 1);
 
 	glBindBuffer(GL_ARRAY_BUFFER,0);
 	glBindVertexArray(0);
@@ -209,6 +209,9 @@ void ParticleRenderer::Init()
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,this->ibo);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER,sizeof(unsigned int) * mesh->indices.size(), &mesh->indices[0], GL_STATIC_DRAW);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,0);
+
+	auto texture = TextureLoader::Load("res/texture/snow.png");
+	this->material->shader->setTexture(MAIN_TEX,texture->textureId);
 }
 
 void ParticleRenderer::Render() 
@@ -243,12 +246,15 @@ void ParticleRenderer::Render()
 		glm::rotate(glm::mat4(1.0f), glm::radians(this->transform->GetEulerangle().y), glm::vec3(0.0f, 1.0f, 0.0f)) *
 		glm::scale(glm::mat4(1.0f), glm::vec3(this->transform->scale.x, this->transform->scale.y, this->transform->scale.z));
 
+	// this->material->shader->setMat4(MATRIX_M, model);
+	// this->material->shader->setMat4(MATRIX_V, view);
+	// this->material->shader->setMat4(MATRIX_P, projection);
+
+	glm::mat4 mvp = projection * view * model;
+	this->material->shader->setMat4(MATRIX_MVP, mvp);
 	glm::mat4 modelInverse = glm::inverse(model);
-	this->material->shader->setMat4(MATRIX_M, model);
-	this->material->shader->setMat4("World2Object",modelInverse);
-	this->material->shader->setMat4(MATRIX_V, view);
-	this->material->shader->setMat4(MATRIX_P, projection);
-	this->material->shader->setVec3("WorldSpaceCameraPos",Camera::main->transform->position);
+	this->material->shader->setMat4(World2Object,modelInverse);
+	this->material->shader->setVec3(WorldSpaceCameraPos,Camera::main->transform->position);
 
 	this->material->shader->use();
 

@@ -5,9 +5,10 @@ layout (location = 1) in vec2 texcoord;
 layout (location = 2) in vec4 color;
 layout (location = 3) in vec4 transform;
 
-uniform mat4 M;
-uniform mat4 V;
-uniform mat4 P;
+// uniform mat4 M;
+// uniform mat4 V;
+// uniform mat4 P;
+uniform mat4 MVP;
 uniform mat4 World2Object;
 uniform vec3 WorldSpaceCameraPos;
 
@@ -30,5 +31,5 @@ void main()
 
     Texcoord = texcoord;
     Color = color;
-    gl_Position = P * V * M * vec4(pos.xyz,1.0);
+    gl_Position = MVP * vec4(pos.xyz,1.0);
 }

@@ -132,6 +132,11 @@ namespace spring
 			return rand() / float(RAND_MAX);
 		}
 
+		static float Randomf(float min, float max)
+		{
+			return min + Randomf() * (max - min);
+		}
+
 #pragma endregion
 
 	};

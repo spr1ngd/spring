@@ -104,6 +104,10 @@ A LONG LONG LONG , VERY LONG TRIP.
 
 ## spring engine real-time screenshot
 
+-   particle
+    
+    ![alpha test error](/screenshot/spring%20engine%20realtime%20screenshot_06.jpg)
+
 -   pbr
     
     ![ibl_with_antialiasing](/screenshot/spring%20engine%20realtime%20screenshot_05.png)

@@ -11,11 +11,6 @@
 #include "materialtexture.h"
 #include "cubemap.h"
 
-#define MATRIX_M "M"
-#define MATRIX_V "V"
-#define MATRIX_P "P"
-#define MATRIX_NM "NM"
-
 #define VERTEX "vertex"
 #define NORMAL "normal"
 #define TEXCOORD "texcoord"
@@ -41,7 +36,18 @@
 #define LIGHT_ATTENUATION "light.attenuation"
 
 // camera properties
+#define MATRIX_M "M"
+#define MATRIX_V "V"
+#define MATRIX_P "P"
+#define MATRIX_NM "NM"
+#define MATRIX_MVP "MVP"
+
 #define CAMERA_POSITION "CameraPosition"
+#define WorldSpaceCameraPos "WorldSpaceCameraPos"
+
+// matrix 
+#define World2Object "World2Object"
+#define Object2World "Object2World"
 
 using namespace std;
 
