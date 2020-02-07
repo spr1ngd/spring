@@ -181,7 +181,7 @@ void ParticleRenderer::Init()
 	unsigned int colorBuffer;
 	glGenBuffers(1, &colorBuffer);
 	glBindBuffer(GL_ARRAY_BUFFER, colorBuffer);
-	glBufferData(GL_ARRAY_BUFFER, 10000 * sizeof(Colorf), &this->colors[0], GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, 1000 * sizeof(Colorf), &this->colors[0], GL_STATIC_DRAW);
 	//glBufferSubData(GL_ARRAY_BUFFER, 0, 1000 * sizeof(Colorf), &this->colors[0]);
 
 	unsigned int colorLocation = this->material->shader->getLocation(COLOR);
@@ -193,7 +193,7 @@ void ParticleRenderer::Init()
 	unsigned int transformBuffer;
 	glGenBuffers(1, &transformBuffer);
 	glBindBuffer(GL_ARRAY_BUFFER, transformBuffer);
-	glBufferData(GL_ARRAY_BUFFER, 10000 * sizeof(Vector4), &this->transforms[0] ,GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, 1000 * sizeof(Vector4), &this->transforms[0] ,GL_STATIC_DRAW);
 	//glBufferSubData(GL_ARRAY_BUFFER, 0, 1000 * sizeof(Vector4), &this->transforms[0]);
 
 	unsigned int transformLocation = this->material->shader->getAttribLocation("transform");
@@ -227,6 +227,7 @@ void ParticleRenderer::Render()
 	this->material->EnableAlphaTest();
 	this->material->AlphaBlendFunc(true);
 	this->material->EnableAlphaBlend();
+	this->material->EnableDepthWrite(false);
 	this->material->EnableDepthTest();
 	this->material->EnableStencilTest();
 	// this->material->CullFaceFunc(true, GL_BACK);
@@ -246,9 +247,9 @@ void ParticleRenderer::Render()
 		glm::rotate(glm::mat4(1.0f), glm::radians(this->transform->GetEulerangle().y), glm::vec3(0.0f, 1.0f, 0.0f)) *
 		glm::scale(glm::mat4(1.0f), glm::vec3(this->transform->scale.x, this->transform->scale.y, this->transform->scale.z));
 
-	// this->material->shader->setMat4(MATRIX_M, model);
-	// this->material->shader->setMat4(MATRIX_V, view);
-	// this->material->shader->setMat4(MATRIX_P, projection);
+	//this->material->shader->setMat4(MATRIX_M, model);
+	//this->material->shader->setMat4(MATRIX_V, view);
+	//this->material->shader->setMat4(MATRIX_P, projection);
 
 	glm::mat4 mvp = projection * view * model;
 	this->material->shader->setMat4(MATRIX_MVP, mvp);

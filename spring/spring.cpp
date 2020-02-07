@@ -117,6 +117,7 @@ int main(int, char**)
 			ImGui::ShowDemoWindow(&show_demo_window); 
 
 		Timer::Time();
+		Shader::shaderTimer = Vector4(Timer::totalTime,Mathf::Sin(Timer::totalTime),Mathf::Cos(Timer::totalTime),Mathf::Tan(Timer::totalTime));
 		Gizmos::Render();
 
 		// 将灯光阴影优先渲染

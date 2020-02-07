@@ -49,6 +49,9 @@
 #define World2Object "World2Object"
 #define Object2World "Object2World"
 
+// time type
+#define _Time "_Time"
+
 using namespace std;
 
 namespace spring 
@@ -61,6 +64,7 @@ namespace spring
 		static void Caching(Shader* shader);
 		static void Flash(Shader* shader);
 	public:
+		static Vector4 shaderTimer;
 		static Shader* Load(const char* vertexShaderName,const char* fragmentShaderName);
 
 	private:
@@ -85,6 +89,7 @@ namespace spring
 		void setShaderValues();
 		void setEngineEnvironment();
 		void setLighting();
+		void setTime();
 
 	public:
 		GLuint program;

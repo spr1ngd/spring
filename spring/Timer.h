@@ -9,6 +9,7 @@ namespace spring
 		static float lastFrameTime;
 	public:
 		static float deltaTime;
+		static float totalTime;
 		static void Start();
 		static void Time() 
 		{
@@ -16,6 +17,7 @@ namespace spring
 			float elapsedTime = currentFrameTime - lastFrameTime;
 			deltaTime = elapsedTime;
 			lastFrameTime = currentFrameTime;
+			totalTime += elapsedTime;
 		}
 	};
 }

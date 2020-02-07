@@ -12,6 +12,7 @@ using namespace std;
 using namespace spring;
 
 std::vector<Shader*> Shader::cachingShaders;
+Vector4 Shader::shaderTimer;
 
 Shader::Shader() 
 {
@@ -147,6 +148,7 @@ void Shader::use()
 	this->setLighting();
 	this->setEngineEnvironment();
 	this->setShaderValues();
+	this->setTime();
 }
 
 void Shader::disuse() 
@@ -519,6 +521,15 @@ void Shader::setLighting()
 			}
 		}
 	}
+}
+
+void Shader::setTime()
+{
+	unsigned int timeLocation = this->getUniformLocation(_Time);
+	if (timeLocation < 0)
+		return;
+	float time[4] = {shaderTimer.x,shaderTimer.y,shaderTimer.z,shaderTimer.w};
+	glUniform4fv(timeLocation, 1, time);
 }
 
 #pragma region loading | caching | flash
