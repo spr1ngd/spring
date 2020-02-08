@@ -64,6 +64,7 @@ namespace spring
 		static void Caching(Shader* shader);
 		static void Flash(Shader* shader);
 	public:
+		static Shader* error;
 		static Vector4 shaderTimer;
 		static Shader* Load(const char* vertexShaderName,const char* fragmentShaderName);
 

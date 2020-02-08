@@ -12,16 +12,19 @@ using namespace std;
 using namespace spring;
 
 std::vector<Shader*> Shader::cachingShaders;
+Shader* Shader::error = Shader::Load("spring/error.vs","spring/error.fs");
 Vector4 Shader::shaderTimer;
 
 Shader::Shader() 
 {
-	// todo : use default shader?
+	// TODO : use default shader?
 	Shader::Caching(this);
 }
 
 Shader::Shader( const char*vertexShader,const char*fragmentShader ) 
 {
+	// TODO: if compiling shader failed or link shader program error, replaced current shader program by springengine error.shader instance; 
+	// TODO: replaced programId
 	GLuint vertex = this->compileShader(GL_VERTEX_SHADER, vertexShader);
 	GLuint fragment = this->compileShader(GL_FRAGMENT_SHADER, fragmentShader);
 	shaders.insert(pair<GLenum, GLuint>(GL_VERTEX_SHADER, vertex));
@@ -33,6 +36,8 @@ Shader::Shader( const char*vertexShader,const char*fragmentShader )
 
 Shader::Shader(const char* vertexShader, const char* fragmentShader, const char* geometryShader) 
 {
+	// TODO: if compiling shader failed or link shader program error, replaced current shader program by springengine error.shader instance; 
+	// TODO: replaced programId
 	GLuint vertex = this->compileShader(GL_VERTEX_SHADER, vertexShader);
 	GLuint geometry = this->compileShader(GL_GEOMETRY_SHADER, geometryShader);
 	GLuint fragment = this->compileShader(GL_FRAGMENT_SHADER, fragmentShader);

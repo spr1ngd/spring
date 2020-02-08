@@ -218,6 +218,7 @@
     <ClInclude Include="FrameBufferObject.h" />
     <ClInclude Include="FullScreenRenderer.h" />
     <ClInclude Include="Gizmos.h" />
+    <ClInclude Include="Graphic.h" />
     <ClInclude Include="GUI.h" />
     <ClInclude Include="GUILayout.h" />
     <ClInclude Include="HierarchyWindow.h" />
@@ -309,6 +310,7 @@
     <ClCompile Include="FrameBufferObject.cpp" />
     <ClCompile Include="FullScreenRenderer.cpp" />
     <ClCompile Include="Gizmos.cpp" />
+    <ClCompile Include="Graphic.cpp" />
     <ClCompile Include="GUI.cpp" />
     <ClCompile Include="GUILayout.cpp" />
     <ClCompile Include="HierarchyWindow.cpp" />

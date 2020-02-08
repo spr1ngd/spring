@@ -16,27 +16,22 @@ out vec4 Time;
 
 void main()
 {
+    Texcoord = texcoord;
+    Color = color;
+
     vec3 center = transform.xyz;
     float size = transform.w;
-
     // billboard算法
     vec3 view = (World2Object * vec4(WorldSpaceCameraPos,1.0)).xyz;
     view = normalize(view);
     vec3 up = abs(view.y) > 0.999 ? vec3(0.0,0.0,1.0) : vec3(0.0,1.0,0.0);
     vec3 right = normalize(cross(view,up));
     up = normalize(cross(view,right));
-
     
     float c = cos(_Time.x * 1 / transform.w);
     float s = sin(_Time.x * 1 / transform.w);
     mat3 rotate = mat3(c,-s,0,s,c,0,0,0,0); 
-    vec3 rr = rotate * vertex;  
-
-    vec3 offset = rr.xyz - center;
-    vec3 pos = center + right * offset.x * size+ up * offset.y * size + view * offset.z * size;
-
-
-    Texcoord = texcoord;
-    Color = color;
+    vec3 rr = rotate * vertex * size;  
+    vec3 pos = center + right * rr.x + up * rr.y + view * rr.z;
     gl_Position = MVP * vec4(pos.xyz,1.0);
 }

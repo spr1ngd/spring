@@ -145,6 +145,12 @@
     <Filter Include="源文件\Renderer\Particle">
       <UniqueIdentifier>{531a95ec-ea93-4322-85cc-7f28d1eeca7a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="头文件\Graphic">
+      <UniqueIdentifier>{348e7b9a-c33a-4ec9-9753-996d07a9137b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\Graphic">
+      <UniqueIdentifier>{1c33747b-6e04-4b34-be2c-55a359979394}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="spring.rc">
@@ -430,6 +436,9 @@
     <ClInclude Include="Particle.h">
       <Filter>头文件\Renderer\Particle</Filter>
     </ClInclude>
+    <ClInclude Include="Graphic.h">
+      <Filter>头文件\Graphic</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Primitive.cpp">
@@ -692,6 +701,9 @@
     </ClCompile>
     <ClCompile Include="Particle.cpp">
       <Filter>源文件\Renderer\Particle</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphic.cpp">
+      <Filter>源文件\Graphic</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

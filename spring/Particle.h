@@ -8,11 +8,11 @@ namespace spring
 	public:
 		struct ParticleSetting
 		{
-			float lifeTime;
-			float existingTime;
-			float velocity;
-			float acceleration;
-			float size;
+			float lifeTime = 5.0f;
+			float existingTime = 0.0f;
+			float velocity = 1.0f;
+			float acceleration = 0.0f;
+			float size = 1.0f;
 			Colorf color;
 			Vector3 position;
 			Vector3 eulerangle;

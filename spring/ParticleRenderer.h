@@ -28,6 +28,9 @@ namespace spring
 		Mesh* mesh;
 
 		unsigned int vbo;
+		unsigned int colorBuffer;
+		unsigned int transformBuffer;
+		
 		unsigned int vao;
 		unsigned int ibo;
 
@@ -49,7 +52,6 @@ namespace spring
 		void Stop();
 
 		static void Update(); // call this method per frame.
-
 		virtual void Init();
 		void Render() override;
 	};

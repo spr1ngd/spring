@@ -116,6 +116,7 @@ void generateParticle()
 {
 	ParticleRenderer* particle = new ParticleRenderer();
 	particle->name = "Particle System";
+	particle->playing = true;
 	Console::LogFormat("particle renderer initialize...");
 }
 
@@ -126,7 +127,7 @@ void physically_based_rendering::Awake()
 
 	// displaySpheres();
 	generateParticle();
-	// starFighter();
+	starFighter();
 }
 
 void physically_based_rendering::Update() 
