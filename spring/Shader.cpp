@@ -12,65 +12,111 @@ using namespace std;
 using namespace spring;
 
 std::vector<Shader*> Shader::cachingShaders;
-Shader* Shader::error = Shader::Load("spring/error.vs","spring/error.fs");
 Vector4 Shader::shaderTimer;
+Shader* Shader::error;
 
 Shader::Shader() 
 {
-	// TODO : use default shader?
 	Shader::Caching(this);
 }
 
 Shader::Shader( const char*vertexShader,const char*fragmentShader ) 
 {
-	// TODO: if compiling shader failed or link shader program error, replaced current shader program by springengine error.shader instance; 
-	// TODO: replaced programId
-	GLuint vertex = this->compileShader(GL_VERTEX_SHADER, vertexShader);
-	GLuint fragment = this->compileShader(GL_FRAGMENT_SHADER, fragmentShader);
-	shaders.insert(pair<GLenum, GLuint>(GL_VERTEX_SHADER, vertex));
-	shaders.insert(pair<GLenum, GLuint>(GL_FRAGMENT_SHADER, fragment));
-	this->linkProgram();
+	bool success = true;
+	unsigned int vertex_shader, fragment_shader;
+	success &= this->compile(GL_VERTEX_SHADER, vertexShader, vertex_shader);
+	success &= this->compile(GL_FRAGMENT_SHADER, fragmentShader, fragment_shader);
+	success &= this->link(vertex_shader, fragment_shader);
+	if (success == false)
+	{
+		Console::Error("shader error , replaced by default error shader.");
+		if (nullptr == Shader::error)
+			Shader::error = Shader::Load("spring/error.vs","spring/error.fs");
+		this->program = Shader::error->program;
+	}
 	this->initializeLocation();
 	Shader::Caching(this);
 }
 
 Shader::Shader(const char* vertexShader, const char* fragmentShader, const char* geometryShader) 
 {
-	// TODO: if compiling shader failed or link shader program error, replaced current shader program by springengine error.shader instance; 
-	// TODO: replaced programId
-	GLuint vertex = this->compileShader(GL_VERTEX_SHADER, vertexShader);
-	GLuint geometry = this->compileShader(GL_GEOMETRY_SHADER, geometryShader);
-	GLuint fragment = this->compileShader(GL_FRAGMENT_SHADER, fragmentShader);
-	shaders.insert(pair<GLenum, GLuint>(GL_VERTEX_SHADER, vertex));
-	shaders.insert(pair<GLenum, GLuint>(GL_GEOMETRY_SHADER, geometry));
-	shaders.insert(pair<GLenum, GLuint>(GL_FRAGMENT_SHADER, fragment));
-	this->linkProgram();
+	bool success = true;
+	unsigned int vertex_shader, fragment_shader, geometry_shader;
+	success &= this->compile(GL_VERTEX_SHADER, vertexShader, vertex_shader);
+	success &= this->compile(GL_GEOMETRY_SHADER, geometryShader, geometry_shader);
+	success &= this->compile(GL_FRAGMENT_SHADER, fragmentShader, fragment_shader);
+	success &= this->link(vertex_shader, fragment_shader, geometry_shader);
+	if (success == false)
+	{
+		Console::Error("shader error , replaced by default error shader.");
+		if (nullptr == Shader::error)
+			Shader::error = Shader::Load("spring/error.vs", "spring/error.fs");
+		this->program = Shader::error->program;
+	}
 	this->initializeLocation();
 	Shader::Caching(this);
 }
 
-#pragma region shader program methods
+#pragma region shader compile / link / use 
 
-void Shader::linkProgram()
+bool Shader::compile(GLenum shaderType, const char* filePath, unsigned int& shader) 
 {
-	GLuint program = glCreateProgram();
-	for (auto pair : shaders)
+	const char* source = this->loadShaderFile(filePath);
+	unsigned int shaderProgram = glCreateShader(shaderType);
+	glShaderSource(shaderProgram, 1, &source, NULL);
+	glCompileShader(shaderProgram);
+	delete source;
+	int success;
+	char infoLog[512];
+	glGetShaderiv(shaderProgram, GL_COMPILE_STATUS, &success);
+	if (!success) 
 	{
-		auto shader = pair.second;
-		glAttachShader(program,shader);
+		glGetShaderInfoLog(shaderProgram, 512, NULL, infoLog);
+		Console::Error(infoLog);
+		return false;
 	}
-	glLinkProgram(program);
+	shader = shaderProgram;
+	return true;
+}
 
+bool Shader::link(unsigned int vertexShader, unsigned int fragmentShader) 
+{
+	unsigned int shaderProgram = glCreateProgram();
+	glAttachShader(shaderProgram, vertexShader);
+	glAttachShader(shaderProgram, fragmentShader);
+	glLinkProgram(shaderProgram);
+
+	int success;
+	char logInfo[512]; 
+	glGetProgramiv(shaderProgram, GL_LINK_STATUS, &success);
+	if (!success)
+	{
+		glGetProgramInfoLog(shaderProgram, 512, NULL, logInfo);
+		Console::Error(logInfo);
+		return false;
+	}
+	this->program = shaderProgram;
+	return true;
+}
+
+bool Shader::link(unsigned int vertexShader, unsigned int fragmentShader,unsigned int geometryShader)
+{
+	unsigned int shaderProgram = glCreateProgram();
+	glAttachShader(shaderProgram, vertexShader);
+	glAttachShader(shaderProgram, fragmentShader);
+	glAttachShader(shaderProgram, geometryShader);
+	glLinkProgram(shaderProgram);
 	int success;
 	char logInfo[512];
 	glGetProgramiv(program, GL_LINK_STATUS, &success);
-	if (!success) 
+	if (!success)
 	{
 		glGetProgramInfoLog(program, 512, NULL, logInfo);
 		Console::Error(logInfo);
+		return false;
 	}
-	this->program = program;
-	// todo : delete compiled shader.
+	this->program = shaderProgram;
+	return true;
 }
 
 void Shader::initializeLocation()
@@ -161,46 +207,9 @@ void Shader::disuse()
 	glUseProgram(0);
 }
 
-GLuint Shader::compileShader( GLenum shaderType,const char*shaderFilePath )
-{
-	const char* source = loadShaderFile(shaderFilePath);
-	GLuint shader = glCreateShader(shaderType);
-	glShaderSource(shader, 1, &source,NULL);
-	glCompileShader(shader);
-	delete source;
-	int success;
-	char infoLog[512];
-	glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
-	if (!success)
-	{
-		glGetShaderInfoLog(shader, 512, NULL, infoLog);
-		Console::Error(infoLog);
-	}
-	return shader;
-}
-
-char* Shader::loadShaderFile( const char*shaderFilePath )
-{
-	ifstream shaderFile;
-	int length;
-	shaderFile.open(shaderFilePath, ios::in|ios::binary);
-	if (!shaderFile.good()) 
-	{
-		Console::Error(shaderFilePath);
-		Console::Error("shader file is not exist.");
-		return NULL;
-	}
-	shaderFile.seekg(0, ios::end);
-	length = int(shaderFile.tellg());
-	shaderFile.seekg(ios::beg);
-	char* buffer = new char[length+1];
-	shaderFile.read(buffer, length);
-	buffer[length] = '\0';
-	shaderFile.close();
-	return buffer;
-}
-
 #pragma endregion
+
+#pragma region common interfaces
 
 void Shader::setBool(const char* name, GLboolean value) 
 {
@@ -347,6 +356,8 @@ void Shader::setCubemap(const char* name, Cubemap* cubemap)
 	}
 	this->cubemaps[location] = cubemap;
 }
+
+#pragma endregion
 
 void Shader::setShaderValues() 
 {
@@ -559,6 +570,27 @@ Shader* Shader::Load(const char* vertexShaderName, const char* fragmentShaderNam
 	free(vs);
 	free(fs);
 	return shader;
+}
+
+char* Shader::loadShaderFile( const char*shaderFilePath )
+{
+	ifstream shaderFile;
+	int length;
+	shaderFile.open(shaderFilePath, ios::in|ios::binary);
+	if (!shaderFile.good()) 
+	{
+		Console::Error(shaderFilePath);
+		Console::Error("shader file is not exist.");
+		return NULL;
+	}
+	shaderFile.seekg(0, ios::end);
+	length = int(shaderFile.tellg());
+	shaderFile.seekg(ios::beg);
+	char* buffer = new char[length+1];
+	shaderFile.read(buffer, length);
+	buffer[length] = '\0';
+	shaderFile.close();
+	return buffer;
 }
 
 void Shader::Caching(Shader* shader) 

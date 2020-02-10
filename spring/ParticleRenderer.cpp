@@ -70,7 +70,6 @@ void ParticleRenderer::Update()
 			particleRenderer->colors.push_back(Colorf::white);
 			particleRenderer->transforms.push_back(Vector4(particle->setting.position.x, particle->setting.position.y, particle->setting.position.z,particle->setting.size));
 			particleRenderer->existingNumber++;
-			Console::LogFormat("particle existing number %d , max number %d",particleRenderer->existingNumber,particleRenderer->maxNumber);
 		}
 		else
 		{
@@ -189,8 +188,8 @@ void ParticleRenderer::Init()
 	// unsigned int colorBuffer;
 	glGenBuffers(1, &colorBuffer);
 	glBindBuffer(GL_ARRAY_BUFFER, colorBuffer);
-	glBufferData(GL_ARRAY_BUFFER, 20000 * sizeof(Colorf), &this->colors[0], GL_STATIC_DRAW);
-	//glBufferSubData(GL_ARRAY_BUFFER, 0, 1000 * sizeof(Colorf), &this->colors[0]);
+	glBufferData(GL_ARRAY_BUFFER, 20000 * sizeof(Colorf), NULL, GL_STATIC_DRAW);
+	glBufferSubData(GL_ARRAY_BUFFER, 0, 20000 * sizeof(Colorf), &this->colors[0]);
 	unsigned int colorLocation = this->material->shader->getLocation(COLOR);
 	glEnableVertexAttribArray(colorLocation);
 	glVertexAttribPointer(colorLocation, 4, GL_FLOAT, GL_FALSE, sizeof(Colorf), (void*)0);
@@ -200,8 +199,8 @@ void ParticleRenderer::Init()
 	// unsigned int transformBuffer;
 	glGenBuffers(1, &transformBuffer);
 	glBindBuffer(GL_ARRAY_BUFFER, transformBuffer);
-	glBufferData(GL_ARRAY_BUFFER, 20000 * sizeof(Vector4), &this->transforms[0] ,GL_STATIC_DRAW);
-	//glBufferSubData(GL_ARRAY_BUFFER, 0, 1000 * sizeof(Vector4), &this->transforms[0]);
+	glBufferData(GL_ARRAY_BUFFER, 20000 * sizeof(Vector4), NULL ,GL_STATIC_DRAW);
+	glBufferSubData(GL_ARRAY_BUFFER, 0, 20000 * sizeof(Vector4), &this->transforms[0]);
 
 	unsigned int transformLocation = this->material->shader->getAttribLocation("transform");
 	glEnableVertexAttribArray(transformLocation);
@@ -241,25 +240,18 @@ void ParticleRenderer::Render()
 	// this->material->renderMode = Material::Line;
 
 	glBindVertexArray(this->vao);
-	// ÑÕÉ«»º´æ
-	// unsigned int colorBuffer;
-	glGenBuffers(1, &colorBuffer);
+	// color buffer object
 	glBindBuffer(GL_ARRAY_BUFFER, colorBuffer);
-	glBufferData(GL_ARRAY_BUFFER, 1000 * sizeof(Colorf), &this->colors[0], GL_STATIC_DRAW);
-	//glBufferSubData(GL_ARRAY_BUFFER, 0, 1000 * sizeof(Colorf), &this->colors[0]);
+	glBufferSubData(GL_ARRAY_BUFFER, 0, 20000 * sizeof(Colorf), &this->colors[0]);
 	unsigned int colorLocation = this->material->shader->getLocation(COLOR);
 	glEnableVertexAttribArray(colorLocation);
 	glVertexAttribPointer(colorLocation, 4, GL_FLOAT, GL_FALSE, sizeof(Colorf), (void*)0);
 	glVertexAttribDivisor(colorLocation, 1);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
-	// ±ä»»»º´æ
-	// unsigned int transformBuffer;
-	glGenBuffers(1, &transformBuffer);
+	// transform buffer object
 	glBindBuffer(GL_ARRAY_BUFFER, transformBuffer);
-	glBufferData(GL_ARRAY_BUFFER, 1000 * sizeof(Vector4), &this->transforms[0], GL_STATIC_DRAW);
-	//glBufferSubData(GL_ARRAY_BUFFER, 0, 1000 * sizeof(Vector4), &this->transforms[0]);
-
+	glBufferSubData(GL_ARRAY_BUFFER, 0, 20000 * sizeof(Vector4), &this->transforms[0]);
 	unsigned int transformLocation = this->material->shader->getAttribLocation("transform");
 	glEnableVertexAttribArray(transformLocation);
 	glVertexAttribPointer(transformLocation, 4, GL_FLOAT, GL_FALSE, sizeof(Vector4), (void*)0);

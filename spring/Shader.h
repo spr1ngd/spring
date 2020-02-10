@@ -70,11 +70,12 @@ namespace spring
 
 	private:
 		std::map<const char*, GLuint> locations;
-		std::map<GLenum, GLuint> shaders;
-		void linkProgram();
-		GLuint compileShader(GLenum shaderType, const char* shaderFilePath);
 		char* loadShaderFile(const char* shaderFilePath);
 		void initializeLocation();
+
+		bool compile(GLenum shaderType,const char* filePath,unsigned int& shader);
+		bool link(unsigned int vertexShader,unsigned int fragmentShader);
+		bool link(unsigned int vertexShader, unsigned int fragmentShader,unsigned int geometryShader);
 
 		map<GLuint, Colorf> colors;
 		map<GLuint, GLuint> ints;

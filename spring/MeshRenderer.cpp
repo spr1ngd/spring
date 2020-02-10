@@ -110,6 +110,8 @@ void MeshRenderer::Render(glm::mat4 view, glm::mat4 projection)
 		this->material->shader->setMat4(MATRIX_NM, nm);
 		this->material->shader->setMat4(MATRIX_V, view);
 		this->material->shader->setMat4(MATRIX_P, projection);
+		glm::mat4 mvp = projection * view * model;
+		this->material->shader->setMat4(MATRIX_MVP, mvp);
 
 		// draw mesh
 		this->material->shader->use();
