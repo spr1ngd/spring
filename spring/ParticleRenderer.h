@@ -14,10 +14,6 @@ namespace spring
 		static std::vector<ParticleRenderer*> particles;
 
 	private:
-		// 1. generate particle( with properties : lifetime/color/velocity/acceleration/size/emit shape etc...)
-		// 2. over life time , recycle particles and regenerate it
-		// 3. random particle properties
-		// 4. use particle shader render it
 		vector<Colorf> colors;
 		vector<Vector4> transforms;
 
@@ -27,18 +23,16 @@ namespace spring
 	public:
 		Mesh* mesh;
 
-		unsigned int vbo;
 		unsigned int colorBuffer;
 		unsigned int transformBuffer;
-		
-		unsigned int vao;
-		unsigned int ibo;
 
 		bool playing = true;
 		bool runIn2D = false;
 		unsigned int maxNumber = 1000;
 		unsigned int existingNumber = 0;
 		unsigned int shape = 0;
+
+		float lifeTime;
 
 		std::vector<Particle*> usingParticles;
 		std::vector<Particle*> unusedParticles;

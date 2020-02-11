@@ -74,7 +74,7 @@ void Mesh::Draw( function<void()> render )
 	glBindVertexArray(0);
 }
 
-void Mesh::DrawWithGPUInstanced(unsigned int instancedCount,function<void()> render) 
+void Mesh::DrawInstanced(unsigned int instancedCount,function<void()> render) 
 {
 	glBindVertexArray(VAO);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);

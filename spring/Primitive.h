@@ -16,12 +16,12 @@ namespace spring
 		};
 
 	private:
-		Mesh* GenTriangle();
-		Mesh* GenPlane();
-		Mesh* GenCube();
-		Mesh* GenCylinder();
-		Mesh* GenSphere();
+		static Mesh* GenTriangle();
+		static Mesh* GenPlane();
+		static Mesh* GenCube();
+		static Mesh* GenCylinder();
+		static Mesh* GenSphere();
 	public:
-		Mesh* GenPrimitive(Primitive::Type type);
+		static Mesh* GenPrimitive(Primitive::Type type);
 	};
 }

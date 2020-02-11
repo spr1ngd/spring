@@ -177,6 +177,6 @@ void InstancedRenderer::Render(Camera* camera)
 
 	// draw mesh
 	this->material->shader->use();
-	mesh->DrawWithGPUInstanced(this->instances.size());
+	mesh->DrawInstanced(this->instances.size());
 	this->material->shader->disuse();
 }

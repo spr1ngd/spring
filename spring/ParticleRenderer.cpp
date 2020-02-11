@@ -1,5 +1,6 @@
 #include "particlerenderer.h"
 #include "particle.h"
+#include "primitive.h"
 
 using namespace std;
 using namespace spring;
@@ -135,86 +136,39 @@ void ParticleRenderer::Init()
 		this->existingNumber++;
 	}
 
-	this->mesh = new Mesh();
+	this->mesh = Primitive::GenPrimitive(Primitive::Type::Plane);
+	mesh->Init([&](void) 
+		{
+			unsigned int vertexLocation = this->material->shader->getLocation(VERTEX);
+			glEnableVertexAttribArray(vertexLocation);
+			glVertexAttribPointer(vertexLocation, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)0);
+			unsigned int texcoordLocation = this->material->shader->getLocation(TEXCOORD);
+			glEnableVertexAttribArray(texcoordLocation);
+			glVertexAttribPointer(texcoordLocation, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)(sizeof(float) * 6));
 
-	// vertices
-	vector<Vertex> vertices;
-	vector<unsigned int> indices;
+			// 颜色缓存
+			glGenBuffers(1, &colorBuffer);
+			glBindBuffer(GL_ARRAY_BUFFER, colorBuffer);
+			glBufferData(GL_ARRAY_BUFFER, 20000 * sizeof(Colorf), NULL, GL_STATIC_DRAW);
+			glBufferSubData(GL_ARRAY_BUFFER, 0, 20000 * sizeof(Colorf), &this->colors[0]);
+			unsigned int colorLocation = this->material->shader->getLocation(COLOR);
+			glEnableVertexAttribArray(colorLocation);
+			glVertexAttribPointer(colorLocation, 4, GL_FLOAT, GL_FALSE, sizeof(Colorf), (void*)0);
+			glVertexAttribDivisor(colorLocation, 1);
 
-	Vertex lefttop;
-	lefttop.vertex = Vector3(-.5f, .5f, 0.0f);
-	lefttop.texcoord = Vector2(0.0f, 1.0f);
-	vertices.push_back(lefttop);
+			// 变换缓存
+			glGenBuffers(1, &transformBuffer);
+			glBindBuffer(GL_ARRAY_BUFFER, transformBuffer);
+			glBufferData(GL_ARRAY_BUFFER, 20000 * sizeof(Vector4), NULL, GL_STATIC_DRAW);
+			glBufferSubData(GL_ARRAY_BUFFER, 0, 20000 * sizeof(Vector4), &this->transforms[0]);
 
-	Vertex leftbottom;
-	leftbottom.vertex = Vector3(-.5f, -.5f, 0.0f);
-	leftbottom.texcoord = Vector2(0.0f, 0.0f);
-	vertices.push_back(leftbottom);
-
-	Vertex rightbottom;
-	rightbottom.vertex = Vector3(.5f, -.5f, 0.0f);
-	rightbottom.texcoord = Vector2(1.0f, 0.0f);
-	vertices.push_back(rightbottom);
-
-	Vertex righttop;
-	righttop.vertex = Vector3(.5f, .5f, 0.0f);
-	righttop.texcoord = Vector2(1.0f, 1.0f);
-	vertices.push_back(righttop);
-
-	indices = { 0,1,2,2,3,0 };
-
-	mesh->vertices = vertices;
-	mesh->indices = indices;
-
-	// 顶点数据缓存
-	glGenBuffers(1, &this->vbo);
-	glBindBuffer(GL_ARRAY_BUFFER, vbo);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(Vertex) * mesh->vertices.size(), &mesh->vertices[0], GL_STATIC_DRAW);
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-
-	// 顶点数组对象
-	glGenVertexArrays(1, &this->vao);
-	glBindVertexArray(this->vao);
-
-	glBindBuffer(GL_ARRAY_BUFFER,this->vbo);
-	unsigned int vertexLocation = this->material->shader->getLocation(VERTEX);
-	glEnableVertexAttribArray(vertexLocation);
-	glVertexAttribPointer(vertexLocation, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex),(void*)0);
-	unsigned int texcoordLocation = this->material->shader->getLocation(TEXCOORD);
-	glEnableVertexAttribArray(texcoordLocation);
-	glVertexAttribPointer(texcoordLocation, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)(sizeof(float) * 6));
-
-	// 颜色缓存
-	// unsigned int colorBuffer;
-	glGenBuffers(1, &colorBuffer);
-	glBindBuffer(GL_ARRAY_BUFFER, colorBuffer);
-	glBufferData(GL_ARRAY_BUFFER, 20000 * sizeof(Colorf), NULL, GL_STATIC_DRAW);
-	glBufferSubData(GL_ARRAY_BUFFER, 0, 20000 * sizeof(Colorf), &this->colors[0]);
-	unsigned int colorLocation = this->material->shader->getLocation(COLOR);
-	glEnableVertexAttribArray(colorLocation);
-	glVertexAttribPointer(colorLocation, 4, GL_FLOAT, GL_FALSE, sizeof(Colorf), (void*)0);
-	glVertexAttribDivisor(colorLocation, 1);
-
-	// 变换缓存
-	// unsigned int transformBuffer;
-	glGenBuffers(1, &transformBuffer);
-	glBindBuffer(GL_ARRAY_BUFFER, transformBuffer);
-	glBufferData(GL_ARRAY_BUFFER, 20000 * sizeof(Vector4), NULL ,GL_STATIC_DRAW);
-	glBufferSubData(GL_ARRAY_BUFFER, 0, 20000 * sizeof(Vector4), &this->transforms[0]);
-
-	unsigned int transformLocation = this->material->shader->getAttribLocation("transform");
-	glEnableVertexAttribArray(transformLocation);
-	glVertexAttribPointer(transformLocation, 4, GL_FLOAT, GL_FALSE, sizeof(Vector4), (void*)0);
-	glVertexAttribDivisor(transformLocation, 1);
-	glBindBuffer(GL_ARRAY_BUFFER,0);
-	glBindVertexArray(0);
-
-	// 缓存索引对象
-	glGenBuffers(1, &this->ibo);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,this->ibo);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER,sizeof(unsigned int) * mesh->indices.size(), &mesh->indices[0], GL_STATIC_DRAW);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,0);
-
+			unsigned int transformLocation = this->material->shader->getAttribLocation("transform");
+			glEnableVertexAttribArray(transformLocation);
+			glVertexAttribPointer(transformLocation, 4, GL_FLOAT, GL_FALSE, sizeof(Vector4), (void*)0);
+			glVertexAttribDivisor(transformLocation, 1);
+			glBindBuffer(GL_ARRAY_BUFFER, 0);
+		});
+	this->meshes.push_back(*mesh);
 	auto texture = TextureLoader::Load("res/texture/snow.png");
 	this->material->shader->setTexture(MAIN_TEX,texture->textureId);
 }
@@ -239,26 +193,6 @@ void ParticleRenderer::Render()
 	this->material->EnableCullFace();
 	// this->material->renderMode = Material::Line;
 
-	glBindVertexArray(this->vao);
-	// color buffer object
-	glBindBuffer(GL_ARRAY_BUFFER, colorBuffer);
-	glBufferSubData(GL_ARRAY_BUFFER, 0, 20000 * sizeof(Colorf), &this->colors[0]);
-	unsigned int colorLocation = this->material->shader->getLocation(COLOR);
-	glEnableVertexAttribArray(colorLocation);
-	glVertexAttribPointer(colorLocation, 4, GL_FLOAT, GL_FALSE, sizeof(Colorf), (void*)0);
-	glVertexAttribDivisor(colorLocation, 1);
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-
-	// transform buffer object
-	glBindBuffer(GL_ARRAY_BUFFER, transformBuffer);
-	glBufferSubData(GL_ARRAY_BUFFER, 0, 20000 * sizeof(Vector4), &this->transforms[0]);
-	unsigned int transformLocation = this->material->shader->getAttribLocation("transform");
-	glEnableVertexAttribArray(transformLocation);
-	glVertexAttribPointer(transformLocation, 4, GL_FLOAT, GL_FALSE, sizeof(Vector4), (void*)0);
-	glVertexAttribDivisor(transformLocation, 1);
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-	glBindVertexArray(0);
-
 	auto camera = Camera::current;
 	glm::mat4 view = camera->GetViewMatrix();
 	glm::mat4 projection;
@@ -274,14 +208,35 @@ void ParticleRenderer::Render()
 	glm::mat4 mvp = projection * view * model;
 	this->material->shader->setMat4(MATRIX_MVP, mvp);
 	glm::mat4 modelInverse = glm::inverse(model);
-	this->material->shader->setMat4(World2Object,modelInverse);
-	this->material->shader->setVec3(WorldSpaceCameraPos,Camera::main->transform->position);
+	this->material->shader->setMat4(World2Object, modelInverse);
+	this->material->shader->setVec3(WorldSpaceCameraPos, Camera::main->transform->position);
 
-	this->material->shader->use();
-	glBindVertexArray(this->vao);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->ibo);
-	glDrawElementsInstanced(GL_TRIANGLES, this->mesh->indices.size(), GL_UNSIGNED_INT, 0, this->existingNumber);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-	glBindVertexArray(0);
-	this->material->shader->disuse();
+	for (unsigned int i = 0; i < this->meshes.size(); i++) 
+	{
+		Mesh* mesh = &this->meshes[i];
+
+		glBindVertexArray(mesh->VAO);
+		// color buffer object
+		glBindBuffer(GL_ARRAY_BUFFER, colorBuffer);
+		glBufferSubData(GL_ARRAY_BUFFER, 0, 20000 * sizeof(Colorf), &this->colors[0]);
+		unsigned int colorLocation = this->material->shader->getLocation(COLOR);
+		glEnableVertexAttribArray(colorLocation);
+		glVertexAttribPointer(colorLocation, 4, GL_FLOAT, GL_FALSE, sizeof(Colorf), (void*)0);
+		glVertexAttribDivisor(colorLocation, 1);
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+		// transform buffer object
+		glBindBuffer(GL_ARRAY_BUFFER, transformBuffer);
+		glBufferSubData(GL_ARRAY_BUFFER, 0, 20000 * sizeof(Vector4), &this->transforms[0]);
+		unsigned int transformLocation = this->material->shader->getAttribLocation("transform");
+		glEnableVertexAttribArray(transformLocation);
+		glVertexAttribPointer(transformLocation, 4, GL_FLOAT, GL_FALSE, sizeof(Vector4), (void*)0);
+		glVertexAttribDivisor(transformLocation, 1);
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
+		glBindVertexArray(0);
+
+		this->material->shader->use();
+		mesh->DrawInstanced(this->existingNumber);
+		this->material->shader->disuse();
+	}
 }

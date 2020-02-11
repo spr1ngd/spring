@@ -96,6 +96,6 @@ namespace spring
 
 		void Init(function<void()> setting);
 		void Draw(function<void()> render = nullptr );
-		void DrawWithGPUInstanced(unsigned int instancedCount,function<void()> render = nullptr);
+		void DrawInstanced(unsigned int instancedCount,function<void()> render = nullptr);
 	};
 }
