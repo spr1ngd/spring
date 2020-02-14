@@ -3,6 +3,23 @@
 
 A LONG LONG LONG , VERY LONG TRIP.
 
+## TODO: 2020.02.14
+
+- particle system
+    - particle renderer core **(Finished)**
+    - physical motion simulate
+    - life circle control
+    - 2d mode
+
+- graphic core
+    - refactor graphic apis to graphic setting.
+    - camera supports hdr mode
+
+- refactor 
+    - mesh / material / shader / meshrenderer
+    - defragment scripts directory 
+    - use uniform buffer to optimize uniform data
+
 ## TODO: 2020.01.09
 
 - physisc-based rendering system
@@ -18,8 +35,8 @@ A LONG LONG LONG , VERY LONG TRIP.
 - shader system 
     - independent shader compiler
         - support compiling in runtime(recompileing shader and replacing running shader instance)
-        - add error shader , replace shader that encountering error when compiling shader by error shader.
-    - support time type(such as unity shader)
+        - add error shader , replace shader that encountering error when compiling shader by error shader **(Finished)**
+    - support time type(such as unity shader)**(Finished)**
 
 ## TODO: 2019.12.09
 
