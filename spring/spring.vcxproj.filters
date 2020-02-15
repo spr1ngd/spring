@@ -439,6 +439,9 @@
     <ClInclude Include="Graphic.h">
       <Filter>头文件\Graphic</Filter>
     </ClInclude>
+    <ClInclude Include="ParticleShapeModule.h">
+      <Filter>头文件\Renderer\Particle</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Primitive.cpp">
@@ -704,6 +707,9 @@
     </ClCompile>
     <ClCompile Include="Graphic.cpp">
       <Filter>源文件\Graphic</Filter>
+    </ClCompile>
+    <ClCompile Include="ParticleShapeModule.cpp">
+      <Filter>源文件\Renderer\Particle</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

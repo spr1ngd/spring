@@ -53,9 +53,9 @@ Vector3 Vector3::Cross(const Vector3& a,const Vector3& b)
 Vector3 Vector3::Lerp(const Vector3& a, const Vector3& b,const float value)
 {
 	float oneMinus = 1 - value;
-	return Vector3(a.x * value + b.x * oneMinus,
-		a.y * value + b.y * oneMinus,
-		a.z * value + b.z * oneMinus);
+	return Vector3(a.x * oneMinus + b.x * value,
+		a.y * oneMinus + b.y * value,
+		a.z * oneMinus + b.z * value);
 }
 
 Vector3 Vector3::operator+(const Vector3 vec3)

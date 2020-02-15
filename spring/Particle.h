@@ -16,6 +16,8 @@ namespace spring
 			Colorf color;
 			Vector3 position;
 			Vector3 eulerangle;
+			Vector4 rotation;
+			Vector3 direction;
 		};
 
 	public:

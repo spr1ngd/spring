@@ -25,12 +25,15 @@ namespace spring
 		static Color magenta;
 		static Color gray;
 
+		static Color Lerp(Color a,Color b,const float value);
+
 	public:
 		Color();
 		Color(unsigned char color);
 		Color(unsigned char r,unsigned char g,unsigned char b,unsigned char a);
 
-		Color operator= (const Colorf value);
+		void operator= (const Colorf value);
+		void operator= (const Color value);
 		Color operator+ (const Color value);
 		Color operator- (const Color value);
 		Color operator* (const float f);

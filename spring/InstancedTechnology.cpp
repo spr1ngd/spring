@@ -51,7 +51,7 @@ void InstancedTechnology::Awake()
 	// instanceRendererNormal = new InstancedRenderer(instancedMaterialNormal);
 	// instanceRendererNormal->mesh = loader->meshes[0];
 
-	Mathf::RandomSeed();
+	// Mathf::RandomSeed();
 	for (unsigned int i = 0; i < 10000; i++)
 	{
 		auto randomX = (float)Mathf::Random(-100, 100);

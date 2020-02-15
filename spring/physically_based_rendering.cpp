@@ -116,8 +116,24 @@ void generateParticle()
 {
 	ParticleRenderer* particle = new ParticleRenderer();
 	particle->name = "Particle System";
+	auto texture = TextureLoader::Load("res/texture/photon.png");
+	particle->material->shader->setTexture(MAIN_TEX,texture->textureId);
+	particle->maxNumber = 50;
+	particle->lifeTime = 2.0;
+	particle->velocity = 10.0f;
+	particle->rotateSpeed = 0.0f;
+	particle->size = 10.0f;
+	particle->material->shader->setColor(MAIN_COLOR, Color::white);
+
+	particle->enableVariableColor = true;
+	particle->beginColor = Color::yellow;
+	particle->endColor = Color::red;
+
+	particle->enableVariableVelocity = true;
+	particle->beginVelocity = 50.0f;
+	particle->endVelocity = 100.0f;
+
 	particle->playing = true;
-	Console::LogFormat("particle renderer initialize...");
 }
 
 void physically_based_rendering::Awake() 

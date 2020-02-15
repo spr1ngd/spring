@@ -13,6 +13,12 @@ Color Color::cyan = Color(0,255,255,255);
 Color Color::magenta = Color(255,0,255,255);
 Color Color::gray = Color(128,128,128,255);
 
+Color Color::Lerp(Color a, Color b,const float value) 
+{
+	float oneMinus = 1.0f - value;
+	return a * oneMinus + b * value;
+}
+
 Color::Color() 
 {
 	this->r = 255;
@@ -37,13 +43,20 @@ Color::Color(unsigned char r, unsigned char g, unsigned char b, unsigned char a)
 	this->a = a;
 }
 
-Color Color::operator=(const Colorf color) 
+void Color::operator=(const Colorf color) 
 {
-	unsigned char r = (unsigned char)(color.r * 255.0f);
-	unsigned char g = (unsigned char)(color.g * 255.0f);
-	unsigned char b = (unsigned char)(color.b * 255.0f);
-	unsigned char a = (unsigned char)(color.a * 255.0f);
-	return Color(r,g,b,a);
+	this->r = (unsigned char)(color.r * 255.0f);
+	this->g = (unsigned char)(color.g * 255.0f);
+	this->b = (unsigned char)(color.b * 255.0f);
+	this->a = (unsigned char)(color.a * 255.0f);
+}
+
+void Color::operator=(const Color color) 
+{
+	this->r = color.r;
+	this->g = color.g;
+	this->b = color.b;
+	this->a = color.a;
 }
 
 Color Color::operator+(const Color color) 

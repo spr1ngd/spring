@@ -13,6 +13,8 @@ SceneWindow::SceneWindow(const char* name, bool defaultOpen) :EditorWindow(name,
 
 void SceneWindow::OnDrawWindow() 
 {
+	glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
+	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 	if( nullptr == PostProcessing::postprocessing )
 		ImGui::Image((ImTextureID) Camera::main->framebuffer->bufferId, ImVec2(Screen::width * 0.8f,Screen::height*0.8f), ImVec2(0, 1), ImVec2(1, 0));
 	else 

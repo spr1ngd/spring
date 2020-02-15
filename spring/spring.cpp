@@ -106,6 +106,7 @@ int main(int, char**)
 	if( postProcessing->enabled )
 		PostProcessing::postprocessing = postProcessing;
 
+	Mathf::RandomSeed();
 	// Main loop
 	while (!glfwWindowShouldClose(window))
 	{

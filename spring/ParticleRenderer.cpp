@@ -12,7 +12,6 @@ ParticleRenderer::ParticleRenderer()
 	Shader* particle = Shader::Load("particle/particle.vs","particle/particle.fs");
 	Material* particleMaterial = new Material(particle);
 	this->material = particleMaterial;
-	this->maxNumber = 20000;
 	this->Init();
 	particles.push_back(this);
 }
@@ -58,42 +57,51 @@ void ParticleRenderer::Stop()
 
 void ParticleRenderer::Update() 
 {
-	Mathf::RandomSeed();
 	for (ParticleRenderer* particleRenderer : particles) 
 	{
 		if (!particleRenderer->playing)
 			return;
-		if (particleRenderer->existingNumber < particleRenderer->maxNumber)
+
+		// particle life circle and physical simulation
+		int index = 0;
+		for (vector<Particle*>::iterator item = particleRenderer->usingParticles.begin(); item != particleRenderer->usingParticles.end(); item++, index++)
 		{
-			Particle* particle = generate();
-			particle = emit(particle);
-			particleRenderer->usingParticles.push_back(particle);
-			particleRenderer->colors.push_back(Colorf::white);
-			particleRenderer->transforms.push_back(Vector4(particle->setting.position.x, particle->setting.position.y, particle->setting.position.z,particle->setting.size));
-			particleRenderer->existingNumber++;
-		}
-		else
-		{
-			// calculate all particles life cycle , and playing particles physical motion
-			for (unsigned int i = 0; i < particleRenderer->usingParticles.size(); i++) 
+			Particle* alivePartice = *item;
+			//emit(alivePartice);
+			alivePartice->setting.existingTime += Timer::deltaTime;
+			float lifePercent = alivePartice->setting.existingTime / alivePartice->setting.lifeTime;
+
+			alivePartice->setting.velocity = particleRenderer->getSrcVelocity(lifePercent);// static_cast<float>(Mathf::Randomf(4.0f, 8.0f))* particleRenderer->velocity;
+			alivePartice->setting.color = particleRenderer->getSrcColor(lifePercent);//Color::white;
+			alivePartice->setting.size = particleRenderer->getSrcSize(lifePercent);//static_cast<float>(Mathf::Randomf(1.0f, 3.0f)) * particleRenderer->size;
+
+			// update color
+			// alivePartice->setting.color = Colorf(Mathf::Abs(Mathf::Sin(alivePartice->setting.existingTime)));
+			particleRenderer->colors[index] = alivePartice->setting.color;
+
+			// todo : determine the direction of movement
+			// update position
+			auto position = alivePartice->setting.position;
+			float y = position.y - Timer::deltaTime * alivePartice->setting.velocity;
+			if (y < -50.0f)
+				y = 50.0f;
+			alivePartice->setting.position = Vector3(position.x, y, position.z);
+			particleRenderer->transforms[index] = Vector4(alivePartice->setting.position.x, alivePartice->setting.position.y, alivePartice->setting.position.z, alivePartice->setting.size);
+
+			// update rotation
+			particleRenderer->rotations[index].y += Timer::deltaTime * particleRenderer->rotateSpeed;
+
+			// update existing time;
+			if (alivePartice->setting.existingTime > alivePartice->setting.lifeTime)
 			{
-				auto alivePartice = particleRenderer->usingParticles[i];
-				emit(alivePartice);
-
-				auto position = alivePartice->setting.position;
-				alivePartice->setting.color = Colorf(Mathf::Abs(Mathf::Sin(alivePartice->setting.existingTime)));
-				particleRenderer->colors[i] = alivePartice->setting.color;
-
-				float y = position.y - Timer::deltaTime;
-				if (y < -50.0f)
-					y = 50.0f;
-				alivePartice->setting.position = Vector3(position.x, y, position.z);
-				particleRenderer->transforms[i] = Vector4(alivePartice->setting.position.x, alivePartice->setting.position.y, alivePartice->setting.position.z, alivePartice->setting.size);
+				item = particleRenderer->usingParticles.erase(item);
+				particleRenderer->existingNumber--;
 			}
-
-			// update color array 
-			// update transform array
 		}
+
+		// emit particles
+		if (particleRenderer->existingNumber < particleRenderer->maxNumber)
+			emit(particleRenderer);
 	}
 }
 
@@ -101,41 +109,76 @@ void ParticleRenderer::Update()
 
 #pragma region particles emitter and generator
 
-Particle* ParticleRenderer::emit(Particle* particle)
+Particle* ParticleRenderer::emit(ParticleRenderer* particleRenderer)
 {
-	// todo : generate random particle properties
-	particle->setting.existingTime += Timer::deltaTime;
-	return particle;
-}
-
-Particle* ParticleRenderer::generate()
-{
-	// todo : generate mesh data (contains vertex data / texcoord)
 	Particle* particle = new Particle();
-	particle->setting.lifeTime = 30.0f;
-	particle->setting.existingTime = Mathf::Randomf(0.0f,particle->setting.lifeTime);
+	// todo : replaced those code use particle shape module object.
+	Vector3 position = particleRenderer->shapeModule.getSrcPosition();
+	Vector3 direction = particleRenderer->shapeModule.getDirection();
+
+	particle->setting.existingTime = 0.0f;
+	particle->setting.lifeTime = particleRenderer->lifeTime;
+	float lifePercent = particle->setting.existingTime / particle->setting.lifeTime;
+
+	particle->setting.velocity = particleRenderer->getSrcVelocity(lifePercent);// static_cast<float>(Mathf::Randomf(4.0f, 8.0f))* particleRenderer->velocity;
+	particle->setting.color = particleRenderer->getSrcColor(lifePercent);//Color::white;
+	particle->setting.size = particleRenderer->getSrcSize(lifePercent);//static_cast<float>(Mathf::Randomf(1.0f, 3.0f)) * particleRenderer->size;
+
+	particle->setting.position = Vector3(Mathf::Randomf(-100.0f, 100.0f), Mathf::Randomf(-50.0f,50.0f), Mathf::Randomf(-100.0f, 100.0f));
+	particle->setting.direction = direction;
+
+	particleRenderer->usingParticles.push_back(particle);
+	particleRenderer->existingNumber++;
+
+	// update shader uniform buffer data
+	particleRenderer->colors.push_back(Colorf::white);
+	particleRenderer->transforms.push_back(Vector4(particle->setting.position.x, particle->setting.position.y, particle->setting.position.z, particle->setting.size));
+	particleRenderer->rotations.push_back(Vector4(0.0f, 0.0f, 0.0f, 0.0f));
 	return particle;
 }
 
 #pragma endregion
 
-// #TODO refactor init and render methods . 
+#pragma region particle renderer parameters
+
+Colorf ParticleRenderer::getSrcColor(float lifePercent)
+{
+	if (this->enableVariableColor) return colorOverLife(lifePercent);
+	return Colorf::white;
+}
+Colorf ParticleRenderer::colorOverLife(float lifePercent)
+{
+	return Colorf::Lerp(this->beginColor, this->endColor, lifePercent);
+}
+
+float ParticleRenderer::getSrcVelocity(float lifePercent)
+{
+	if (this->enableVariableVelocity) return velocityOverLife(lifePercent);
+	return static_cast<float>(Mathf::Randomf(4.0f, 8.0f))* this->velocity;
+}
+float ParticleRenderer::velocityOverLife(float lifePercent)
+{
+	float oneMinus = 1.0f - lifePercent;
+	return this->beginVelocity * oneMinus + this->endVelocity * lifePercent;
+}
+
+float ParticleRenderer::getSrcSize(float lifePercent)
+{
+	if (this->enableVariableSize) return sizeOverLife(lifePercent);
+	return this->size;
+}
+float ParticleRenderer::sizeOverLife(float lifePercent)
+{
+	float oneMinus = 1.0f - lifePercent;
+	return this->beginSize * oneMinus + this->endSize * lifePercent;
+}
+
+#pragma endregion
+
+#pragma region renderer core
+
 void ParticleRenderer::Init() 
 {
-	// 初始化第一个粒子
-	Mathf::RandomSeed();
-	for (unsigned int i = 0; i < this->maxNumber; i++)
-	{
-		Particle* particle = generate();
-		particle = emit(particle);
-		particle->setting.size = static_cast<float>(Mathf::Randomf(0.25f,3.0f));
-		particle->setting.position = Vector3(Mathf::Randomf(-50.0f, 50.0f), Mathf::Randomf(-50.0f, 50.0f), Mathf::Randomf(-50.0f, 50.0f));
-		this->usingParticles.push_back(particle);
-		this->colors.push_back(Colorf::white);
-		this->transforms.push_back(Vector4(particle->setting.position.x, particle->setting.position.y, particle->setting.position.z, particle->setting.size));
-		this->existingNumber++;
-	}
-
 	this->mesh = Primitive::GenPrimitive(Primitive::Type::Plane);
 	mesh->Init([&](void) 
 		{
@@ -149,29 +192,21 @@ void ParticleRenderer::Init()
 			// 颜色缓存
 			glGenBuffers(1, &colorBuffer);
 			glBindBuffer(GL_ARRAY_BUFFER, colorBuffer);
-			glBufferData(GL_ARRAY_BUFFER, 20000 * sizeof(Colorf), NULL, GL_STATIC_DRAW);
-			glBufferSubData(GL_ARRAY_BUFFER, 0, 20000 * sizeof(Colorf), &this->colors[0]);
-			unsigned int colorLocation = this->material->shader->getLocation(COLOR);
-			glEnableVertexAttribArray(colorLocation);
-			glVertexAttribPointer(colorLocation, 4, GL_FLOAT, GL_FALSE, sizeof(Colorf), (void*)0);
-			glVertexAttribDivisor(colorLocation, 1);
+			glBufferData(GL_ARRAY_BUFFER, this->maxNumber * sizeof(Colorf), NULL, GL_STATIC_DRAW);
 
 			// 变换缓存
 			glGenBuffers(1, &transformBuffer);
 			glBindBuffer(GL_ARRAY_BUFFER, transformBuffer);
-			glBufferData(GL_ARRAY_BUFFER, 20000 * sizeof(Vector4), NULL, GL_STATIC_DRAW);
-			glBufferSubData(GL_ARRAY_BUFFER, 0, 20000 * sizeof(Vector4), &this->transforms[0]);
+			glBufferData(GL_ARRAY_BUFFER, this->maxNumber * sizeof(Vector4), NULL, GL_DYNAMIC_DRAW);
 
-			unsigned int transformLocation = this->material->shader->getAttribLocation("transform");
-			glEnableVertexAttribArray(transformLocation);
-			glVertexAttribPointer(transformLocation, 4, GL_FLOAT, GL_FALSE, sizeof(Vector4), (void*)0);
-			glVertexAttribDivisor(transformLocation, 1);
+			// 旋转缓存
+			glGenBuffers(1, &rotationBuffer);
+			glBindBuffer(GL_ARRAY_BUFFER, rotationBuffer);
+			glBufferData(GL_ARRAY_BUFFER, this->maxNumber * sizeof(Vector4), NULL, GL_DYNAMIC_DRAW);
+
 			glBindBuffer(GL_ARRAY_BUFFER, 0);
 		});
-	this->meshes.push_back(*mesh);
-	auto texture = TextureLoader::Load("res/texture/snow.png");
-	this->material->shader->setTexture(MAIN_TEX,texture->textureId);
-}
+	this->meshes.push_back(*mesh);}
 
 void ParticleRenderer::Render() 
 {
@@ -183,9 +218,12 @@ void ParticleRenderer::Render()
 	if (this->visible == false)
 		return;
 
+	this->material->AlphaTestFunc(GL_GREATER,0.0f);
 	this->material->EnableAlphaTest();
-	this->material->AlphaBlendFunc(true);
+
+	this->material->AlphaBlendFunc();
 	this->material->EnableAlphaBlend();
+
 	this->material->EnableDepthWrite(false);
 	this->material->EnableDepthTest();
 	this->material->EnableStencilTest();
@@ -218,7 +256,7 @@ void ParticleRenderer::Render()
 		glBindVertexArray(mesh->VAO);
 		// color buffer object
 		glBindBuffer(GL_ARRAY_BUFFER, colorBuffer);
-		glBufferSubData(GL_ARRAY_BUFFER, 0, 20000 * sizeof(Colorf), &this->colors[0]);
+		glBufferSubData(GL_ARRAY_BUFFER, 0, this->existingNumber * sizeof(Colorf), &this->colors[0]);
 		unsigned int colorLocation = this->material->shader->getLocation(COLOR);
 		glEnableVertexAttribArray(colorLocation);
 		glVertexAttribPointer(colorLocation, 4, GL_FLOAT, GL_FALSE, sizeof(Colorf), (void*)0);
@@ -227,16 +265,27 @@ void ParticleRenderer::Render()
 
 		// transform buffer object
 		glBindBuffer(GL_ARRAY_BUFFER, transformBuffer);
-		glBufferSubData(GL_ARRAY_BUFFER, 0, 20000 * sizeof(Vector4), &this->transforms[0]);
+		glBufferSubData(GL_ARRAY_BUFFER, 0, this->existingNumber * sizeof(Vector4), &this->transforms[0]);
 		unsigned int transformLocation = this->material->shader->getAttribLocation("transform");
 		glEnableVertexAttribArray(transformLocation);
 		glVertexAttribPointer(transformLocation, 4, GL_FLOAT, GL_FALSE, sizeof(Vector4), (void*)0);
 		glVertexAttribDivisor(transformLocation, 1);
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
-		glBindVertexArray(0);
 
+		// rotation buffer object
+		glBindBuffer(GL_ARRAY_BUFFER, rotationBuffer);
+		glBufferSubData(GL_ARRAY_BUFFER, 0, this->existingNumber * sizeof(Vector4), &this->rotations[0]);
+		unsigned int rotationLocation = this->material->shader->getAttribLocation("rotation");
+		glEnableVertexAttribArray(rotationLocation);
+		glVertexAttribPointer(rotationLocation, 4, GL_FLOAT, GL_FALSE, sizeof(Vector4), (void*)0);
+		glVertexAttribDivisor(rotationLocation, 1);
+		glBindBuffer(GL_ARRAY_BUFFER,0);
+		
+		glBindVertexArray(0);
 		this->material->shader->use();
 		mesh->DrawInstanced(this->existingNumber);
 		this->material->shader->disuse();
 	}
 }
+
+#pragma endregion

@@ -3,6 +3,7 @@
 #include "springengine.h"
 #include "meshrenderer.h"
 #include "particle.h"
+#include "particleshapemodule.h"
 
 using namespace std;
 
@@ -12,27 +13,31 @@ namespace spring
 	{
 	public:
 		static std::vector<ParticleRenderer*> particles;
+		static Particle* emit(ParticleRenderer* particleRenderer);
 
 	private:
 		vector<Colorf> colors;
 		vector<Vector4> transforms;
+		vector<Vector4> rotations;
 
-		static Particle* emit(Particle*);
-		static Particle* generate();
 
 	public:
 		Mesh* mesh;
 
 		unsigned int colorBuffer;
 		unsigned int transformBuffer;
+		unsigned int rotationBuffer;
 
 		bool playing = true;
 		bool runIn2D = false;
 		unsigned int maxNumber = 1000;
 		unsigned int existingNumber = 0;
-		unsigned int shape = 0;
 
-		float lifeTime;
+		float lifeTime = 5.0f;
+		float velocity = 0.0f;
+		float size = 1.0f;
+		float rotateSpeed = 0.0f;
+		ParticleShapeModule shapeModule;
 
 		std::vector<Particle*> usingParticles;
 		std::vector<Particle*> unusedParticles;
@@ -45,8 +50,31 @@ namespace spring
 		void Pause();
 		void Stop();
 
-		static void Update(); // call this method per frame.
+		static void Update();
 		virtual void Init();
 		void Render() override;
+
+	// parameters over life
+	public:
+		bool enableVariableColor = false;
+		Colorf beginColor;
+		Colorf endColor;
+
+		bool enableVariableVelocity = false;
+		float beginVelocity;
+		float endVelocity;
+
+		bool enableVariableSize = false;
+		float beginSize;
+		float endSize;
+
+		Colorf getSrcColor(float lifePercent);
+		float getSrcVelocity(float lifePercent);
+		float getSrcSize(float lifePercent);
+
+	private:
+		Colorf colorOverLife(float lifePercent);
+		float velocityOverLife(float lifePercent);
+		float sizeOverLife(float lifePercent);
 	};
 }

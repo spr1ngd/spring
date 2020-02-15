@@ -13,6 +13,12 @@ Colorf Colorf::white = Colorf(1.0f, 1.0f, 1.0f, 1.0f);
 Colorf Colorf::black = Colorf(0.0f, 0.0f, 0.0f, 1.0f);
 Colorf Colorf::gray = Colorf(0.5f, 0.5f, 0.5f, 1.0f);
 
+Colorf Colorf::Lerp(Colorf a,Colorf b,const float value) 
+{
+	float oneMinus = 1.0f - value;
+	return a * oneMinus + b * value;
+}
+
 Colorf::Colorf() 
 {
 	this->r = 1.0f;
@@ -37,13 +43,20 @@ Colorf::Colorf(float r, float g, float b, float a)
 	this->a = a;
 }
 
-Colorf Colorf::operator=(const Color color)
+void Colorf::operator=(const Color color)
 {
-	float r = color.r / 255.0f;
-	float g = color.g / 255.0f;
-	float b = color.b / 255.0f;
-	float a = color.a / 255.0f;
-	return Colorf(r, g, b, a);
+	this->r = color.r / 255.0f;
+	this->g = color.g / 255.0f;
+	this->b = color.b / 255.0f;
+	this->a = color.a / 255.0f;
+}
+
+void Colorf::operator=(const Colorf colorf) 
+{
+	this->r = colorf.r;
+	this->g = colorf.g;
+	this->b = colorf.b;
+	this->a = colorf.a;
 }
 
 Colorf Colorf::operator+(const Colorf color)

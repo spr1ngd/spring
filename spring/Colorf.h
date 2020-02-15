@@ -24,12 +24,15 @@ namespace spring
 		static Colorf black;
 		static Colorf gray;
 
+		static Colorf Lerp(Colorf a,Colorf b,const float value);
+
 	public:
 		Colorf();
 		Colorf(float c);
 		Colorf(float r, float g, float b, float a);
 
-		Colorf operator= (const Color value);
+		void operator= (const Color value);
+		void operator= (const Colorf value);
 		Colorf operator+ (const Colorf value);
 		Colorf operator- (const Colorf value);
 		Colorf operator* (const float f);

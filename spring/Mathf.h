@@ -68,7 +68,6 @@ namespace spring
 			return sqrtf(value);
 		}
 
-
 		static char Abs(char value)
 		{
 			if (value < 0)
@@ -94,6 +93,10 @@ namespace spring
 			return value;
 		}
 
+		static float Clamp01(float value)
+		{
+			return Clamp(value, 0.0f, 1.0f);
+		}
 		static int Clamp(int value, int min, int max)
 		{
 			if (value < min)
@@ -113,7 +116,7 @@ namespace spring
 
 		#pragma endregion
 
-#pragma region  Numeric random value
+		#pragma region  Numeric random value
 		 
 		static void RandomSeed()
 		{
@@ -137,7 +140,6 @@ namespace spring
 			return min + Randomf() * (max - min);
 		}
 
-#pragma endregion
-
+		#pragma endregion
 	};
 }

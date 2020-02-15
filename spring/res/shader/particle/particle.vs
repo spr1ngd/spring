@@ -4,6 +4,7 @@ layout (location = 0) in vec3 vertex;
 layout (location = 1) in vec2 texcoord;
 layout (location = 2) in vec4 color;
 layout (location = 3) in vec4 transform;
+layout (location = 4) in vec4 rotation; 
 
 uniform mat4 MVP;
 uniform mat4 World2Object;
@@ -28,8 +29,8 @@ void main()
     vec3 right = normalize(cross(view,up));
     up = normalize(cross(view,right));
     
-    float c = cos(_Time.x * 1 / transform.w);
-    float s = sin(_Time.x * 1 / transform.w);
+    float c = cos(rotation.y);
+    float s = sin(rotation.y);
     mat3 rotate = mat3(c,-s,0,s,c,0,0,0,0); 
     vec3 rr = rotate * vertex * size;  
     vec3 pos = center + right * rr.x + up * rr.y + view * rr.z;
