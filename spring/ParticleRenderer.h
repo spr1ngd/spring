@@ -37,7 +37,7 @@ namespace spring
 		float velocity = 0.0f;
 		float size = 1.0f;
 		float rotateSpeed = 0.0f;
-		ParticleShapeModule shapeModule;
+		ParticleShapeModule* shapeModule;
 
 		std::vector<Particle*> usingParticles;
 		std::vector<Particle*> unusedParticles;

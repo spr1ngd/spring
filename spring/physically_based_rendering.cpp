@@ -116,7 +116,7 @@ void generateParticle()
 {
 	ParticleRenderer* particle = new ParticleRenderer();
 	particle->name = "Particle System";
-	auto texture = TextureLoader::Load("res/texture/photon.png");
+	auto texture = TextureLoader::Load("res/texture/snow.png");
 	particle->material->shader->setTexture(MAIN_TEX,texture->textureId);
 	particle->maxNumber = 50;
 	particle->lifeTime = 2.0;
@@ -125,7 +125,7 @@ void generateParticle()
 	particle->size = 10.0f;
 	particle->material->shader->setColor(MAIN_COLOR, Color::white);
 
-	particle->enableVariableColor = true;
+	particle->enableVariableColor = false;
 	particle->beginColor = Color::yellow;
 	particle->endColor = Color::red;
 
@@ -133,6 +133,16 @@ void generateParticle()
 	particle->beginVelocity = 50.0f;
 	particle->endVelocity = 100.0f;
 
+	// cube shape
+	// particle->shapeModule->shapeType = ParticleShapeModule::ShapeType::Cube;
+	// particle->shapeModule->cubeProperties.size = 50.0f;
+
+	// sphere shape
+	particle->shapeModule->shapeType = ParticleShapeModule::Sphere;
+	particle->shapeModule->sphereProperties.radius = 20.0f;
+
+	particle->transform->position = Vector3(0.0f,0.0f,0.0f);
+	particle->transform->eulerangle = Vector3(0.0f, 0.0f, 180.0f);
 	particle->playing = true;
 }
 

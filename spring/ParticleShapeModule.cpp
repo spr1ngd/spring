@@ -7,6 +7,18 @@ ParticleShapeModule::ParticleShapeModule()
 	this->shapeType = ShapeType::Cube;
 }
 
+ParticleShapeModule::ParticleShapeModule(Transform* transform) 
+{
+	this->transform = transform;
+	this->shapeType = ShapeType::Cube;
+}
+
+void ParticleShapeModule::getSrcParticle(Vector3& position, Vector3& direction) 
+{
+	position  = this->getSrcPosition();
+	direction = this->getDirection();
+}
+
 #pragma region calculate source position of particle
 
 Vector3 ParticleShapeModule::getSrcPosition() 
@@ -32,11 +44,16 @@ Vector3 ParticleShapeModule::getSrcPosition()
 
 Vector3 ParticleShapeModule::getSrcPositionInCubeMode() 
 {
-	return Vector3::zero;
+	float halfSize = this->cubeProperties.size * 0.5f;
+	float up = Mathf::Randomf(-halfSize, halfSize);
+	float right = Mathf::Randomf(-halfSize, halfSize);
+	float forward = Mathf::Randomf(-halfSize, halfSize);
+	return this->transform->position + this->getDirection() * up + this->transform->right * right + this->transform->forword * forward;
 }
 Vector3 ParticleShapeModule::getSrcPositionInSphereMode()
 {
-	return Vector3::zero;
+	Vector3 direction = this->getDirectionInSphereMode();
+	return this->transform->position;// +direction * this->sphereProperties.radius;
 }
 Vector3 ParticleShapeModule::getSrcPositionInHemisphereMode()
 {
@@ -52,7 +69,6 @@ Vector3 ParticleShapeModule::getSrcPositionInRectangleMode()
 }
 
 #pragma endregion
-
 
 #pragma region calculate direction of movement
 
@@ -79,14 +95,16 @@ Vector3 ParticleShapeModule::getDirection()
 
 Vector3 ParticleShapeModule::getDirectionInCubeMode() 
 {
-	return Vector3::up;
+	return transform->up;
 }
 Vector3 ParticleShapeModule::getDirectionInSphereMode() 
 {
-	return Vector3::up;
+	return Vector3::Normalize(Vector3(Mathf::Randomf(-1.0f,1.0f), Mathf::Randomf(-1.0f, 1.0f), Mathf::Randomf(-1.0f, 1.0f)));
 }
 Vector3 ParticleShapeModule::getDirectionInHemisphereMode() 
 {
+	// enforce to generate direction be included in hemisphere
+	// 利用eulerangle将transform.up向量旋转得到新的半球
 	return Vector3::up;
 }
 Vector3 ParticleShapeModule::getDirectionInConeMode() 

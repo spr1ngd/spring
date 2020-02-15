@@ -25,6 +25,12 @@ namespace spring
 			float radius = 1.0f;
 		};
 
+		struct HemisphereProperty 
+		{
+			float radius = 1.0f;
+			Vector3 eulerangle = Vector3::up;
+		};
+
 		struct ConeProperty 
 		{
 			float radius = 1.0f;
@@ -37,28 +43,32 @@ namespace spring
 			float width = 1.0f;
 		};
 
+		Transform* transform;
 		ShapeType shapeType = Cube;
-		
 		// cube properties
 		CubeProperty cubeProperties;
 		// sphere properties
 		SphereProperty sphereProperties;
+		// hemisphere properties
+		HemisphereProperty hemisphereProperties;
 		// cone properties
 		ConeProperty coneProperties;
 		// rectangle properties
 		RectangleProperty rectangleProperties;
 
 		ParticleShapeModule();
-		Vector3 getDirection();
-		Vector3 getSrcPosition();
+		ParticleShapeModule(Transform* transform);
+		void getSrcParticle(Vector3& position,Vector3& direction);
 
 	private:
+		Vector3 getDirection();
 		Vector3 getDirectionInCubeMode();
 		Vector3 getDirectionInSphereMode();
 		Vector3 getDirectionInHemisphereMode();
 		Vector3 getDirectionInConeMode();
 		Vector3 getDirecitonInRectangleMode();
 
+		Vector3 getSrcPosition();
 		Vector3 getSrcPositionInCubeMode();
 		Vector3 getSrcPositionInSphereMode();
 		Vector3 getSrcPositionInHemisphereMode();

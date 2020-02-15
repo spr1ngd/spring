@@ -9,6 +9,7 @@ std::vector<ParticleRenderer*> ParticleRenderer::particles;
 
 ParticleRenderer::ParticleRenderer() 
 {
+	this->shapeModule = new ParticleShapeModule(this->transform);
 	Shader* particle = Shader::Load("particle/particle.vs","particle/particle.fs");
 	Material* particleMaterial = new Material(particle);
 	this->material = particleMaterial;
@@ -18,6 +19,7 @@ ParticleRenderer::ParticleRenderer()
 
 ParticleRenderer::ParticleRenderer(Material* material) 
 {
+	this->shapeModule = new ParticleShapeModule(this->transform);
 	this->material = material;
 	this->Init();
 	particles.push_back(this);
@@ -25,7 +27,7 @@ ParticleRenderer::ParticleRenderer(Material* material)
 
 ParticleRenderer::~ParticleRenderer()
 {
-	// todo : destroy material & shader program instance
+	delete this->shapeModule;
 	for (auto item = particles.begin(); item != particles.end(); item++) 
 	{
 		if (*item == this)
@@ -51,8 +53,6 @@ void ParticleRenderer::Pause()
 void ParticleRenderer::Stop() 
 {
 	this->playing = false;
-	// clear all particles status 
-	// clear all particles properties
 }
 
 void ParticleRenderer::Update() 
@@ -79,13 +79,8 @@ void ParticleRenderer::Update()
 			// alivePartice->setting.color = Colorf(Mathf::Abs(Mathf::Sin(alivePartice->setting.existingTime)));
 			particleRenderer->colors[index] = alivePartice->setting.color;
 
-			// todo : determine the direction of movement
-			// update position
-			auto position = alivePartice->setting.position;
-			float y = position.y - Timer::deltaTime * alivePartice->setting.velocity;
-			if (y < -50.0f)
-				y = 50.0f;
-			alivePartice->setting.position = Vector3(position.x, y, position.z);
+			// update position / direction
+			alivePartice->setting.position += alivePartice->setting.direction * Timer::deltaTime * alivePartice->setting.velocity;
 			particleRenderer->transforms[index] = Vector4(alivePartice->setting.position.x, alivePartice->setting.position.y, alivePartice->setting.position.z, alivePartice->setting.size);
 
 			// update rotation
@@ -113,8 +108,8 @@ Particle* ParticleRenderer::emit(ParticleRenderer* particleRenderer)
 {
 	Particle* particle = new Particle();
 	// todo : replaced those code use particle shape module object.
-	Vector3 position = particleRenderer->shapeModule.getSrcPosition();
-	Vector3 direction = particleRenderer->shapeModule.getDirection();
+	Vector3 position, direction;
+	particleRenderer->shapeModule->getSrcParticle(position, direction);
 
 	particle->setting.existingTime = 0.0f;
 	particle->setting.lifeTime = particleRenderer->lifeTime;
@@ -124,7 +119,7 @@ Particle* ParticleRenderer::emit(ParticleRenderer* particleRenderer)
 	particle->setting.color = particleRenderer->getSrcColor(lifePercent);//Color::white;
 	particle->setting.size = particleRenderer->getSrcSize(lifePercent);//static_cast<float>(Mathf::Randomf(1.0f, 3.0f)) * particleRenderer->size;
 
-	particle->setting.position = Vector3(Mathf::Randomf(-100.0f, 100.0f), Mathf::Randomf(-50.0f,50.0f), Mathf::Randomf(-100.0f, 100.0f));
+	particle->setting.position = position;// Vector3(Mathf::Randomf(-100.0f, 100.0f), Mathf::Randomf(-50.0f, 50.0f), Mathf::Randomf(-100.0f, 100.0f));
 	particle->setting.direction = direction;
 
 	particleRenderer->usingParticles.push_back(particle);
