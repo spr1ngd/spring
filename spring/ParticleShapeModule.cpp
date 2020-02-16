@@ -52,20 +52,27 @@ Vector3 ParticleShapeModule::getSrcPositionInCubeMode()
 }
 Vector3 ParticleShapeModule::getSrcPositionInSphereMode()
 {
-	Vector3 direction = this->getDirectionInSphereMode();
+	// Vector3 direction = this->getDirectionInSphereMode();
 	return this->transform->position;// +direction * this->sphereProperties.radius;
 }
 Vector3 ParticleShapeModule::getSrcPositionInHemisphereMode()
 {
-	return Vector3::zero;
+	// Vector3 direction = this->getDirectionInHemisphereMode();
+	return this->transform->position;
 }
 Vector3 ParticleShapeModule::getSrcPositionInConeMode() 
 {
-	return Vector3::zero;
+	// Vector3 direction = this->getDirectionInConeMode();
+	return this->transform->position + Vector3(
+		Mathf::Randomf(-this->coneProperties.radius,this->coneProperties.radius),
+		0.0f,
+		Mathf::Randomf(-this->coneProperties.radius,this->coneProperties.radius));
 }
 Vector3 ParticleShapeModule::getSrcPositionInRectangleMode() 
 {
-	return Vector3::zero;
+	float halfWidth = this->rectangleProperties.width * 0.5f;
+	float halfLength = this->rectangleProperties.length * 0.5f;
+	return this->transform->position + Vector3(Mathf::Randomf(-halfWidth,halfWidth),0.0f,Mathf::Randomf(-halfLength,halfLength));
 }
 
 #pragma endregion
@@ -95,7 +102,7 @@ Vector3 ParticleShapeModule::getDirection()
 
 Vector3 ParticleShapeModule::getDirectionInCubeMode() 
 {
-	return transform->up;
+	return this->transform->up;
 }
 Vector3 ParticleShapeModule::getDirectionInSphereMode() 
 {
@@ -103,17 +110,26 @@ Vector3 ParticleShapeModule::getDirectionInSphereMode()
 }
 Vector3 ParticleShapeModule::getDirectionInHemisphereMode() 
 {
-	// enforce to generate direction be included in hemisphere
-	// 利用eulerangle将transform.up向量旋转得到新的半球
-	return Vector3::up;
+	Vector3 result = Vector3::Normalize(Vector3(Mathf::Randomf(-1.0f, 1.0f), Mathf::Randomf(0.0f, 1.0f), Mathf::Randomf(-1.0f, 1.0f)));
+	result = 
+		Matrix4x4::RotateY(this->transform->up.y) *
+		Matrix4x4::RotateX(this->transform->up.x) *
+		Matrix4x4::RotateZ(this->transform->up.z) * result;
+	return result;
 }
 Vector3 ParticleShapeModule::getDirectionInConeMode() 
 {
-	return Vector3::up;
+	float sinHalfAngle = Mathf::Sin(this->coneProperties.angle * 0.5f);
+	Vector3 result = Vector3::Normalize(Vector3(Mathf::Randomf(-sinHalfAngle,sinHalfAngle),1.0f,Mathf::Randomf(-sinHalfAngle,sinHalfAngle)));
+	result = 
+		Matrix4x4::RotateY(this->transform->up.y) *
+		Matrix4x4::RotateX(this->transform->up.x) *
+		Matrix4x4::RotateZ(this->transform->up.z) * result;
+	return result;
 }
 Vector3 ParticleShapeModule::getDirecitonInRectangleMode() 
 {
-	return Vector3::up;
+	return this->transform->up;
 }
 
 #pragma endregion

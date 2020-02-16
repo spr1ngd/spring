@@ -20,7 +20,7 @@ namespace spring
 		vector<Vector4> transforms;
 		vector<Vector4> rotations;
 
-
+		float emitTimer = 0.0f;
 	public:
 		Mesh* mesh;
 
@@ -32,6 +32,9 @@ namespace spring
 		bool runIn2D = false;
 		unsigned int maxNumber = 1000;
 		unsigned int existingNumber = 0;
+
+		// default emit speed
+		float emitInterval = 10.0f;
 
 		float lifeTime = 5.0f;
 		float velocity = 0.0f;
@@ -68,9 +71,14 @@ namespace spring
 		float beginSize;
 		float endSize;
 
+		bool enableVariableEmitSpeed = false;
+		float beginSpeed = 1.0f;
+		float endSpeed = 1.0f;
+
 		Colorf getSrcColor(float lifePercent);
 		float getSrcVelocity(float lifePercent);
 		float getSrcSize(float lifePercent);
+		float getEmitInterval(float lifePercent);
 
 	private:
 		Colorf colorOverLife(float lifePercent);

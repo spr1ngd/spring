@@ -61,6 +61,7 @@ void ParticleRenderer::Update()
 	{
 		if (!particleRenderer->playing)
 			return;
+		particleRenderer->emitTimer += Timer::deltaTime;
 
 		// particle life circle and physical simulation
 		int index = 0;
@@ -95,8 +96,12 @@ void ParticleRenderer::Update()
 		}
 
 		// emit particles
-		if (particleRenderer->existingNumber < particleRenderer->maxNumber)
+		float emitInterval = particleRenderer->getEmitInterval(0.0f);
+		if ( particleRenderer->emitTimer >= emitInterval && particleRenderer->existingNumber < particleRenderer->maxNumber)
+		{
 			emit(particleRenderer);
+			particleRenderer->emitTimer = 0.0f;
+		}
 	}
 }
 
@@ -168,6 +173,11 @@ float ParticleRenderer::sizeOverLife(float lifePercent)
 	return this->beginSize * oneMinus + this->endSize * lifePercent;
 }
 
+float ParticleRenderer::getEmitInterval(float lifePercent) 
+{
+	return this->lifeTime / this->maxNumber;
+}
+
 #pragma endregion
 
 #pragma region renderer core
@@ -211,6 +221,9 @@ void ParticleRenderer::Render()
 		return;
 	}
 	if (this->visible == false)
+		return;
+
+	if (this->usingParticles.size() <= 0)
 		return;
 
 	this->material->AlphaTestFunc(GL_GREATER,0.0f);

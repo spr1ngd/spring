@@ -119,7 +119,7 @@ void generateParticle()
 	auto texture = TextureLoader::Load("res/texture/snow.png");
 	particle->material->shader->setTexture(MAIN_TEX,texture->textureId);
 	particle->maxNumber = 50;
-	particle->lifeTime = 2.0;
+	particle->lifeTime = 5.0f;
 	particle->velocity = 10.0f;
 	particle->rotateSpeed = 0.0f;
 	particle->size = 10.0f;
@@ -133,16 +133,35 @@ void generateParticle()
 	particle->beginVelocity = 50.0f;
 	particle->endVelocity = 100.0f;
 
+	particle->enableVariableEmitSpeed = false;
+	particle->beginSpeed = 1.0f;
+	particle->endSpeed = 1.0f;
+
 	// cube shape
 	// particle->shapeModule->shapeType = ParticleShapeModule::ShapeType::Cube;
 	// particle->shapeModule->cubeProperties.size = 50.0f;
 
 	// sphere shape
-	particle->shapeModule->shapeType = ParticleShapeModule::Sphere;
-	particle->shapeModule->sphereProperties.radius = 20.0f;
+	// particle->shapeModule->shapeType = ParticleShapeModule::ShapeType::Sphere;
+	// particle->shapeModule->sphereProperties.radius = 20.0f;
+
+	// hemisphere shape
+	// particle->shapeModule->shapeType = ParticleShapeModule::ShapeType::Hemishpere;
+	// particle->shapeModule->hemisphereProperties.radius = 10.0f;
+	// particle->shapeModule->hemisphereProperties.eulerangle = Vector3(90.0f,0.0f,0.0f);
+
+	// cone shape
+	// particle->shapeModule->shapeType = ParticleShapeModule::ShapeType::Cone;
+	// particle->shapeModule->coneProperties.radius = 50.0f;
+	// particle->shapeModule->coneProperties.angle = 60.0f;
+
+	// rectangle shape
+	particle->shapeModule->shapeType = ParticleShapeModule::ShapeType::Rectangle;
+	particle->shapeModule->rectangleProperties.width = 2.0f;
+	particle->shapeModule->rectangleProperties.length = 80.0f;
 
 	particle->transform->position = Vector3(0.0f,0.0f,0.0f);
-	particle->transform->eulerangle = Vector3(0.0f, 0.0f, 180.0f);
+	// particle->transform->eulerangle = Vector3(0.0f, 0.0f, 180.0f);
 	particle->playing = true;
 }
 

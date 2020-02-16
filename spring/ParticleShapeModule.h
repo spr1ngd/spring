@@ -28,7 +28,6 @@ namespace spring
 		struct HemisphereProperty 
 		{
 			float radius = 1.0f;
-			Vector3 eulerangle = Vector3::up;
 		};
 
 		struct ConeProperty 
