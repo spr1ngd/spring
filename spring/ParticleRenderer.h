@@ -33,7 +33,6 @@ namespace spring
 		unsigned int maxNumber = 1000;
 		unsigned int existingNumber = 0;
 
-		// default emit speed
 		float emitInterval = 10.0f;
 
 		float lifeTime = 5.0f;

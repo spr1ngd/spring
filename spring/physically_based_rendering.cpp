@@ -115,27 +115,31 @@ void starFighter()
 void generateParticle() 
 {
 	ParticleRenderer* particle = new ParticleRenderer();
-	particle->name = "Particle System";
-	auto texture = TextureLoader::Load("res/texture/snow.png");
+	particle->name = "Particle System Left";
+	auto texture = TextureLoader::Load("res/texture/photon.png");
 	particle->material->shader->setTexture(MAIN_TEX,texture->textureId);
-	particle->maxNumber = 50;
-	particle->lifeTime = 5.0f;
+	particle->maxNumber = 5000;
+	particle->lifeTime = .22f;
 	particle->velocity = 10.0f;
 	particle->rotateSpeed = 0.0f;
-	particle->size = 10.0f;
+	particle->size = 8.0f;
 	particle->material->shader->setColor(MAIN_COLOR, Color::white);
 
-	particle->enableVariableColor = false;
+	particle->enableVariableColor = true;
 	particle->beginColor = Color::yellow;
-	particle->endColor = Color::red;
+	particle->endColor = Color::cyan;
 
-	particle->enableVariableVelocity = true;
+	particle->enableVariableVelocity = false;
 	particle->beginVelocity = 50.0f;
 	particle->endVelocity = 100.0f;
 
-	particle->enableVariableEmitSpeed = false;
-	particle->beginSpeed = 1.0f;
-	particle->endSpeed = 1.0f;
+	particle->enableVariableEmitSpeed = true;
+	particle->beginSpeed = 10.0f;
+	particle->endSpeed = 10.0f;
+
+	particle->enableVariableSize = true;
+	particle->beginSize = 5.0f;
+	particle->endSize = 1.0f;
 
 	// cube shape
 	// particle->shapeModule->shapeType = ParticleShapeModule::ShapeType::Cube;
@@ -151,17 +155,76 @@ void generateParticle()
 	// particle->shapeModule->hemisphereProperties.eulerangle = Vector3(90.0f,0.0f,0.0f);
 
 	// cone shape
-	// particle->shapeModule->shapeType = ParticleShapeModule::ShapeType::Cone;
-	// particle->shapeModule->coneProperties.radius = 50.0f;
-	// particle->shapeModule->coneProperties.angle = 60.0f;
+	particle->shapeModule->shapeType = ParticleShapeModule::ShapeType::Cone;
+	particle->shapeModule->coneProperties.bottomRadius = 1.8f;
+	particle->shapeModule->coneProperties.topRadius = 0.0;
+	particle->shapeModule->coneProperties.height = 15.0f;
 
 	// rectangle shape
-	particle->shapeModule->shapeType = ParticleShapeModule::ShapeType::Rectangle;
-	particle->shapeModule->rectangleProperties.width = 2.0f;
-	particle->shapeModule->rectangleProperties.length = 80.0f;
+	// particle->shapeModule->shapeType = ParticleShapeModule::ShapeType::Rectangle;
+	// particle->shapeModule->rectangleProperties.width = 2.0f;
+	// particle->shapeModule->rectangleProperties.length = 80.0f;
 
-	particle->transform->position = Vector3(0.0f,0.0f,0.0f);
-	// particle->transform->eulerangle = Vector3(0.0f, 0.0f, 180.0f);
+	particle->transform->position = Vector3(22.0f,1.5f,-19.0f);
+	particle->transform->eulerangle = Vector3(-90.0f, 0.0f, 0.0f);
+	particle->playing = true;
+}
+
+void generateParticle2()
+{
+	ParticleRenderer* particle = new ParticleRenderer();
+	particle->name = "Particle System Right";
+	auto texture = TextureLoader::Load("res/texture/photon.png");
+	particle->material->shader->setTexture(MAIN_TEX, texture->textureId);
+	particle->maxNumber = 5000;
+	particle->lifeTime = .22f;
+	particle->velocity = 10.0f;
+	particle->rotateSpeed = 0.0f;
+	particle->size = 8.0f;
+	particle->material->shader->setColor(MAIN_COLOR, Color::white);
+
+	particle->enableVariableColor = true;
+	particle->beginColor = Color::yellow;
+	particle->endColor = Color::cyan;
+
+	particle->enableVariableVelocity = false;
+	particle->beginVelocity = 50.0f;
+	particle->endVelocity = 100.0f;
+
+	particle->enableVariableEmitSpeed = true;
+	particle->beginSpeed = 10.0f;
+	particle->endSpeed = 10.0f;
+
+	particle->enableVariableSize = true;
+	particle->beginSize = 5.0f;
+	particle->endSize = 1.0f;
+
+	// cube shape
+	// particle->shapeModule->shapeType = ParticleShapeModule::ShapeType::Cube;
+	// particle->shapeModule->cubeProperties.size = 50.0f;
+
+	// sphere shape
+	// particle->shapeModule->shapeType = ParticleShapeModule::ShapeType::Sphere;
+	// particle->shapeModule->sphereProperties.radius = 20.0f;
+
+	// hemisphere shape
+	// particle->shapeModule->shapeType = ParticleShapeModule::ShapeType::Hemishpere;
+	// particle->shapeModule->hemisphereProperties.radius = 10.0f;
+	// particle->shapeModule->hemisphereProperties.eulerangle = Vector3(90.0f,0.0f,0.0f);
+
+	// cone shape
+	particle->shapeModule->shapeType = ParticleShapeModule::ShapeType::Cone;
+	particle->shapeModule->coneProperties.bottomRadius = 1.8f;
+	particle->shapeModule->coneProperties.topRadius = 0.0;
+	particle->shapeModule->coneProperties.height = 15.0f;
+
+	// rectangle shape
+	// particle->shapeModule->shapeType = ParticleShapeModule::ShapeType::Rectangle;
+	// particle->shapeModule->rectangleProperties.width = 2.0f;
+	// particle->shapeModule->rectangleProperties.length = 80.0f;
+
+	particle->transform->position = Vector3(-22.0f, 1.5f, -19.0f);
+	particle->transform->eulerangle = Vector3(-90.0f, 0.0f, 0.0f);
 	particle->playing = true;
 }
 
@@ -172,6 +235,7 @@ void physically_based_rendering::Awake()
 
 	// displaySpheres();
 	generateParticle();
+	generateParticle2();
 	starFighter();
 }
 

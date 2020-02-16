@@ -72,12 +72,11 @@ void ParticleRenderer::Update()
 			alivePartice->setting.existingTime += Timer::deltaTime;
 			float lifePercent = alivePartice->setting.existingTime / alivePartice->setting.lifeTime;
 
-			alivePartice->setting.velocity = particleRenderer->getSrcVelocity(lifePercent);// static_cast<float>(Mathf::Randomf(4.0f, 8.0f))* particleRenderer->velocity;
-			alivePartice->setting.color = particleRenderer->getSrcColor(lifePercent);//Color::white;
-			alivePartice->setting.size = particleRenderer->getSrcSize(lifePercent);//static_cast<float>(Mathf::Randomf(1.0f, 3.0f)) * particleRenderer->size;
+			alivePartice->setting.velocity = particleRenderer->getSrcVelocity(lifePercent);
+			alivePartice->setting.color = particleRenderer->getSrcColor(lifePercent);
+			alivePartice->setting.size = particleRenderer->getSrcSize(lifePercent);
 
 			// update color
-			// alivePartice->setting.color = Colorf(Mathf::Abs(Mathf::Sin(alivePartice->setting.existingTime)));
 			particleRenderer->colors[index] = alivePartice->setting.color;
 
 			// update position / direction
@@ -97,9 +96,18 @@ void ParticleRenderer::Update()
 
 		// emit particles
 		float emitInterval = particleRenderer->getEmitInterval(0.0f);
-		if ( particleRenderer->emitTimer >= emitInterval && particleRenderer->existingNumber < particleRenderer->maxNumber)
+		// calculate emit count
+		unsigned int emitCount = static_cast<int>(particleRenderer->emitTimer / emitInterval);
+		if (emitCount > 0)
 		{
-			emit(particleRenderer);
+			if (particleRenderer->existingNumber < particleRenderer->maxNumber)
+			{
+				unsigned int remainCount = particleRenderer->maxNumber - particleRenderer->existingNumber;
+				if (emitCount > remainCount)
+					emitCount = remainCount;
+				for (unsigned int index = 0; index < emitCount; index++)
+					emit(particleRenderer);
+			}
 			particleRenderer->emitTimer = 0.0f;
 		}
 	}
@@ -175,6 +183,7 @@ float ParticleRenderer::sizeOverLife(float lifePercent)
 
 float ParticleRenderer::getEmitInterval(float lifePercent) 
 {
+	if (this->enableVariableEmitSpeed) return this->lifeTime / this->maxNumber * this->beginSpeed;
 	return this->lifeTime / this->maxNumber;
 }
 

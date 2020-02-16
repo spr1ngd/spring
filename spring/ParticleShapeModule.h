@@ -32,8 +32,9 @@ namespace spring
 
 		struct ConeProperty 
 		{
-			float radius = 1.0f;
-			float angle = 60.0f;
+			float bottomRadius = 1.0f;
+			float topRadius = 1.0f;
+			float height = 1.0f;
 		};
 		
 		struct RectangleProperty
@@ -64,7 +65,7 @@ namespace spring
 		Vector3 getDirectionInCubeMode();
 		Vector3 getDirectionInSphereMode();
 		Vector3 getDirectionInHemisphereMode();
-		Vector3 getDirectionInConeMode();
+		Vector3 getDirectionInConeMode(Vector3 emitPos);
 		Vector3 getDirecitonInRectangleMode();
 
 		Vector3 getSrcPosition();

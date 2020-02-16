@@ -15,8 +15,20 @@ ParticleShapeModule::ParticleShapeModule(Transform* transform)
 
 void ParticleShapeModule::getSrcParticle(Vector3& position, Vector3& direction) 
 {
-	position  = this->getSrcPosition();
-	direction = this->getDirection();
+	if (this->shapeType == ShapeType::Cone) 
+	{
+		Vector3 bottomPos = Vector3(
+			Mathf::Randomf(-this->coneProperties.bottomRadius, this->coneProperties.bottomRadius),
+			0.0f,
+			Mathf::Randomf(-this->coneProperties.bottomRadius, this->coneProperties.bottomRadius));
+		direction = this->getDirectionInConeMode(bottomPos);
+		position = bottomPos;
+	}
+	else
+	{
+		position = this->getSrcPosition();
+		direction = this->getDirection();
+	}
 }
 
 #pragma region calculate source position of particle
@@ -52,21 +64,15 @@ Vector3 ParticleShapeModule::getSrcPositionInCubeMode()
 }
 Vector3 ParticleShapeModule::getSrcPositionInSphereMode()
 {
-	// Vector3 direction = this->getDirectionInSphereMode();
-	return this->transform->position;// +direction * this->sphereProperties.radius;
+	return this->transform->position;
 }
 Vector3 ParticleShapeModule::getSrcPositionInHemisphereMode()
 {
-	// Vector3 direction = this->getDirectionInHemisphereMode();
 	return this->transform->position;
 }
 Vector3 ParticleShapeModule::getSrcPositionInConeMode() 
 {
-	// Vector3 direction = this->getDirectionInConeMode();
-	return this->transform->position + Vector3(
-		Mathf::Randomf(-this->coneProperties.radius,this->coneProperties.radius),
-		0.0f,
-		Mathf::Randomf(-this->coneProperties.radius,this->coneProperties.radius));
+	return Vector3::zero;
 }
 Vector3 ParticleShapeModule::getSrcPositionInRectangleMode() 
 {
@@ -89,8 +95,8 @@ Vector3 ParticleShapeModule::getDirection()
 		return this->getDirectionInSphereMode();
 	case ShapeType::Hemishpere:
 		return this->getDirectionInHemisphereMode();
-	case ShapeType::Cone:
-		return this->getDirectionInConeMode();
+	//case ShapeType::Cone:
+		//return this->getDirectionInConeMode();
 	case ShapeType::Rectangle:
 		return this->getDirecitonInRectangleMode();
 	default:
@@ -117,15 +123,12 @@ Vector3 ParticleShapeModule::getDirectionInHemisphereMode()
 		Matrix4x4::RotateZ(this->transform->up.z) * result;
 	return result;
 }
-Vector3 ParticleShapeModule::getDirectionInConeMode() 
+Vector3 ParticleShapeModule::getDirectionInConeMode( Vector3 emitPos ) 
 {
-	float sinHalfAngle = Mathf::Sin(this->coneProperties.angle * 0.5f);
-	Vector3 result = Vector3::Normalize(Vector3(Mathf::Randomf(-sinHalfAngle,sinHalfAngle),1.0f,Mathf::Randomf(-sinHalfAngle,sinHalfAngle)));
-	result = 
-		Matrix4x4::RotateY(this->transform->up.y) *
-		Matrix4x4::RotateX(this->transform->up.x) *
-		Matrix4x4::RotateZ(this->transform->up.z) * result;
-	return result;
+	Vector3 dir = Vector3::Normalize(emitPos);
+	Vector3 topPos = dir * this->coneProperties.topRadius;
+	topPos += Vector3(0.0f,this->coneProperties.height,0.0f);
+	return Vector3::Normalize(topPos - emitPos);
 }
 Vector3 ParticleShapeModule::getDirecitonInRectangleMode() 
 {
