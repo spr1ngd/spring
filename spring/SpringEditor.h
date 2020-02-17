@@ -4,6 +4,7 @@
 #include "inspectorwindow.h"
 #include "hierarchywindow.h"
 #include "scenewindow.h"
+#include "inspectoreditor.h"
 #include "selection.h"
 
 namespace spring

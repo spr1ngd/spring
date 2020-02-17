@@ -151,6 +151,18 @@
     <Filter Include="源文件\Graphic">
       <UniqueIdentifier>{1c33747b-6e04-4b34-be2c-55a359979394}</UniqueIdentifier>
     </Filter>
+    <Filter Include="头文件\Editor\Extension">
+      <UniqueIdentifier>{fe713089-bfb8-47c0-8a9d-3ba596ac3b26}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\Editor\Core">
+      <UniqueIdentifier>{edaebce1-4913-40fb-acc9-8d2e98358b87}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\Editor\Core">
+      <UniqueIdentifier>{5eb7801e-7af4-4dd4-9c3c-dab5bbc9b4f7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\Editor\Extension">
+      <UniqueIdentifier>{db84209b-136e-410e-a674-9f7559a35b33}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="spring.rc">
@@ -409,18 +421,6 @@
     <ClInclude Include="Selection.h">
       <Filter>头文件\Editor</Filter>
     </ClInclude>
-    <ClInclude Include="InspectorWindow.h">
-      <Filter>头文件\Editor</Filter>
-    </ClInclude>
-    <ClInclude Include="EditorWindow.h">
-      <Filter>头文件\Editor</Filter>
-    </ClInclude>
-    <ClInclude Include="SceneWindow.h">
-      <Filter>头文件\Editor</Filter>
-    </ClInclude>
-    <ClInclude Include="HierarchyWindow.h">
-      <Filter>头文件\Editor</Filter>
-    </ClInclude>
     <ClInclude Include="Cursor.h">
       <Filter>头文件\Input</Filter>
     </ClInclude>
@@ -441,6 +441,24 @@
     </ClInclude>
     <ClInclude Include="ParticleShapeModule.h">
       <Filter>头文件\Renderer\Particle</Filter>
+    </ClInclude>
+    <ClInclude Include="EditorWindow.h">
+      <Filter>头文件\Editor\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="HierarchyWindow.h">
+      <Filter>头文件\Editor\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="InspectorWindow.h">
+      <Filter>头文件\Editor\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneWindow.h">
+      <Filter>头文件\Editor\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="ParticleRendererEditor.h">
+      <Filter>头文件\Editor\Extension</Filter>
+    </ClInclude>
+    <ClInclude Include="InspectorEditor.h">
+      <Filter>头文件\Editor\Extension</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -678,18 +696,6 @@
     <ClCompile Include="Selection.cpp">
       <Filter>源文件\Editor</Filter>
     </ClCompile>
-    <ClCompile Include="InspectorWindow.cpp">
-      <Filter>源文件\Editor</Filter>
-    </ClCompile>
-    <ClCompile Include="EditorWindow.cpp">
-      <Filter>源文件\Editor</Filter>
-    </ClCompile>
-    <ClCompile Include="SceneWindow.cpp">
-      <Filter>源文件\Editor</Filter>
-    </ClCompile>
-    <ClCompile Include="HierarchyWindow.cpp">
-      <Filter>源文件\Editor</Filter>
-    </ClCompile>
     <ClCompile Include="Cursor.cpp">
       <Filter>源文件\Input</Filter>
     </ClCompile>
@@ -710,6 +716,24 @@
     </ClCompile>
     <ClCompile Include="ParticleShapeModule.cpp">
       <Filter>源文件\Renderer\Particle</Filter>
+    </ClCompile>
+    <ClCompile Include="EditorWindow.cpp">
+      <Filter>源文件\Editor\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="HierarchyWindow.cpp">
+      <Filter>源文件\Editor\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="InspectorWindow.cpp">
+      <Filter>源文件\Editor\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneWindow.cpp">
+      <Filter>源文件\Editor\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="ParticleRendererEditor.cpp">
+      <Filter>源文件\Editor\Extension</Filter>
+    </ClCompile>
+    <ClCompile Include="InspectorEditor.cpp">
+      <Filter>源文件\Editor\Extension</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

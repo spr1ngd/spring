@@ -230,6 +230,7 @@
     <ClInclude Include="imgui_impl_opengl3.h" />
     <ClInclude Include="imgui_internal.h" />
     <ClInclude Include="Input.h" />
+    <ClInclude Include="InspectorEditor.h" />
     <ClInclude Include="InspectorWindow.h" />
     <ClInclude Include="InstancedRenderer.h" />
     <ClInclude Include="InstancedTechnology.h" />
@@ -251,6 +252,7 @@
     <ClInclude Include="OrbitCamera.h" />
     <ClInclude Include="Particle.h" />
     <ClInclude Include="ParticleRenderer.h" />
+    <ClInclude Include="ParticleRendererEditor.h" />
     <ClInclude Include="ParticleShapeModule.h" />
     <ClInclude Include="physically_based_rendering.h" />
     <ClInclude Include="PhysicsBasedRendering.h" />
@@ -324,6 +326,7 @@
     <ClCompile Include="imgui_impl_opengl3.cpp" />
     <ClCompile Include="imgui_widgets.cpp" />
     <ClCompile Include="Input.cpp" />
+    <ClCompile Include="InspectorEditor.cpp" />
     <ClCompile Include="InspectorWindow.cpp" />
     <ClCompile Include="InstancedRenderer.cpp" />
     <ClCompile Include="InstancedTechnology.cpp" />
@@ -344,6 +347,7 @@
     <ClCompile Include="OrbitCamera.cpp" />
     <ClCompile Include="Particle.cpp" />
     <ClCompile Include="ParticleRenderer.cpp" />
+    <ClCompile Include="ParticleRendererEditor.cpp" />
     <ClCompile Include="ParticleShapeModule.cpp" />
     <ClCompile Include="physically_based_rendering.cpp" />
     <ClCompile Include="PhysicsBasedRendering.cpp" />

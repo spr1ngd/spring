@@ -97,7 +97,7 @@ void ParticleRenderer::Update()
 		// emit particles
 		float emitInterval = particleRenderer->getEmitInterval(0.0f);
 		// calculate emit count
-		unsigned int emitCount = static_cast<int>(particleRenderer->emitTimer / emitInterval);
+		unsigned int emitCount = (int)(particleRenderer->emitTimer / emitInterval);
 		if (emitCount > 0)
 		{
 			if (particleRenderer->existingNumber < particleRenderer->maxNumber)
