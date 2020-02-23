@@ -13,7 +13,7 @@ namespace spring
 		static void Start();
 		static void Time() 
 		{
-			float currentFrameTime = GetTickCount() * 0.001f;
+			float currentFrameTime = GetTickCount64() * 0.001f;
 			float elapsedTime = currentFrameTime - lastFrameTime;
 			deltaTime = elapsedTime;
 			lastFrameTime = currentFrameTime;

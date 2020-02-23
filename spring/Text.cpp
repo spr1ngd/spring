@@ -87,7 +87,7 @@ void Text::GenerateMesh()
 	if (this->richText == false)
 	{
 		auto chars = this->text.c_str();
-		int cLen = strlen(chars);
+		int cLen = (int)strlen(chars);
 		for (int i = 0; i < cLen; i++)
 		{
 			Character* character = this->font->GetCharacter(chars[i]);
@@ -101,7 +101,7 @@ void Text::GenerateMesh()
 	{
 		vector<RichText*> richTexts;
 		auto chars = this->text.c_str();
-		int cLen = strlen(chars);
+		int cLen = (int)strlen(chars);
 		for (int i = 0; i < cLen; i++)
 		{
 			Character* character = this->font->GetCharacter(chars[i]);
@@ -129,10 +129,10 @@ void Text::GenerateMesh()
 			Console::ErrorFormat("search %s",tag.c_str());
 
 			int index = 0;
-			while ((index = this->text.find(tag.c_str(), index)) != string::npos)
+			while ((index = (int)this->text.find(tag.c_str(), index)) != string::npos)
 			{
 				Console::LogFormat("find %s in %d", tag.c_str(), index);
-				index = index + tag.length();
+				index = index + (int)tag.length();
 			}
 		}
 

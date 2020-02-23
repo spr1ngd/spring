@@ -1,8 +1,5 @@
-#pragma once
-#include "json/json.h"
-#include "ijsonserializer.h"
-
-#pragma comment(lib,"lib_json.lib")
+#pragma once 
+#include "ijsonserializer.h" 
 
 namespace spring 
 {

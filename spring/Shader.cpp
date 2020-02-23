@@ -553,9 +553,9 @@ void Shader::setTime()
 Shader* Shader::Load(const char* vertexShaderName, const char* fragmentShaderName)
 {
 	const char* pathPrefix = "res/shader/";
-	int length = strlen(pathPrefix) + 1;
-	int vsLength = length + strlen(vertexShaderName);
-	int fsLength = length + strlen(fragmentShaderName);
+	int length = (int)strlen(pathPrefix) + 1;
+	int vsLength = length + (int)strlen(vertexShaderName);
+	int fsLength = length + (int)strlen(fragmentShaderName);
 	char* vs = (char*)malloc(vsLength*sizeof(char));
 	memset(vs, 0, vsLength);
 	strcat_s(vs, length + 1, pathPrefix);

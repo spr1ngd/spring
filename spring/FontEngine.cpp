@@ -1,11 +1,9 @@
-#include <ft2build.h>
+#include "ft2build.h"
 #include FT_FREETYPE_H  
 #include "fontengine.h"
 #include "console.h"
-#include "glew.h"
+#include "GL/glew.h"
 #include "vector2.h"
-
-#pragma comment(lib,"freetype.lib")
 
 using namespace std;
 using namespace spring;

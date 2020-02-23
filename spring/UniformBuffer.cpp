@@ -1,5 +1,5 @@
 #include "uniformbuffer.h"
-#include "glew.h"
+#include "GL/glew.h"
 #include "glm/glm.hpp"
 
 using namespace spring;

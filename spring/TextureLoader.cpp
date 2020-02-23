@@ -1,10 +1,8 @@
 #include "textureLoader.h"
-#include "soil.h"
+#include "SOIL/soil.h"
 #include "texture.h"
 #include "screen.h"
 #include "console.h"
-
-#pragma comment(lib,"soil.lib")
 
 using namespace std;
 using namespace spring;

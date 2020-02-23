@@ -1,8 +1,8 @@
 #pragma once
 #include <math.h>
 #include <ctime>
-#include <matrix2x2.h>
-#include <matrix4x4.h>
+#include "matrix2x2.h"
+#include "matrix4x4.h"
 
 namespace spring 
 {

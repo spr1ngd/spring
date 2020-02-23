@@ -1,12 +1,10 @@
 #pragma once
-#include <assimp/Importer.hpp>
-#include <assimp/scene.h>
-#include <assimp/postprocess.h>
+#include "assimp/Importer.hpp"
+#include "assimp/scene.h"
+#include "assimp/postprocess.h"
 #include "assetloader.h"
 #include <string>
 #include "mesh.h"
-
-#pragma comment (lib,"assimp-vc142-mt.lib")
 
 using namespace std;
 

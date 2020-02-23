@@ -177,6 +177,6 @@ void InstancedRenderer::Render(Camera* camera)
 
 	// draw mesh
 	this->material->shader->use();
-	mesh->DrawInstanced(this->instances.size());
+	mesh->DrawInstanced((unsigned int)this->instances.size());
 	this->material->shader->disuse();
 }

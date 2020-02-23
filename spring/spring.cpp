@@ -1,13 +1,12 @@
-﻿#define _CRT_SECURE_NO_WARNINGS 
-
+﻿
 #include "imgui.h"
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_opengl3.h"
 #include <stdio.h>
 // todo : replaced input module by glfw interfaces.
 // #include <windows.h>
-#include "glew.h"
-#include "wglew.h"
+#include "GL/glew.h"
+#include "GL/wglew.h"
 #include <gl/GL.h>
 #include "GLFW/glfw3.h"
 // todo : integrate spring engine all .h file to springengine.h and clean up solution directory.
@@ -18,10 +17,6 @@
 #include "vector2.h"
 #include "postprocessing.h"
 #include "particlerenderer.h"
-
-#pragma comment (lib,"glfw3.lib")
-#pragma comment (lib,"glew32.lib")
-#pragma comment (lib,"opengl32.lib") 
 
 using namespace spring;
 using namespace spring::editor;
