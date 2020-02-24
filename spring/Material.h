@@ -13,25 +13,6 @@ namespace spring
 		static void Caching(Material* material);
 		static void Flash(Material* material);
 
-	private:
-		bool alphaTest = false;
-		GLenum alphaFunc = GL_GREATER;
-		float alphaRef = 0.5f;
-
-		bool blend = false;
-		GLenum srcFactor = GL_SRC_ALPHA;
-		GLenum dstFactor = GL_ONE_MINUS_SRC_ALPHA;
-
-		bool depthTest = true;
-		bool depthWrite = true;
-		GLenum depthFunc = GL_LESS;
-
-		// todo : add stencil test
-		bool stencilTest = false;
-
-		bool cullface = true;
-		GLenum cullfaceFunc = GL_BACK;
-
 	public:
 		enum RenderMode 
 		{
@@ -49,6 +30,24 @@ namespace spring
 
 		// instanced 
 		bool enableGPUInstanced = false;
+
+		bool alphaTest = false;
+		GLenum alphaFunc = GL_GREATER;
+		float alphaRef = 0.5f;
+
+		bool blend = false;
+		GLenum srcFactor = GL_SRC_ALPHA;
+		GLenum dstFactor = GL_ONE_MINUS_SRC_ALPHA;
+
+		bool depthTest = true;
+		bool depthWrite = true;
+		GLenum depthFunc = GL_LESS;
+
+		// todo : add stencil test
+		bool stencilTest = false;
+
+		bool cullface = true;
+		GLenum cullfaceFunc = GL_BACK;
 
 	private:
 		GLenum GetPolygonMode();

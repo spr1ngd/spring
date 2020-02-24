@@ -68,7 +68,6 @@ void ParticleRenderer::Update()
 		for (vector<Particle*>::iterator item = particleRenderer->usingParticles.begin(); item != particleRenderer->usingParticles.end(); item++, index++)
 		{
 			Particle* alivePartice = *item;
-			//emit(alivePartice);
 			alivePartice->setting.existingTime += Timer::deltaTime;
 			float lifePercent = alivePartice->setting.existingTime / alivePartice->setting.lifeTime;
 

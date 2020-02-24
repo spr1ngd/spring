@@ -51,7 +51,8 @@ Texture* TextureLoader::CreateTexture(unsigned int width, unsigned int height, u
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	unsigned int* data = new unsigned int[ result->width * result->height * 4];
+	auto pixelCount = result->width* result->height * 4;
+	unsigned int* data = new unsigned int[pixelCount];
 	glTexImage2D(GL_TEXTURE_2D, result->mipmapLevel, GL_RGBA, result->width, result->height, 0, GL_RGBA, GL_FLOAT, data);
 	delete[] data;
 	result->textureId = textureId;
@@ -108,7 +109,8 @@ Texture* TextureLoader::Load(const char* filePath ,bool invertY)
 
 void TextureLoader::SaveToBMP(const char* filepath) 
 {
-	unsigned char* pixels = new unsigned char[Screen::width * Screen::height * 4];
+	auto pixelCount = Screen::width * Screen::height * 4;
+	unsigned char* pixels = new unsigned char[pixelCount];
 	glReadPixels(0, 0, Screen::width, Screen::height, GL_RGBA, GL_UNSIGNED_BYTE, pixels);
 	TextureLoader::SaveToBMP(filepath, Screen::width, Screen::height, pixels);
 	delete[] pixels;

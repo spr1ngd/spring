@@ -131,7 +131,8 @@
       <AdditionalOptions>/NODEFAULTLIB:msvcrt.lib %(AdditionalOptions)</AdditionalOptions>
     </Link>
     <PostBuildEvent>
-      <Command></Command>
+      <Command>
+      </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -173,6 +174,8 @@
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <BufferSecurityCheck>false</BufferSecurityCheck>
+      <ExceptionHandling>Sync</ExceptionHandling>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -184,7 +187,8 @@
       <AdditionalOptions>/NODEFAULTLIB:msvcrt.lib %(AdditionalOptions)</AdditionalOptions>
     </Link>
     <PostBuildEvent>
-      <Command></Command>
+      <Command>
+      </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -239,6 +243,7 @@
     <ClInclude Include="Layer.h" />
     <ClInclude Include="Light.h" />
     <ClInclude Include="Material.h" />
+    <ClInclude Include="MaterialEditor.h" />
     <ClInclude Include="MaterialTexture.h" />
     <ClInclude Include="Mathf.h" />
     <ClInclude Include="Matrix2x2.h" />
@@ -272,7 +277,7 @@
     <ClInclude Include="Screen.h" />
     <ClInclude Include="Selection.h" />
     <ClInclude Include="Shader.h" />
-    <ClInclude Include="ShaderComplier.h" />
+    <ClInclude Include="ShaderCompiler.h" />
     <ClInclude Include="Skybox.h" />
     <ClInclude Include="Space.h" />
     <ClInclude Include="spring.h" />
@@ -335,6 +340,7 @@
     <ClCompile Include="Layer.cpp" />
     <ClCompile Include="Light.cpp" />
     <ClCompile Include="Material.cpp" />
+    <ClCompile Include="MaterialEditor.cpp" />
     <ClCompile Include="MaterialTexture.cpp" />
     <ClCompile Include="Mathf.cpp" />
     <ClCompile Include="Matrix2x2.cpp" />
@@ -366,7 +372,7 @@
     <ClCompile Include="Screen.cpp" />
     <ClCompile Include="Selection.cpp" />
     <ClCompile Include="Shader.cpp" />
-    <ClCompile Include="ShaderComplier.cpp" />
+    <ClCompile Include="ShaderCompiler.cpp" />
     <ClCompile Include="Skybox.cpp" />
     <ClCompile Include="spring.cpp" />
     <ClCompile Include="SpringEditor.cpp" />

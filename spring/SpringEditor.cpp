@@ -1,5 +1,6 @@
 #include "springeditor.h"
 #include "particlerenderereditor.h"
+#include "materialeditor.h"
 
 using namespace spring;
 using namespace spring::editor;
@@ -11,6 +12,7 @@ SceneWindow* SpringEditor::scene = nullptr;
 
 // inspector editor windows
 ParticleRendererEditor* particleEditor = nullptr;
+MaterialEditor* materialEditor = nullptr;
 
 void SpringEditor::Initialize() 
 {
@@ -19,6 +21,7 @@ void SpringEditor::Initialize()
 	hierarchy = new HierarchyWindow("Hierarchy", true);
 
 	particleEditor = new ParticleRendererEditor("ParticleRenderer",true);
+	materialEditor = new MaterialEditor("Mesh Renderer",true);
 }
 
 void SpringEditor::Release() 

@@ -163,6 +163,18 @@
     <Filter Include="源文件\Editor\Extension">
       <UniqueIdentifier>{db84209b-136e-410e-a674-9f7559a35b33}</UniqueIdentifier>
     </Filter>
+    <Filter Include="头文件\tools">
+      <UniqueIdentifier>{e704b80b-701b-4ff6-a134-c023d1efff60}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\tools\shader">
+      <UniqueIdentifier>{ecea9c46-2903-4f70-87a1-a77378bb712d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\tools">
+      <UniqueIdentifier>{d8de3a7c-8924-4eb0-a1ae-ef9d3040890a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\tools\shader">
+      <UniqueIdentifier>{dfea89ca-4160-407f-9333-fa97a5d29506}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="spring.rc">
@@ -352,9 +364,6 @@
     <ClInclude Include="Rect.h">
       <Filter>头文件\2D</Filter>
     </ClInclude>
-    <ClInclude Include="ShaderComplier.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="Layer.h">
       <Filter>头文件</Filter>
     </ClInclude>
@@ -458,6 +467,12 @@
       <Filter>头文件\Editor\Extension</Filter>
     </ClInclude>
     <ClInclude Include="InspectorEditor.h">
+      <Filter>头文件\Editor\Extension</Filter>
+    </ClInclude>
+    <ClInclude Include="ShaderCompiler.h">
+      <Filter>头文件\tools\shader</Filter>
+    </ClInclude>
+    <ClInclude Include="MaterialEditor.h">
       <Filter>头文件\Editor\Extension</Filter>
     </ClInclude>
   </ItemGroup>
@@ -624,9 +639,6 @@
     <ClCompile Include="Rect.cpp">
       <Filter>源文件\2D</Filter>
     </ClCompile>
-    <ClCompile Include="ShaderComplier.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="Layer.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
@@ -733,6 +745,12 @@
       <Filter>源文件\Editor\Extension</Filter>
     </ClCompile>
     <ClCompile Include="InspectorEditor.cpp">
+      <Filter>源文件\Editor\Extension</Filter>
+    </ClCompile>
+    <ClCompile Include="ShaderCompiler.cpp">
+      <Filter>源文件\tools\shader</Filter>
+    </ClCompile>
+    <ClCompile Include="MaterialEditor.cpp">
       <Filter>源文件\Editor\Extension</Filter>
     </ClCompile>
   </ItemGroup>

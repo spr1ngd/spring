@@ -1,6 +1,5 @@
 #include "particlerenderereditor.h"
 #include "particlerenderer.h"
-#include "imgui.h"
 #include "selection.h"
 
 using namespace spring;
@@ -56,6 +55,7 @@ void ParticleRendererEditor::OnDrawInspector()
 		beginColor[2],
 		beginColor[3]
 	);
+	delete[] beginColor;
 	float* endColor = new float[4]
 	{
 		particleRenderer->endColor.r,
@@ -71,7 +71,7 @@ void ParticleRendererEditor::OnDrawInspector()
 		endColor[2],
 		endColor[3]
 	);
-
+	delete[] endColor;
 	ImGui::Checkbox("Variable Velocity",&particleRenderer->enableVariableVelocity);
 	ImGui::DragFloat("Start Velocity", &particleRenderer->beginVelocity);
 	ImGui::DragFloat("End Velocity", &particleRenderer->endVelocity);

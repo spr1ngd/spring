@@ -17,7 +17,7 @@ A LONG LONG LONG , VERY LONG TRIP.
 
 - refactor 
     - mesh / material / shader / meshrenderer
-    - defragment scripts directory 
+    - defragment scripts directory (**doing,use vcpkg manage the third-party libraries**)
     - use uniform buffer to optimize uniform data
 
 ## TODO: 2020.01.09

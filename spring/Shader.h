@@ -77,6 +77,13 @@ namespace spring
 		bool link(unsigned int vertexShader,unsigned int fragmentShader);
 		bool link(unsigned int vertexShader, unsigned int fragmentShader,unsigned int geometryShader);
 
+
+		void setShaderValues();
+		void setEngineEnvironment();
+		void setLighting();
+		void setTime();
+
+	public:
 		map<GLuint, Colorf> colors;
 		map<GLuint, GLuint> ints;
 		map<GLuint, GLfloat> floats;
@@ -88,12 +95,6 @@ namespace spring
 		map<GLuint, MaterialTexture> textures;
 		map<GLuint, Cubemap*> cubemaps;
 
-		void setShaderValues();
-		void setEngineEnvironment();
-		void setLighting();
-		void setTime();
-
-	public:
 		GLuint program;
 		bool receiveShadow = true;
 

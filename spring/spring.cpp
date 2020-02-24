@@ -17,6 +17,7 @@
 #include "vector2.h"
 #include "postprocessing.h"
 #include "particlerenderer.h"
+#include "shadercompiler.h"
 
 using namespace spring;
 using namespace spring::editor;
@@ -100,6 +101,8 @@ int main(int, char**)
 	postProcessing->PreProcess();
 	if( postProcessing->enabled )
 		PostProcessing::postprocessing = postProcessing;
+
+	ShaderCompiler shader_compiler;
 
 	Mathf::RandomSeed();
 	// Main loop
