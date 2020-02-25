@@ -37,7 +37,7 @@ void MaterialEditor::OnDrawInspector()
 		ImGui::Checkbox("Enable Alpha Blend", &material->blend);
 
 		ImGui::Checkbox("Enable Depth Test", &material->depthTest);
-		ImGui::Checkbox("Enable Depth Write", &material->depthTest);
+		ImGui::Checkbox("Enable Depth Write", &material->depthWrite);
 
 		ImGui::Checkbox("Enable Stencil Test", &material->stencilTest);
 		ImGui::Checkbox("Enable Cull Face", &material->cullface);
@@ -60,10 +60,10 @@ void MaterialEditor::OnDrawInspector()
 		// map<GLuint, Colorf> colors;
 		for (auto color : shader->colors) 
 		{
-			const char* name = std::to_string(color.first).c_str();
+			const char* name = shader->getUniformName(color.first);
 			float* value = new float[4]{ color.second.r,color.second.g,color.second.b,color.second.a };
 			ImGui::ColorEdit4(name, value);
-			color.second = Colorf(value[0], value[1], value[2],value[3]);
+			// color.second = Colorf(value[0], value[1], value[2],value[3]);
 			delete[] value;
 		}
 		// map<GLuint, GLuint> ints;
@@ -72,10 +72,10 @@ void MaterialEditor::OnDrawInspector()
 		// map<GLuint, Vector2> vec2Map;
 		for (auto v2 : shader->vec2Map) 
 		{
-			const char* name = std::to_string(v2.first).c_str();
+			const char* name = shader->getUniformName(v2.first);
 			float* value = new float[2]{ v2.second.x,v2.second.y };
 			ImGui::DragFloat2(name, value);
-			v2.second = Vector2(value[0],value[1]);
+			// v2.second = Vector2(value[0],value[1]);
 			delete[] value;
 		}
 		// map<GLuint, Vector3> vec3Map;

@@ -15,12 +15,12 @@ std::vector<Shader*> Shader::cachingShaders;
 Vector4 Shader::shaderTimer;
 Shader* Shader::error;
 
-Shader::Shader() 
+Shader::Shader()
 {
 	Shader::Caching(this);
 }
 
-Shader::Shader( const char*vertexShader,const char*fragmentShader ) 
+Shader::Shader(const char* vertexShader, const char* fragmentShader)
 {
 	bool success = true;
 	unsigned int vertex_shader, fragment_shader;
@@ -31,14 +31,14 @@ Shader::Shader( const char*vertexShader,const char*fragmentShader )
 	{
 		Console::Error("shader error , replaced by default error shader.");
 		if (nullptr == Shader::error)
-			Shader::error = Shader::Load("spring/error.vs","spring/error.fs");
+			Shader::error = Shader::Load("spring/error.vs", "spring/error.fs");
 		this->program = Shader::error->program;
 	}
 	this->initializeLocation();
 	Shader::Caching(this);
 }
 
-Shader::Shader(const char* vertexShader, const char* fragmentShader, const char* geometryShader) 
+Shader::Shader(const char* vertexShader, const char* fragmentShader, const char* geometryShader)
 {
 	bool success = true;
 	unsigned int vertex_shader, fragment_shader, geometry_shader;
@@ -59,7 +59,7 @@ Shader::Shader(const char* vertexShader, const char* fragmentShader, const char*
 
 #pragma region shader compile / link / use 
 
-bool Shader::compile(GLenum shaderType, const char* filePath, unsigned int& shader) 
+bool Shader::compile(GLenum shaderType, const char* filePath, unsigned int& shader)
 {
 	const char* source = this->loadShaderFile(filePath);
 	unsigned int shaderProgram = glCreateShader(shaderType);
@@ -69,7 +69,7 @@ bool Shader::compile(GLenum shaderType, const char* filePath, unsigned int& shad
 	int success;
 	char infoLog[512];
 	glGetShaderiv(shaderProgram, GL_COMPILE_STATUS, &success);
-	if (!success) 
+	if (!success)
 	{
 		glGetShaderInfoLog(shaderProgram, 512, NULL, infoLog);
 		Console::Error(infoLog);
@@ -79,7 +79,7 @@ bool Shader::compile(GLenum shaderType, const char* filePath, unsigned int& shad
 	return true;
 }
 
-bool Shader::link(unsigned int vertexShader, unsigned int fragmentShader) 
+bool Shader::link(unsigned int vertexShader, unsigned int fragmentShader)
 {
 	unsigned int shaderProgram = glCreateProgram();
 	glAttachShader(shaderProgram, vertexShader);
@@ -87,7 +87,7 @@ bool Shader::link(unsigned int vertexShader, unsigned int fragmentShader)
 	glLinkProgram(shaderProgram);
 
 	int success;
-	char logInfo[512]; 
+	char logInfo[512];
 	glGetProgramiv(shaderProgram, GL_LINK_STATUS, &success);
 	if (!success)
 	{
@@ -99,7 +99,7 @@ bool Shader::link(unsigned int vertexShader, unsigned int fragmentShader)
 	return true;
 }
 
-bool Shader::link(unsigned int vertexShader, unsigned int fragmentShader,unsigned int geometryShader)
+bool Shader::link(unsigned int vertexShader, unsigned int fragmentShader, unsigned int geometryShader)
 {
 	unsigned int shaderProgram = glCreateProgram();
 	glAttachShader(shaderProgram, vertexShader);
@@ -121,58 +121,19 @@ bool Shader::link(unsigned int vertexShader, unsigned int fragmentShader,unsigne
 
 void Shader::initializeLocation()
 {
-	GLuint mLocation = glGetUniformLocation(this->program, MATRIX_M);
-	this->locations.insert(pair<const char*, GLuint>(MATRIX_M, mLocation));
+	this->getUniformLocation(MATRIX_M);
+	this->getUniformLocation(MATRIX_V);
+	this->getUniformLocation(MATRIX_P);
+	this->getUniformLocation(MATRIX_NM);
+	this->getUniformLocation(MAIN_TEX);
+	this->getUniformLocation(MAIN_CUBEMAP);
+	this->getUniformLocation(MAIN_COLOR);
+	this->getUniformLocation(AMBIENT_COLOR);
 
-	GLuint vLocation = glGetUniformLocation(this->program, MATRIX_V);
-	this->locations.insert(pair<const char*, GLuint>(MATRIX_V, vLocation));
-
-	GLuint pLocation = glGetUniformLocation(this->program, MATRIX_P);
-	this->locations.insert(pair<const char*, GLuint>(MATRIX_P, pLocation));
-
-	GLuint nmLocation = glGetUniformLocation(this->program,MATRIX_NM);
-	this->locations.insert(pair<CONST char*,GLuint>(MATRIX_NM,nmLocation));
-
-	GLuint veretxLocation = glGetAttribLocation(this->program, VERTEX);
-	this->locations.insert(pair<const char*, GLuint>(VERTEX, veretxLocation));
-
-	GLuint normalLocation = glGetAttribLocation(this->program, NORMAL);
-	this->locations.insert(pair<const char*, GLuint>(NORMAL, normalLocation));
-
-	GLuint texcoordLocation = glGetAttribLocation(this->program, TEXCOORD);
-	this->locations.insert(pair<const char*, GLuint>(TEXCOORD, texcoordLocation));
-
-	GLuint colorLocation = glGetAttribLocation(this->program, COLOR);
-	this->locations.insert(pair<const char*, GLuint>(COLOR, colorLocation));
-
-	GLuint mainTextureLocation = glGetUniformLocation(this->program,MAIN_TEX);
-	this->locations.insert(pair<const char*,GLuint>(MAIN_TEX,mainTextureLocation));
-
-	GLuint mainCubemapLocation = glGetUniformLocation(this->program,MAIN_CUBEMAP);
-	this->locations.insert(pair<const char*,GLuint>(MAIN_CUBEMAP,mainCubemapLocation));
-
-	GLuint mainColorLocation = glGetUniformLocation(this->program,MAIN_COLOR);
-	this->locations.insert(pair<const char*,GLuint>(MAIN_COLOR,mainColorLocation));
-
-	GLuint ambientColorLocation = glGetUniformLocation(this->program,AMBIENT_COLOR);
-	this->locations.insert(pair<const char*,GLuint>(AMBIENT_COLOR,ambientColorLocation));
-
-#pragma region lighting properties
-
-	GLuint lightColorLocation = glGetUniformLocation(this->program,LIGHT_COLOR);
-	this->locations.insert(pair<const char*,GLuint>(LIGHT_COLOR,lightColorLocation));
-
-	GLuint lightIntensityLocation = glGetUniformLocation(this->program,LIGHT_INSTENSITY);
-	this->locations.insert(pair<const char*,GLuint>(LIGHT_INSTENSITY,lightIntensityLocation));
-
-	GLuint lightPositionLocation = glGetUniformLocation(this->program,LIGHT_POSITION);
-	this->locations.insert(pair<const char*,GLuint>(LIGHT_POSITION,lightPositionLocation));
-
-	GLuint lightDirectionLocation = glGetUniformLocation(this->program,LIGHT_DIRECTION);
-	this->locations.insert(pair<const char*,GLuint>(LIGHT_DIRECTION,lightDirectionLocation));
-
-#pragma endregion
-
+	this->getUniformLocation(LIGHT_COLOR);
+	this->getUniformLocation(LIGHT_INSTENSITY);
+	this->getUniformLocation(LIGHT_POSITION);
+	this->getUniformLocation(LIGHT_DIRECTION);
 }
 
 unsigned int Shader::getAttribLocation(const char* name) 
@@ -182,7 +143,14 @@ unsigned int Shader::getAttribLocation(const char* name)
 
 unsigned int Shader::getUniformLocation(const char* name) 
 {
-	return glGetUniformLocation(this->program,name);
+	auto pair = this->locations.find(name);
+	if (pair == this->locations.end())
+	{
+		unsigned int location = glGetUniformLocation(this->program, name);
+		Console::LogFormat(" location nam :  %s", name);
+		this->locations.insert(std::pair<const char*, unsigned int>(name, location));
+	}
+	return this->locations[name];
 }
 
 GLuint Shader::getLocation(const char* name)
@@ -191,6 +159,16 @@ GLuint Shader::getLocation(const char* name)
 	if (pair == this->locations.end())
 		return -1;
 	return pair->second;
+}
+
+char* Shader::getUniformName(unsigned int location) 
+{
+	for (auto pair : this->locations)
+	{
+		if (pair.second == location)
+			return (char*)pair.first;
+	}
+	return nullptr;
 }
 
 void Shader::use()
@@ -213,13 +191,13 @@ void Shader::disuse()
 
 void Shader::setBool(const char* name, GLboolean value) 
 {
-	GLuint location = glGetUniformLocation(this->program, name);
 	throw new NotImplementException();
 }
 
 void Shader::setMat4(const char* name, glm::mat4 value) 
 {
-	GLuint location = glGetUniformLocation(this->program, name);
+	// GLuint location = glGetUniformLocation(this->program, name);
+	unsigned int location = this->getUniformLocation(name);
 	auto pair = this->mat4Map.find(location);
 	if (pair == this->mat4Map.end())
 	{
@@ -231,7 +209,8 @@ void Shader::setMat4(const char* name, glm::mat4 value)
 
 void Shader::setVec2(const char* name, Vector2 value)
 {
-	GLuint location = glGetUniformLocation(this->program, name);
+	// GLuint location = glGetUniformLocation(this->program, name);
+	unsigned int location = this->getUniformLocation(name);
 	auto pair = this->vec2Map.find(location);
 	if (pair == this->vec2Map.end())
 	{
@@ -241,9 +220,11 @@ void Shader::setVec2(const char* name, Vector2 value)
 	this->vec2Map[location] = value;
 }
 
+// todo : 
 void Shader::setVec3(const char* name, Vector3 value)
 {
 	GLuint location = glGetUniformLocation(this->program, name);
+	// unsigned int location = this->getUniformLocation(name);
 	auto pair = this->vec3Map.find(location);
 	if (pair == this->vec3Map.end())
 	{
@@ -255,7 +236,8 @@ void Shader::setVec3(const char* name, Vector3 value)
 
 void Shader::setVec4(const char* name, Vector4 value)
 {
-	GLuint location = glGetUniformLocation(this->program, name);
+	// GLuint location = glGetUniformLocation(this->program, name);
+	unsigned int location = this->getUniformLocation(name);
 	auto pair = this->vec4Map.find(location);
 	if (pair == this->vec4Map.end()) 
 	{
@@ -267,7 +249,8 @@ void Shader::setVec4(const char* name, Vector4 value)
 
 void Shader::setInt(const char* name, GLint value)
 {
-	GLuint location = glGetUniformLocation(this->program, name);
+	// GLuint location = glGetUniformLocation(this->program, name);
+	unsigned int location = this->getUniformLocation(name);
 	auto pair = this->ints.find(location);
 	if (pair == this->ints.end())
 	{
@@ -279,7 +262,8 @@ void Shader::setInt(const char* name, GLint value)
 
 void Shader::setFloat(const char* name, GLfloat value)
 {
-	GLuint location = glGetUniformLocation(this->program, name);
+	// GLuint location = glGetUniformLocation(this->program, name);
+	unsigned int location = this->getUniformLocation(name);
 	auto pair = this->floats.find(location);
 	if (pair == this->floats.end())
 	{

@@ -48,19 +48,19 @@ void InstancedRenderer::Init()
 
 	mesh->Init([&](void)
 		{
-			GLuint verexLocation = this->material->shader->getLocation(VERTEX);
+			GLuint verexLocation = this->material->shader->getAttribLocation(VERTEX);
 			glEnableVertexAttribArray(verexLocation);
 			glVertexAttribPointer(verexLocation, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)0);
 
-			GLuint normalLocation = this->material->shader->getLocation(NORMAL);
+			GLuint normalLocation = this->material->shader->getAttribLocation(NORMAL);
 			glEnableVertexAttribArray(normalLocation);
 			glVertexAttribPointer(normalLocation, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)(sizeof(float) * 3));
 
-			GLuint texcoordLocation = this->material->shader->getLocation(TEXCOORD);
+			GLuint texcoordLocation = this->material->shader->getAttribLocation(TEXCOORD);
 			glEnableVertexAttribArray(texcoordLocation);
 			glVertexAttribPointer(texcoordLocation, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)(sizeof(float) * 6));
 
-			GLuint colorLocation = this->material->shader->getLocation(COLOR);
+			GLuint colorLocation = this->material->shader->getAttribLocation(COLOR);
 			glEnableVertexAttribArray(colorLocation);
 			glVertexAttribPointer(colorLocation, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)(sizeof(float) * 8));
 

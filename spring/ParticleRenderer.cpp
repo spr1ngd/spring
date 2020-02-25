@@ -195,10 +195,10 @@ void ParticleRenderer::Init()
 	this->mesh = Primitive::GenPrimitive(Primitive::Type::Plane);
 	mesh->Init([&](void) 
 		{
-			unsigned int vertexLocation = this->material->shader->getLocation(VERTEX);
+			unsigned int vertexLocation = this->material->shader->getAttribLocation(VERTEX);
 			glEnableVertexAttribArray(vertexLocation);
 			glVertexAttribPointer(vertexLocation, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)0);
-			unsigned int texcoordLocation = this->material->shader->getLocation(TEXCOORD);
+			unsigned int texcoordLocation = this->material->shader->getAttribLocation(TEXCOORD);
 			glEnableVertexAttribArray(texcoordLocation);
 			glVertexAttribPointer(texcoordLocation, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)(sizeof(float) * 6));
 
@@ -273,7 +273,7 @@ void ParticleRenderer::Render()
 		// color buffer object
 		glBindBuffer(GL_ARRAY_BUFFER, colorBuffer);
 		glBufferSubData(GL_ARRAY_BUFFER, 0, this->existingNumber * sizeof(Colorf), &this->colors[0]);
-		unsigned int colorLocation = this->material->shader->getLocation(COLOR);
+		unsigned int colorLocation = this->material->shader->getAttribLocation(COLOR);
 		glEnableVertexAttribArray(colorLocation);
 		glVertexAttribPointer(colorLocation, 4, GL_FLOAT, GL_FALSE, sizeof(Colorf), (void*)0);
 		glVertexAttribDivisor(colorLocation, 1);

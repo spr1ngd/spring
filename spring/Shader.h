@@ -69,7 +69,7 @@ namespace spring
 		static Shader* Load(const char* vertexShaderName,const char* fragmentShaderName);
 
 	private:
-		std::map<const char*, GLuint> locations;
+		std::map<const char*, unsigned int> locations;
 		char* loadShaderFile(const char* shaderFilePath);
 		void initializeLocation();
 
@@ -84,16 +84,16 @@ namespace spring
 		void setTime();
 
 	public:
-		map<GLuint, Colorf> colors;
-		map<GLuint, GLuint> ints;
-		map<GLuint, GLfloat> floats;
-		map<GLuint, Vector2> vec2Map;
-		map<GLuint, Vector3> vec3Map;
-		map<GLuint, Vector4> vec4Map;
-		map<GLuint, glm::mat4> mat4Map;
+		map<unsigned int, Colorf> colors;
+		map<unsigned int, GLuint> ints;
+		map<unsigned int, GLfloat> floats;
+		map<unsigned int, Vector2> vec2Map;
+		map<unsigned int, Vector3> vec3Map;
+		map<unsigned int, Vector4> vec4Map;
+		map<unsigned int, glm::mat4> mat4Map;
 
-		map<GLuint, MaterialTexture> textures;
-		map<GLuint, Cubemap*> cubemaps;
+		map<unsigned int, MaterialTexture> textures;
+		map<unsigned int, Cubemap*> cubemaps;
 
 		GLuint program;
 		bool receiveShadow = true;
@@ -104,9 +104,10 @@ namespace spring
 
 		void use();
 		void disuse();
-		GLuint getLocation(const char*name);
 		unsigned int getAttribLocation(const char* name);
 		unsigned int getUniformLocation(const char* name);
+		unsigned int getLocation(const char*name);
+		char* getUniformName(unsigned int location);
 
 		void setBool(const char* name, GLboolean value);
 		void setInt(const char* name, GLint value);
