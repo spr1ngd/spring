@@ -251,6 +251,7 @@
     <ClInclude Include="Matrix4x4Sample.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="MeshRenderer.h" />
+    <ClInclude Include="misc.h" />
     <ClInclude Include="ModelLoader.h" />
     <ClInclude Include="Node.h" />
     <ClInclude Include="NotImplementException.h" />

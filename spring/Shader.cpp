@@ -7,6 +7,7 @@
 #include <string>
 #include "texture.h"
 #include "textureloader.h"
+#include "misc.h"
 
 using namespace std;
 using namespace spring;
@@ -144,13 +145,11 @@ unsigned int Shader::getAttribLocation(const char* name)
 unsigned int Shader::getUniformLocation(const char* name) 
 {
 	auto pair = this->locations.find(name);
-	if (pair == this->locations.end())
-	{
-		unsigned int location = glGetUniformLocation(this->program, name);
-		Console::LogFormat(" location nam :  %s", name);
-		this->locations.insert(std::pair<const char*, unsigned int>(name, location));
-	}
-	return this->locations[name];
+	if (pair != this->locations.end())
+		return this->locations[name];
+	unsigned int location = glGetUniformLocation(this->program,name);
+	this->locations.insert(std::pair<const char*, unsigned int>(name, location));
+	return location;
 }
 
 GLuint Shader::getLocation(const char* name)
@@ -161,12 +160,12 @@ GLuint Shader::getLocation(const char* name)
 	return pair->second;
 }
 
-char* Shader::getUniformName(unsigned int location) 
+const char* Shader::getUniformName(unsigned int location)
 {
 	for (auto pair : this->locations)
 	{
 		if (pair.second == location)
-			return (char*)pair.first;
+			return pair.first;
 	}
 	return nullptr;
 }
@@ -196,7 +195,6 @@ void Shader::setBool(const char* name, GLboolean value)
 
 void Shader::setMat4(const char* name, glm::mat4 value) 
 {
-	// GLuint location = glGetUniformLocation(this->program, name);
 	unsigned int location = this->getUniformLocation(name);
 	auto pair = this->mat4Map.find(location);
 	if (pair == this->mat4Map.end())
@@ -209,7 +207,6 @@ void Shader::setMat4(const char* name, glm::mat4 value)
 
 void Shader::setVec2(const char* name, Vector2 value)
 {
-	// GLuint location = glGetUniformLocation(this->program, name);
 	unsigned int location = this->getUniformLocation(name);
 	auto pair = this->vec2Map.find(location);
 	if (pair == this->vec2Map.end())
@@ -220,11 +217,9 @@ void Shader::setVec2(const char* name, Vector2 value)
 	this->vec2Map[location] = value;
 }
 
-// todo : 
 void Shader::setVec3(const char* name, Vector3 value)
 {
-	GLuint location = glGetUniformLocation(this->program, name);
-	// unsigned int location = this->getUniformLocation(name);
+	unsigned int location = this->getUniformLocation(name);
 	auto pair = this->vec3Map.find(location);
 	if (pair == this->vec3Map.end())
 	{
@@ -236,7 +231,6 @@ void Shader::setVec3(const char* name, Vector3 value)
 
 void Shader::setVec4(const char* name, Vector4 value)
 {
-	// GLuint location = glGetUniformLocation(this->program, name);
 	unsigned int location = this->getUniformLocation(name);
 	auto pair = this->vec4Map.find(location);
 	if (pair == this->vec4Map.end()) 
@@ -249,7 +243,6 @@ void Shader::setVec4(const char* name, Vector4 value)
 
 void Shader::setInt(const char* name, GLint value)
 {
-	// GLuint location = glGetUniformLocation(this->program, name);
 	unsigned int location = this->getUniformLocation(name);
 	auto pair = this->ints.find(location);
 	if (pair == this->ints.end())
@@ -262,7 +255,6 @@ void Shader::setInt(const char* name, GLint value)
 
 void Shader::setFloat(const char* name, GLfloat value)
 {
-	// GLuint location = glGetUniformLocation(this->program, name);
 	unsigned int location = this->getUniformLocation(name);
 	auto pair = this->floats.find(location);
 	if (pair == this->floats.end())
@@ -281,7 +273,7 @@ void Shader::setColor(const char* name, Color color)
 
 void Shader::setColor( const char* name, Colorf color )   
 {
-	GLuint location = glGetUniformLocation(this->program, name);
+	unsigned int location = this->getUniformLocation(name);
 	auto pair = this->colors.find(location);
 	if (pair == this->colors.end())
 	{
@@ -293,7 +285,7 @@ void Shader::setColor( const char* name, Colorf color )
 
 void Shader::setTexture(const char*name, GLuint texture)
 {
-	GLuint location = glGetUniformLocation(this->program, name);
+	unsigned int location = this->getUniformLocation(name);
 	auto pair = this->textures.find(location);
 	if (pair == this->textures.end())
 	{
@@ -307,7 +299,7 @@ void Shader::setTexture(const char*name, GLuint texture)
 
 void Shader::setTilling(const char* name, Vector2 tilling) 
 {
-	GLuint location = glGetUniformLocation(this->program,name);
+	unsigned int location = this->getUniformLocation(name);
 	auto pair = this->textures.find(location);
 	if (pair != this->textures.end())
 	{
@@ -319,7 +311,7 @@ void Shader::setTilling(const char* name, Vector2 tilling)
 
 void Shader::setOffset(const char* name, Vector2 offset) 
 {
-	GLuint location = glGetUniformLocation(this->program, name);
+	unsigned int location = this->getUniformLocation(name);
 	auto pair = this->textures.find(location);
 	if (pair != this->textures.end())
 	{
@@ -331,7 +323,7 @@ void Shader::setOffset(const char* name, Vector2 offset)
 
 void Shader::setCubemap(const char* name, Cubemap* cubemap)
 {
-	GLuint location = glGetUniformLocation(this->program,name);
+	unsigned int location = this->getUniformLocation(name);
 	auto pair = this->cubemaps.find(location);
 	if (pair == this->cubemaps.end())
 	{
@@ -443,57 +435,56 @@ void Shader::setLighting()
 		if (light->type == Light::Type::Directional)
 		{
 			string arrayName = "dirLights";
-			std::string intensityStr = arrayName + '[' + to_string(directionalLightCount) + "]." + intensity;
-			std::string positionStr = arrayName + '[' + to_string(directionalLightCount) + "]." + position;
-			std::string colorStr = arrayName + '[' + to_string(directionalLightCount) + "]." + color;
-			this->setFloat(intensityStr.c_str(), light->intensity);
-			this->setVec3(positionStr.c_str(), light->transform->position);
-			this->setColor(colorStr.c_str(), light->color);
+			char* intensityName = spring::misc::string2c((arrayName + '[' + to_string(directionalLightCount) + "]." + intensity));
+			char* positionName = spring::misc::string2c((arrayName + '[' + to_string(directionalLightCount) + "]." + position));
+			char* colorName = spring::misc::string2c((arrayName + '[' + to_string(directionalLightCount) + "]." + color));
+			this->setFloat(intensityName, light->intensity);
+			this->setVec3(positionName, light->transform->position);
+			this->setColor(colorName, light->color);
 			directionalLightCount++;
 		}
 		else if (light->type == Light::Type::Point)
 		{
 			string arrayName = "pointLights";
-			std::string intensityStr = arrayName + '[' + to_string(pointLightCount) + "]." + intensity;
-			std::string positionStr = arrayName + '[' + to_string(pointLightCount) + "]." + position;
-			std::string colorStr = arrayName + '[' + to_string(pointLightCount) + "]." + color;
-			std::string rangeStr = arrayName + '[' + to_string(pointLightCount) + "]." + range;
-			std::string constantStr = arrayName + '[' + to_string(pointLightCount) + "]." + constant;
-			std::string linearStr = arrayName + '[' + to_string(pointLightCount) + "]." + linear;
-			std::string quadraticStr = arrayName + '[' + to_string(pointLightCount) + "]." + quadratic;
-			this->setFloat(intensityStr.c_str(), light->intensity);
-			this->setVec3(positionStr.c_str(), light->transform->position);
-			this->setColor(colorStr.c_str(), light->color);
-			this->setFloat(rangeStr.c_str(), light->range);
-			this->setFloat(constantStr.c_str(), light->constant);
-			this->setFloat(linearStr.c_str(), light->linear);
-			this->setFloat(quadraticStr.c_str(), light->quadratic);
+			auto intensityStr = spring::misc::string2c((arrayName + '[' + to_string(pointLightCount) + "]." + intensity));
+			auto positionStr = spring::misc::string2c((arrayName + '[' + to_string(pointLightCount) + "]." + position));
+			auto colorStr = spring::misc::string2c((arrayName + '[' + to_string(pointLightCount) + "]." + color));
+			auto rangeStr = spring::misc::string2c((arrayName + '[' + to_string(pointLightCount) + "]." + range));
+			auto constantStr = spring::misc::string2c((arrayName + '[' + to_string(pointLightCount) + "]." + constant));
+			auto linearStr = spring::misc::string2c(arrayName + '[' + to_string(pointLightCount) + "]." + linear);
+			auto quadraticStr = spring::misc::string2c(arrayName + '[' + to_string(pointLightCount) + "]." + quadratic);
+			this->setFloat(intensityStr, light->intensity);
+			this->setVec3(positionStr, light->transform->position);
+			this->setColor(colorStr, light->color);
+			this->setFloat(rangeStr, light->range);
+			this->setFloat(constantStr, light->constant);
+			this->setFloat(linearStr, light->linear);
+			this->setFloat(quadraticStr, light->quadratic);
 			pointLightCount++;
 		}
 		else if (light->type == Light::Type::Spot)
 		{
 			string arrayName = "spotLights";
-			std::string intensityStr = arrayName + '[' + to_string(spotLightCount) + "]." + intensity;
-			std::string positionStr = arrayName + '[' + to_string(spotLightCount) + "]." + position;
-			std::string directionStr = arrayName + '[' + to_string(spotLightCount) + "]." + direction;
-			std::string colorStr = arrayName + '[' + to_string(spotLightCount) + "]." + color;
-			std::string rangeStr = arrayName + '[' + to_string(spotLightCount) + "]." + range;
-			std::string constantStr = arrayName + '[' + to_string(spotLightCount) + "]." + constant;
-			std::string linearStr = arrayName + '[' + to_string(spotLightCount) + "]." + linear;
-			std::string quadraticStr = arrayName + '[' + to_string(spotLightCount) + "]." + quadratic;
-			std::string cutoffStr = arrayName + '[' + to_string(spotLightCount) + "]." + cutoff;
-			std::string outerCutoffStr = arrayName + '[' + to_string(spotLightCount) + "]." + outerCutoff;
-
-			this->setFloat(intensityStr.c_str(), light->intensity);
-			this->setVec3(positionStr.c_str(), light->transform->position);
-			this->setColor(colorStr.c_str(), light->color);
-			this->setFloat(rangeStr.c_str(), light->range);
-			this->setFloat(constantStr.c_str(), light->constant);
-			this->setFloat(linearStr.c_str(), light->linear);
-			this->setFloat(quadraticStr.c_str(), light->quadratic);
-			this->setFloat(cutoffStr.c_str(), glm::cos(glm::radians(light->spotAngle / 2.0f)));
-			this->setFloat(outerCutoffStr.c_str(), glm::cos(glm::radians(light->outterAngle / 2.0f)));
-			this->setVec3(directionStr.c_str(), light->transform->GetEulerangle());
+			char* intensityStr = spring::misc::string2c(arrayName + '[' + to_string(spotLightCount) + "]." + intensity);
+			char* positionStr = spring::misc::string2c(arrayName + '[' + to_string(spotLightCount) + "]." + position);
+			char* directionStr = spring::misc::string2c(arrayName + '[' + to_string(spotLightCount) + "]." + direction);
+			char* colorStr = spring::misc::string2c(arrayName + '[' + to_string(spotLightCount) + "]." + color);
+			char* rangeStr = spring::misc::string2c(arrayName + '[' + to_string(spotLightCount) + "]." + range);
+			char* constantStr = spring::misc::string2c(arrayName + '[' + to_string(spotLightCount) + "]." + constant);
+			char* linearStr = spring::misc::string2c(arrayName + '[' + to_string(spotLightCount) + "]." + linear);
+			char* quadraticStr = spring::misc::string2c(arrayName + '[' + to_string(spotLightCount) + "]." + quadratic);
+			char* cutoffStr = spring::misc::string2c(arrayName + '[' + to_string(spotLightCount) + "]." + cutoff);
+			char* outerCutoffStr = spring::misc::string2c(arrayName + '[' + to_string(spotLightCount) + "]." + outerCutoff);
+			this->setFloat(intensityStr, light->intensity);
+			this->setVec3(positionStr, light->transform->position);
+			this->setColor(colorStr, light->color);
+			this->setFloat(rangeStr, light->range);
+			this->setFloat(constantStr, light->constant);
+			this->setFloat(linearStr, light->linear);
+			this->setFloat(quadraticStr, light->quadratic);
+			this->setFloat(cutoffStr, glm::cos(glm::radians(light->spotAngle / 2.0f)));
+			this->setFloat(outerCutoffStr, glm::cos(glm::radians(light->outterAngle / 2.0f)));
+			this->setVec3(directionStr, light->transform->GetEulerangle());
 			spotLightCount++;
 		}
 		else

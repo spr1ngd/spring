@@ -107,7 +107,7 @@ namespace spring
 		unsigned int getAttribLocation(const char* name);
 		unsigned int getUniformLocation(const char* name);
 		unsigned int getLocation(const char*name);
-		char* getUniformName(unsigned int location);
+		const char* getUniformName(unsigned int location);
 
 		void setBool(const char* name, GLboolean value);
 		void setInt(const char* name, GLint value);

@@ -475,6 +475,9 @@
     <ClInclude Include="MaterialEditor.h">
       <Filter>头文件\Editor\Extension</Filter>
     </ClInclude>
+    <ClInclude Include="misc.h">
+      <Filter>头文件\tools</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Primitive.cpp">

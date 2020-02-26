@@ -7,8 +7,8 @@ A LONG LONG LONG , VERY LONG TRIP.
 
 - particle system
     - particle renderer core **(Finished)**
-    - physical motion simulate
-    - life circle control
+    - physical motion simulate **(Finished)**
+    - life circle control **(Finished)**
     - 2d mode
 
 - graphic core
@@ -17,7 +17,7 @@ A LONG LONG LONG , VERY LONG TRIP.
 
 - refactor 
     - mesh / material / shader / meshrenderer
-    - defragment scripts directory (**doing,use vcpkg manage the third-party libraries**)
+    - defragment scripts directory (**Finished,use vcpkg manage the third-party libraries**)
     - use uniform buffer to optimize uniform data
 
 ## TODO: 2020.01.09
@@ -30,7 +30,7 @@ A LONG LONG LONG , VERY LONG TRIP.
     - forward rendering mode
     - deferred rendering mode
 
-- build spring engine
+- build spring engine **(Finished build version , release version failed.)**
 
 - shader system 
     - independent shader compiler
@@ -120,6 +120,10 @@ A LONG LONG LONG , VERY LONG TRIP.
 - keep the size of axis helper the same ,whereever camera is **(Finised)**
 
 ## spring engine real-time screenshot
+
+-   editor window
+
+    ![editor window](/screenshot/spring%20engine%20realtime%20screenshot_07.png)
 
 -   particle
     
