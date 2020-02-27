@@ -1,6 +1,7 @@
 #include "springeditor.h"
 #include "particlerenderereditor.h"
 #include "materialeditor.h"
+#include "postprocesseditor.h"
 
 using namespace spring;
 using namespace spring::editor;
@@ -13,6 +14,7 @@ SceneWindow* SpringEditor::scene = nullptr;
 // inspector editor windows
 ParticleRendererEditor* particleEditor = nullptr;
 MaterialEditor* materialEditor = nullptr;
+PostprocessEditor* postprocessEditor = nullptr;
 
 void SpringEditor::Initialize() 
 {
@@ -22,6 +24,7 @@ void SpringEditor::Initialize()
 
 	particleEditor = new ParticleRendererEditor("ParticleRenderer",true);
 	materialEditor = new MaterialEditor("Mesh Renderer",true);
+	postprocessEditor = new PostprocessEditor("PostProcessing",true);
 }
 
 void SpringEditor::Release() 

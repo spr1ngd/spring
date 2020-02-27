@@ -8,7 +8,7 @@ using namespace spring::editor;
 
 HierarchyWindow::HierarchyWindow(const char* name, bool openDefault) : EditorWindow(name, openDefault) 
 {
-	this->windowFlags = ImGuiWindowFlags_NoMove;
+	// this->windowFlags = ImGuiWindowFlags_NoMove;
 }
 
 void HierarchyWindow::OnDrawWindow() 

@@ -234,8 +234,8 @@ void physically_based_rendering::Awake()
 		return; 
 
 	// displaySpheres();
-	generateParticle();
-	generateParticle2();
+	// generateParticle();
+	// generateParticle2();
 	starFighter();
 }
 

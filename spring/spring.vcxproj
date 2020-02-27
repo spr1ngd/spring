@@ -263,6 +263,7 @@
     <ClInclude Include="ParticleShapeModule.h" />
     <ClInclude Include="physically_based_rendering.h" />
     <ClInclude Include="PhysicsBasedRendering.h" />
+    <ClInclude Include="PostprocessEditor.h" />
     <ClInclude Include="PostProcessing.h" />
     <ClInclude Include="Primitive.h" />
     <ClInclude Include="Quaternion.h" />
@@ -359,6 +360,7 @@
     <ClCompile Include="ParticleShapeModule.cpp" />
     <ClCompile Include="physically_based_rendering.cpp" />
     <ClCompile Include="PhysicsBasedRendering.cpp" />
+    <ClCompile Include="PostprocessEditor.cpp" />
     <ClCompile Include="PostProcessing.cpp" />
     <ClCompile Include="Primitive.cpp" />
     <ClCompile Include="Quaternion.cpp" />

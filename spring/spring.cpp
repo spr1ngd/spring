@@ -29,8 +29,8 @@ static void glfw_error_callback(int error, const char* description)
 
 int main(int, char**)
 {
-	Screen::width = 1280;
-	Screen::height = 720;
+	Screen::width = 1600;
+	Screen::height = 900;
 
 	// Setup window
 	glfwSetErrorCallback(glfw_error_callback);
@@ -93,14 +93,12 @@ int main(int, char**)
 	uiCamera->clearFlag = Camera::None;
 
 	// 0. construct post processing instance.
-	class::PostProcessing* postProcessing = new class::PostProcessing();
-	postProcessing->enabled = true;
-	postProcessing->antiAliasing->enabled = true;
-	postProcessing->antiAliasing->samples = 16;
-	postProcessing->bloom->enabled = false;
-	postProcessing->PreProcess();
-	if( postProcessing->enabled )
-		PostProcessing::postprocessing = postProcessing;
+	PostProcessing::postprocessing = new class::PostProcessing();
+	PostProcessing::postprocessing->enabled = true;
+	PostProcessing::postprocessing->antiAliasing->enabled = true;
+	PostProcessing::postprocessing->antiAliasing->samples = 16;
+	PostProcessing::postprocessing->bloom->enabled = false;
+	PostProcessing::postprocessing->PreProcess();
 
 	ShaderCompiler shader_compiler;
 
@@ -155,7 +153,7 @@ int main(int, char**)
 			}
 		}
 
-		postProcessing->Process();
+		PostProcessing::postprocessing->Process();
 
 		for (auto behaviour : Behaviour::behaviours)
 			behaviour.second->OnPostRender();

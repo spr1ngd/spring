@@ -13,6 +13,7 @@ namespace spring
 
 		void Blit();
 	public:
+
 		FullScreenRenderer* fsRenderer;
 		FrameBufferObject* srcFramebuffer;
 		FrameBufferObject* dstFramebuffer;
