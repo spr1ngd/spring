@@ -40,6 +40,15 @@ void FrameBufferObject::Unbind()
 
 void FrameBufferObject::Delete() 
 {
+	for (auto item = this->framebuffers.begin(); item != this->framebuffers.end(); item++)
+	{
+		FrameBufferObject* fbo = *item;
+		if (fbo->framebufferId == this->framebufferId)
+		{
+			this->framebuffers.erase(item);
+			break;
+		}
+	}
 	glDeleteFramebuffers(1, &this->framebufferId);
 }
 
@@ -84,6 +93,7 @@ FrameBufferObject* FrameBufferObject::GenColorFramebuffer(int width, int height,
 FrameBufferObject* FrameBufferObject::GenMSColorFramebuffer(int samples, int width, int height) 
 {
 	FrameBufferObject* fbo = new FrameBufferObject(width, height, GL_COLOR_ATTACHMENT0, 0);
+	fbo->enableMS = true;
 	unsigned int framebuffer;
 	glGenFramebuffers(1, &framebuffer);
 	glBindFramebuffer(GL_FRAMEBUFFER, framebuffer);
@@ -119,6 +129,7 @@ FrameBufferObject* FrameBufferObject::GenMSColorFramebuffer(int samples, int wid
 FrameBufferObject* FrameBufferObject::GenSingleHDRColorFramebuffer(int width, int height, int level)
 {
 	FrameBufferObject* fbo = new FrameBufferObject(width, height, GL_COLOR_ATTACHMENT0, level);
+	fbo->enableHDR;
 	unsigned int framebuffer;
 	glGenFramebuffers(1, &framebuffer);
 	glBindFramebuffer(GL_FRAMEBUFFER, framebuffer);
@@ -159,6 +170,8 @@ FrameBufferObject* FrameBufferObject::GenSingleHDRColorFramebuffer(int width, in
 FrameBufferObject* FrameBufferObject::GenHDRColorFramebuffer(int width, int height, int level, unsigned int size)
 {
 	FrameBufferObject* fbo = new FrameBufferObject(width, height, GL_COLOR_ATTACHMENT0, level);
+	fbo->enableHDR = true;
+	fbo->enableMRT = true;
 	unsigned int framebuffer;
 	glGenFramebuffers(1, &framebuffer);
 	glBindFramebuffer(GL_FRAMEBUFFER, framebuffer);

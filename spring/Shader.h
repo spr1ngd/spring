@@ -89,6 +89,7 @@ namespace spring
 
 		map<unsigned int, Colorf> colors;
 		map<unsigned int, GLuint> ints;
+		map<unsigned int, bool> bools;
 		map<unsigned int, GLfloat> floats;
 		map<unsigned int, Vector2> vec2Map;
 		map<unsigned int, Vector3> vec3Map;
@@ -113,7 +114,7 @@ namespace spring
 		unsigned int getLocation(const char*name);
 		const char* getUniformName(unsigned int location);
 
-		void setBool(const char* name, GLboolean value);
+		void setBool(const char* name, bool value);
 		void setInt(const char* name, GLint value);
 		void setFloat(const char* name, GLfloat value);
 		void setMat4(const char* name, glm::mat4 value);

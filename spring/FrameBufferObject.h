@@ -18,6 +18,9 @@ namespace spring
 		int height;
 		GLenum attachment = GL_COLOR_ATTACHMENT0;
 		int level = 0;
+		bool enableMRT = false; //multi render target
+		bool enableHDR = false; //hight dynamic range
+		bool enableMS = false;  //multi sample 
 
 		GLuint buffer = -1;
 		unsigned int* buffers;

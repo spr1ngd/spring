@@ -6,7 +6,7 @@ using namespace spring;
 class::spring::PostProcessing* PostProcessing::postprocessing;
 FrameBufferObject* PostProcessing::outputFramebuffer;
 
-Material* outputMaterial; 
+Material* outputMaterial;
 
 PostProcessing::PostProcessing()
 {
@@ -32,8 +32,10 @@ void PostProcessing::Initialize()
 	if (this->bloom->enable)
 	{
 		this->bloom->material = new Material(Shader::Load("fullscreen/fullscreen.vs", "postprocessing/bloom/bloom.fs"));
+		this->bloom->gaussianBlurMaterial = new Material(Shader::Load("fullscreen/fullscreen.vs","postprocessing/bloom/gaussianblur.fs"));
 		this->bloom->material->shader->enableLighting = false;
 		this->bloom->buffer = FrameBufferObject::GenHDRColorFramebuffer(Screen::width, Screen::height, 0, 2);
+		this->bloom->bloomBuffer = FrameBufferObject::GenSingleHDRColorFramebuffer(Screen::width,Screen::height,0);
 	}
 
 	if (this->toneMapping->enable) 
@@ -44,7 +46,7 @@ void PostProcessing::Initialize()
 	}
 
 	this->srcFramebuffer = FrameBufferObject::GenSingleHDRColorFramebuffer(Screen::width, Screen::height, 0);
-	this->dstFramebuffer = FrameBufferObject::GenColorFramebuffer(Screen::width, Screen::height, 0);
+	this->dstFramebuffer = FrameBufferObject::GenSingleHDRColorFramebuffer(Screen::width, Screen::height, 0);
 	Camera::main->framebuffer = this->srcFramebuffer;
 }
 
@@ -66,6 +68,18 @@ void PostProcessing::Process()
 	{
 		this->Blit(transfer, this->bloom->buffer, this->bloom->material);
 		transfer = this->bloom->buffer;
+
+		FrameBufferObject* temp = FrameBufferObject::GenSingleHDRColorFramebuffer(Screen::halfHeight, Screen::height, 0);
+		bool hSample = true;
+		for (int i = 0; i < 10; i++) 
+		{
+			this->bloom->gaussianBlurMaterial->shader->setBool("hSample",hSample);
+			this->Blit(hSample ? temp : this->bloom->bloomBuffer, hSample ? this->bloom->bloomBuffer : temp, this->bloom->gaussianBlurMaterial);
+			hSample = !hSample;
+		}
+		transfer = temp;
+		temp->Delete();
+		delete temp;
 	}
 
 	// tone mapping

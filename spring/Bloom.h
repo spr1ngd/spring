@@ -8,10 +8,12 @@ namespace spring
 	{
 	public:
 		FrameBufferObject* buffer;
+		FrameBufferObject* bloomBuffer;
+
 		Material* material;
+		Material* gaussianBlurMaterial;
 
 		bool enable = false;
-		float intensity = 1.0f;
 
 		Bloom();
 	};

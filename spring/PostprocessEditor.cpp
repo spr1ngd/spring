@@ -21,8 +21,15 @@ void PostprocessEditor::OnDrawInspector()
 	if (ImGui::CollapsingHeader("Bloom")) 
 	{
 		ImGui::Checkbox("Enable Bloom", &pp->bloom->enable);
-		if (pp->bloom->enable) 
+		if (pp->bloom->enable)
+		{
+			ImGui::Text("buffer 0");
+			ImGui::Image((ImTextureID)pp->bloom->buffer->buffers[0], ImVec2(64, 64), ImVec2(0, 1), ImVec2(1, 0));
+			ImGui::Text("buffer 1");
 			ImGui::Image((ImTextureID)pp->bloom->buffer->buffers[1], ImVec2(64, 64), ImVec2(0, 1), ImVec2(1, 0));
+			ImGui::Text("bloom buffer");
+			ImGui::Image((ImTextureID)pp->bloom->bloomBuffer->buffer, ImVec2(64, 64), ImVec2(0, 1), ImVec2(1, 0));
+		}
 		ImGui::Separator();
 	}
 
@@ -36,7 +43,7 @@ void PostprocessEditor::OnDrawInspector()
 		pp->toneMapping->exposure = exposure[0];
 		if (pp->toneMapping->enable)
 			ImGui::Image((ImTextureID)pp->toneMapping->buffer->buffer, ImVec2(64, 64), ImVec2(0, 1), ImVec2(1, 0));
-		delete exposure;
+		delete[] exposure;
 		ImGui::Separator();
 	}
 

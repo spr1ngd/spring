@@ -188,9 +188,16 @@ void Shader::disuse()
 
 #pragma region common interfaces
 
-void Shader::setBool(const char* name, GLboolean value) 
+void Shader::setBool(const char* name, bool value)
 {
-	throw new NotImplementException();
+	unsigned int location = this->getUniformLocation(name);
+	auto pair = this->bools.find(location);
+	if (pair == this->bools.end()) 
+	{
+		this->bools.insert(std::pair<unsigned int,bool>(location,value));
+		return;
+	}
+	this->bools[location] = value;
 }
 
 void Shader::setMat4(const char* name, glm::mat4 value) 
@@ -337,15 +344,14 @@ void Shader::setCubemap(const char* name, Cubemap* cubemap)
 
 void Shader::setShaderValues() 
 {
-	for (auto pair : this->ints)
-	{
+	for (auto pair : this->bools) 
 		glUniform1i(pair.first, pair.second);
-	}
+
+	for (auto pair : this->ints)
+		glUniform1i(pair.first, pair.second);
 
 	for (auto pair : this->floats)
-	{
 		glUniform1f(pair.first, pair.second);
-	}
 
 	for (auto pair : this->colors)
 	{
