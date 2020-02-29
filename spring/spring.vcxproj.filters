@@ -499,6 +499,9 @@
     <ClInclude Include="PostprocessEditor.h">
       <Filter>头文件\Editor\Extension</Filter>
     </ClInclude>
+    <ClInclude Include="ToneMapping.h">
+      <Filter>头文件\Core\Renderer\PostProcessing</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="spring.cpp">
@@ -779,6 +782,9 @@
     </ClCompile>
     <ClCompile Include="PostprocessEditor.cpp">
       <Filter>源文件\Editor\Extension</Filter>
+    </ClCompile>
+    <ClCompile Include="ToneMapping.cpp">
+      <Filter>源文件\Core\Renderer\PostProcessing</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

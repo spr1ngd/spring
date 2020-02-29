@@ -4,14 +4,16 @@
 #include "fullscreenrenderer.h"
 #include "antialiasing.h"
 #include "bloom.h"
+#include "tonemapping.h"
 
 namespace spring 
 {
 	class PostProcessing
 	{
 	private:
+		void Blit(FrameBufferObject* src,FrameBufferObject* dst);
+		void Blit(FrameBufferObject* src,FrameBufferObject* dst,Material* material);
 
-		void Blit();
 	public:
 
 		FullScreenRenderer* fsRenderer;
@@ -21,11 +23,15 @@ namespace spring
 		bool enabled;
 		AntiAliasing* antiAliasing;
 		Bloom* bloom;
+		ToneMapping* toneMapping;
 
 		PostProcessing();
-		void PreProcess();
+		void Initialize();
+
+		void Preprocess();
 		void Process();
 	public:
 		static PostProcessing* postprocessing;
+		static FrameBufferObject* outputFramebuffer;
 	};
 }

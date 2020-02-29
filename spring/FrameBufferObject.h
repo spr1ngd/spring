@@ -12,7 +12,7 @@ namespace spring
 		static vector<FrameBufferObject*> framebuffers;
 
 	public:
-		GLuint bufferId = -1;
+		GLuint framebufferId = -1;
 		GLuint rbo = -1;
 		int width;
 		int height;
@@ -34,7 +34,8 @@ namespace spring
 		// color buffer
 		static FrameBufferObject* GenColorFramebuffer(int width,int height,int level = 0);
 		static FrameBufferObject* GenMSColorFramebuffer(int samples, int width, int height);
-		static FrameBufferObject* GenHDRColorFramebuffer(int width, int height, unsigned int size = 1, int level = 0);
+		static FrameBufferObject* GenHDRColorFramebuffer(int width, int height, int level = 0, unsigned int size = 1);
+		static FrameBufferObject* GenSingleHDRColorFramebuffer(int width, int height, int level = 0);
 
 		static FrameBufferObject* GenDepthFramebuffer(int width, int height);
 		static FrameBufferObject* GenStencilFramebuffer(int width, int height);

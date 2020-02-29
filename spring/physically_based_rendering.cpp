@@ -93,14 +93,17 @@ void starFighter()
 
 	Colorf albedoValue = Colorf::white;
 	Colorf ambientValue = Colorf::white;
+	Colorf emissionValue = Colorf(2.0f,2.0f,2.0f,1.0f);
 	const char* albedo = "albedo";
 	const char* metal = "metal";
 	const char* roughness = "roughness";
 	const char* ambient = "ao";
+	const char* emission = "emissionColor";
 	material->shader->setColor(albedo, albedoValue); // 反射率
 	material->shader->setFloat(metal, 1.0f); // 金属度
 	material->shader->setFloat(roughness, 0.1f); // 粗糙度
 	material->shader->setColor(ambient, ambientValue); // 环境光照
+	material->shader->setColor(emission,emissionValue);// 自发光
 
 	MeshRenderer* fighter = new MeshRenderer(material);
 	fighter->meshes = loader->meshes;

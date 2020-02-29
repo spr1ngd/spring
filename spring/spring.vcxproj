@@ -289,6 +289,7 @@
     <ClInclude Include="Texture.h" />
     <ClInclude Include="TextureLoader.h" />
     <ClInclude Include="Timer.h" />
+    <ClInclude Include="ToneMapping.h" />
     <ClInclude Include="Transform.h" />
     <ClInclude Include="UIElement.h" />
     <ClInclude Include="UniformBuffer.h" />
@@ -384,6 +385,7 @@
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="TextureLoader.cpp" />
     <ClCompile Include="Timer.cpp" />
+    <ClCompile Include="ToneMapping.cpp" />
     <ClCompile Include="Transform.cpp" />
     <ClCompile Include="UIElement.cpp" />
     <ClCompile Include="UniformBuffer.cpp" />

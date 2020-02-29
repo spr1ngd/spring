@@ -1,18 +1,18 @@
 #pragma once
-#include "framebufferobject.h"
 #include "material.h"
+#include "framebufferobject.h"
 
 namespace spring 
 {
-	class Bloom 
+	class ToneMapping 
 	{
 	public:
 		FrameBufferObject* buffer;
 		Material* material;
 
-		bool enable = false;
-		float intensity = 1.0f;
+		float exposure = 1.0f;
+		bool enable = true;
 
-		Bloom();
+		ToneMapping();
 	};
 }

@@ -84,6 +84,9 @@ namespace spring
 		void setTime();
 
 	public:
+		char* vertexShaderName;
+		char* fragmentShaderName;
+
 		map<unsigned int, Colorf> colors;
 		map<unsigned int, GLuint> ints;
 		map<unsigned int, GLfloat> floats;
@@ -97,6 +100,7 @@ namespace spring
 
 		GLuint program;
 		bool receiveShadow = true;
+		bool enableLighting = true;
 
 		Shader();
 		Shader(const char*vertex,const char*fragment );

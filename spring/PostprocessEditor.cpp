@@ -1,4 +1,5 @@
 #include "postprocesseditor.h"
+#include "postprocessing.h"
 
 using namespace spring;
 using namespace spring::editor;
@@ -10,9 +11,41 @@ PostprocessEditor::PostprocessEditor(const char*name,bool openDefault) : Inspect
 
 void PostprocessEditor::OnDrawInspector() 
 {
-	ImGui::SetNextItemOpen(true, ImGuiCond_Once);
-
-	// 
+	
+	
+	class::PostProcessing* pp = PostProcessing::postprocessing;
+	// 可以画出每一次blit之后的预览画面
 
 	// bloom setting
+	ImGui::SetNextItemOpen(true, ImGuiCond_Once);
+	if (ImGui::CollapsingHeader("Bloom")) 
+	{
+		ImGui::Checkbox("Enable Bloom", &pp->bloom->enable);
+		if (pp->bloom->enable) 
+			ImGui::Image((ImTextureID)pp->bloom->buffer->buffers[1], ImVec2(64, 64), ImVec2(0, 1), ImVec2(1, 0));
+		ImGui::Separator();
+	}
+
+	// tone mapping
+	ImGui::SetNextItemOpen(true, ImGuiCond_Once);
+	if (ImGui::CollapsingHeader("ToneMapping")) 
+	{
+		ImGui::Checkbox("Enable ToneMapping",&pp->toneMapping->enable);
+		float* exposure = new float[1]{pp->toneMapping->exposure};
+		ImGui::DragFloat("exposure",exposure,0.1f,0.01f,5.0f);
+		pp->toneMapping->exposure = exposure[0];
+		if (pp->toneMapping->enable)
+			ImGui::Image((ImTextureID)pp->toneMapping->buffer->buffer, ImVec2(64, 64), ImVec2(0, 1), ImVec2(1, 0));
+		delete exposure;
+		ImGui::Separator();
+	}
+
+	// anti-aliasing
+	ImGui::SetNextItemOpen(true, ImGuiCond_Once);
+	if (ImGui::CollapsingHeader("Anti-Aliasing")) 
+	{
+		bool enable = false;
+		ImGui::Checkbox("Enable Anti-Aliasing",&enable);
+		ImGui::Separator();
+	}
 }

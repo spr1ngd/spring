@@ -190,7 +190,7 @@ void main()
     vec3 color = Lo + ambient;
 
     // emission
-    vec3 emission = texture(emissionTex,Texcoord).rgb;
+    vec3 emission = texture(emissionTex,Texcoord).rgb * emissionColor.rgb; 
     color += emission;
 
     // color = color / (color + vec3(1.0)); // hdr

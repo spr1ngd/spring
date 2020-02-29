@@ -58,7 +58,7 @@ void Light::CastShadow()
 		// todo : fixed light space matrix
 		light->lightSpaceMatrix = camera->GetProjectionMatrix() * camera->GetViewMatrix();
 
-		glBindFramebuffer(GL_FRAMEBUFFER,light->shadow->bufferId);
+		glBindFramebuffer(GL_FRAMEBUFFER,light->shadow->framebufferId);
 		glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		Renderable::Draw(1,new unsigned int[1]{ 0x0001 }, [&](MeshRenderer* renderer)

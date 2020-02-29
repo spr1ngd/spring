@@ -416,6 +416,8 @@ void Shader::setEngineEnvironment()
 
 void Shader::setLighting() 
 {
+	if (!this->enableLighting)
+		return;
 	string intensity = "intensity";
 	string color = "color";
 	string position = "position";
@@ -544,6 +546,11 @@ Shader* Shader::Load(const char* vertexShaderName, const char* fragmentShaderNam
 	Shader* shader = new Shader(vs, fs);
 	free(vs);
 	free(fs);
+
+	shader->vertexShaderName = new char[strlen(vertexShaderName)];
+	shader->fragmentShaderName = new char[strlen(fragmentShaderName)];
+	strcpy_s(shader->vertexShaderName, strlen(vertexShaderName) + 1, vertexShaderName);
+	strcpy_s(shader->fragmentShaderName, strlen(fragmentShaderName) + 1, fragmentShaderName);
 	return shader;
 }
 
