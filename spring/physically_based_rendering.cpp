@@ -122,11 +122,11 @@ void generateParticle()
 	auto texture = TextureLoader::Load("res/texture/photon.png");
 	particle->material->shader->setTexture(MAIN_TEX,texture->textureId);
 	particle->maxNumber = 5000;
-	particle->lifeTime = .22f;
+	particle->lifeTime = .2f;
 	particle->velocity = 10.0f;
 	particle->rotateSpeed = 0.0f;
 	particle->size = 8.0f;
-	particle->material->shader->setColor(MAIN_COLOR, Color::white);
+	particle->material->shader->setColor(MAIN_COLOR, Colorf(1.5f,1.5f,1.5f,1.0f));
 
 	particle->enableVariableColor = true;
 	particle->beginColor = Color::yellow;
@@ -180,11 +180,11 @@ void generateParticle2()
 	auto texture = TextureLoader::Load("res/texture/photon.png");
 	particle->material->shader->setTexture(MAIN_TEX, texture->textureId);
 	particle->maxNumber = 5000;
-	particle->lifeTime = .22f;
+	particle->lifeTime = .2f;
 	particle->velocity = 10.0f;
 	particle->rotateSpeed = 0.0f;
 	particle->size = 8.0f;
-	particle->material->shader->setColor(MAIN_COLOR, Color::white);
+	particle->material->shader->setColor(MAIN_COLOR, Colorf(1.5f, 1.5f, 1.5f, 1.0f));
 
 	particle->enableVariableColor = true;
 	particle->beginColor = Color::yellow;
@@ -236,10 +236,10 @@ void physically_based_rendering::Awake()
 	if (!this->enabled)
 		return; 
 
+	starFighter();
 	// displaySpheres();
 	generateParticle();
 	generateParticle2();
-	starFighter();
 }
 
 void physically_based_rendering::Update() 

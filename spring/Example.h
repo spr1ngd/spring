@@ -41,7 +41,6 @@ private:
 public:
 	void Awake() override
 	{
-		Camera::main->framebuffer = this->framebuffer;
 		if (!enabled)
 			return;
 
@@ -174,7 +173,6 @@ public:
 			return;
 		if (drawFourFrame)
 		{
-			rawTexture->textureId = Camera::main->framebuffer->buffer;
 			// rawTexture->textureId = Light::main->shadow->buffer;
 			image->texture = rawTexture;
 			// image->material->shader->setTexture(MAIN_TEX, Light::main->shadow->buffer);

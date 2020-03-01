@@ -36,7 +36,7 @@ namespace spring
 
 		// color buffer
 		static FrameBufferObject* GenColorFramebuffer(int width,int height,int level = 0);
-		static FrameBufferObject* GenMSColorFramebuffer(int samples, int width, int height);
+		static FrameBufferObject* GenMSColorFramebuffer(int width, int height, int samples);
 		static FrameBufferObject* GenHDRColorFramebuffer(int width, int height, int level = 0, unsigned int size = 1);
 		static FrameBufferObject* GenSingleHDRColorFramebuffer(int width, int height, int level = 0);
 

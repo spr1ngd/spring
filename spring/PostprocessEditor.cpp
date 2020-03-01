@@ -20,6 +20,16 @@ void PostprocessEditor::OnDrawInspector()
 	if (ImGui::CollapsingHeader("Bloom")) 
 	{
 		ImGui::Checkbox("Enable Bloom", &pp->bloom->enable);
+
+		float* color = new float[4]{pp->bloom->color.r,pp->bloom->color.g ,pp->bloom->color.b ,pp->bloom->color.a};
+		ImGui::ColorEdit4("bloom color", color);
+		pp->bloom->color = Colorf(color[0], color[1], color[2], color[3]);
+		delete[] color;
+
+		float* threshold = new float[1]{pp->bloom->threshold};
+		ImGui::DragFloat("Threshold", threshold,0.01f,1.0f,5.0f);
+		pp->bloom->threshold = threshold[0];
+		delete[] threshold;
 		if (pp->bloom->enable)
 		{
 			ImGui::Text("buffer 0");

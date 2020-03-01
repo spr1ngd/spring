@@ -17,7 +17,7 @@ void ParticleRendererEditor::OnDrawInspector()
 	ParticleRenderer* particleRenderer = (ParticleRenderer*)Selection::node;
 	if (nullptr == particleRenderer)
 		return;
-
+	return;
 	ImGui::SetNextItemOpen(true,ImGuiCond_Once);
 
 	ImGui::Text(" %s",particleRenderer->name);

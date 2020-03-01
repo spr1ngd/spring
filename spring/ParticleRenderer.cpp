@@ -234,7 +234,7 @@ void ParticleRenderer::Render()
 	if (this->usingParticles.size() <= 0)
 		return;
 
-	this->material->AlphaTestFunc(GL_GREATER, 0.0f);
+	// this->material->AlphaTestFunc(GL_LESS, 0.0f);
 	this->material->EnableAlphaTest();
 
 	this->material->AlphaBlendFunc();
@@ -243,7 +243,6 @@ void ParticleRenderer::Render()
 	this->material->EnableDepthWrite(false);
 	this->material->EnableDepthTest();
 	this->material->EnableStencilTest();
-	// this->material->CullFaceFunc(true, GL_BACK);
 	this->material->EnableCullFace();
 	// this->material->renderMode = Material::Line;
 

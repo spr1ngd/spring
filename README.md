@@ -46,12 +46,12 @@ A LONG LONG LONG , VERY LONG TRIP.
         - scene window **(Basic edition Finished)**
         - inspector window
             - transform tree node **(Finished)**
-            - mateiral tree node (pbr mateiral inspector node)
+            - mateiral tree node (pbr mateiral inspector node) **(Finished)**
 
 - input system upgrade (replaced window api by glfw library , glfw is a cross platform library) **(Finished)**
 
 - pick system
-    - pick base on color;
+    - pick base on gpu pick;
     - integrate bullet physics engine or PhysX to implement pick base on physics
     - pick base on ray-obb
 
@@ -70,10 +70,12 @@ A LONG LONG LONG , VERY LONG TRIP.
     - evironment shadow setting **(Finished)**
 
 - post processing system **(10%)**
-    - bloom **(50%)**
+    - bloom **(Finished)**
     - anti-aliasing **(replaced MSAA by post processing anti-aliasing)**
     - ambient occlusion
     - color correction
+    - tone mapping **(Finished)**
+    - outline 
 
 ## TODO: before 2019.11.10
 
@@ -121,9 +123,9 @@ A LONG LONG LONG , VERY LONG TRIP.
 
 ## spring engine real-time screenshot
 
--   editor window
+-   postprocessing(bloom) and postprocessing editor window
 
-    ![editor window](/screenshot/spring%20engine%20realtime%20screenshot_07.png)
+    ![editor window](/screenshot/spring%20engine%20realtime%20screenshot_07.jpg)
 
 -   particle
     

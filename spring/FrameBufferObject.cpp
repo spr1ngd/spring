@@ -90,7 +90,7 @@ FrameBufferObject* FrameBufferObject::GenColorFramebuffer(int width, int height,
 	return fbo;
 }
 
-FrameBufferObject* FrameBufferObject::GenMSColorFramebuffer(int samples, int width, int height) 
+FrameBufferObject* FrameBufferObject::GenMSColorFramebuffer( int width, int height, int samples)
 {
 	FrameBufferObject* fbo = new FrameBufferObject(width, height, GL_COLOR_ATTACHMENT0, 0);
 	fbo->enableMS = true;

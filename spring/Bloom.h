@@ -16,6 +16,8 @@ namespace spring
 		Material* bloomAddMaterial;
 
 		bool enable = false;
+		float threshold = 1.0f;
+		Colorf color = Colorf::white;
 
 		Bloom();
 	};

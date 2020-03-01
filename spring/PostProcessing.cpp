@@ -27,7 +27,9 @@ void PostProcessing::Initialize()
 	this->fsRenderer->Init();
 
 	// if (this->antiAliasing->enabled)
-	// 	this->srcFramebuffer = FrameBufferObject::GenMSColorFramebuffer(this->antiAliasing->samples, Screen::width, Screen::height);
+	// {
+	// 	this->srcFramebuffer = FrameBufferObject::GenMSColorFramebuffer(Screen::width, Screen::height, this->antiAliasing->samples);
+	// }
 
 	if (this->bloom->enable)
 	{
@@ -70,6 +72,8 @@ void PostProcessing::Process()
 	// bloom 
 	if (this->bloom->enable)
 	{
+		this->bloom->material->shader->setFloat("threshold",this->bloom->threshold);
+		this->bloom->material->shader->setColor(MAIN_COLOR,this->bloom->color);
 		this->Blit(transfer, this->bloom->buffer, this->bloom->material);
 		transfer = this->bloom->buffer;
 
