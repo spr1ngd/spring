@@ -93,7 +93,7 @@ void starFighter()
 
 	Colorf albedoValue = Colorf::white;
 	Colorf ambientValue = Colorf::white;
-	Colorf emissionValue = Colorf(2.0f,2.0f,2.0f,1.0f);
+	Colorf emissionValue = Colorf::white;
 	const char* albedo = "albedo";
 	const char* metal = "metal";
 	const char* roughness = "roughness";
@@ -237,8 +237,8 @@ void physically_based_rendering::Awake()
 		return; 
 
 	// displaySpheres();
-	// generateParticle();
-	// generateParticle2();
+	generateParticle();
+	generateParticle2();
 	starFighter();
 }
 

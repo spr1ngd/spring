@@ -9,9 +9,11 @@ namespace spring
 	public:
 		FrameBufferObject* buffer;
 		FrameBufferObject* bloomBuffer;
+		FrameBufferObject* bloomTemp;
 
 		Material* material;
 		Material* gaussianBlurMaterial;
+		Material* bloomAddMaterial;
 
 		bool enable = false;
 

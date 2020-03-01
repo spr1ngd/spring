@@ -11,10 +11,9 @@ PostprocessEditor::PostprocessEditor(const char*name,bool openDefault) : Inspect
 
 void PostprocessEditor::OnDrawInspector() 
 {
-	
-	
 	class::PostProcessing* pp = PostProcessing::postprocessing;
-	// 可以画出每一次blit之后的预览画面
+	if (pp->enabled == false)
+		return;
 
 	// bloom setting
 	ImGui::SetNextItemOpen(true, ImGuiCond_Once);

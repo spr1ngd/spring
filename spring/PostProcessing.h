@@ -13,6 +13,7 @@ namespace spring
 	private:
 		void Blit(FrameBufferObject* src,FrameBufferObject* dst);
 		void Blit(FrameBufferObject* src,FrameBufferObject* dst,Material* material);
+		void Blit(FrameBufferObject* src,FrameBufferObject* dst,Material* material,unsigned int attachment);
 
 	public:
 

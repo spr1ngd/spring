@@ -33,9 +33,11 @@ void PostProcessing::Initialize()
 	{
 		this->bloom->material = new Material(Shader::Load("fullscreen/fullscreen.vs", "postprocessing/bloom/bloom.fs"));
 		this->bloom->gaussianBlurMaterial = new Material(Shader::Load("fullscreen/fullscreen.vs","postprocessing/bloom/gaussianblur.fs"));
+		this->bloom->bloomAddMaterial = new Material(Shader::Load("fullscreen/fullscreen.vs","postprocessing/bloom/bloomadd.fs"));
 		this->bloom->material->shader->enableLighting = false;
 		this->bloom->buffer = FrameBufferObject::GenHDRColorFramebuffer(Screen::width, Screen::height, 0, 2);
 		this->bloom->bloomBuffer = FrameBufferObject::GenSingleHDRColorFramebuffer(Screen::width,Screen::height,0);
+		this->bloom->bloomTemp = FrameBufferObject::GenSingleHDRColorFramebuffer(Screen::width, Screen::height, 0);
 	}
 
 	if (this->toneMapping->enable) 
@@ -52,6 +54,8 @@ void PostProcessing::Initialize()
 
 void PostProcessing::Preprocess() 
 {
+	if (this->enabled == false)
+		return;
 	Camera::main->framebuffer = this->srcFramebuffer;
 }
 
@@ -69,17 +73,24 @@ void PostProcessing::Process()
 		this->Blit(transfer, this->bloom->buffer, this->bloom->material);
 		transfer = this->bloom->buffer;
 
-		FrameBufferObject* temp = FrameBufferObject::GenSingleHDRColorFramebuffer(Screen::halfHeight, Screen::height, 0);
+		bool firstTransfer = true;
 		bool hSample = true;
 		for (int i = 0; i < 10; i++) 
 		{
-			this->bloom->gaussianBlurMaterial->shader->setBool("hSample",hSample);
-			this->Blit(hSample ? temp : this->bloom->bloomBuffer, hSample ? this->bloom->bloomBuffer : temp, this->bloom->gaussianBlurMaterial);
-			hSample = !hSample;
+		 	this->bloom->gaussianBlurMaterial->shader->setBool("hSample",hSample);
+			if (firstTransfer)
+				this->Blit(transfer, this->bloom->bloomBuffer, this->bloom->gaussianBlurMaterial, 1);
+			else
+				this->Blit(hSample ? this->bloom->bloomTemp : this->bloom->bloomBuffer, hSample ? this->bloom->bloomBuffer : this->bloom->bloomTemp, this->bloom->gaussianBlurMaterial);
+			firstTransfer = false;
+			transfer = this->bloom->bloomTemp;
+		 	hSample = !hSample;
 		}
-		transfer = temp;
-		temp->Delete();
-		delete temp;
+
+		this->bloom->bloomAddMaterial->shader->setTexture("BrightTexture",transfer->buffer);
+		this->Blit(this->bloom->buffer, this->bloom->bloomBuffer, this->bloom->bloomAddMaterial, 0);
+		transfer = this->bloom->bloomBuffer;
+		// blend src and bright area
 	}
 
 	// tone mapping
@@ -111,10 +122,28 @@ void PostProcessing::Blit(FrameBufferObject* src, FrameBufferObject* dst, Materi
 	Camera::current->framebuffer = dst;
 	Camera::current->framebuffer->Bind();
 	glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
+	glClearColor(0.1f,0.4f,0.7f,1.0f);
 	unsigned int* postProcessingLayer = new unsigned int[1]{ Layer::PostProcessing };
 	Renderable::Draw(1, postProcessingLayer);
 	Camera::current->framebuffer->Unbind();
-	glClearColor(0.1f,0.4f,0.7f,1.0f);
 	glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
+	glClearColor(0.1f,0.4f,0.7f,1.0f);
+	delete[] postProcessingLayer;
+}
+
+void PostProcessing::Blit(FrameBufferObject* src, FrameBufferObject* dst, Material* material,unsigned int attachment)
+{
+	this->fsRenderer->material = material;
+	this->fsRenderer->material->shader->setTexture(MAIN_TEX, src->buffers[attachment]);// 这里根据是否运行使用MTR取不同的buffer attachment
+
+	Camera::current = Camera::main;
+	Camera::current->framebuffer = dst;
+	Camera::current->framebuffer->Bind();
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	unsigned int* postProcessingLayer = new unsigned int[1]{ Layer::PostProcessing };
+	Renderable::Draw(1, postProcessingLayer);
+	Camera::current->framebuffer->Unbind();
+	glClearColor(0.1f, 0.4f, 0.7f, 1.0f);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	delete[] postProcessingLayer;
 }

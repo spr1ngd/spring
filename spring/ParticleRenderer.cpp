@@ -234,7 +234,7 @@ void ParticleRenderer::Render()
 	if (this->usingParticles.size() <= 0)
 		return;
 
-	this->material->AlphaTestFunc(GL_GREATER,0.0f);
+	this->material->AlphaTestFunc(GL_GREATER, 0.0f);
 	this->material->EnableAlphaTest();
 
 	this->material->AlphaBlendFunc();

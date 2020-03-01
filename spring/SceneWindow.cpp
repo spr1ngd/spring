@@ -15,9 +15,8 @@ void SceneWindow::OnDrawWindow()
 {
 	glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
 	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-	if (nullptr == PostProcessing::postprocessing)
-		;// ImGui::Image((ImTextureID)Camera::main->framebuffer->bufferId, ImVec2(Screen::width * 0.8f, Screen::height * 0.8f), ImVec2(0, 1), ImVec2(1, 0));
-	else
-		// ImGui::Image((ImTextureID)PostProcessing::postprocessing->dstFramebuffer->buffer, ImVec2(Screen::width * 0.8f, Screen::height * 0.8f), ImVec2(0, 1), ImVec2(1, 0));
+	if( nullptr != PostProcessing::postprocessing && PostProcessing::postprocessing->enabled )
 		ImGui::Image((ImTextureID)PostProcessing::outputFramebuffer->buffer, ImVec2(Screen::width * 0.6f, Screen::height * 0.6f), ImVec2(0, 1), ImVec2(1, 0));
+	else
+		ImGui::Image((ImTextureID)Camera::main->framebuffer->buffer, ImVec2(Screen::width * 0.8f, Screen::height * 0.8f), ImVec2(0, 1), ImVec2(1, 0));
 }

@@ -94,13 +94,17 @@ int main(int, char**)
 
 	// 0. construct post processing instance.
 	PostProcessing::postprocessing = new class::PostProcessing();
-	PostProcessing::postprocessing->enabled = true;
+	PostProcessing::postprocessing->enabled = false;
 	// Fixed : multi-sample-anti-aliasing can not be used for post processing
 	PostProcessing::postprocessing->antiAliasing->enabled = false;
 	PostProcessing::postprocessing->antiAliasing->samples = 16;
 	// bloom 
 	PostProcessing::postprocessing->bloom->enable = true;
 	PostProcessing::postprocessing->Initialize();
+
+	FrameBufferObject* mainFramebuffer = FrameBufferObject::GenColorFramebuffer(Screen::width, Screen::height, 0);
+	if (PostProcessing::postprocessing->enabled == false) 
+		Camera::main->framebuffer = mainFramebuffer;
 
 	ShaderCompiler shader_compiler;
 
@@ -146,7 +150,7 @@ int main(int, char**)
 			{
 				Renderable::Draw(2, defaultRenderLayer);
 			}
-			else
+			else 
 			{
 				Camera::current->framebuffer->Bind();
 				glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
