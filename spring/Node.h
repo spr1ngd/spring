@@ -12,7 +12,6 @@ namespace spring
 	{
 	public:
 		static vector<Node*> allNodes;
-
 	private:
 		vector<Node*> nodes;
 	public:
@@ -32,6 +31,7 @@ namespace spring
 
 		template <typename T>
 		Node* GetNode(T nodeType);
+
 
 		template <typename T>
 		bool TryGetNode(T nodeType,Node* node);

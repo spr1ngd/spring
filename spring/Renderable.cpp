@@ -19,9 +19,14 @@ void Renderable::setRenderOrder(unsigned int renderOrder)
 	sort(this->objects.begin(), this->objects.end(), sortFunc);
 }
 
-unsigned int Renderable::getRenderOrder() 
+unsigned int Renderable::GetRenderOrder() 
 {
 	return this->renderOrder;
+}
+
+unsigned int Renderable::GetRenderableId()
+{
+	return this->rendererId;
 }
 
 void Renderable::Draw()
@@ -72,4 +77,15 @@ void Renderable::Draw(unsigned int layerCount, unsigned int* layers , std::funct
 			}
 		}
 	}
+}
+
+Renderable* Renderable::GetRender(unsigned int renderableId)
+{
+	for (auto item = objects.begin();item != objects.end();item++)
+	{
+		Renderable* render = *item;
+		if (render->rendererId == renderableId)
+			return render;
+	}
+	return nullptr;
 }

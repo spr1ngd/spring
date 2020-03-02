@@ -119,3 +119,8 @@ void MeshRenderer::Render(glm::mat4 view, glm::mat4 projection)
 		this->material->shader->disuse();
 	}
 }
+
+MeshRenderer* MeshRenderer::GetMeshRenderer(unsigned int renderableId) 
+{
+	return static_cast<MeshRenderer*>(Renderable::GetRender(renderableId));
+}

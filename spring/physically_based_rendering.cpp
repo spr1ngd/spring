@@ -4,6 +4,8 @@
 #include <string>
 #include "particlerenderer.h"
 #include "particle.h"
+#include "picking.h"
+#include "console.h"
 
 using namespace spring;
 using namespace spring::editor;
@@ -246,6 +248,11 @@ void physically_based_rendering::Update()
 {
 	if (!this->enabled)
 		return;
+
+	Node* selected = Picking::Pick(Input::mousePosition.x,Input::mousePosition.y);
+	if (selected != nullptr)
+		Console::LogFormat("[Picking]:pick %s", selected->name);
+	else Console::LogFormat("[Picking]:pick %s","empty");
 }
 
 void physically_based_rendering::Destroy()

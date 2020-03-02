@@ -18,6 +18,7 @@
 #include "postprocessing.h"
 #include "particlerenderer.h"
 #include "shadercompiler.h"
+#include "picking.h"
 
 using namespace spring;
 using namespace spring::editor;
@@ -109,6 +110,9 @@ int main(int, char**)
 
 	ShaderCompiler shader_compiler;
 
+	// gpu picking system
+	Picking::Initialize();
+
 	Mathf::RandomSeed();
 	// Main loop
 	while (!glfwWindowShouldClose(window))
@@ -161,6 +165,21 @@ int main(int, char**)
 				glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 			}
 		}
+
+		// render for gpu picking system
+		Picking::Render([&](void) 
+			{
+				Camera::current = Camera::main;
+				Camera::current->Render();
+				Renderable::Draw(2, defaultRenderLayer, [&](MeshRenderer* meshRenderer) 
+					{
+						Material* originMaterial = meshRenderer->material;
+						meshRenderer->material = Picking::material;
+						meshRenderer->material->shader->setColor("identify",Picking::Convert2Color(meshRenderer->GetRenderableId()));
+						meshRenderer->Render();
+						meshRenderer->material = originMaterial;
+					});
+			});
 
 		PostProcessing::postprocessing->Process();
 

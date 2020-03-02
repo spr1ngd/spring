@@ -193,6 +193,18 @@
     <Filter Include="源文件\Extension\Camera">
       <UniqueIdentifier>{63f576f4-2751-478f-8f9b-a039d23dd781}</UniqueIdentifier>
     </Filter>
+    <Filter Include="头文件\Core\Physical">
+      <UniqueIdentifier>{b224904e-dceb-44b8-90b9-59e98963ffc2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\Core\Physical">
+      <UniqueIdentifier>{9e67be82-a61e-4504-8ad7-cc8134cc6389}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\Core\Physical\Picking">
+      <UniqueIdentifier>{8692357d-039b-4353-89c9-8485793de1db}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\Core\Physical\Picking">
+      <UniqueIdentifier>{d30131e1-42c3-4393-b01c-330f1efac06a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="spring.rc">
@@ -502,6 +514,12 @@
     <ClInclude Include="ToneMapping.h">
       <Filter>头文件\Core\Renderer\PostProcessing</Filter>
     </ClInclude>
+    <ClInclude Include="Picking.h">
+      <Filter>头文件\Core\Physical\Picking</Filter>
+    </ClInclude>
+    <ClInclude Include="PickingEditor.h">
+      <Filter>头文件\Editor\Extension</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="spring.cpp">
@@ -785,6 +803,12 @@
     </ClCompile>
     <ClCompile Include="ToneMapping.cpp">
       <Filter>源文件\Core\Renderer\PostProcessing</Filter>
+    </ClCompile>
+    <ClCompile Include="Picking.cpp">
+      <Filter>源文件\Core\Physical\Picking</Filter>
+    </ClCompile>
+    <ClCompile Include="PickingEditor.cpp">
+      <Filter>源文件\Editor\Extension</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

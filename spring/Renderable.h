@@ -10,10 +10,10 @@ using namespace std;
 namespace spring 
 {
 	class MeshRenderer;
-	class Renderable 
+	class Renderable
 	{
 	private:
-		unsigned long instanceId;
+		unsigned long rendererId;
 		unsigned int renderOrder = 2000;
 
 		static unsigned long renderCounts;
@@ -35,7 +35,7 @@ namespace spring
 	public:
 		Renderable() 
 		{
-			this->instanceId = ++renderCounts;
+			this->rendererId = ++renderCounts;
 			this->Insert(this);
 		}
 		~Renderable()
@@ -43,7 +43,7 @@ namespace spring
 			int removeIndex = 0;
 			for (Renderable* item : objects) 
 			{
-				if (item->instanceId == this->instanceId)
+				if (item->rendererId == this->rendererId)
 					break;
 				removeIndex++;
 			}
@@ -51,11 +51,14 @@ namespace spring
 		}
 
 		void setRenderOrder(unsigned int renderOrder);
-		unsigned int getRenderOrder();
+		unsigned int GetRenderOrder();
+		unsigned int GetRenderableId();
 
 		virtual void Render() = 0;
 		static void Draw();
 		static void Draw(unsigned int layerCount, unsigned int* layers);
 		static void Draw(unsigned int layerCount, unsigned int* layers , std::function<void(MeshRenderer*)> func);
+
+		static Renderable* GetRender(unsigned int renderableId);
 	};
 }
