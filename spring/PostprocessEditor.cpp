@@ -56,6 +56,23 @@ void PostprocessEditor::OnDrawInspector()
 		ImGui::Separator();
 	}
 
+	// outline
+	ImGui::SetNextItemOpen(true, ImGuiCond_Once);
+	if (ImGui::CollapsingHeader("Outline")) 
+	{
+		ImGui::Checkbox("Enable Outline",&pp->outline->enable);
+
+		ImGui::Image((ImTextureID)pp->outline->buffer->buffer, ImVec2(160, 90), ImVec2(0, 1), ImVec2(1, 0));
+		ImGui::Image((ImTextureID)pp->outline->resultBuffer->buffer, ImVec2(160, 90), ImVec2(0, 1), ImVec2(1, 0));
+
+		float* color = new float[4]{ pp->outline->outlineColor.a,pp->outline->outlineColor.g,pp->outline->outlineColor.b,pp->outline->outlineColor.a };
+		ImGui::ColorEdit4("outline Color", color);
+		pp->outline->outlineColor = Colorf(color[0], color[1], color[2], color[3]);
+		delete[] color;
+
+		ImGui::DragInt("outline Width", &pp->outline->outlineWidth,1,0,20);
+	}
+
 	// anti-aliasing
 	ImGui::SetNextItemOpen(true, ImGuiCond_Once);
 	if (ImGui::CollapsingHeader("Anti-Aliasing")) 

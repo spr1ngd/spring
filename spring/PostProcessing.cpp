@@ -14,6 +14,12 @@ PostProcessing::PostProcessing()
 	this->bloom = new Bloom();
 	this->toneMapping = new ToneMapping();
 	this->toneMapping->exposure = 1.0f;
+	this->outline = new Outline();
+	this->outline->outlineMaterial = new Material(Shader::Load("postprocessing/outline/outline.vs","postprocessing/outline/outline(sample).fs"));
+	this->outline->outlineOutputMaterial = new Material(Shader::Load("fullscreen/fullscreen.vs","postprocessing/outline/outline.fs"));
+	this->outline->buffer = FrameBufferObject::GenColorFramebuffer(Screen::width,Screen::height,0);
+	this->outline->resultBuffer = FrameBufferObject::GenColorFramebuffer(Screen::width,Screen::height,0);
+
 }
 
 void PostProcessing::Initialize() 
@@ -103,6 +109,13 @@ void PostProcessing::Process()
 		this->toneMapping->material->shader->setFloat("exposure",this->toneMapping->exposure);
 		this->Blit(transfer, this->toneMapping->buffer, this->toneMapping->material);
 		transfer = this->toneMapping->buffer;
+	}
+
+	if (this->outline->enable) 
+	{
+		this->outline->outlineOutputMaterial->shader->setInt("outlineWidth",this->outline->outlineWidth);
+		this->outline->outlineOutputMaterial->shader->setColor("outlineColor", this->outline->outlineColor);
+		this->Blit(this->outline->buffer,this->outline->resultBuffer,this->outline->outlineOutputMaterial);
 	}
 
 	// blit to final framebuffer and render it to scene editor window (hdr framebuffer -> general color framebuffer)

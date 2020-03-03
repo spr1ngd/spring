@@ -23,6 +23,7 @@ namespace spring
 		static Colorf white;
 		static Colorf black;
 		static Colorf gray;
+		static Colorf clear;
 
 		static Colorf Lerp(Colorf a,Colorf b,const float value);
 

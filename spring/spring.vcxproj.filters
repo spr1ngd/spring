@@ -520,6 +520,9 @@
     <ClInclude Include="PickingEditor.h">
       <Filter>头文件\Editor\Extension</Filter>
     </ClInclude>
+    <ClInclude Include="Outline.h">
+      <Filter>头文件\Core\Renderer\PostProcessing</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="spring.cpp">
@@ -809,6 +812,9 @@
     </ClCompile>
     <ClCompile Include="PickingEditor.cpp">
       <Filter>源文件\Editor\Extension</Filter>
+    </ClCompile>
+    <ClCompile Include="Outline.cpp">
+      <Filter>源文件\Core\Renderer\PostProcessing</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

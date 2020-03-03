@@ -181,6 +181,7 @@ int main(int, char**)
 					});
 			});
 
+		PostProcessing::postprocessing->outline->Render(nullptr);
 		PostProcessing::postprocessing->Process();
 
 		for (auto behaviour : Behaviour::behaviours)

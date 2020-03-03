@@ -5,6 +5,7 @@
 #include "antialiasing.h"
 #include "bloom.h"
 #include "tonemapping.h"
+#include "outline.h"
 
 namespace spring 
 {
@@ -25,6 +26,7 @@ namespace spring
 		AntiAliasing* antiAliasing;
 		Bloom* bloom;
 		ToneMapping* toneMapping;
+		Outline* outline;
 
 		PostProcessing();
 		void Initialize();

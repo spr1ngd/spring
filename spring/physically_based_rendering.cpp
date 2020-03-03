@@ -249,10 +249,13 @@ void physically_based_rendering::Update()
 	if (!this->enabled)
 		return;
 
-	Node* selected = Picking::Pick(Input::mousePosition.x,Input::mousePosition.y);
-	if (selected != nullptr)
-		Console::LogFormat("[Picking]:pick %s", selected->name);
-	else Console::LogFormat("[Picking]:pick %s","empty");
+	if (Input::mousePosition.x <= Screen::width * 0.6f && Input::mousePosition.y <= Screen::height * 0.6f) 
+	{
+		Node* selected = Picking::Pick(Input::mousePosition.x / 0.6f, Input::mousePosition.y / 0.6f);
+		/*	if (selected != nullptr)
+				Console::LogFormat("[Picking]:pick %s", selected->name);
+			else Console::LogFormat("[Picking]:pick %s", "empty");*/
+	}
 }
 
 void physically_based_rendering::Destroy()

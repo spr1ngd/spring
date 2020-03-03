@@ -24,6 +24,7 @@ namespace spring
 		static Color cyan;
 		static Color magenta;
 		static Color gray;
+		static Color clear;
 
 		static Color Lerp(Color a,Color b,const float value);
 

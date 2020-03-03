@@ -12,6 +12,7 @@ Colorf Colorf::megenta = Colorf(1.0f, 0.0f, 1.0f, 1.0f);
 Colorf Colorf::white = Colorf(1.0f, 1.0f, 1.0f, 1.0f);
 Colorf Colorf::black = Colorf(0.0f, 0.0f, 0.0f, 1.0f);
 Colorf Colorf::gray = Colorf(0.5f, 0.5f, 0.5f, 1.0f);
+Colorf Colorf::clear = Colorf(0.0f,0.0f,0.0f,1.0f);
 
 Colorf Colorf::Lerp(Colorf a,Colorf b,const float value) 
 {
