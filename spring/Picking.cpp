@@ -50,6 +50,4 @@ void Picking::Render(std::function<void()> func)
 	if( nullptr != func )
 		func();
 	colorbuffer->Unbind();
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	glClearColor(0.1f, 0.4f, 0.7f, 1.0f);
 }

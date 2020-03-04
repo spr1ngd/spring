@@ -8,9 +8,12 @@ namespace spring
 	{
 	public:
 		FrameBufferObject* buffer;
-		FrameBufferObject* resultBuffer;
+		FrameBufferObject* originBuffer;
+		FrameBufferObject* blendBuffer;
+		FrameBufferObject* outputBuffer;
 		Material* outlineMaterial;
-		Material* outlineOutputMaterial;
+		Material* outlineBlendMaterial;
+		Material* outputMateiral;
 
 		Colorf outlineColor = Colorf(1.0f,0.455f,0.0f,1.0f);
 		int outlineWidth = 2;

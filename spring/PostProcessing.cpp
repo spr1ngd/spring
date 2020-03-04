@@ -15,11 +15,13 @@ PostProcessing::PostProcessing()
 	this->toneMapping = new ToneMapping();
 	this->toneMapping->exposure = 1.0f;
 	this->outline = new Outline();
-	this->outline->outlineMaterial = new Material(Shader::Load("postprocessing/outline/outline.vs","postprocessing/outline/outline(sample).fs"));
-	this->outline->outlineOutputMaterial = new Material(Shader::Load("fullscreen/fullscreen.vs","postprocessing/outline/outline.fs"));
-	this->outline->buffer = FrameBufferObject::GenColorFramebuffer(Screen::width,Screen::height,0);
-	this->outline->resultBuffer = FrameBufferObject::GenColorFramebuffer(Screen::width,Screen::height,0);
-
+	this->outline->outlineMaterial = new Material(Shader::Load("postprocessing/outline/outline.vs","postprocessing/outline/outline.fs"));
+	this->outline->outlineBlendMaterial = new Material(Shader::Load("fullscreen/fullscreen.vs","postprocessing/outline/outline(blend).fs"));
+	this->outline->outputMateiral = new Material(Shader::Load("fullscreen/fullscreen.vs","postprocessing/add.fs"));
+	this->outline->buffer = FrameBufferObject::GenSingleHDRColorFramebuffer(Screen::width,Screen::height,0);
+	this->outline->originBuffer = FrameBufferObject::GenSingleHDRColorFramebuffer(Screen::width, Screen::height, 0);
+	this->outline->blendBuffer = FrameBufferObject::GenSingleHDRColorFramebuffer(Screen::width, Screen::height, 0);
+	this->outline->outputBuffer = FrameBufferObject::GenSingleHDRColorFramebuffer(Screen::width, Screen::height, 0);
 }
 
 void PostProcessing::Initialize() 
@@ -103,6 +105,17 @@ void PostProcessing::Process()
 		// blend src and bright area
 	}
 
+	// outline
+	if (this->outline->enable)
+	{
+		this->outline->outlineBlendMaterial->shader->setTexture("outlineTexture", this->outline->buffer->buffer);
+		this->Blit(this->outline->originBuffer, this->outline->blendBuffer, this->outline->outlineBlendMaterial);
+
+		this->outline->outputMateiral->shader->setTexture("addTexture", this->outline->blendBuffer->buffer);
+		this->Blit(transfer, this->outline->outputBuffer, this->outline->outputMateiral);
+		transfer = this->outline->outputBuffer;
+	}
+
 	// tone mapping
 	if (this->toneMapping->enable)
 	{
@@ -111,15 +124,8 @@ void PostProcessing::Process()
 		transfer = this->toneMapping->buffer;
 	}
 
-	if (this->outline->enable) 
-	{
-		this->outline->outlineOutputMaterial->shader->setInt("outlineWidth",this->outline->outlineWidth);
-		this->outline->outlineOutputMaterial->shader->setColor("outlineColor", this->outline->outlineColor);
-		this->Blit(this->outline->buffer,this->outline->resultBuffer,this->outline->outlineOutputMaterial);
-	}
-
 	// blit to final framebuffer and render it to scene editor window (hdr framebuffer -> general color framebuffer)
-	this->Blit(transfer,outputFramebuffer);
+	this->Blit(transfer, outputFramebuffer);
 }
 
 void PostProcessing::Blit(FrameBufferObject* src,FrameBufferObject* dst)
@@ -143,8 +149,6 @@ void PostProcessing::Blit(FrameBufferObject* src, FrameBufferObject* dst, Materi
 	unsigned int* postProcessingLayer = new unsigned int[1]{ Layer::PostProcessing };
 	Renderable::Draw(1, postProcessingLayer);
 	Camera::current->framebuffer->Unbind();
-	glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
-	glClearColor(0.1f,0.4f,0.7f,1.0f);
 	delete[] postProcessingLayer;
 }
 
@@ -160,7 +164,5 @@ void PostProcessing::Blit(FrameBufferObject* src, FrameBufferObject* dst, Materi
 	unsigned int* postProcessingLayer = new unsigned int[1]{ Layer::PostProcessing };
 	Renderable::Draw(1, postProcessingLayer);
 	Camera::current->framebuffer->Unbind();
-	glClearColor(0.1f, 0.4f, 0.7f, 1.0f);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	delete[] postProcessingLayer;
 }

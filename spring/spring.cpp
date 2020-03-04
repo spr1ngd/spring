@@ -161,8 +161,6 @@ int main(int, char**)
 				glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 				Renderable::Draw(2, defaultRenderLayer);
 				Camera::current->framebuffer->Unbind();
-				glClearColor(0.1f, 0.4f, 0.7f, 1.0f);
-				glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 			}
 		}
 
