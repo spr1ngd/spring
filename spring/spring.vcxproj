@@ -227,7 +227,6 @@
     <ClInclude Include="GUI.h" />
     <ClInclude Include="GUILayout.h" />
     <ClInclude Include="HierarchyWindow.h" />
-    <ClInclude Include="IJsonSerializer.h" />
     <ClInclude Include="Image.h" />
     <ClInclude Include="imconfig.h" />
     <ClInclude Include="imgui.h" />
@@ -239,7 +238,7 @@
     <ClInclude Include="InspectorWindow.h" />
     <ClInclude Include="InstancedRenderer.h" />
     <ClInclude Include="InstancedTechnology.h" />
-    <ClInclude Include="JsonMapper.h" />
+    <ClInclude Include="JsonSerializer.h" />
     <ClInclude Include="Layer.h" />
     <ClInclude Include="Light.h" />
     <ClInclude Include="Material.h" />
@@ -278,9 +277,11 @@
     <ClInclude Include="Resources.h" />
     <ClInclude Include="Sample.h" />
     <ClInclude Include="Scene.h" />
+    <ClInclude Include="SceneSerializer.h" />
     <ClInclude Include="SceneWindow.h" />
     <ClInclude Include="Screen.h" />
     <ClInclude Include="Selection.h" />
+    <ClInclude Include="Serializer.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="ShaderCompiler.h" />
     <ClInclude Include="Skybox.h" />
@@ -329,7 +330,6 @@
     <ClCompile Include="GUI.cpp" />
     <ClCompile Include="GUILayout.cpp" />
     <ClCompile Include="HierarchyWindow.cpp" />
-    <ClCompile Include="IJsonSerializer.cpp" />
     <ClCompile Include="Image.cpp" />
     <ClCompile Include="imgui.cpp" />
     <ClCompile Include="imgui_demo.cpp" />
@@ -342,7 +342,7 @@
     <ClCompile Include="InspectorWindow.cpp" />
     <ClCompile Include="InstancedRenderer.cpp" />
     <ClCompile Include="InstancedTechnology.cpp" />
-    <ClCompile Include="JsonMapper.cpp" />
+    <ClCompile Include="JsonSerializer.cpp" />
     <ClCompile Include="Layer.cpp" />
     <ClCompile Include="Light.cpp" />
     <ClCompile Include="Material.cpp" />
@@ -378,9 +378,11 @@
     <ClCompile Include="Resources.cpp" />
     <ClCompile Include="Sample.cpp" />
     <ClCompile Include="Scene.cpp" />
+    <ClCompile Include="SceneSerializer.cpp" />
     <ClCompile Include="SceneWindow.cpp" />
     <ClCompile Include="Screen.cpp" />
     <ClCompile Include="Selection.cpp" />
+    <ClCompile Include="Serializer.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="ShaderCompiler.cpp" />
     <ClCompile Include="Skybox.cpp" />

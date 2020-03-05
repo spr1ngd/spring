@@ -163,14 +163,8 @@
     <Filter Include="头文件\Extension\Serialize">
       <UniqueIdentifier>{18097b3d-864a-4bd1-9023-c0aa0321b411}</UniqueIdentifier>
     </Filter>
-    <Filter Include="头文件\Extension\Serialize\Json">
-      <UniqueIdentifier>{db0699d5-9496-45e8-87e1-04ecfe3f5bab}</UniqueIdentifier>
-    </Filter>
     <Filter Include="源文件\Extension\Serialize">
       <UniqueIdentifier>{8e1bf7e8-e546-4501-a461-6e576a64bc5e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="源文件\Extension\Serialize\Json">
-      <UniqueIdentifier>{baa84a3b-8d01-40cb-927f-0b6b3e09f851}</UniqueIdentifier>
     </Filter>
     <Filter Include="源文件\Extension\tools">
       <UniqueIdentifier>{d8de3a7c-8924-4eb0-a1ae-ef9d3040890a}</UniqueIdentifier>
@@ -288,12 +282,6 @@
     </ClInclude>
     <ClInclude Include="Application.h">
       <Filter>头文件\Core</Filter>
-    </ClInclude>
-    <ClInclude Include="IJsonSerializer.h">
-      <Filter>头文件\Extension\Serialize\Json</Filter>
-    </ClInclude>
-    <ClInclude Include="JsonMapper.h">
-      <Filter>头文件\Extension\Serialize\Json</Filter>
     </ClInclude>
     <ClInclude Include="Matrix4x4Sample.h">
       <Filter>sample</Filter>
@@ -523,6 +511,15 @@
     <ClInclude Include="Outline.h">
       <Filter>头文件\Core\Renderer\PostProcessing</Filter>
     </ClInclude>
+    <ClInclude Include="Serializer.h">
+      <Filter>头文件\Extension\Serialize</Filter>
+    </ClInclude>
+    <ClInclude Include="JsonSerializer.h">
+      <Filter>头文件\Extension\Serialize</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneSerializer.h">
+      <Filter>头文件\Extension\Scene</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="spring.cpp">
@@ -590,12 +587,6 @@
     </ClCompile>
     <ClCompile Include="Application.cpp">
       <Filter>源文件\Core</Filter>
-    </ClCompile>
-    <ClCompile Include="IJsonSerializer.cpp">
-      <Filter>源文件\Extension\Serialize\Json</Filter>
-    </ClCompile>
-    <ClCompile Include="JsonMapper.cpp">
-      <Filter>源文件\Extension\Serialize\Json</Filter>
     </ClCompile>
     <ClCompile Include="Sample.cpp">
       <Filter>sample</Filter>
@@ -815,6 +806,15 @@
     </ClCompile>
     <ClCompile Include="Outline.cpp">
       <Filter>源文件\Core\Renderer\PostProcessing</Filter>
+    </ClCompile>
+    <ClCompile Include="Serializer.cpp">
+      <Filter>源文件\Extension\Serialize</Filter>
+    </ClCompile>
+    <ClCompile Include="JsonSerializer.cpp">
+      <Filter>源文件\Extension\Serialize</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneSerializer.cpp">
+      <Filter>源文件\Extension\Scene</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
