@@ -1,5 +1,4 @@
 #pragma once
-#include "jsonserializer.h"
 
 namespace spring 
 {
@@ -8,7 +7,7 @@ namespace spring
 	public:
 		Serializer();
 
-		virtual char* Serialize() = 0;
-		virtual void Deserialize() = 0;
+		// virtual char* Serialize() = 0;
+		// virtual void Deserialize() = 0;
 	};
 }

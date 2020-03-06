@@ -1,6 +1,6 @@
 #pragma once
-#include "springengine.h"
 #include <map>
+#include "node.h"
 
 namespace spring 
 {

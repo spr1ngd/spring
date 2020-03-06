@@ -2,4 +2,7 @@
 
 using namespace spring;
 
-Serializer::Serializer() = default;
+Serializer::Serializer()
+{
+
+}

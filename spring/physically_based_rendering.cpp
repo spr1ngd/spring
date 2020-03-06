@@ -249,6 +249,14 @@ void physically_based_rendering::Update()
 	if (!this->enabled)
 		return;
 
+	if (Input::GetKeyDown(KeyCode::S)) 
+	{
+		Console::LogFormat("[Spring] : save scene data.");
+		Scene* scene = new Scene("spring");
+		Scene::SaveScene("res/scene/spring.scene", scene);
+		delete scene;
+	}
+
 	if (Input::mousePosition.x <= Screen::width * 0.6f && Input::mousePosition.y <= Screen::height * 0.6f) 
 	{
 		Node* selected = Picking::Pick(Input::mousePosition.x / 0.6f, Input::mousePosition.y / 0.6f);

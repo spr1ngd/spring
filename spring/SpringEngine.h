@@ -26,6 +26,7 @@
 #include "cursor.h"
 #include "input.h"
 #include "physicsbasedrendering.h"
+#include "scene.h"
 
 #include "orbitcamera.h"
 #include "firstplayercamera.h"

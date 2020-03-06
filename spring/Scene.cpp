@@ -1,4 +1,5 @@
 #include "scene.h"
+#include "console.h"
 #include "sceneserializer.h"
 
 using namespace spring;
@@ -9,6 +10,7 @@ Scene* Scene::current;
 Scene::Scene(const char* name) 
 {
 	this->name = name;
+	AddScene(this);
 }
 
 #pragma region manage methods
@@ -31,7 +33,9 @@ Scene* Scene::ReadScene(const char* scenePath)
 
 void Scene::SaveScene(const char* scenePath, Scene* scene)
 {
-	SceneSerializer sceneSerializer(scene, scenePath);
+	SceneSerializer sceneSerializer;
+	sceneSerializer.scene = scene;
+	sceneSerializer.scenePath = scenePath;
 	sceneSerializer.Serialize();
 }
 
