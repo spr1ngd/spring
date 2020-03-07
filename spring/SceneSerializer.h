@@ -5,8 +5,6 @@ namespace spring
 {
 	class SceneSerializer 
 	{
-		// serialize scene 
-		// deserialize scene
 	public:
 		enum SerializeFormat 
 		{

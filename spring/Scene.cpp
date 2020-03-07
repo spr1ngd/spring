@@ -37,6 +37,7 @@ void Scene::SaveScene(const char* scenePath, Scene* scene)
 	sceneSerializer.scene = scene;
 	sceneSerializer.scenePath = scenePath;
 	sceneSerializer.Serialize();
+	Console::LogFormat("[Scene] : save scene [%s] successfully.",scene->name);
 }
 
 void Scene::AddScene(Scene* scene) 

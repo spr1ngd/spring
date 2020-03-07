@@ -1,5 +1,6 @@
 #pragma once
 
+#include "fileio.h"
 #include "console.h"
 #include "space.h"
 #include "layer.h"

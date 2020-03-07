@@ -10,7 +10,9 @@ SceneSerializer::SceneSerializer()
 void SceneSerializer::Serialize() 
 {
 	JsonSerializer* jsonSerializer = new JsonSerializer();
-	jsonSerializer->Serialize(this->scene);
+	jsonSerializer->Serialize<Scene>(this->scene);
+	jsonSerializer->WriteTo(this->scenePath);
+	delete jsonSerializer;
 }
 
 void SceneSerializer::Deserialize() 

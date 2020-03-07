@@ -1,33 +1,11 @@
 #pragma once
-#include <string>
 
 namespace spring 
 {
-	enum WirteMode;
 	class FileIO 
 	{
-		enum ReadMode 
-		{
-
-		};
-
-		enum WriteMode 
-		{
-			Add,
-			Override,
-			CreateAndOverride
-		};
-
-		// base operate
 	public:
-		static bool CreateFile( const char*filePath );
-
-		// file reader
-	public:
-		static std::string ReadAll(const char*filePath);
-
-		// file writer
-	public:
-		static bool WriteAll(const char* filePath, std::string text , WriteMode writeMode = WriteMode::CreateAndOverride);
+		static char* ReadFile(const char* filePath);
+		static void WriteFile(const char* filePath,const char* buffer);
 	};
 }

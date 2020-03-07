@@ -1,29 +1,22 @@
 #include "jsonserializer.h"
 #include "springengine.h"
+#include "scene.h"
 
 using namespace spring;
 
-JsonSerializer::JsonSerializer()// : Serializer()
+Value* JsonSerializer::serializeVector3(Vector3 vec3,Document::AllocatorType& allocator) 
 {
-
+	Value* value = new Value(kObjectType);
+	value->AddMember("x", vec3.x, allocator);
+	value->AddMember("y", vec3.y, allocator);
+	value->AddMember("z", vec3.z, allocator);
+	return value;
 }
 
-//char* JsonSerializer::Serialize() 
-//{
-//	return nullptr;
-//} 
-
-template<typename T>
-void JsonSerializer::Serialize(T* t) 
+Vector3 JsonSerializer::deserializeVector3(Value::MemberIterator vec3Member) 
 {
-	// const char* typeName = typeid(t).name();
-	// const char* vec3Name = typeid(Vector3).name();
-	// const char* sceneName = typeid(Scene).name();
-	// 
-	// Console::Error("%s,%s,%s", typeName, vec3Name, sceneName);
-}
-template<typename T>
-T* JsonSerializer::Deserialize() 
-{
-	return nullptr;
+	float x = vec3Member->value["x"].GetFloat();
+	float y = vec3Member->value["y"].GetFloat();
+	float z = vec3Member->value["z"].GetFloat();
+	return Vector3(x,y,z);
 }

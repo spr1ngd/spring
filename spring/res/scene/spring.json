@@ -1,0 +1,74 @@
+{
+    "scenes": {
+        "scene_id": "spring",
+        "star fighter 01": {
+            "_name": "star fighter 01",
+            "_visible": true,
+            "_layer": 1,
+            "transform": {
+                "position": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0
+                },
+                "eulerangle": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0
+                },
+                "scale": {
+                    "x": 0.05999999865889549,
+                    "y": 0.05999999865889549,
+                    "z": 0.05999999865889549
+                }
+            },
+            "children": []
+        },
+        "Particle System Left": {
+            "_name": "Particle System Left",
+            "_visible": true,
+            "_layer": 1,
+            "transform": {
+                "position": {
+                    "x": 22.0,
+                    "y": 1.5,
+                    "z": -19.0
+                },
+                "eulerangle": {
+                    "x": -90.0,
+                    "y": 0.0,
+                    "z": 0.0
+                },
+                "scale": {
+                    "x": 1.0,
+                    "y": 1.0,
+                    "z": 1.0
+                }
+            },
+            "children": []
+        },
+        "Particle System Right": {
+            "_name": "Particle System Right",
+            "_visible": true,
+            "_layer": 1,
+            "transform": {
+                "position": {
+                    "x": -22.0,
+                    "y": 1.5,
+                    "z": -19.0
+                },
+                "eulerangle": {
+                    "x": -90.0,
+                    "y": 0.0,
+                    "z": 0.0
+                },
+                "scale": {
+                    "x": 1.0,
+                    "y": 1.0,
+                    "z": 1.0
+                }
+            },
+            "children": []
+        }
+    }
+}

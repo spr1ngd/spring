@@ -11,6 +11,7 @@ bool SpringEditor::enabled = true;
 InspectorWindow* SpringEditor::inspector = nullptr;
 HierarchyWindow* SpringEditor::hierarchy = nullptr;
 SceneWindow* SpringEditor::scene = nullptr;
+MenuWindow* SpringEditor::menu = nullptr;
 
 // inspector editor windows
 ParticleRendererEditor* particleEditor = nullptr;
@@ -23,6 +24,7 @@ void SpringEditor::Initialize()
 	scene = new SceneWindow("Scene",true);
 	inspector = new InspectorWindow("Inspector", true);
 	hierarchy = new HierarchyWindow("Hierarchy", true);
+	menu = new MenuWindow("Menu",true);
 
 	particleEditor = new ParticleRendererEditor("ParticleRenderer",true);
 	materialEditor = new MaterialEditor("Mesh Renderer",true);

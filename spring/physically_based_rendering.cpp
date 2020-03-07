@@ -12,6 +12,9 @@ using namespace spring::editor;
 using namespace std;
 
 vector<MeshRenderer*> spheres;
+MeshRenderer* fighter;
+ParticleRenderer* particle;
+ParticleRenderer* particle2;
 
 physically_based_rendering::physically_based_rendering() 
 {
@@ -107,7 +110,7 @@ void starFighter()
 	material->shader->setColor(ambient, ambientValue); // 环境光照
 	material->shader->setColor(emission,emissionValue);// 自发光
 
-	MeshRenderer* fighter = new MeshRenderer(material);
+	fighter = new MeshRenderer(material);
 	fighter->meshes = loader->meshes;
 	fighter->Init();
 	fighter->name = "star fighter 01";
@@ -119,7 +122,7 @@ void starFighter()
 
 void generateParticle() 
 {
-	ParticleRenderer* particle = new ParticleRenderer();
+	particle = new ParticleRenderer();
 	particle->name = "Particle System Left";
 	auto texture = TextureLoader::Load("res/texture/photon.png");
 	particle->material->shader->setTexture(MAIN_TEX,texture->textureId);
@@ -177,32 +180,32 @@ void generateParticle()
 
 void generateParticle2()
 {
-	ParticleRenderer* particle = new ParticleRenderer();
-	particle->name = "Particle System Right";
+	particle2 = new ParticleRenderer();
+	particle2->name = "Particle System Right";
 	auto texture = TextureLoader::Load("res/texture/photon.png");
-	particle->material->shader->setTexture(MAIN_TEX, texture->textureId);
-	particle->maxNumber = 5000;
-	particle->lifeTime = .2f;
-	particle->velocity = 10.0f;
-	particle->rotateSpeed = 0.0f;
-	particle->size = 8.0f;
-	particle->material->shader->setColor(MAIN_COLOR, Colorf(1.5f, 1.5f, 1.5f, 1.0f));
+	particle2->material->shader->setTexture(MAIN_TEX, texture->textureId);
+	particle2->maxNumber = 5000;
+	particle2->lifeTime = .2f;
+	particle2->velocity = 10.0f;
+	particle2->rotateSpeed = 0.0f;
+	particle2->size = 8.0f;
+	particle2->material->shader->setColor(MAIN_COLOR, Colorf(1.5f, 1.5f, 1.5f, 1.0f));
 
-	particle->enableVariableColor = true;
-	particle->beginColor = Color::yellow;
-	particle->endColor = Color::cyan;
+	particle2->enableVariableColor = true;
+	particle2->beginColor = Color::yellow;
+	particle2->endColor = Color::cyan;
 
-	particle->enableVariableVelocity = false;
-	particle->beginVelocity = 50.0f;
-	particle->endVelocity = 100.0f;
+	particle2->enableVariableVelocity = false;
+	particle2->beginVelocity = 50.0f;
+	particle2->endVelocity = 100.0f;
 
-	particle->enableVariableEmitSpeed = true;
-	particle->beginSpeed = 10.0f;
-	particle->endSpeed = 10.0f;
+	particle2->enableVariableEmitSpeed = true;
+	particle2->beginSpeed = 10.0f;
+	particle2->endSpeed = 10.0f;
 
-	particle->enableVariableSize = true;
-	particle->beginSize = 5.0f;
-	particle->endSize = 1.0f;
+	particle2->enableVariableSize = true;
+	particle2->beginSize = 5.0f;
+	particle2->endSize = 1.0f;
 
 	// cube shape
 	// particle->shapeModule->shapeType = ParticleShapeModule::ShapeType::Cube;
@@ -218,19 +221,19 @@ void generateParticle2()
 	// particle->shapeModule->hemisphereProperties.eulerangle = Vector3(90.0f,0.0f,0.0f);
 
 	// cone shape
-	particle->shapeModule->shapeType = ParticleShapeModule::ShapeType::Cone;
-	particle->shapeModule->coneProperties.bottomRadius = 1.8f;
-	particle->shapeModule->coneProperties.topRadius = 0.0;
-	particle->shapeModule->coneProperties.height = 15.0f;
+	particle2->shapeModule->shapeType = ParticleShapeModule::ShapeType::Cone;
+	particle2->shapeModule->coneProperties.bottomRadius = 1.8f;
+	particle2->shapeModule->coneProperties.topRadius = 0.0;
+	particle2->shapeModule->coneProperties.height = 15.0f;
 
 	// rectangle shape
 	// particle->shapeModule->shapeType = ParticleShapeModule::ShapeType::Rectangle;
 	// particle->shapeModule->rectangleProperties.width = 2.0f;
 	// particle->shapeModule->rectangleProperties.length = 80.0f;
 
-	particle->transform->position = Vector3(-22.0f, 1.5f, -19.0f);
-	particle->transform->eulerangle = Vector3(-90.0f, 0.0f, 0.0f);
-	particle->playing = true;
+	particle2->transform->position = Vector3(-22.0f, 1.5f, -19.0f);
+	particle2->transform->eulerangle = Vector3(-90.0f, 0.0f, 0.0f);
+	particle2->playing = true;
 }
 
 void physically_based_rendering::Awake() 
@@ -253,7 +256,10 @@ void physically_based_rendering::Update()
 	{
 		Console::LogFormat("[Spring] : save scene data.");
 		Scene* scene = new Scene("spring");
-		Scene::SaveScene("res/scene/spring.scene", scene);
+		scene->AddNode(fighter);
+		scene->AddNode(particle);
+		scene->AddNode(particle2);
+		Scene::SaveScene("res/scene/spring.json", scene);
 		delete scene;
 	}
 

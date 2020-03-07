@@ -1,19 +1,34 @@
-#include "FileIO.h"
+#include "fileio.h"
+#include <iostream>
+#include <fstream>
 
 using namespace spring;
 using namespace std;
 
-bool FileIO::CreateFile(const char* filePath) 
+char* FileIO::ReadFile(const char* filePath) 
 {
-	return false;
+	ifstream in(filePath, ios::in | ios::binary);
+	if (!in.good() || !in.is_open()) 
+		return nullptr;
+	in.seekg(0, ios::end);
+	int length = (int)in.tellg();
+	in.seekg(ios::beg);
+	int bufferLength = length + 1;
+	char* buffer = new char[bufferLength];
+	in.read(buffer, length);
+	buffer[length] = '\0';
+	in.close();
+	return buffer;
 }
 
-string FileIO::ReadAll(const char* filePath) 
+void FileIO::WriteFile(const char* filePath, const char* buffer) 
 {
-	return "";
-}
-
-bool FileIO::WriteAll(const char* filePath, std::string text, WriteMode writeMode /* = WriteMode::CreateAndOverride */) 
-{
-	return false;
+	ofstream out(filePath,ios::out);
+	if (!out) 
+	{
+		out.close();
+		return;
+	}
+	out << buffer;
+	out.close();
 }

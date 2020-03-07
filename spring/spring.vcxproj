@@ -248,6 +248,7 @@
     <ClInclude Include="Matrix2x2.h" />
     <ClInclude Include="Matrix4x4.h" />
     <ClInclude Include="Matrix4x4Sample.h" />
+    <ClInclude Include="MenuWindow.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="MeshRenderer.h" />
     <ClInclude Include="misc.h" />
@@ -351,6 +352,7 @@
     <ClCompile Include="Mathf.cpp" />
     <ClCompile Include="Matrix2x2.cpp" />
     <ClCompile Include="Matrix4x4.cpp" />
+    <ClCompile Include="MenuWindow.cpp" />
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="MeshRenderer.cpp" />
     <ClCompile Include="ModelLoader.cpp" />

@@ -19,7 +19,7 @@ namespace spring
 		Layer layer = Layer::Default;
 
 		Node* parent;
-		vector<Node> children;
+		vector<Node*> children;
 		Transform* transform;
 		
 	protected:
@@ -30,16 +30,33 @@ namespace spring
 		~Node();
 
 		template <typename T>
-		Node* GetNode(T nodeType);
-
+		Node* GetNode(T nodeType) 
+		{
+			for (Node* node : this->nodes)
+			{
+				if (typeid(node).name() == typeid(nodeType).name())
+					return node;
+			}
+			return nullptr;
+		}
 
 		template <typename T>
-		bool TryGetNode(T nodeType,Node* node);
+		bool TryGetNode(T nodeType, Node* node) 
+		{
+			Node* node = nullptr;
+			node = this->GetNode(nodeType);
+			return node != nullptr;
+		}
 
 		template <typename T>
-		Node* AddNode();
+		Node* AddNode()
+		{
+			T* instance = new T();
+			this->nodes.push_back((Node*)instance);
+			return (Node*)instance;
+		}
 
 		Node* GetChild(const char*nodeName);
-		void SetParent(const Node node);
+		void SetParent(Node* node);
 	};
 }

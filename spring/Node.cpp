@@ -10,6 +10,7 @@ Node::Node()
 {
 	this->transform = new Transform();
 	allNodes.push_back(this);
+	
 }
 
 Node::Node(const char* nodeName) 
@@ -32,48 +33,18 @@ Node::~Node()
 	}
 }
 
-template <typename T>
-Node* Node::AddNode()
-{
-	T* instance = new T();
-	this->nodes.push_back((Node*)instance);
-	return (Node*)instance;
-}
-
-template <typename T>
-Node* Node::GetNode(T nodeType) 
-{
-	for (Node* node :this->nodes)
-	{
-		if (typeid(node).name() == typeid(nodeType).name()) 
-		{
-			return node;
-		}
-	}
-	return nullptr;
-}
-
-template <typename T>
-bool Node::TryGetNode( T nodeType ,Node* node)
-{
-	Node* node = nullptr;
-	node = this->GetNode(nodeType);
-	return node != nullptr;
-}
-
 Node* Node::GetChild(const char* nodeName) 
 {
-	for (Node &node : this->children)
+	for (Node* node : this->children)
 	{
-		if (node.name == nodeName)
-			return &node;
+		if (node->name == nodeName)
+			return node;
 	}
 	return nullptr;
 }
 
-void Node::SetParent(Node node) 
+void Node::SetParent(Node* node) 
 {
-	// todo : if node is null , what should i do ?
-	node.parent = this;
+	node->parent = this;
 	this->children.insert(this->children.end(), node);
 }

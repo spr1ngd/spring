@@ -1,6 +1,6 @@
+#include "imgui.h"
 #include "scenewindow.h"
 #include "springengine.h"
-#include "imgui.h"
 #include "postprocessing.h"
 
 using namespace spring;
