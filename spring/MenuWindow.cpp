@@ -1,4 +1,5 @@
 #include "menuwindow.h"
+#include "scene.h"
 
 using namespace spring;
 using namespace spring::editor;
@@ -42,7 +43,7 @@ void MenuWindow::OnDrawWindow()
 			}
 			if (ImGui::MenuItem("save scene", "Ctrl+S", false))
 			{
-
+				Scene::SaveScene();
 			}
 			if (ImGui::MenuItem("quit spring", "Ctrl+Shift+Q", false))
 			{
@@ -75,6 +76,11 @@ void MenuWindow::OnDrawWindow()
 			ImGui::EndMenu();
 		}
 		ImGui::EndMenuBar();
+	}
+
+	if (ImGui::Button("Play")) 
+	{
+		
 	}
 
 	ImGui::End();

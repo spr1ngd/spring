@@ -32,6 +32,7 @@ void PostProcessing::Initialize()
 	outputMaterial = new Material("res/shader/fullscreen/fullscreen.vs", "res/shader/fullscreen/fullscreen.fs");
 	
 	this->fsRenderer = new FullScreenRenderer();
+	this->fsRenderer->name = "(FSR)PostProcessing";
 	this->fsRenderer->Init();
 
 	// if (this->antiAliasing->enabled)

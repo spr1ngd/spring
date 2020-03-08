@@ -7,7 +7,7 @@ using namespace std;
 void Console::Log(const char* log)
 {
 	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_INTENSITY | FOREGROUND_GREEN);
-	cout << "spring::Log : " << __FILE__ << "(" << __LINE__ << ") " << log << endl;
+	cout << "[spring::Log] : " << __FILE__ << "(" << __LINE__ << ") " << log << endl;
 	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_INTENSITY );
 }
 
@@ -23,7 +23,7 @@ void Console::LogFormat(const char* format,...)
 	va_list va;
 	va_start(va, format);
 	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_INTENSITY | FOREGROUND_GREEN);
-	cout << "spring::Log : " << __FILE__ << "(" << __LINE__ << ") ";
+	cout << "[spring::Log] : " << __FILE__ << "(" << __LINE__ << ") ";
 	ret = vprintf(format, va);
 	cout << endl;
 	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_INTENSITY);
@@ -33,7 +33,7 @@ void Console::LogFormat(const char* format,...)
 void Console::Warning(const char* warning)
 {
 	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_INTENSITY | FOREGROUND_RED | FOREGROUND_GREEN);
-	cout << "spring::Warning : " << __FILE__ << "(" << __LINE__ << ") " << warning << endl;
+	cout << "[spring::Warning] : " << __FILE__ << "(" << __LINE__ << ") " << warning << endl;
 	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_INTENSITY);
 }
 
@@ -49,7 +49,7 @@ void Console::WarningFormat(const char* format, ...)
 	va_list va;
 	va_start(va, format);
 	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_INTENSITY | FOREGROUND_RED | FOREGROUND_GREEN);
-	cout << "spring::Warning : " << __FILE__ << "(" << __LINE__ << ") ";
+	cout << "[spring::Warning] : " << __FILE__ << "(" << __LINE__ << ") ";
 	ret = vprintf(format, va);
 	cout << endl;
 	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_INTENSITY);
@@ -59,7 +59,7 @@ void Console::WarningFormat(const char* format, ...)
 void Console::Error(const char* error)
 {
 	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_INTENSITY | FOREGROUND_RED);
-	cout << "spring::Error : " << __FILE__ << "(" << __LINE__ << ") " << error << endl;
+	cout << "[spring::Error] : " << __FILE__ << "(" << __LINE__ << ") " << error << endl;
 	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_INTENSITY);
 }
 
@@ -75,7 +75,7 @@ void Console::ErrorFormat(const char* format, ...)
 	va_list va;
 	va_start(va, format);
 	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_INTENSITY | FOREGROUND_RED);
-	cout << "spring::Error : " << __FILE__ << "(" << __LINE__ << ") ";
+	cout << "[spring::Error] : " << __FILE__ << "(" << __LINE__ << ") ";
 	ret = vprintf(format, va);
 	cout << endl;
 	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_INTENSITY);

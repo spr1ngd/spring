@@ -1,5 +1,8 @@
 #include "node.h"
 #include "transform.h"
+#include "console.h"
+#include "misc.h"
+#include "scene.h"
 
 using namespace std;
 using namespace spring;
@@ -10,7 +13,9 @@ Node::Node()
 {
 	this->transform = new Transform();
 	allNodes.push_back(this);
-	
+	this->name = misc::gen_guid();
+	Console::LogFormat("instantiate node %s",this->name);
+	Scene::current->AddNode(this);
 }
 
 Node::Node(const char* nodeName) 
@@ -18,15 +23,19 @@ Node::Node(const char* nodeName)
 	this->name = nodeName;
 	this->transform = new Transform();
 	allNodes.push_back(this);
+	Console::LogFormat("instantiate node %s", nodeName);
+	Scene::current->AddNode(this);
 }
 
 Node::~Node() 
 {
-	// todo : recalculate node's hierarchy relationship
 	for (auto it = allNodes.begin(); it != allNodes.end(); it++) 
 	{
-		if (*it == this)
+		Node* node = *it;
+		if (node == this)
 		{
+			Console::ErrorFormat("destroy node %s", node->name);
+			Scene::current->RemoveNode(this);
 			allNodes.erase(it);
 			break;
 		}
@@ -45,6 +54,7 @@ Node* Node::GetChild(const char* nodeName)
 
 void Node::SetParent(Node* node) 
 {
+	Scene::current->RemoveNode(this);
 	node->parent = this;
 	this->children.insert(this->children.end(), node);
 }

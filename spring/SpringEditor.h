@@ -6,6 +6,7 @@
 #include "scenewindow.h"
 #include "inspectoreditor.h"
 #include "menuwindow.h"
+#include "statuswindow.h"
 #include "selection.h"
 
 namespace spring
@@ -19,6 +20,7 @@ namespace spring
 			static HierarchyWindow* hierarchy;
 			static SceneWindow* scene;
 			static MenuWindow* menu;
+			static StatusWindow* status;
 		public:
 			static bool enabled;
 			static void Initialize();

@@ -1,15 +1,33 @@
 #include "scene.h"
 #include "console.h"
 #include "sceneserializer.h"
+#include <time.h>
 
 using namespace spring;
 
 std::map<const char*, Scene*> Scene::scenes;
 Scene* Scene::current;
 
+Scene::Scene() 
+{
+	SYSTEMTIME st = { 0 };
+	GetLocalTime(&st);
+	char buffer[48];
+	sprintf_s(buffer, "scene_%d%d%d%d%d%d", st.wYear, st.wMonth, st.wDay, st.wHour, st.wMinute, st.wSecond);
+
+	int length = (int)strlen(buffer);
+	this->name = (char*)malloc(length * sizeof(char));
+	memset(this->name, 0, length);
+	strcpy_s(this->name, length + 1, buffer);
+	AddScene(this);
+}
+
 Scene::Scene(const char* name) 
 {
-	this->name = name;
+	int length = (int)strlen(name);
+	this->name = (char*)malloc(length * sizeof(char));
+	memset(this->name, 0, length);
+	strcpy_s(this->name, length + 1, name);
 	AddScene(this);
 }
 
@@ -31,13 +49,19 @@ Scene* Scene::ReadScene(const char* scenePath)
 	return nullptr;
 }
 
-void Scene::SaveScene(const char* scenePath, Scene* scene)
+void Scene::SaveScene() 
 {
-	SceneSerializer sceneSerializer;
-	sceneSerializer.scene = scene;
+	char scenePath[128];
+	sprintf_s(scenePath,"res/scene/%s.json",Scene::current->name);
+	Scene::SaveScene(scenePath, *Scene::current);
+}
+
+void Scene::SaveScene(const char* scenePath, Scene& scene)
+{
+	SceneSerializer sceneSerializer(scene);
 	sceneSerializer.scenePath = scenePath;
 	sceneSerializer.Serialize();
-	Console::LogFormat("[Scene] : save scene [%s] successfully.",scene->name);
+	Console::LogFormat("[Scene] : save scene [%s] successfully.",scene.name);
 }
 
 void Scene::AddScene(Scene* scene) 
@@ -68,20 +92,15 @@ void Scene::RemoveScene(Scene* scene)
 
 void Scene::AddNode(Node* node) 
 {
-	auto item = this->nodes.find(node->name);
-	if (item != this->nodes.end())
-	{
-		Console::ErrorFormat("[Scene] : can not add the same name node in [%s] scene.",this->name);
-		return;
-	}
-	this->nodes[node->name] = node;
+	this->nodes.push_back(node);
 }
 
 void Scene::RemoveNode(Node* node) 
 {
 	for (auto item = this->nodes.begin(); item != this->nodes.end(); item++)
 	{
-		if (item->first == node->name) 
+		Node* nodePtr = *item;
+		if (nodePtr == node)
 		{
 			this->nodes.erase(item);
 			return;

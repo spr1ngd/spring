@@ -69,7 +69,6 @@ namespace spring
 		static Shader* Load(const char* vertexShaderName,const char* fragmentShaderName);
 
 	private:
-		std::map<const char*, unsigned int> locations;
 		char* loadShaderFile(const char* shaderFilePath);
 		void initializeLocation();
 
@@ -84,6 +83,7 @@ namespace spring
 		void setTime();
 
 	public:
+		std::map<const char*, unsigned int> locations;
 		char* vertexShaderName;
 		char* fragmentShaderName;
 
@@ -115,19 +115,41 @@ namespace spring
 		const char* getUniformName(unsigned int location);
 
 		void setBool(const char* name, bool value);
+		bool getBool(const char* name);
+
 		void setInt(const char* name, GLint value);
+		int getInt(const char* name);
+
 		void setFloat(const char* name, GLfloat value);
+		float getFloat(const char* name);
+
 		void setMat4(const char* name, glm::mat4 value);
 
 		void setVec2(const char*name, Vector2 vec2);
-		void setVec3(const char* name, Vector3 vec3);
-		void setVec4(const char* name, Vector4 vec4);
-		void setColor(const char* name, Color color);
-		void setColor(const char* name, Colorf color);
+		Vector2 getVec2(const char* name);
 
-		void setTexture(const char*name, GLuint texture);
-		void setTilling(const char*name, Vector2 tilling);
-		void setOffset(const char*name, Vector2 offset);
-		void setCubemap(const char*name, Cubemap* cubemap);
+		void setVec3(const char* name, Vector3 vec3);
+		Vector3 getVec3(const char* name);
+
+		void setVec4(const char* name, Vector4 vec4);
+		Vector4 getVec4(const char* name);
+
+		void setColor(const char* name, Color color);
+		Color getColor(const char* name);
+
+		void setColor(const char* name, Colorf color);
+		Colorf GetColorf(const char* name);
+
+		void setTexture(const char* name, GLuint texture);
+		int getTexture(const char* name);
+
+		void setTilling(const char* name, Vector2 tilling);
+		Vector2 getTilling(const char* name);
+
+		void setOffset(const char* name, Vector2 offset);
+		Vector2 getOffset(const char* name);
+
+		void setCubemap(const char* name, Cubemap* cubemap);
+		int getCubemap(const char* name);
 	};
 }

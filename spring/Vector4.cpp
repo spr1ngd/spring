@@ -4,6 +4,9 @@
 
 using namespace spring;
 
+Vector4 Vector4::zero = Vector4(0.0f);
+Vector4 Vector4::one = Vector4(1.0f);
+
 Vector4::Vector4() 
 {
 	this->x = 0.0f;

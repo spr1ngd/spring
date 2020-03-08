@@ -63,7 +63,8 @@ void ParticleRenderer::Update()
 			return;
 		particleRenderer->emitTimer += Timer::deltaTime;
 
-		// particle life circle and physical simulation
+		// particle life circle and physical simulation 
+
 		int index = 0;
 		for (vector<Particle*>::iterator item = particleRenderer->usingParticles.begin(); item != particleRenderer->usingParticles.end(); item++, index++)
 		{
@@ -87,9 +88,11 @@ void ParticleRenderer::Update()
 
 			// update existing time;
 			if (alivePartice->setting.existingTime > alivePartice->setting.lifeTime)
-			{
+			{ 
 				item = particleRenderer->usingParticles.erase(item);
 				particleRenderer->existingNumber--;
+				if( item == particleRenderer->usingParticles.end())
+					break;
 			}
 		}
 

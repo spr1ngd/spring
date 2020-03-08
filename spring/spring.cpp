@@ -78,8 +78,13 @@ int main(int, char**)
 	// Our state
 	bool show_demo_window = true;
 
+	// create a scene.
+	Scene* scene = new Scene();
+	Scene::current = scene;
+
 	// draw sample scene
 	Sample* sample = new Sample();
+	sample->name = "SPRING";
 
 	Timer::Start();
 	for (auto behaviour : Behaviour::behaviours)

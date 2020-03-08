@@ -30,9 +30,16 @@ float speed = 5.0f;
 Sample::Sample() 
 {
 	matrix4x4Sample = new Matrix4x4Sample();
+	matrix4x4Sample->name = "Matrix4x4 Example";
+
 	example = new Example();
+	example->name = "Example";
+
 	instanced = new InstancedTechnology();
+	instanced->name = "Instancing Rendering Example";
+
 	pbr = new physically_based_rendering();
+	pbr->name = "Physically Based Rendering Example";
 
 	instanced->enabled = false;
 	pbr->enabled = true;
@@ -82,7 +89,9 @@ void Sample::Awake()
 	}
 	
 	Light* light = createLight(Light::Type::Directional, Color(255, 244, 214, 255), 10.0f, Vector3(0.0f, 5.0f, 0.0f), Vector3::down); light->shadowType = Light::NoShadow;
+	light->name = "Directional Light";
 	Light* pointLigh1 = createLight(Light::Type::Directional, Color(255, 244, 214, 255), 3.0f, Vector3(10.0f, 10.0f, 10.0f), Vector3::left); pointLigh1->shadowType = Light::NoShadow;
+	pointLigh1->name = "Point Light";
 	/*Light* pointLigh2 = createLight(Light::Type::Directional, Color(255, 244, 214, 255), 1.8f, Vector3(-10.0f, -10.0f, 20.0f), Vector3::right); pointLigh2->shadowType = Light::NoShadow;
 	Light* pointLigh3 = createLight(Light::Type::Directional, Color(255, 244, 214, 255), 1.2f, Vector3(-10.0f, 10.0f,20.0f), Vector3::back); pointLigh3->shadowType = Light::NoShadow;*/
 	//Light* pointLigh4 = createLight(Light::Type::Point, Color::green, 0.6f, Vector3(0.0f, 0.0f, -5.0f), Vector3::forward);
@@ -102,6 +111,7 @@ void Sample::Awake()
 	Camera::main = camera;
 
 	orbit = new OrbitCamera();
+	orbit->name = "OrbitCamera";
 	orbit->target = Vector3(0.0f, 0.0f, 0.0f);// Vector3::zero;
 	orbit->zoomSpeed = 1.0f;
 

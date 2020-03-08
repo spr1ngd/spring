@@ -239,12 +239,16 @@ void generateParticle2()
 void physically_based_rendering::Awake() 
 {
 	if (!this->enabled)
-		return; 
+		return;
 
 	starFighter();
 	// displaySpheres();
 	generateParticle();
 	generateParticle2();
+
+	// Scene::current->AddNode(fighter);
+	// Scene::current->AddNode(particle);
+	// Scene::current->AddNode(particle2);
 }
 
 void physically_based_rendering::Update() 
@@ -252,20 +256,9 @@ void physically_based_rendering::Update()
 	if (!this->enabled)
 		return;
 
-	if (Input::GetKeyDown(KeyCode::S)) 
-	{
-		Console::LogFormat("[Spring] : save scene data.");
-		Scene* scene = new Scene("spring");
-		scene->AddNode(fighter);
-		scene->AddNode(particle);
-		scene->AddNode(particle2);
-		Scene::SaveScene("res/scene/spring.json", scene);
-		delete scene;
-	}
-
 	if (Input::mousePosition.x <= Screen::width * 0.6f && Input::mousePosition.y <= Screen::height * 0.6f) 
 	{
-		Node* selected = Picking::Pick(Input::mousePosition.x / 0.6f, Input::mousePosition.y / 0.6f);
+		Node* selected = Picking::Pick((int)(Input::mousePosition.x / 0.6f), (int)(Input::mousePosition.y / 0.6f));
 		/*	if (selected != nullptr)
 				Console::LogFormat("[Picking]:pick %s", selected->name);
 			else Console::LogFormat("[Picking]:pick %s", "empty");*/

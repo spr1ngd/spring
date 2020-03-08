@@ -54,6 +54,7 @@ Cubemap* PhysicsBasedRendering::CubemapConvolution(Cubemap* cubemap)
 	ModelLoader loader;
 	loader.Load("res/model/obj/cube.obj");
 	MeshRenderer* meshRenderer = new MeshRenderer(material);
+	meshRenderer->name = "PBR CubemapConvolution";
 	meshRenderer->meshes = loader.meshes;
 	meshRenderer->Init();
 	meshRenderer->transform->position = Vector3::zero;
@@ -105,6 +106,7 @@ Cubemap* PhysicsBasedRendering::PreFilter(Cubemap* cubemap)
 	loader.Load("res/model/obj/cube.obj");
 
 	MeshRenderer* meshrenderer = new MeshRenderer(prefilterMaterial);
+	meshrenderer->name = "PBR PreFilter";
 	meshrenderer->meshes = loader.meshes;
 	meshrenderer->Init();
 	meshrenderer->transform->position = Vector3::zero;
@@ -160,6 +162,7 @@ Texture* PhysicsBasedRendering::PreBRDF(Cubemap* cubemap)
 
 	// render a fullscreen quad
 	FullScreenRenderer* fsRenderer = new FullScreenRenderer();
+	fsRenderer->name = "FPS(PreBRDF)";
 	fsRenderer->Init();
 	fsRenderer->material = preBRDFMaterial;
 

@@ -35,6 +35,10 @@ Shader::Shader(const char* vertexShader, const char* fragmentShader)
 			Shader::error = Shader::Load("spring/error.vs", "spring/error.fs");
 		this->program = Shader::error->program;
 	}
+	this->vertexShaderName = new char[strlen(vertexShader)];
+	strcpy_s(this->vertexShaderName, strlen(vertexShader) + 1, vertexShader);
+	this->fragmentShaderName = new char[strlen(fragmentShader)];
+	strcpy_s(this->fragmentShaderName, strlen(fragmentShader) + 1, fragmentShader);
 	this->initializeLocation();
 	Shader::Caching(this);
 }
@@ -54,6 +58,10 @@ Shader::Shader(const char* vertexShader, const char* fragmentShader, const char*
 			Shader::error = Shader::Load("spring/error.vs", "spring/error.fs");
 		this->program = Shader::error->program;
 	}
+	this->vertexShaderName = new char[strlen(vertexShader)];
+	strcpy_s(this->vertexShaderName, strlen(vertexShader) + 1, vertexShader);
+	this->fragmentShaderName = new char[strlen(fragmentShader)];
+	strcpy_s(this->fragmentShaderName, strlen(fragmentShader) + 1, fragmentShader);
 	this->initializeLocation();
 	Shader::Caching(this);
 }
@@ -148,6 +156,8 @@ unsigned int Shader::getUniformLocation(const char* name)
 	if (pair != this->locations.end())
 		return this->locations[name];
 	unsigned int location = glGetUniformLocation(this->program,name);
+	if (location == -1) 
+		return location;
 	this->locations.insert(std::pair<const char*, unsigned int>(name, location));
 	return location;
 }
@@ -191,6 +201,8 @@ void Shader::disuse()
 void Shader::setBool(const char* name, bool value)
 {
 	unsigned int location = this->getUniformLocation(name);
+	if (location == -1)
+		return;
 	auto pair = this->bools.find(location);
 	if (pair == this->bools.end()) 
 	{
@@ -199,10 +211,20 @@ void Shader::setBool(const char* name, bool value)
 	}
 	this->bools[location] = value;
 }
+bool Shader::getBool(const char* name) 
+{
+	unsigned int location = this->getUniformLocation(name);
+	auto pair = this->bools.find(location);
+	if (pair != this->bools.end())
+		return this->bools[location];
+	return false;
+}
 
 void Shader::setMat4(const char* name, glm::mat4 value) 
 {
 	unsigned int location = this->getUniformLocation(name);
+	if (location == -1)
+		return;
 	auto pair = this->mat4Map.find(location);
 	if (pair == this->mat4Map.end())
 	{
@@ -215,6 +237,8 @@ void Shader::setMat4(const char* name, glm::mat4 value)
 void Shader::setVec2(const char* name, Vector2 value)
 {
 	unsigned int location = this->getUniformLocation(name);
+	if (location == -1)
+		return;
 	auto pair = this->vec2Map.find(location);
 	if (pair == this->vec2Map.end())
 	{
@@ -223,10 +247,20 @@ void Shader::setVec2(const char* name, Vector2 value)
 	}
 	this->vec2Map[location] = value;
 }
+Vector2 Shader::getVec2(const char* name) 
+{
+	unsigned int location = this->getUniformLocation(name);
+	auto pair = this->vec2Map.find(location);
+	if (pair != this->vec2Map.end())
+		return this->vec2Map[location];
+	return Vector2::zero;
+}
 
 void Shader::setVec3(const char* name, Vector3 value)
 {
 	unsigned int location = this->getUniformLocation(name);
+	if (location == -1)
+		return;
 	auto pair = this->vec3Map.find(location);
 	if (pair == this->vec3Map.end())
 	{
@@ -235,10 +269,20 @@ void Shader::setVec3(const char* name, Vector3 value)
 	}
 	this->vec3Map[location] = value;
 }
+Vector3 Shader::getVec3(const char* name) 
+{
+	unsigned int location = this->getUniformLocation(name);
+	auto pair = this->vec3Map.find(location);
+	if (pair != this->vec3Map.end())
+		return this->vec3Map[location];
+	return Vector3::zero;
+}
 
 void Shader::setVec4(const char* name, Vector4 value)
 {
 	unsigned int location = this->getUniformLocation(name);
+	if (location == -1)
+		return;
 	auto pair = this->vec4Map.find(location);
 	if (pair == this->vec4Map.end()) 
 	{
@@ -247,10 +291,20 @@ void Shader::setVec4(const char* name, Vector4 value)
 	}
 	this->vec4Map[location] = value;
 }
+Vector4 Shader::getVec4(const char* name) 
+{
+	unsigned int location = this->getUniformLocation(name);
+	auto pair = this->vec4Map.find(location);
+	if (pair != this->vec4Map.end())
+		return this->vec4Map[location];
+	return Vector4::zero;
+}
 
 void Shader::setInt(const char* name, GLint value)
 {
 	unsigned int location = this->getUniformLocation(name);
+	if (location == -1)
+		return;
 	auto pair = this->ints.find(location);
 	if (pair == this->ints.end())
 	{
@@ -259,10 +313,20 @@ void Shader::setInt(const char* name, GLint value)
 	}
 	this->ints[location] = value;
 }
+int Shader::getInt(const char* name) 
+{
+	unsigned int location = this->getUniformLocation(name);
+	auto pair = this->ints.find(location);
+	if (pair != this->ints.end())
+		return this->ints[location];
+	return 0;
+}
 
 void Shader::setFloat(const char* name, GLfloat value)
 {
 	unsigned int location = this->getUniformLocation(name);
+	if (location == -1)
+		return;
 	auto pair = this->floats.find(location);
 	if (pair == this->floats.end())
 	{
@@ -271,16 +335,31 @@ void Shader::setFloat(const char* name, GLfloat value)
 	}
 	this->floats[location] = value;
 }
+float Shader::getFloat(const char* name) 
+{
+	unsigned int location = this->getUniformLocation(name);
+	auto pair = this->floats.find(location);
+	if (pair != this->floats.end())
+		return this->floats[location];
+	return 0.0f;
+}
 
 void Shader::setColor(const char* name, Color color) 
 {
 	Colorf colorf(color.r / 255.0f, color.g / 255.0f, color.b / 255.0f, color.a / 255.0f);
 	this->setColor(name, colorf);
 }
+Color Shader::getColor(const char* name) 
+{
+	Colorf colorf = this->GetColorf(name);
+	return Color(colorf.r * 255, colorf.g * 255, colorf.b * 255, colorf.a * 255);
+}
 
 void Shader::setColor( const char* name, Colorf color )   
 {
 	unsigned int location = this->getUniformLocation(name);
+	if (location == -1)
+		return;
 	auto pair = this->colors.find(location);
 	if (pair == this->colors.end())
 	{
@@ -289,10 +368,20 @@ void Shader::setColor( const char* name, Colorf color )
 	}
 	this->colors[location] = color;
 }
+Colorf Shader::GetColorf(const char* name) 
+{
+	unsigned int location = this->getUniformLocation(name);
+	auto pair = this->colors.find(location);
+	if (pair != this->colors.end())
+		return this->colors[location];
+	return Colorf::white;
+}
 
 void Shader::setTexture(const char*name, GLuint texture)
 {
 	unsigned int location = this->getUniformLocation(name);
+	if (location == -1)
+		return;
 	auto pair = this->textures.find(location);
 	if (pair == this->textures.end())
 	{
@@ -303,10 +392,20 @@ void Shader::setTexture(const char*name, GLuint texture)
 	}
 	this->textures[location].texture = texture;
 }
+int Shader::getTexture(const char* name) 
+{
+	unsigned int location = this->getUniformLocation(name);
+	auto pair = this->textures.find(location);
+	if (pair != this->textures.end())
+		return this->textures[location].texture;
+	return -1;
+}
 
 void Shader::setTilling(const char* name, Vector2 tilling) 
 {
 	unsigned int location = this->getUniformLocation(name);
+	if (location == -1)
+		return;
 	auto pair = this->textures.find(location);
 	if (pair != this->textures.end())
 	{
@@ -315,10 +414,20 @@ void Shader::setTilling(const char* name, Vector2 tilling)
 		this->textures[location] = mt;
 	}
 }
+Vector2 Shader::getTilling(const char* name) 
+{
+	unsigned int location = this->getUniformLocation(name);
+	auto pair = this->textures.find(location);
+	if (pair != this->textures.end())
+		return this->textures[location].tilling;
+	return Vector2::zero;
+}
 
 void Shader::setOffset(const char* name, Vector2 offset) 
 {
 	unsigned int location = this->getUniformLocation(name);
+	if (location == -1)
+		return;
 	auto pair = this->textures.find(location);
 	if (pair != this->textures.end())
 	{
@@ -327,10 +436,20 @@ void Shader::setOffset(const char* name, Vector2 offset)
 		this->textures[location] = mt;
 	}
 }
+Vector2 Shader::getOffset(const char* name) 
+{
+	unsigned int location = this->getUniformLocation(name);
+	auto pair = this->textures.find(location);
+	if (pair != this->textures.end())
+		return this->textures[location].offset;
+	return Vector2::zero;
+}
 
 void Shader::setCubemap(const char* name, Cubemap* cubemap)
 {
 	unsigned int location = this->getUniformLocation(name);
+	if (location == -1)
+		return;
 	auto pair = this->cubemaps.find(location);
 	if (pair == this->cubemaps.end())
 	{
@@ -338,6 +457,14 @@ void Shader::setCubemap(const char* name, Cubemap* cubemap)
 		return;
 	}
 	this->cubemaps[location] = cubemap;
+}
+int Shader::getCubemap(const char* name) 
+{
+	unsigned int location = this->getUniformLocation(name);
+	auto pair = this->cubemaps.find(location);
+	if (pair != this->cubemaps.end())
+		return this->cubemaps[location]->cubemap;
+	return -1;
 }
 
 #pragma endregion

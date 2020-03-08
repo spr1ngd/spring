@@ -505,9 +505,6 @@
     <ClInclude Include="Picking.h">
       <Filter>头文件\Core\Physical\Picking</Filter>
     </ClInclude>
-    <ClInclude Include="PickingEditor.h">
-      <Filter>头文件\Editor\Extension</Filter>
-    </ClInclude>
     <ClInclude Include="Outline.h">
       <Filter>头文件\Core\Renderer\PostProcessing</Filter>
     </ClInclude>
@@ -521,6 +518,9 @@
       <Filter>头文件\Extension\Scene</Filter>
     </ClInclude>
     <ClInclude Include="MenuWindow.h">
+      <Filter>头文件\Editor\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="StatusWindow.h">
       <Filter>头文件\Editor\Core</Filter>
     </ClInclude>
   </ItemGroup>
@@ -804,9 +804,6 @@
     <ClCompile Include="Picking.cpp">
       <Filter>源文件\Core\Physical\Picking</Filter>
     </ClCompile>
-    <ClCompile Include="PickingEditor.cpp">
-      <Filter>源文件\Editor\Extension</Filter>
-    </ClCompile>
     <ClCompile Include="Outline.cpp">
       <Filter>源文件\Core\Renderer\PostProcessing</Filter>
     </ClCompile>
@@ -820,6 +817,9 @@
       <Filter>源文件\Extension\Scene</Filter>
     </ClCompile>
     <ClCompile Include="MenuWindow.cpp">
+      <Filter>源文件\Editor\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="StatusWindow.cpp">
       <Filter>源文件\Editor\Core</Filter>
     </ClCompile>
   </ItemGroup>

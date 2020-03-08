@@ -12,12 +12,12 @@ InspectorWindow* SpringEditor::inspector = nullptr;
 HierarchyWindow* SpringEditor::hierarchy = nullptr;
 SceneWindow* SpringEditor::scene = nullptr;
 MenuWindow* SpringEditor::menu = nullptr;
+StatusWindow* SpringEditor::status = nullptr;
 
 // inspector editor windows
 ParticleRendererEditor* particleEditor = nullptr;
 MaterialEditor* materialEditor = nullptr;
 PostprocessEditor* postprocessEditor = nullptr;
-PickingEditor* pickingEditor = nullptr;
 
 void SpringEditor::Initialize() 
 {
@@ -25,11 +25,11 @@ void SpringEditor::Initialize()
 	inspector = new InspectorWindow("Inspector", true);
 	hierarchy = new HierarchyWindow("Hierarchy", true);
 	menu = new MenuWindow("Menu",true);
+	status = new StatusWindow("Status",false);
 
 	particleEditor = new ParticleRendererEditor("ParticleRenderer",true);
 	materialEditor = new MaterialEditor("Mesh Renderer",true);
 	postprocessEditor = new PostprocessEditor("PostProcessing",true);
-	pickingEditor = new PickingEditor("Picking System",true);
 }
 
 void SpringEditor::Release() 

@@ -46,6 +46,7 @@ void InstancedTechnology::Awake()
 	instancedMaterialNormal->shader->setTexture(MAIN_TEX, texture->textureId);
 
 	instanceRenderer = new InstancedRenderer(instancedMaterial);
+	instanceRenderer->name = "InstanceRenderer";
 	instanceRenderer->mesh = loader->meshes[0];
 
 	// instanceRendererNormal = new InstancedRenderer(instancedMaterialNormal);

@@ -265,7 +265,6 @@
     <ClInclude Include="physically_based_rendering.h" />
     <ClInclude Include="PhysicsBasedRendering.h" />
     <ClInclude Include="Picking.h" />
-    <ClInclude Include="PickingEditor.h" />
     <ClInclude Include="PostprocessEditor.h" />
     <ClInclude Include="PostProcessing.h" />
     <ClInclude Include="Primitive.h" />
@@ -290,6 +289,7 @@
     <ClInclude Include="spring.h" />
     <ClInclude Include="SpringEditor.h" />
     <ClInclude Include="SpringEngine.h" />
+    <ClInclude Include="StatusWindow.h" />
     <ClInclude Include="Text.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="TextureLoader.h" />
@@ -368,7 +368,6 @@
     <ClCompile Include="physically_based_rendering.cpp" />
     <ClCompile Include="PhysicsBasedRendering.cpp" />
     <ClCompile Include="Picking.cpp" />
-    <ClCompile Include="PickingEditor.cpp" />
     <ClCompile Include="PostprocessEditor.cpp" />
     <ClCompile Include="PostProcessing.cpp" />
     <ClCompile Include="Primitive.cpp" />
@@ -391,6 +390,7 @@
     <ClCompile Include="spring.cpp" />
     <ClCompile Include="SpringEditor.cpp" />
     <ClCompile Include="SpringEngine.cpp" />
+    <ClCompile Include="StatusWindow.cpp" />
     <ClCompile Include="Text.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="TextureLoader.cpp" />

@@ -2,7 +2,7 @@
 #include "jsonserializer.h"
 using namespace spring;
 
-SceneSerializer::SceneSerializer()
+SceneSerializer::SceneSerializer(Scene& scene):scene(scene)
 {
 
 }

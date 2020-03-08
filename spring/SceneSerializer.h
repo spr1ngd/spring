@@ -13,10 +13,10 @@ namespace spring
 		};
 
 		SerializeFormat serializeFormat = SerializeFormat::JSON;
-		Scene* scene;
+		Scene& scene;
 		const char* scenePath;
 
-		SceneSerializer();
+		SceneSerializer(Scene& scene);
 		void Serialize();
 		void Deserialize();
 	};

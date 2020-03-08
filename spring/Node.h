@@ -12,23 +12,20 @@ namespace spring
 	{
 	public:
 		static vector<Node*> allNodes;
-	private:
-		vector<Node*> nodes;
-	public:
+
 		bool visible = true;
 		Layer layer = Layer::Default;
-
 		Node* parent;
+		vector<Node*> nodes;
 		vector<Node*> children;
 		Transform* transform;
 		
 	protected:
 		Node();
 		Node( const char*nodeName );
-
-	public:
 		~Node();
 
+	public:
 		template <typename T>
 		Node* GetNode(T nodeType) 
 		{

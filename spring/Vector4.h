@@ -16,6 +16,9 @@ namespace spring
 		};
 
 	public:
+		static Vector4 zero;
+		static Vector4 one;
+
 		Vector4();
 		Vector4(float f);
 		Vector4(float x,float y,float z,float w);
