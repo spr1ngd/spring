@@ -3,6 +3,35 @@
 
 A LONG LONG LONG , VERY LONG TRIP.
 
+## TODO: 2020.03.11
+
+- memory optimization
+
+    - refactor frambufferobject module
+        - customize color format
+        - enable anti-aliasing
+        - enable depth/stencil buffer
+        - enable minmaps
+        - set wrap mode and filter mode
+  
+- renderer core
+
+    - complete the node system
+    - pbr supports all type lights
+    - add lambert / half lambert lighting model shader program
+    - fix the shadow system
+
+- extension
+
+    - scene serialize **(40%)**
+        - support to serialize mesh object reference
+        - support to serialize textures reference
+    - scene deserialize
+    - scene editor gizmos
+        - drag
+        - scale
+        - rotate
+
 ## TODO: 2020.02.14
 
 - particle system
