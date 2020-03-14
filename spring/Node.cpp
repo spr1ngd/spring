@@ -14,8 +14,8 @@ Node::Node()
 	this->transform = new Transform();
 	allNodes.push_back(this);
 	this->name = misc::gen_guid();
-	Console::LogFormat("instantiate node %s",this->name);
-	Scene::current->AddNode(this);
+	PRINT_LOG("instantiate node %s",this->name);
+	//Scene::current->AddNode(this);
 }
 
 Node::Node(const char* nodeName) 
@@ -23,8 +23,8 @@ Node::Node(const char* nodeName)
 	this->name = nodeName;
 	this->transform = new Transform();
 	allNodes.push_back(this);
-	Console::LogFormat("instantiate node %s", nodeName);
-	Scene::current->AddNode(this);
+	PRINT_LOG("instantiate node %s", nodeName);
+	//Scene::current->AddNode(this);
 }
 
 Node::~Node() 
@@ -34,7 +34,7 @@ Node::~Node()
 		Node* node = *it;
 		if (node == this)
 		{
-			Console::ErrorFormat("destroy node %s", node->name);
+			PRINT_ERROR("destroy node %s", node->name);
 			Scene::current->RemoveNode(this);
 			allNodes.erase(it);
 			break;

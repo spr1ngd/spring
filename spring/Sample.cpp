@@ -16,6 +16,7 @@ physically_based_rendering* pbr;
 
 bool enabled = false;
 bool renderSkybox = true;
+bool enableLights = true;
 
 Camera* camera;
 OrbitCamera* orbit;
@@ -28,20 +29,21 @@ float timer = 0.0f;
 float speed = 5.0f;
 
 Sample::Sample() 
-{
+{ 
 	matrix4x4Sample = new Matrix4x4Sample();
 	matrix4x4Sample->name = "Matrix4x4 Example";
+	matrix4x4Sample->enabled = false;
 
 	example = new Example();
 	example->name = "Example";
+	example->enabled = false;
 
 	instanced = new InstancedTechnology();
 	instanced->name = "Instancing Rendering Example";
+	instanced->enabled = false;
 
 	pbr = new physically_based_rendering();
-	pbr->name = "Physically Based Rendering Example";
-
-	instanced->enabled = false;
+	pbr->name = "Physically Based Rendering Example"; 
 	pbr->enabled = true;
 }
 
@@ -63,39 +65,45 @@ void Sample::Awake()
 
 	Environment::ambient.color = Color(75, 75, 75, 255);
 
+	// TODO 70MB
 	if (renderSkybox) 
 	{ 
-		Material* skyboxMaterial = new Material("res/shader/skybox/6 Sided.vs", "res/shader/skybox/6 Sided.fs");
+		// TODO : 50MB内存消耗？？？？？
+		Material* skyboxMaterial = new Material(Shader::Load("skybox/6 Sided.vs", "skybox/6 Sided.fs"));
 		auto cubemap = TextureLoader::LoadCubemap("res/texture/skybox/nature");
 		// auto cubemap = TextureLoader::LoadCubemap("res/texture/skybox/night");
 		skybox = new class::Skybox(skyboxMaterial, cubemap);
 		skybox->name = "__SKYBOX__";
 		skybox->Init();
+
+		// TODO : 这部分预处理占用了20MB内存
 		// refactor these code to environment class.
 		Cubemap* irradianceCubemap = PhysicsBasedRendering::CubemapConvolution(cubemap);
 		PhysicsBasedRendering::irradiance = irradianceCubemap;
-
+		
 		Cubemap* prefilter = PhysicsBasedRendering::PreFilter(cubemap);
 		PhysicsBasedRendering::prefilter = prefilter;
-
+		
 		Texture* prebrdf = PhysicsBasedRendering::PreBRDF(cubemap);
 		PhysicsBasedRendering::prebrdf = prebrdf;
-
+		
 		skybox->SetCubemap(prefilter);
 		Skybox::irradianceCubemap = irradianceCubemap;
 		Skybox::prefilter = prefilter;
 		Skybox::prebrdf = prebrdf;
 		skybox->visible = true;
 	}
-	
-	Light* light = createLight(Light::Type::Directional, Color(255, 244, 214, 255), 10.0f, Vector3(0.0f, 5.0f, 0.0f), Vector3::down); light->shadowType = Light::NoShadow;
-	light->name = "Directional Light";
-	Light* pointLigh1 = createLight(Light::Type::Directional, Color(255, 244, 214, 255), 3.0f, Vector3(10.0f, 10.0f, 10.0f), Vector3::left); pointLigh1->shadowType = Light::NoShadow;
-	pointLigh1->name = "Point Light";
-	/*Light* pointLigh2 = createLight(Light::Type::Directional, Color(255, 244, 214, 255), 1.8f, Vector3(-10.0f, -10.0f, 20.0f), Vector3::right); pointLigh2->shadowType = Light::NoShadow;
-	Light* pointLigh3 = createLight(Light::Type::Directional, Color(255, 244, 214, 255), 1.2f, Vector3(-10.0f, 10.0f,20.0f), Vector3::back); pointLigh3->shadowType = Light::NoShadow;*/
-	//Light* pointLigh4 = createLight(Light::Type::Point, Color::green, 0.6f, Vector3(0.0f, 0.0f, -5.0f), Vector3::forward);
-	//Light* spotLight = createLight(Light::Type::Spot, Color::yellow, 1.3f, Vector3(0.0f, 6.0f, 0.0f), Vector3::bottom);
+
+	if (enableLights) 
+	{
+		Light* light = createLight(Light::Type::Directional, Color(255, 244, 214, 255), 10.0f, Vector3(0.0f, 5.0f, 0.0f), Vector3::down); 
+		light->shadowType = Light::NoShadow;
+		light->name = "Directional Light";
+
+		Light* pointLigh1 = createLight(Light::Type::Directional, Color(255, 244, 214, 255), 3.0f, Vector3(10.0f, 10.0f, 10.0f), Vector3::left); 
+		pointLigh1->shadowType = Light::NoShadow;
+		pointLigh1->name = "Point Light";
+	}	
 
 #pragma endregion
 
@@ -127,8 +135,8 @@ void Sample::Awake()
 		// draw light model
 		ModelLoader loader = ModelLoader();
 		loader.Load("res/model/obj/cube.obj");
-		Material lightModelMat("res/shader/unlit/color.vs", "res/shader/unlit/color.fs");
-		lightModel = new MeshRenderer(&lightModelMat);
+		Material* lightModelMat = new Material(Shader::Load("unlit/color.vs", "unlit/color.fs"));
+		lightModel = new MeshRenderer(lightModelMat);
 		lightModel->meshes = loader.meshes;
 		lightModel->textures = loader.loadedTextures;
 		lightModel->Init();
@@ -143,7 +151,7 @@ void Sample::Awake()
 		{
 			for (int j = 0; j < sphereCount; j++)
 			{
-				Material* mat = new Material("res/shader/diffuse/diffuse.vs", "res/shader/diffuse/transparency.fs");
+				Material* mat = new Material(Shader::Load("diffuse/diffuse.vs", "diffuse/transparency.fs"));
 				mat->name = "diffuse";
 				mat->renderMode = Material::Fill;
 				mats.push_back(mat);

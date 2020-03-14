@@ -120,7 +120,7 @@ void TextureLoader::SaveToBMP(const char* filePath, int width, int height, const
 {
 	int result = SOIL_save_image(filePath, SOIL_SAVE_TYPE_BMP, width, height, 4, pixels);
 	if (result == 0)
-		Console::Error("save image failed.");
+		PRINT_ERROR("save image failed.");
 }
 
 #pragma region cubemap

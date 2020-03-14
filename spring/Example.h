@@ -13,8 +13,10 @@ using namespace spring::ui;
 
 class Example : public Behaviour
 {
-private:
+public:
 	bool enabled = false;
+
+private:
 	bool drawGround = true;
 	bool drawFourFrame = true;
 	bool drawText = true;
@@ -51,7 +53,7 @@ public:
 		loader.Load("res/model/fbx/747/747-400.fbx"); 
 		// loader.Load("res/model/obj/cube.obj");
 
-		Material* mat = new Material("res/shader/diffuse/diffuse.vs", "res/shader/diffuse/diffuse.fs");
+		Material* mat = new Material(Shader::Load("diffuse/diffuse.vs", "diffuse/diffuse.fs"));
 		mat->renderMode = Material::RenderMode::Fill;
 		mat->CullFaceFunc(true);
 		aircraft = new MeshRenderer(mat);
@@ -72,7 +74,7 @@ public:
 		// aircraft normal visualization.
 		if (drwaAirCraftNormal) 
 		{
-			Material* normalMat = new Material("res/shader/diffuse/diffuse.vs", "res/shader/diffuse/diffuse.fs");
+			Material* normalMat = new Material(Shader::Load("diffuse/diffuse.vs", "diffuse/diffuse.fs"));
 			normalMat->renderMode = Material::RenderMode::Fill;
 			normalMat->CullFaceFunc(true);
 			aircraftNormal = new MeshRenderer(normalMat);
@@ -91,7 +93,7 @@ public:
 		if (this->drawFourFrame) 
 		{
 			image = GUI::DrawImage(Rect(0.0f, 0.0f, (float)Screen::halfWidth, (float)Screen::halfHeight));
-			image->material = new Material("res/shader/ui/default.vs", "res/shader/ui/default.fs");
+			image->material = new Material(Shader::Load("ui/default.vs", "ui/default.fs"));
 			// image->texture = texture;
 			image->material->AlphaBlendFunc();
 			image->material->DepthTestFunc(false);
@@ -122,7 +124,7 @@ public:
 			this->springEngine = GUI::DrawText(Rect(0.0f, 0.0f, 300.0f, 48.0f));
 			this->springEngine->name = "SpringEngine";
 			this->springEngine->font = new Font("arial.ttf");
-			this->springEngine->material = new Material("res/shader/ui/font.vs", "res/shader/ui/font.fs");
+			this->springEngine->material = new Material(Shader::Load("ui/font.vs", "ui/font.fs"));
 			this->springEngine->material->AlphaBlendFunc();
 			this->springEngine->material->DepthTestFunc(false);
 			this->springEngine->color = Color::white;
@@ -134,7 +136,7 @@ public:
 			this->text = GUI::DrawText(Rect(0.0f, 0.0f, 120, 24.0f));
 			this->text->name = "FPS";
 			this->text->font = new Font("arial.ttf");
-			this->text->material = new Material("res/shader/ui/font.vs", "res/shader/ui/font.fs");
+			this->text->material = new Material(Shader::Load("ui/font.vs", "ui/font.fs"));
 			this->text->material->AlphaBlendFunc();
 			this->text->material->DepthTestFunc(false);
 			this->text->color = Color(93,221,221,255);
@@ -148,7 +150,7 @@ public:
 		ModelLoader* modelloader = new ModelLoader();
 		modelloader->Load("res/model/obj/quad.obj");
 
-		Material* groundMaterial = new Material("res/shader/diffuse/diffuse.vs","res/shader/diffuse/diffuse.fs");
+		Material* groundMaterial = new Material(Shader::Load("diffuse/diffuse.vs", "diffuse/diffuse.fs"));
 		ground = new MeshRenderer(groundMaterial);
 		ground->meshes = modelloader->meshes;
 		ground->textures = modelloader->loadedTextures;

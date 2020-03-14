@@ -19,6 +19,7 @@
 #include "particlerenderer.h"
 #include "shadercompiler.h"
 #include "picking.h"
+#include "console.h"
 
 using namespace spring;
 using namespace spring::editor;
@@ -68,12 +69,15 @@ int main(int, char**)
 		return 1;
 	}
 
+	PRINT_ERROR("this is spring engine,%s","hello world.");
+
 	// spring editor
+	SpringEditor::enabled = true;
 	SpringEditor::Initialize();
 	GUILayout::Initialize(window); // TODO: initialize content should be moved to spring editor.
 
 	glEnable(GL_MULTISAMPLE);
-	AllocConsole(); 
+	AllocConsole();
 
 	// Our state
 	bool show_demo_window = true;
@@ -89,10 +93,8 @@ int main(int, char**)
 	Timer::Start();
 	for (auto behaviour : Behaviour::behaviours)
 		behaviour.second->Awake();
-
 	unsigned int* uiRenderLayer = new unsigned int[1]{ Layer::UI };
 	unsigned int* defaultRenderLayer = new unsigned int[2]{ Layer::Default,Layer::Skybox };
-
 	Camera* uiCamera = new Camera();
 	uiCamera->name = "Internal UI Camera";
 	uiCamera->cullingMask->set(uiRenderLayer);
@@ -101,22 +103,27 @@ int main(int, char**)
 	// 0. construct post processing instance.
 	PostProcessing::postprocessing = new class::PostProcessing();
 	PostProcessing::postprocessing->enabled = true;
-	// Fixed : multi-sample-anti-aliasing can not be used for post processing
+	// 
 	PostProcessing::postprocessing->antiAliasing->enabled = false;
 	PostProcessing::postprocessing->antiAliasing->samples = 16;
 	// bloom 
 	PostProcessing::postprocessing->bloom->enable = true;
 	PostProcessing::postprocessing->Initialize();
 
-	FrameBufferObject* mainFramebuffer = FrameBufferObject::GenMSColorFramebuffer(Screen::width, Screen::height, 16);
-	// FrameBufferObject* mainFramebuffer = FrameBufferObject::GenColorFramebuffer(Screen::width, Screen::height,0);
+	// FrameBufferObject* mainFramebuffer = FrameBufferObject::GenMSColorFramebuffer(Screen::width, Screen::height, 16);  // TODO: 这一张多重采样纹理，占用了200MB内存
+	FrameBufferObject* mainFramebuffer = FrameBufferObject::GenColorFramebuffer(Screen::width, Screen::height,0);
 	if (PostProcessing::postprocessing->enabled == false)
 		Camera::main->framebuffer = mainFramebuffer;
-
+	 
+	// standalone shader compiler (in a independent thread)
 	ShaderCompiler shader_compiler;
 
 	// gpu picking system
+	Picking::enable = true;
 	Picking::Initialize();
+
+	// gizmos
+	Gizmos::enable = true;
 
 	Mathf::RandomSeed();
 	// Main loop
@@ -209,6 +216,7 @@ int main(int, char**)
 		GUILayout::Render(window);
 
 		glfwSwapBuffers(window);
+		// _CrtDumpMemoryLeaks();
 	}
 
 	SpringEditor::Release();
@@ -223,6 +231,5 @@ int main(int, char**)
 
 	glfwDestroyWindow(window);
 	glfwTerminate();
-
 	return 0;
 }

@@ -7,10 +7,10 @@ using namespace spring;
 
 void Application::Initialize()
 {
-	Console::Log("spring engine start up...");
+	PRINT_LOG("spring engine start up...");
 }
 
 void Application::Render()
 {
-	Console::Log("application render.");
+	PRINT_LOG("application render.");
 }

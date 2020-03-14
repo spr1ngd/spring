@@ -48,7 +48,7 @@ Vector3 ParticleShapeModule::getSrcPosition()
 	case ShapeType::Rectangle:
 		return this->getSrcPositionInRectangleMode();
 	default:
-		Console::ErrorFormat("[spring.particlerenderer] : invalid shape type [%s]", this->shapeType);
+		PRINT_ERROR("[spring.particlerenderer] : invalid shape type [%s]", this->shapeType);
 		return Vector3::zero;
 		break;
 	}
@@ -100,7 +100,7 @@ Vector3 ParticleShapeModule::getDirection()
 	case ShapeType::Rectangle:
 		return this->getDirecitonInRectangleMode();
 	default:
-		Console::ErrorFormat("[spring.particlerenderer] : invalid shape type [%s]",this->shapeType);
+		PRINT_ERROR("[spring.particlerenderer] : invalid shape type [%s]",this->shapeType);
 		return Vector3::up;
 		break;
 	}

@@ -42,7 +42,7 @@ vector<Texture> ModelLoader::loadMaterialTextures(aiMaterial*mateiral,aiTextureT
 			Texture tex;
 			tex.textureType = typeName.c_str();
 			tex.textureName = str.C_Str();
-			Console::LogFormat("[ModelLoader] : load texture : %s",tex.textureName);
+			PRINT_LOG("[ModelLoader] : load texture : %s",tex.textureName);
 			string filePath = directory + '/' + str.C_Str();
 			tex.Load(filePath.c_str());
 		}
@@ -138,7 +138,7 @@ Mesh ModelLoader::processMesh( aiMesh*mesh,const aiScene*scene )
 
 #pragma endregion
 
-	Console::LogFormat("[ModelLoader] : load mesh %s load textures %d ",mesh->mName.C_Str(),textures.size());
+	PRINT_LOG("[ModelLoader] : load mesh %s load textures %d ",mesh->mName.C_Str(),textures.size());
 	return Mesh(vertices, indices, textures);
 }
 
@@ -149,7 +149,7 @@ void ModelLoader::Load(const string filePath)
 	const aiScene* scene = importer.ReadFile(filePath, aiProcess_Triangulate | aiProcess_FlipUVs);
 
 	if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode) 
-		Console::Error("load model failed.");
+		PRINT_ERROR("load model failed.");
 	directory = filePath.substr(0, filePath.find_last_of('/'));
 	if( scene )
 		processNode(scene->mRootNode, scene);

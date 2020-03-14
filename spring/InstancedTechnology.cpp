@@ -24,7 +24,7 @@ void InstancedTechnology::Awake()
 	loader->Load("res/model/obj/cube.obj");
 	Texture* texture = TextureLoader::Load("res/model/fbx/747/747-400 texture.png");
 
-	Material* instancedMaterial = new Material("res/shader/diffuse/diffuse(instance).vs","res/shader/diffuse/diffuse.fs");
+	Material* instancedMaterial = new Material(Shader::Load("diffuse/diffuse(instance).vs", "diffuse/diffuse.fs"));
 	// Material* instancedMaterial = new Material("res/shader/diffuse/diffuse(instance).vs", "res/shader/geometry/normal.fs", "res/shader/geometry/normal.gs");
 	instancedMaterial->CullFaceFunc(true, GL_BACK);
 	instancedMaterial->renderMode = Material::RenderMode::Fill;
@@ -37,7 +37,7 @@ void InstancedTechnology::Awake()
 	instancedMaterial->shader->setFloat("Specular_Intensity", 0.0f);
 	instancedMaterial->shader->setFloat("Specular_Attenuation", 64.0f);
 
-	Material* instancedMaterialNormal = new Material("res/shader/diffuse/diffuse(instance)normal.vs", "res/shader/geometry/normal.fs", "res/shader/geometry/normal.gs");
+	Material* instancedMaterialNormal = new Material(Shader::Load("diffuse/diffuse(instance)normal.vs", "geometry/normal.fs", "geometry/normal.gs"));
 	instancedMaterialNormal->CullFaceFunc(true, GL_BACK);
 	instancedMaterialNormal->renderMode = Material::RenderMode::Fill;
 	instancedMaterialNormal->enableGPUInstanced = true;

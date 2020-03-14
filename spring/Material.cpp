@@ -17,18 +17,6 @@ Material::Material(Shader* shader)
 	Material::Caching(this);
 }
 
-Material::Material(const char* verexShaderFile, const char* fragmentShaderFile)
-{
-	this->shader = new Shader(verexShaderFile,fragmentShaderFile);
-	Material::Caching(this);
-}
-
-Material::Material(const char* vertexShaderFile, const char* fragmentShaderFile, const char* geometryShaderFile) 
-{
-	this->shader = new Shader(vertexShaderFile,fragmentShaderFile,geometryShaderFile);
-	Material::Caching(this);
-}
-
 void Material::AlphaTestFunc(GLenum alphaTestFunc, float alphaTestRef ) 
 {
 	this->alphaTest = true;
@@ -165,6 +153,7 @@ GLenum Material::GetPolygonMode()
 
 void Material::Caching(Material* material) 
 {
+	PRINT_LOG("[Material] : generate material instance %s,%s",material->shader->vertexShaderName,material->shader->fragmentShaderName);
 	materials.push_back(material);
 }
 

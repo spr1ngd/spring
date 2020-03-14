@@ -2,6 +2,7 @@
 
 using namespace spring;
 
+bool Picking::enable;
 FrameBufferObject* Picking::colorbuffer;
 Material* Picking::material;
 
@@ -12,12 +13,16 @@ Picking::Picking()
 
 void Picking::Initialize() 
 {
+	if (!enable)
+		return;
 	colorbuffer = FrameBufferObject::GenColorFramebuffer(Screen::width, Screen::height, 0);
 	material = new Material(Shader::Load("physical/gpu_picking.vs","physical/gpu_picking.fs"));
 }
 
 Node* Picking::Pick(unsigned int x, unsigned int y) 
 {
+	if (!enable)
+		return nullptr;
 	float* pixel = new float[4]{0};
 	glBindFramebuffer(GL_READ_FRAMEBUFFER, colorbuffer->framebufferId);
 	// glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
@@ -44,6 +49,8 @@ unsigned int Picking::Convert2Identify(Colorf color)
 
 void Picking::Render(std::function<void()> func) 
 {
+	if (!enable)
+		return;
 	colorbuffer->Bind();
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);

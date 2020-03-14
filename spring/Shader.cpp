@@ -21,39 +21,21 @@ Shader::Shader()
 	Shader::Caching(this);
 }
 
-Shader::Shader(const char* vertexShader, const char* fragmentShader)
-{
-	bool success = true;
-	unsigned int vertex_shader, fragment_shader;
-	success &= this->compile(GL_VERTEX_SHADER, vertexShader, vertex_shader);
-	success &= this->compile(GL_FRAGMENT_SHADER, fragmentShader, fragment_shader);
-	success &= this->link(vertex_shader, fragment_shader);
-	if (success == false)
-	{
-		Console::Error("shader error , replaced by default error shader.");
-		if (nullptr == Shader::error)
-			Shader::error = Shader::Load("spring/error.vs", "spring/error.fs");
-		this->program = Shader::error->program;
-	}
-	this->vertexShaderName = new char[strlen(vertexShader)];
-	strcpy_s(this->vertexShaderName, strlen(vertexShader) + 1, vertexShader);
-	this->fragmentShaderName = new char[strlen(fragmentShader)];
-	strcpy_s(this->fragmentShaderName, strlen(fragmentShader) + 1, fragmentShader);
-	this->initializeLocation();
-	Shader::Caching(this);
-}
-
 Shader::Shader(const char* vertexShader, const char* fragmentShader, const char* geometryShader)
 {
 	bool success = true;
-	unsigned int vertex_shader, fragment_shader, geometry_shader;
+	unsigned int vertex_shader = -1, fragment_shader = -1, geometry_shader = -1;
 	success &= this->compile(GL_VERTEX_SHADER, vertexShader, vertex_shader);
-	success &= this->compile(GL_GEOMETRY_SHADER, geometryShader, geometry_shader);
 	success &= this->compile(GL_FRAGMENT_SHADER, fragmentShader, fragment_shader);
-	success &= this->link(vertex_shader, fragment_shader, geometry_shader);
+	if (nullptr != geometryShader)
+	{
+		success &= this->compile(GL_GEOMETRY_SHADER, geometryShader, geometry_shader);
+		success &= this->link(vertex_shader, fragment_shader, geometry_shader);
+	}
+	else success &= this->link(vertex_shader, fragment_shader);
 	if (success == false)
 	{
-		Console::Error("shader error , replaced by default error shader.");
+		PRINT_ERROR("shader error , replaced by default error shader.");
 		if (nullptr == Shader::error)
 			Shader::error = Shader::Load("spring/error.vs", "spring/error.fs");
 		this->program = Shader::error->program;
@@ -81,7 +63,7 @@ bool Shader::compile(GLenum shaderType, const char* filePath, unsigned int& shad
 	if (!success)
 	{
 		glGetShaderInfoLog(shaderProgram, 512, NULL, infoLog);
-		Console::Error(infoLog);
+		PRINT_ERROR("%s", infoLog);
 		return false;
 	}
 	shader = shaderProgram;
@@ -94,14 +76,13 @@ bool Shader::link(unsigned int vertexShader, unsigned int fragmentShader)
 	glAttachShader(shaderProgram, vertexShader);
 	glAttachShader(shaderProgram, fragmentShader);
 	glLinkProgram(shaderProgram);
-
 	int success;
 	char logInfo[512];
-	glGetProgramiv(shaderProgram, GL_LINK_STATUS, &success);
+	glGetProgramiv(program, GL_LINK_STATUS, &success);
 	if (!success)
 	{
-		glGetProgramInfoLog(shaderProgram, 512, NULL, logInfo);
-		Console::Error(logInfo);
+		glGetProgramInfoLog(program, 512, NULL, logInfo);
+		PRINT_ERROR("%s", logInfo);
 		return false;
 	}
 	this->program = shaderProgram;
@@ -121,7 +102,7 @@ bool Shader::link(unsigned int vertexShader, unsigned int fragmentShader, unsign
 	if (!success)
 	{
 		glGetProgramInfoLog(program, 512, NULL, logInfo);
-		Console::Error(logInfo);
+		PRINT_ERROR("%s", logInfo);
 		return false;
 	}
 	this->program = shaderProgram;
@@ -152,22 +133,18 @@ unsigned int Shader::getAttribLocation(const char* name)
 
 unsigned int Shader::getUniformLocation(const char* name) 
 {
-	auto pair = this->locations.find(name);
-	if (pair != this->locations.end())
-		return this->locations[name];
+	for (auto pair = this->locations.begin(); pair != this->locations.end(); pair++)
+	{
+		if (strcmp(pair->first, name) == 0)
+			return pair->second;
+	}
 	unsigned int location = glGetUniformLocation(this->program,name);
 	if (location == -1) 
 		return location;
-	this->locations.insert(std::pair<const char*, unsigned int>(name, location));
+	char* key = new char[strlen(name)];
+	strcpy_s(key, strlen(name) + 1, name);
+	this->locations.insert(std::pair<const char*, unsigned int>(key, location));
 	return location;
-}
-
-GLuint Shader::getLocation(const char* name)
-{
-	auto pair = this->locations.find(name);
-	if (pair == this->locations.end())
-		return -1;
-	return pair->second;
 }
 
 const char* Shader::getUniformName(unsigned int location)
@@ -570,24 +547,28 @@ void Shader::setLighting()
 		if (light->type == Light::Type::Directional)
 		{
 			string arrayName = "dirLights";
-			char* intensityName = spring::misc::string2c((arrayName + '[' + to_string(directionalLightCount) + "]." + intensity));
-			char* positionName = spring::misc::string2c((arrayName + '[' + to_string(directionalLightCount) + "]." + position));
-			char* colorName = spring::misc::string2c((arrayName + '[' + to_string(directionalLightCount) + "]." + color));
+			const char* intensityName = spring::misc::string2c((arrayName + '[' + to_string(directionalLightCount) + "]." + intensity));
+			const char* positionName = spring::misc::string2c((arrayName + '[' + to_string(directionalLightCount) + "]." + position));
+			const char* colorName = spring::misc::string2c((arrayName + '[' + to_string(directionalLightCount) + "]." + color));
 			this->setFloat(intensityName, light->intensity);
 			this->setVec3(positionName, light->transform->position);
 			this->setColor(colorName, light->color);
 			directionalLightCount++;
+			delete[] intensityName;
+			delete[] positionName;
+			delete[] colorName;
+
 		}
 		else if (light->type == Light::Type::Point)
 		{
 			string arrayName = "pointLights";
-			auto intensityStr = spring::misc::string2c((arrayName + '[' + to_string(pointLightCount) + "]." + intensity));
-			auto positionStr = spring::misc::string2c((arrayName + '[' + to_string(pointLightCount) + "]." + position));
-			auto colorStr = spring::misc::string2c((arrayName + '[' + to_string(pointLightCount) + "]." + color));
-			auto rangeStr = spring::misc::string2c((arrayName + '[' + to_string(pointLightCount) + "]." + range));
-			auto constantStr = spring::misc::string2c((arrayName + '[' + to_string(pointLightCount) + "]." + constant));
-			auto linearStr = spring::misc::string2c(arrayName + '[' + to_string(pointLightCount) + "]." + linear);
-			auto quadraticStr = spring::misc::string2c(arrayName + '[' + to_string(pointLightCount) + "]." + quadratic);
+			char* intensityStr = spring::misc::string2c((arrayName + '[' + to_string(pointLightCount) + "]." + intensity));
+			char* positionStr = spring::misc::string2c((arrayName + '[' + to_string(pointLightCount) + "]." + position));
+			char* colorStr = spring::misc::string2c((arrayName + '[' + to_string(pointLightCount) + "]." + color));
+			char* rangeStr = spring::misc::string2c((arrayName + '[' + to_string(pointLightCount) + "]." + range));
+			char* constantStr = spring::misc::string2c((arrayName + '[' + to_string(pointLightCount) + "]." + constant));
+			char* linearStr = spring::misc::string2c(arrayName + '[' + to_string(pointLightCount) + "]." + linear);
+			char* quadraticStr = spring::misc::string2c(arrayName + '[' + to_string(pointLightCount) + "]." + quadratic);
 			this->setFloat(intensityStr, light->intensity);
 			this->setVec3(positionStr, light->transform->position);
 			this->setColor(colorStr, light->color);
@@ -596,6 +577,13 @@ void Shader::setLighting()
 			this->setFloat(linearStr, light->linear);
 			this->setFloat(quadraticStr, light->quadratic);
 			pointLightCount++;
+			delete[] intensityStr;
+			delete[] positionStr;
+			delete[] colorStr;
+			delete[] rangeStr;
+			delete[] constantStr;
+			delete[] linearStr;
+			delete[] quadraticStr;
 		}
 		else if (light->type == Light::Type::Spot)
 		{
@@ -621,6 +609,16 @@ void Shader::setLighting()
 			this->setFloat(outerCutoffStr, glm::cos(glm::radians(light->outterAngle / 2.0f)));
 			this->setVec3(directionStr, light->transform->GetEulerangle());
 			spotLightCount++;
+			delete[] intensityStr;
+			delete[] positionStr;
+			delete[] directionStr;
+			delete[] colorStr;
+			delete[] rangeStr;
+			delete[] constantStr;
+			delete[] linearStr;
+			delete[] quadraticStr;
+			delete[] cutoffStr;
+			delete[] outerCutoffStr;
 		}
 		else
 		{
@@ -642,7 +640,7 @@ void Shader::setLighting()
 				}
 				else
 				{
-					Console::ErrorFormat("[spring engine] Shader : light does not have shadow map.");
+					PRINT_ERROR("[spring engine] Shader : light does not have shadow map.");
 				}
 			}
 		}
@@ -660,25 +658,37 @@ void Shader::setTime()
 
 #pragma region loading | caching | flash
 
-Shader* Shader::Load(const char* vertexShaderName, const char* fragmentShaderName)
+Shader* Shader::Load(const char* vertexShaderName, const char* fragmentShaderName, const char* geometryShaderName)
 {
 	const char* pathPrefix = "res/shader/";
 	int length = (int)strlen(pathPrefix) + 1;
+
 	int vsLength = length + (int)strlen(vertexShaderName);
-	int fsLength = length + (int)strlen(fragmentShaderName);
 	char* vs = (char*)malloc(vsLength*sizeof(char));
 	memset(vs, 0, vsLength);
 	strcat_s(vs, length + 1, pathPrefix);
 	strcat_s(vs, vsLength, vertexShaderName);
 
+	int fsLength = length + (int)strlen(fragmentShaderName);
 	char* fs = (char*)malloc(fsLength * sizeof(char));
 	memset(fs, 0, fsLength);
 	strcat_s(fs, length + 1, pathPrefix);
 	strcat_s(fs, fsLength, fragmentShaderName);
 
-	Shader* shader = new Shader(vs, fs);
+	char* gs = nullptr;
+	if (nullptr != geometryShaderName)
+	{
+		int gsLength = length + (int)strlen(geometryShaderName);
+		gs = (char*)malloc(gsLength * sizeof(char));
+		memset(gs, 0, gsLength);
+		strcat_s(gs, length + 1, pathPrefix);
+		strcat_s(gs, gsLength, geometryShaderName);
+	}
+
+	Shader* shader = new Shader(vs, fs,gs);
 	free(vs);
 	free(fs);
+	free(gs);
 
 	shader->vertexShaderName = new char[strlen(vertexShaderName)];
 	shader->fragmentShaderName = new char[strlen(fragmentShaderName)];
@@ -694,8 +704,7 @@ char* Shader::loadShaderFile( const char*shaderFilePath )
 	shaderFile.open(shaderFilePath, ios::in|ios::binary);
 	if (!shaderFile.good()) 
 	{
-		Console::Error(shaderFilePath);
-		Console::Error("shader file is not exist.");
+		PRINT_ERROR("shader file %s is not exist.",shaderFilePath);
 		return NULL;
 	}
 	shaderFile.seekg(0, ios::end);

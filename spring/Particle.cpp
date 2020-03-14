@@ -6,3 +6,8 @@ Particle::Particle()
 {
 
 }
+
+Particle::~Particle()
+{
+
+}

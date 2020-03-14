@@ -242,9 +242,9 @@ void physically_based_rendering::Awake()
 		return;
 
 	starFighter();
-	// displaySpheres();
 	generateParticle();
 	generateParticle2();
+	// displaySpheres();
 
 	// Scene::current->AddNode(fighter);
 	// Scene::current->AddNode(particle);
@@ -258,7 +258,7 @@ void physically_based_rendering::Update()
 
 	if (Input::mousePosition.x <= Screen::width * 0.6f && Input::mousePosition.y <= Screen::height * 0.6f) 
 	{
-		Node* selected = Picking::Pick((int)(Input::mousePosition.x / 0.6f), (int)(Input::mousePosition.y / 0.6f));
+		// Node* selected = Picking::Pick((int)(Input::mousePosition.x / 0.6f), (int)(Input::mousePosition.y / 0.6f));
 		/*	if (selected != nullptr)
 				Console::LogFormat("[Picking]:pick %s", selected->name);
 			else Console::LogFormat("[Picking]:pick %s", "empty");*/

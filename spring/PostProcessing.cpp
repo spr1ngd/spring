@@ -25,11 +25,11 @@ PostProcessing::PostProcessing()
 }
 
 void PostProcessing::Initialize() 
-{
+{ 
 	if (this->enabled == false)
 		return;
 	outputFramebuffer = FrameBufferObject::GenColorFramebuffer(Screen::width, Screen::height, 0);
-	outputMaterial = new Material("res/shader/fullscreen/fullscreen.vs", "res/shader/fullscreen/fullscreen.fs");
+	outputMaterial = new Material(Shader::Load("fullscreen/fullscreen.vs", "fullscreen/fullscreen.fs"));
 	
 	this->fsRenderer = new FullScreenRenderer();
 	this->fsRenderer->name = "(FSR)PostProcessing";

@@ -21,6 +21,8 @@ PostprocessEditor* postprocessEditor = nullptr;
 
 void SpringEditor::Initialize() 
 {
+	if (enabled == false)
+		return;
 	scene = new SceneWindow("Scene",true);
 	inspector = new InspectorWindow("Inspector", true);
 	hierarchy = new HierarchyWindow("Hierarchy", true);
@@ -39,5 +41,7 @@ void SpringEditor::Release()
 
 void SpringEditor::DrawEditor() 
 {
+	if (enabled == false)
+		return;
 	EditorWindow::RenderWindows();
 }

@@ -6,11 +6,11 @@ using namespace spring;
 class Matrix4x4Sample : public Behaviour
 {
 private:
-	bool enabled =  false;
 	MeshRenderer* sun;
 	MeshRenderer* earth;
 	Vector3 sunRotateAxis;
 public:
+	bool enabled =  false;
 	void Awake() override 
 	{ 
 		if (!enabled)
@@ -18,7 +18,7 @@ public:
 		ModelLoader loader = ModelLoader();
 		loader.Load("res/model/obj/sphere.obj");
 
-		Material* sunMaterial = new Material("res/shader/diffuse/diffuse.vs", "res/shader/diffuse/diffuse.fs");
+		Material* sunMaterial = new Material(Shader::Load("diffuse/diffuse.vs", "diffuse/diffuse.fs"));
 		sun = new MeshRenderer(sunMaterial);
 		sun->meshes = loader.meshes;
 		sun->textures = loader.loadedTextures;
@@ -32,7 +32,7 @@ public:
 		sun->material->shader->setFloat("Specular_Intensity", 0.0f);
 		sun->material->shader->setFloat("Specular_Attenuation", 64.0f);
 
-		Material* earthMaterial = new Material("res/shader/diffuse/diffuse.vs", "res/shader/diffuse/diffuse.fs");
+		Material* earthMaterial = new Material(Shader::Load("diffuse/diffuse.vs", "diffuse/diffuse.fs"));
 		earth = new MeshRenderer(earthMaterial);
 		earth->meshes = loader.meshes;
 		earth->textures = loader.loadedTextures;

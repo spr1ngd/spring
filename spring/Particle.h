@@ -24,5 +24,6 @@ namespace spring
 		ParticleSetting setting;
 
 		Particle();
+		~Particle();
 	};
 }

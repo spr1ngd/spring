@@ -40,7 +40,7 @@ void InstancedRenderer::Init()
 {
 	if (this->material == nullptr)
 	{
-		Console::Warning("can not render skybox without skybox material,please assign a sky box material.");
+		PRINT_WARNING("can not render skybox without skybox material,please assign a sky box material.");
 		return;
 	}
 
@@ -121,7 +121,7 @@ void InstancedRenderer::Render(Camera* camera)
 {
 	if (this->material == nullptr)
 	{
-		Console::Warning("can not render without material,please assign a material.");
+		PRINT_WARNING("can not render without material,please assign a material.");
 		return;
 	}
 

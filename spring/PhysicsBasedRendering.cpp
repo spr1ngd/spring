@@ -22,7 +22,7 @@ void DrawGroundxxx()
 	ModelLoader* modelloader = new ModelLoader();
 	modelloader->Load("res/model/obj/quad.obj");
 
-	Material* groundMaterial = new Material("res/shader/diffuse/diffuse(texture).vs", "res/shader/diffuse/diffuse(texture).fs");
+	Material* groundMaterial = new Material(Shader::Load("diffuse/diffuse(texture).vs", "diffuse/diffuse(texture).fs"));
 	ground = new MeshRenderer(groundMaterial);
 	ground->meshes = modelloader->meshes;
 	ground->textures = modelloader->loadedTextures;
@@ -129,7 +129,7 @@ Cubemap* PhysicsBasedRendering::PreFilter(Cubemap* cubemap)
 	{
 		float roughness = static_cast<float>(level) / static_cast<float>((mipmapLevel - 1));
 		meshrenderer->material->shader->setFloat("roughness", roughness);
-		Console::WarningFormat("roughness = %f",roughness);
+		PRINT_WARNING("roughness = %f",roughness);
 
 		unsigned int mipmapWidth  = static_cast<int>(cubemapSize * Mathf::Pow(0.5f, (float)level));
 		unsigned int minmapHeight = static_cast<int>(cubemapSize * Mathf::Pow(0.5f,(float)level));

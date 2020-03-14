@@ -13,6 +13,8 @@ namespace spring
 		// todo : convert color to identify 
 		// todo : glReadPixel
 	public:
+		static bool enable;
+
 		static FrameBufferObject* colorbuffer;
 		static Material* material;
 		static void Initialize();

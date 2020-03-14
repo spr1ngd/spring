@@ -1,6 +1,7 @@
 #include "particlerenderer.h"
 #include "particle.h"
 #include "primitive.h"
+#include "springengine.h"
 
 using namespace std;
 using namespace spring;
@@ -91,6 +92,7 @@ void ParticleRenderer::Update()
 			{ 
 				item = particleRenderer->usingParticles.erase(item);
 				particleRenderer->existingNumber--;
+				delete alivePartice;
 				if( item == particleRenderer->usingParticles.end())
 					break;
 			}
@@ -108,7 +110,11 @@ void ParticleRenderer::Update()
 				if (emitCount > remainCount)
 					emitCount = remainCount;
 				for (unsigned int index = 0; index < emitCount; index++)
-					emit(particleRenderer);
+				{
+					Particle* particle = emit(particleRenderer);
+					particleRenderer->usingParticles.push_back(particle);
+					particleRenderer->existingNumber++;
+				}
 			}
 			particleRenderer->emitTimer = 0.0f;
 		}
@@ -136,9 +142,6 @@ Particle* ParticleRenderer::emit(ParticleRenderer* particleRenderer)
 
 	particle->setting.position = position;// Vector3(Mathf::Randomf(-100.0f, 100.0f), Mathf::Randomf(-50.0f, 50.0f), Mathf::Randomf(-100.0f, 100.0f));
 	particle->setting.direction = direction;
-
-	particleRenderer->usingParticles.push_back(particle);
-	particleRenderer->existingNumber++;
 
 	// update shader uniform buffer data
 	particleRenderer->colors.push_back(Colorf::white);
@@ -228,7 +231,7 @@ void ParticleRenderer::Render()
 {
 	if (nullptr == this->material)
 	{
-		Console::ErrorFormat("ParticleRenderer's material can not be null.");
+		PRINT_ERROR("ParticleRenderer's material can not be null.");
 		return;
 	}
 	if (this->visible == false)

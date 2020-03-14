@@ -10,9 +10,9 @@ namespace spring
 
 		static char* string2c(std::string str) 
 		{
-			const char* c = str.c_str();
-			char* result = new char[strlen(c)];
-			strcpy_s(result, strlen(c) + 1, c);
+			char* result = new char[str.size() + 1];
+			str.copy(result, str.size() + 1);
+			result[str.size()] = '\0';
 			return result;
 		}
 

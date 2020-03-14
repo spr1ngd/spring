@@ -10,7 +10,7 @@ AxisHelper::AxisHelper(Vector3 target)
 	this->space = CoordinateSpace::World;
 	this->target = nullptr;
 
-	this->material = new Material("res/shader/vertex/vertexcolor.vs", "res/shader/vertex/vertexcolor.fs");
+	this->material = new Material(Shader::Load("vertex/vertexcolor.vs", "vertex/vertexcolor.fs"));
 	this->material->name = "axis_color";
 	this->material->renderMode = Material::Fill;
 	this->meshRenderer = new MeshRenderer(this->material);
@@ -23,7 +23,7 @@ AxisHelper::AxisHelper(Transform* trans, CoordinateSpace space)
 	this->space = space;
 	this->target = trans;
 
-	this->material = new Material("res/shader/vertex/vertexcolor.vs", "res/shader/vertex/vertexcolor.fs");
+	this->material = new Material(Shader::Load("vertex/vertexcolor.vs", "vertex/vertexcolor.fs"));
 	this->material->name = "axis_color";
 	this->material->renderMode = Material::Fill;	
 	this->meshRenderer = new MeshRenderer(this->material);

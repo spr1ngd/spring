@@ -39,7 +39,7 @@ namespace spring
 			else if (typeName == typeid(Colorf).name())
 				value = toJson((Colorf&)t);
 			else
-				Console::ErrorFormat("invalid type %s", typeName);
+				PRINT_ERROR("invalid type %s", typeName);
 			this->values.push_back(value);
 			return *value;
 		}
@@ -140,13 +140,13 @@ namespace spring
 			try
 			{
 				MeshRenderer& meshrenderer = dynamic_cast<MeshRenderer&>(node);
-				Console::LogFormat("[JsonSerializer] : transfer node to mesh renderer.");
+				PRINT_LOG("[JsonSerializer] : transfer node to mesh renderer.");
 				Value* meshRendererValue = toJson(meshrenderer);
 				value->AddMember("_meshrenderer",*meshRendererValue,this->document->GetAllocator());
 			}
 			catch (bad_cast)
 			{
-				Console::ErrorFormat("[JsonSerializer] : can not cast node to mesh renderer.");
+				PRINT_ERROR("[JsonSerializer] : can not cast node to mesh renderer.");
 			}
 			return value;
 		}

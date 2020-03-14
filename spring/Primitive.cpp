@@ -19,7 +19,7 @@ Mesh* Primitive::GenPrimitive(Primitive::Type type)
 		return Primitive::GenSphere();
 	else
 	{
-		Console::ErrorFormat("[springengine::Primitive] : does not support to generate type [%d] primitive.", type);
+		PRINT_ERROR("[springengine::Primitive] : does not support to generate type [%d] primitive.", type);
 		return nullptr;
 	}
 }

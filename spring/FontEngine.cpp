@@ -19,7 +19,7 @@ Character* LoadCharacter(FT_Face& face, char c)
 {
 	if (FT_Load_Char(face, c, FT_LOAD_RENDER))
 	{
-		Console::ErrorFormat("[spring engine] Font engine load character %s fail.", c);
+		PRINT_ERROR("[spring engine] Font engine load character %s fail.", c);
 		return nullptr;
 	}
 
@@ -59,7 +59,7 @@ void FontEngine::LoadFont(Font& font)
 	// create new font asset
 	FT_Library ft;
 	if (FT_Init_FreeType(&ft))
-		Console::ErrorFormat("[spring engine] Font engine could not init freetype library.");
+		PRINT_ERROR("[spring engine] Font engine could not init freetype library.");
 
 	char src[] = { "res/font/\0" };
 	auto srcLen = strlen(src);
@@ -69,7 +69,7 @@ void FontEngine::LoadFont(Font& font)
 	memcpy(fontAsset + srcLen, font.name, nameLen);
 	FT_Face face;
 	if (FT_New_Face(ft, fontAsset, 0, &face))
-		Console::ErrorFormat("[spring engine] Font engine load font %s fail.", font.name);
+		PRINT_ERROR("[spring engine] Font engine load font %s fail.", font.name);
 	delete[] fontAsset;
 
 	FT_Set_Pixel_Sizes(face, 0, 48);
@@ -85,7 +85,7 @@ void FontEngine::LoadFont(Font& font)
 		font.AddCharacter(character);
 	}
 
-	Console::LogFormat("[spring engine] Font engine load font %s successfully.", font.name);
+	PRINT_LOG("[spring engine] Font engine load font %s successfully.", font.name);
 	FT_Done_Face(face);
 	FT_Done_FreeType(ft);
 

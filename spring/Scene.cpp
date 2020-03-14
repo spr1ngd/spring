@@ -61,7 +61,7 @@ void Scene::SaveScene(const char* scenePath, Scene& scene)
 	SceneSerializer sceneSerializer(scene);
 	sceneSerializer.scenePath = scenePath;
 	sceneSerializer.Serialize();
-	Console::LogFormat("[Scene] : save scene [%s] successfully.",scene.name);
+	PRINT_LOG("[Scene] : save scene [%s] successfully.",scene.name);
 }
 
 void Scene::AddScene(Scene* scene) 
@@ -70,7 +70,7 @@ void Scene::AddScene(Scene* scene)
 	if (item != scenes.end())
 		return;
 	scenes[scene->name] = scene;
-	Console::LogFormat("[Scene] : add new scene %s.",scene->name);
+	PRINT_LOG("[Scene] : add new scene %s.",scene->name);
 }
 
 void Scene::RemoveScene(Scene* scene) 
@@ -80,7 +80,7 @@ void Scene::RemoveScene(Scene* scene)
 		if (item->first == scene->name) 
 		{
 			scenes.erase(item);
-			Console::LogFormat("[Scene] : remove scene %s",scene->name);
+			PRINT_LOG("[Scene] : remove scene %s",scene->name);
 			return;
 		}
 	}

@@ -1,10 +1,12 @@
 #include "gizmos.h"
 #include "transform.h"
 #include "matrix4x4.h"
+#include "console.h"
 
 using namespace std;
 using namespace spring;
  
+bool Gizmos::enable = false;
 vector<AxisHelper*> Gizmos::axisHelpers;
 vector<Gizmos*> Gizmos::gizmos;
 CoordinateSpace Gizmos::space = CoordinateSpace::World;
@@ -28,7 +30,7 @@ void Gizmos::DrawLine(Vector3 origin, Vector3 end)
 {
 	Gizmos* gizmos = new Gizmos();
 	// material
-	gizmos->material = new Material("res/shader/vertex/vertexcolor.vs", "res/shader/vertex/vertexcolor.fs");
+	gizmos->material = new Material(Shader::Load("vertex/vertexcolor.vs", "vertex/vertexcolor.fs"));
 	gizmos->material->name = "gizmos";
 	gizmos->material->renderMode = Material::Fill;
 	// mesh renderer
@@ -66,7 +68,7 @@ void Gizmos::DrawCircle(Vector3 pos, Vector3 up, float radius, unsigned int smoo
 {
 	Gizmos* gizmos = new Gizmos();
 	// material 
-	Material* material = new Material("res/shader/vertex/vertexcolor.vs", "res/shader/vertex/vertexcolor.fs");
+	Material* material = new Material(Shader::Load("vertex/vertexcolor.vs", "vertex/vertexcolor.fs"));
 	material->name = "circle material";
 	material->renderMode = Material::RenderMode::Fill;
 	gizmos->material = material;
@@ -114,6 +116,8 @@ void Gizmos::DrawCircle(Vector3 pos, Vector3 up, float radius, unsigned int smoo
 
 void Gizmos::Render() 
 {
+	if (enable == false)
+		return;
 	for (auto pair : axisHelpers) 
 		pair->Render();
 }

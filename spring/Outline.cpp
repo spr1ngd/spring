@@ -1,5 +1,6 @@
 #include "outline.h"
 #include "picking.h"
+#include "postprocessing.h"
 
 using namespace spring;
 
@@ -10,6 +11,8 @@ Outline::Outline()
 
 void Outline::Render(std::function<void()> func) 
 {	
+	if (!PostProcessing::postprocessing->enabled)
+		return;
 	if (Input::mousePosition.x <= Screen::width * 0.6f && Input::mousePosition.y <= Screen::height * 0.6f)
 	{
 		Node* selected = Picking::Pick(Input::mousePosition.x / 0.6f, Input::mousePosition.y / 0.6f);

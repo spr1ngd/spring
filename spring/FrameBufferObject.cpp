@@ -78,7 +78,7 @@ FrameBufferObject* FrameBufferObject::GenColorFramebuffer(int width, int height,
 	GLenum status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
 	if (status != GL_FRAMEBUFFER_COMPLETE)
 	{
-		Console::ErrorFormat("[spring engine] : generate color buffer object error : (0x%x)", status);
+		PRINT_ERROR("[spring engine] : generate color buffer object error : (0x%x)", status);
 		return nullptr;
 	}
 
@@ -115,7 +115,7 @@ FrameBufferObject* FrameBufferObject::GenMSColorFramebuffer( int width, int heig
 	GLenum status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
 	if (status != GL_FRAMEBUFFER_COMPLETE) 
 	{
-		Console::ErrorFormat("[spring engine] : generate multi sample color buffer object error : (0x%x)", status);
+		PRINT_ERROR("[spring engine] : generate multi sample color buffer object error : (0x%x)", status);
 		return nullptr;
 	}
 	fbo->framebufferId = framebuffer;
@@ -155,7 +155,7 @@ FrameBufferObject* FrameBufferObject::GenSingleHDRColorFramebuffer(int width, in
 	GLenum status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
 	if (status != GL_FRAMEBUFFER_COMPLETE)
 	{
-		Console::ErrorFormat("[spring engine] : generate hdr color buffer object error : (0x%x)", status);
+		PRINT_ERROR("[spring engine] : generate hdr color buffer object error : (0x%x)", status);
 		return nullptr;
 	}
 	fbo->framebufferId = framebuffer;
@@ -165,7 +165,6 @@ FrameBufferObject* FrameBufferObject::GenSingleHDRColorFramebuffer(int width, in
 	framebuffers.push_back(fbo);
 	return fbo;
 }
-
 
 FrameBufferObject* FrameBufferObject::GenHDRColorFramebuffer(int width, int height, int level, unsigned int size)
 {
@@ -200,7 +199,7 @@ FrameBufferObject* FrameBufferObject::GenHDRColorFramebuffer(int width, int heig
 	GLenum status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
 	if (status != GL_FRAMEBUFFER_COMPLETE) 
 	{
-		Console::ErrorFormat("[spring engine] : generate hdr color buffer object error : (0x%x)", status);
+		PRINT_ERROR("[spring engine] : generate hdr color buffer object error : (0x%x)", status);
 		return nullptr;
 	}
 	fbo->framebufferId = framebuffer;
@@ -244,7 +243,7 @@ FrameBufferObject* FrameBufferObject::GenDepthFramebuffer(int width, int height)
 	GLenum status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
 	if (status != GL_FRAMEBUFFER_COMPLETE)
 	{
-		Console::ErrorFormat("[spring engine] : generate depth buffer object error : (0x%x)", status);
+		PRINT_ERROR("[spring engine] : generate depth buffer object error : (0x%x)", status);
 		return nullptr;
 	}
 	fbo->framebufferId = framebuffer;

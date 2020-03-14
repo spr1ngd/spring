@@ -23,9 +23,9 @@ namespace spring
 			static StatusWindow* status;
 		public:
 			static bool enabled;
+
 			static void Initialize();
 			static void Release();
-
 			static void DrawEditor();
 		};
 	}

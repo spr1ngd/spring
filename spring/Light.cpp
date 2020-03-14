@@ -30,8 +30,8 @@ Light::Light()
 
 	if (nullptr == depthMaterial)
 	{
-		depthMaterial = new Material("res/shader/shadow/shadow.vs", "res/shader/shadow/shadow.fs");
-		instanceDepthMaterial = new Material("res/shader/shadow/shadow(instance).vs", "res/shader/shadow/shadow.fs");
+		depthMaterial = new Material(Shader::Load("shadow/shadow.vs", "shadow/shadow.fs"));
+		instanceDepthMaterial = new Material(Shader::Load("shadow/shadow(instance).vs", "shadow/shadow.fs"));
 	}
 }
 

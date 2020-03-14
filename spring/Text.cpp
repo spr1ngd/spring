@@ -73,11 +73,11 @@ void Text::GenerateMesh()
 {
 	if (nullptr == this->font)
 	{
-		Console::ErrorFormat("[spring engine] : text does not have font.");
+		PRINT_ERROR("[spring engine] : text does not have font.");
 		return;
 	}
 	if (nullptr == this->material)
-		this->material = new Material("res/shader/ui/default.vs", "res/shader/ui/default.fs");
+		this->material = new Material(Shader::Load("ui/default.vs", "ui/default.fs"));
 	this->setRenderOrder(10000);
 
 	std::vector<Mesh>().swap(this->meshes);
@@ -126,12 +126,12 @@ void Text::GenerateMesh()
 
 		for (auto tag : tags) 
 		{
-			Console::ErrorFormat("search %s",tag.c_str());
+			PRINT_ERROR("search %s",tag.c_str());
 
 			int index = 0;
 			while ((index = (int)this->text.find(tag.c_str(), index)) != string::npos)
 			{
-				Console::LogFormat("find %s in %d", tag.c_str(), index);
+				PRINT_LOG("find %s in %d", tag.c_str(), index);
 				index = index + (int)tag.length();
 			}
 		}

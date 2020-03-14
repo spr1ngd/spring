@@ -20,6 +20,7 @@ namespace spring
 		static vector<AxisHelper*> axisHelpers;
 		static CoordinateSpace space;
 	public:
+		static bool enable;
 		static Colorf color;
 		static void DrawAxis(Vector3 pos, Vector3 size = Vector3::one);
 		static void DrawAxis(Transform* transform, Vector3 size = Vector3::one);

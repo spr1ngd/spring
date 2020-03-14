@@ -13,7 +13,7 @@ FullScreenRenderer::FullScreenRenderer()
 void FullScreenRenderer::Init() 
 {
 	this->layer = Layer::PostProcessing;
-	this->material = new Material("res/shader/fullscreen/fullscreen.vs","res/shader/fullscreen/fullscreen.fs");
+	this->material = new Material(Shader::Load("fullscreen/fullscreen.vs", "fullscreen/fullscreen.fs"));
 
 	vector<Mesh> meshes;
 	vector<Vertex> vertices;

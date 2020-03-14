@@ -14,7 +14,7 @@ void Image::GenerateMesh()
 { 
 	if (nullptr == this->material)
 	{
-		Material* uiMaterial = new Material("res/shader/ui/default.vs","res/shader/ui/default.fs");
+		Material* uiMaterial = new Material(Shader::Load("ui/default.vs", "ui/default.fs"));
 		this->material = uiMaterial;
 	}
 	this->setRenderOrder(10000);

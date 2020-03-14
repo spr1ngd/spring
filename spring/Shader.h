@@ -66,16 +66,15 @@ namespace spring
 	public:
 		static Shader* error;
 		static Vector4 shaderTimer;
-		static Shader* Load(const char* vertexShaderName,const char* fragmentShaderName);
+		static Shader* Load(const char* vertexShaderName,const char* fragmentShaderName,const char* geometryShader = nullptr);
 
 	private:
 		char* loadShaderFile(const char* shaderFilePath);
 		void initializeLocation();
 
 		bool compile(GLenum shaderType,const char* filePath,unsigned int& shader);
-		bool link(unsigned int vertexShader,unsigned int fragmentShader);
+		bool link(unsigned int vertexShader, unsigned int fragmentShader);
 		bool link(unsigned int vertexShader, unsigned int fragmentShader,unsigned int geometryShader);
-
 
 		void setShaderValues();
 		void setEngineEnvironment();
@@ -104,14 +103,12 @@ namespace spring
 		bool enableLighting = true;
 
 		Shader();
-		Shader(const char*vertex,const char*fragment );
-		Shader(const char*vertex,const char*fragment,const char* geometry);
+		Shader(const char*vertex,const char*fragment,const char* geometry = nullptr);
 
 		void use();
 		void disuse();
 		unsigned int getAttribLocation(const char* name);
 		unsigned int getUniformLocation(const char* name);
-		unsigned int getLocation(const char*name);
 		const char* getUniformName(unsigned int location);
 
 		void setBool(const char* name, bool value);

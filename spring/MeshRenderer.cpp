@@ -23,7 +23,7 @@ void MeshRenderer::Init()
 {
 	if (this->material == nullptr)
 	{
-		Console::Warning("can not render skybox without skybox material,please assign a sky box material.");
+		PRINT_WARNING("can not render skybox without skybox material,please assign a sky box material.");
 		return;
 	}
 
@@ -71,7 +71,7 @@ void MeshRenderer::Render(glm::mat4 view, glm::mat4 projection)
 {
 	if (this->material == nullptr)
 	{
-		Console::Warning("can not render skybox without skybox material,please assign a sky box material.");
+		PRINT_WARNING("can not render skybox without skybox material,please assign a sky box material.");
 		return;
 	}
 
