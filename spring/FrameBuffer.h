@@ -34,16 +34,10 @@ namespace spring
 		void CubemapCapture(unsigned int cubemapId, unsigned int index ,unsigned int level = 0);
 		void Unbind();
 
-		// color buffer
-		static FrameBuffer* GenColorFramebuffer(int width,int height,int level = 0);
-		static FrameBuffer* GenMSColorFramebuffer(int width, int height, int samples);
-		static FrameBuffer* GenHDRColorFramebuffer(int width, int height, int level = 0, unsigned int size = 1);
-		static FrameBuffer* GenSingleHDRColorFramebuffer(int width, int height, int level = 0);
+		static FrameBuffer* GenMSColorFramebuffer(int width, int height, int samples); // test : why multiple sample doest not work.
+		static FrameBuffer* GenHDRColorFramebuffer(int width, int height, int level = 0, unsigned int size = 1); // replaced by multiple framebuffer.
+		static FrameBuffer* GenDepthFramebuffer(int width, int height); // framebuffer supports shadow buffer 
 
-		static FrameBuffer* GenDepthFramebuffer(int width, int height);
-		static FrameBuffer* GenStencilFramebuffer(int width, int height);
-
-		// new apis
 		enum DepthBuffer
 		{
 			NoneDepth,

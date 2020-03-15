@@ -28,8 +28,11 @@ namespace spring
 		R8,
 		RG16,
 		RGB24,
+		RGB16Float,
+		RGB32Float,
 		RGBA32,
-		RGBAFloat,
+		RGBA16Float,
+		RGBA32Float,
 	};
 
 	enum AntiAliasingLevel
@@ -74,7 +77,8 @@ namespace spring
 
 		unsigned int getWrapMode();
 		unsigned int getFilterMode();
-		unsigned int getTextureFormat();
+		unsigned int getInternalFormat();
+		unsigned int getOutputFormat();
 		unsigned int getDataType();
 	};
 }

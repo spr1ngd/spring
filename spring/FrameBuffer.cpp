@@ -44,44 +44,6 @@ void FrameBuffer::Unbind()
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
-FrameBuffer* FrameBuffer::GenColorFramebuffer(int width, int height, int level) 
-{
-	FrameBuffer* fbo = new FrameBuffer(width, height, GL_COLOR_ATTACHMENT0, level);
-	unsigned int framebuffer;
-	glGenFramebuffers(1, &framebuffer);
-	glBindFramebuffer(GL_FRAMEBUFFER, framebuffer);
-	unsigned int colorbuffer;
-	glGenTextures(1, &colorbuffer);
-	glBindTexture(GL_TEXTURE_2D, colorbuffer);
-	glTexImage2D(GL_TEXTURE_2D, fbo->level, GL_RGBA, fbo->width, fbo->height, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glFramebufferTexture2D(GL_FRAMEBUFFER, fbo->attachment, GL_TEXTURE_2D, colorbuffer, fbo->level);
-	glBindTexture(GL_TEXTURE_2D, 0);
-
-	unsigned int rbo;
-	glGenRenderbuffers(1, &rbo);
-	glBindRenderbuffer(GL_RENDERBUFFER, rbo);
-	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, fbo->width, fbo->height); // use a single renderbuffer object for both a depth AND stencil buffer.
-	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, rbo); // now actually attach it
-
-	GLenum status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
-	if (status != GL_FRAMEBUFFER_COMPLETE)
-	{
-		PRINT_ERROR("[spring engine] : generate color buffer object error : (0x%x)", status);
-		return nullptr;
-	}
-
-	fbo->framebufferId = framebuffer;
-	fbo->buffer = colorbuffer;
-	fbo->rbo = rbo;
-	glBindFramebuffer(GL_FRAMEBUFFER, 0);
-	framebuffers.push_back(fbo);
-	return fbo;
-}
-
 FrameBuffer* FrameBuffer::GenMSColorFramebuffer( int width, int height, int samples)
 {
 	FrameBuffer* fbo = new FrameBuffer(width, height, GL_COLOR_ATTACHMENT0, 0);
@@ -116,47 +78,6 @@ FrameBuffer* FrameBuffer::GenMSColorFramebuffer( int width, int height, int samp
 	framebuffers.push_back(fbo);
 	return fbo;
 }
-
-FrameBuffer* FrameBuffer::GenSingleHDRColorFramebuffer(int width, int height, int level)
-{
-	FrameBuffer* fbo = new FrameBuffer(width, height, GL_COLOR_ATTACHMENT0, level);
-	fbo->enableHDR;
-	unsigned int framebuffer;
-	glGenFramebuffers(1, &framebuffer);
-	glBindFramebuffer(GL_FRAMEBUFFER, framebuffer);
-
-	unsigned int colorbuffer;
-	glGenTextures(1, &colorbuffer);
-	glBindTexture(GL_TEXTURE_2D, colorbuffer);
-	glTexImage2D(GL_TEXTURE_2D, fbo->level, GL_RGB16F, fbo->width, fbo->height, 0, GL_RGBA, GL_FLOAT, NULL);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, colorbuffer, fbo->level);
-	glBindTexture(GL_TEXTURE_2D, 0);
-
-	unsigned int renderbuffer;
-	glGenRenderbuffers(1, &renderbuffer);
-	glBindRenderbuffer(GL_RENDERBUFFER, renderbuffer);
-	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, fbo->width, fbo->height);
-	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, renderbuffer);
-	glBindRenderbuffer(GL_RENDERBUFFER, 0);
-
-	GLenum status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
-	if (status != GL_FRAMEBUFFER_COMPLETE)
-	{
-		PRINT_ERROR("[spring engine] : generate hdr color buffer object error : (0x%x)", status);
-		return nullptr;
-	}
-	fbo->framebufferId = framebuffer;
-	fbo->buffer = colorbuffer;
-	fbo->rbo = renderbuffer;
-	glBindFramebuffer(GL_FRAMEBUFFER, 0);
-	framebuffers.push_back(fbo);
-	return fbo;
-}
-
 FrameBuffer* FrameBuffer::GenHDRColorFramebuffer(int width, int height, int level, unsigned int size)
 {
 	FrameBuffer* fbo = new FrameBuffer(width, height, GL_COLOR_ATTACHMENT0, level);
@@ -206,8 +127,7 @@ FrameBuffer* FrameBuffer::GenHDRColorFramebuffer(int width, int height, int leve
 	delete[] attachments;
 	return fbo;
 }
-
-FrameBuffer* FrameBuffer::GenDepthFramebuffer(int width, int height) 
+FrameBuffer* FrameBuffer::GenDepthFramebuffer(int width, int height)  // TODO : ÍØÕ¹
 {
 	FrameBuffer* fbo = new FrameBuffer(width, height,GL_DEPTH_ATTACHMENT,0);
 	GLuint framebuffer;
@@ -241,11 +161,6 @@ FrameBuffer* FrameBuffer::GenDepthFramebuffer(int width, int height)
 	fbo->buffer = depthbuffer;
 	framebuffers.push_back(fbo);
 	return fbo;
-}
-
-FrameBuffer* FrameBuffer::GenStencilFramebuffer(int width, int height) 
-{
-	return nullptr;
 }
 
 void FrameBuffer::Initialize()

@@ -29,7 +29,8 @@ void Texture::Initialize()
 {
 	unsigned int wrapMode = this->getWrapMode();
 	unsigned int filterMode = this->getFilterMode();
-	unsigned int textureFormat = this->getTextureFormat();
+	unsigned int internalFormat = this->getInternalFormat();
+	unsigned int outputFormat = this->getOutputFormat();
 	unsigned int dataType = this->getDataType();
 	unsigned int mipmapLevel = (this->generateMipMap == true) ? this->mipmapLevel : 0;
 	glGenTextures(1, &this->textureId);
@@ -38,7 +39,7 @@ void Texture::Initialize()
 	{
 		this->textureTarget = GL_TEXTURE_2D;
 		glBindTexture(GL_TEXTURE_2D, this->textureId);
-		glTexImage2D(GL_TEXTURE_2D, mipmapLevel, textureFormat, this->width, this->height, 0, textureFormat, dataType, NULL);
+		glTexImage2D(GL_TEXTURE_2D, mipmapLevel, internalFormat, this->width, this->height, 0, outputFormat, dataType, NULL);
 		if (this->generateMipMap)
 			glGenerateMipmap(GL_TEXTURE_2D);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, filterMode);
@@ -52,7 +53,7 @@ void Texture::Initialize()
 	{
 		this->textureTarget = GL_TEXTURE_2D_MULTISAMPLE;
 		glBindTexture(GL_TEXTURE_2D_MULTISAMPLE, this->textureId);
-		glTexImage2DMultisample(GL_TEXTURE_2D_MULTISAMPLE, this->multiSampleLevel, textureFormat, this->width, this->height, GL_TRUE);
+		glTexImage2DMultisample(GL_TEXTURE_2D_MULTISAMPLE, this->multiSampleLevel, internalFormat, this->width, this->height, GL_TRUE);
 		if (this->generateMipMap)
 			glGenerateMipmap(GL_TEXTURE_2D_MULTISAMPLE);
 		glTexParameteri(GL_TEXTURE_2D_MULTISAMPLE, GL_TEXTURE_MIN_FILTER, filterMode);
@@ -72,9 +73,9 @@ void Texture::Release()
 Colorf Texture::ReadPixel(unsigned int x,unsigned int y) 
 {
 	glBindTexture(GL_TEXTURE_2D, this->textureId);
-	glCopyTexImage2D(GL_TEXTURE_2D, 0, this->getTextureFormat(), x, y, this->width, this->height, 0);
+	glCopyTexImage2D(GL_TEXTURE_2D, 0, this->getOutputFormat(), x, y, this->width, this->height, 0);
 	float rgba[4];
-	glGetTexImage(GL_TEXTURE_2D, 0, this->getTextureFormat(), this->getDataType(), &rgba);
+	glGetTexImage(GL_TEXTURE_2D, 0, this->getOutputFormat(), this->getDataType(), &rgba);
 	return Colorf(rgba[0], rgba[1], rgba[2], rgba[3]);
 }
 
@@ -114,7 +115,7 @@ unsigned int Texture::getFilterMode()
 		return GL_NEAREST;
 	}
 }
-unsigned int Texture::getTextureFormat()
+unsigned int Texture::getInternalFormat() 
 {
 	switch (this->format)
 	{
@@ -124,9 +125,39 @@ unsigned int Texture::getTextureFormat()
 		return GL_RG;
 	case spring::ColorFormat::RGB24:
 		return GL_RGB;
+	case spring::ColorFormat::RGB16Float:
+		return GL_RGB16F;
+	case spring::ColorFormat::RGB32Float:
+		return GL_RGB32F;
 	case spring::ColorFormat::RGBA32:
 		return GL_RGBA;
-	case spring::ColorFormat::RGBAFloat:
+	case spring::ColorFormat::RGBA16Float:
+		return GL_RGBA16F;
+	case spring::ColorFormat::RGBA32Float:
+		return GL_RGBA32F;
+	default:
+		return GL_RGBA;
+	}
+}
+unsigned int Texture::getOutputFormat()
+{
+	switch (this->format)
+	{
+	case spring::ColorFormat::R8:
+		return GL_R;
+	case spring::ColorFormat::RG16:
+		return GL_RG;
+	case spring::ColorFormat::RGB24:
+		return GL_RGB;
+	case spring::ColorFormat::RGB16Float:
+		return GL_RGB;
+	case spring::ColorFormat::RGB32Float:
+		return GL_RGB;
+	case spring::ColorFormat::RGBA32:
+		return GL_RGBA;
+	case spring::ColorFormat::RGBA16Float:
+		return GL_RGBA;
+	case spring::ColorFormat::RGBA32Float:
 		return GL_RGBA;
 	default:
 		return GL_RGBA;
@@ -144,7 +175,7 @@ unsigned int Texture::getDataType()
 		return GL_UNSIGNED_BYTE;
 	case spring::ColorFormat::RGBA32:
 		return GL_UNSIGNED_BYTE;
-	case spring::ColorFormat::RGBAFloat:
+	case spring::ColorFormat::RGBA32Float:
 		return GL_FLOAT;
 	default:
 		return GL_UNSIGNED_BYTE;
