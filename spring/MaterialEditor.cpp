@@ -28,6 +28,7 @@ void MaterialEditor::OnDrawInspector()
 	if (nullptr == material)
 		return;
 	
+	return;
 	// funcs
 	if (ImGui::TreeNode("Material"))
 	{

@@ -1,11 +1,17 @@
-#include "framebufferobject.h"
+#include "framebuffer.h"
 #include "console.h"
 
 using namespace spring;
 
-std::vector<FrameBufferObject*> FrameBufferObject::framebuffers;
+std::vector<FrameBuffer*> FrameBuffer::framebuffers;
 
-FrameBufferObject::FrameBufferObject(int width,int height,GLenum attachment,int level)
+FrameBuffer::FrameBuffer(unsigned int width, unsigned int height) : width(256), height(256)
+{
+	this->width = width;
+	this->height = height;
+}
+
+FrameBuffer::FrameBuffer(int width,int height,GLenum attachment,int level)
 {
 	this->width = width;
 	this->height = height;
@@ -13,48 +19,34 @@ FrameBufferObject::FrameBufferObject(int width,int height,GLenum attachment,int 
 	this->level = level;
 }
 
-void FrameBufferObject::Bind() 
+void FrameBuffer::Bind() 
 {
 	glBindFramebuffer(GL_FRAMEBUFFER, this->framebufferId);
 }
 
-void FrameBufferObject::BindRenderbuffer() 
+void FrameBuffer::BindRenderbuffer() 
 {
 	glBindFramebuffer(GL_RENDERBUFFER,this->rbo);
 }
 
-void FrameBufferObject::CaptureMipmap(unsigned int level/* =0 */) 
+void FrameBuffer::CaptureMipmap(unsigned int level/* =0 */) 
 {
 	glFramebufferTexture2D(GL_FRAMEBUFFER,this->attachment, GL_TEXTURE_2D, this->buffer, level);
 }
 
-void FrameBufferObject::CubemapCapture(unsigned int cubemapId ,unsigned int index, unsigned int level)
+void FrameBuffer::CubemapCapture(unsigned int cubemapId ,unsigned int index, unsigned int level)
 {
 	glFramebufferTexture2D(GL_FRAMEBUFFER,this->attachment,GL_TEXTURE_CUBE_MAP_POSITIVE_X + index,cubemapId, level);
 }
 
-void FrameBufferObject::Unbind()
+void FrameBuffer::Unbind()
 {
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
-void FrameBufferObject::Delete() 
+FrameBuffer* FrameBuffer::GenColorFramebuffer(int width, int height, int level) 
 {
-	for (auto item = this->framebuffers.begin(); item != this->framebuffers.end(); item++)
-	{
-		FrameBufferObject* fbo = *item;
-		if (fbo->framebufferId == this->framebufferId)
-		{
-			this->framebuffers.erase(item);
-			break;
-		}
-	}
-	glDeleteFramebuffers(1, &this->framebufferId);
-}
-
-FrameBufferObject* FrameBufferObject::GenColorFramebuffer(int width, int height, int level) 
-{
-	FrameBufferObject* fbo = new FrameBufferObject(width, height, GL_COLOR_ATTACHMENT0, level);
+	FrameBuffer* fbo = new FrameBuffer(width, height, GL_COLOR_ATTACHMENT0, level);
 	unsigned int framebuffer;
 	glGenFramebuffers(1, &framebuffer);
 	glBindFramebuffer(GL_FRAMEBUFFER, framebuffer);
@@ -90,10 +82,9 @@ FrameBufferObject* FrameBufferObject::GenColorFramebuffer(int width, int height,
 	return fbo;
 }
 
-FrameBufferObject* FrameBufferObject::GenMSColorFramebuffer( int width, int height, int samples)
+FrameBuffer* FrameBuffer::GenMSColorFramebuffer( int width, int height, int samples)
 {
-	FrameBufferObject* fbo = new FrameBufferObject(width, height, GL_COLOR_ATTACHMENT0, 0);
-	fbo->enableMS = true;
+	FrameBuffer* fbo = new FrameBuffer(width, height, GL_COLOR_ATTACHMENT0, 0);
 	unsigned int framebuffer;
 	glGenFramebuffers(1, &framebuffer);
 	glBindFramebuffer(GL_FRAMEBUFFER, framebuffer);
@@ -126,9 +117,9 @@ FrameBufferObject* FrameBufferObject::GenMSColorFramebuffer( int width, int heig
 	return fbo;
 }
 
-FrameBufferObject* FrameBufferObject::GenSingleHDRColorFramebuffer(int width, int height, int level)
+FrameBuffer* FrameBuffer::GenSingleHDRColorFramebuffer(int width, int height, int level)
 {
-	FrameBufferObject* fbo = new FrameBufferObject(width, height, GL_COLOR_ATTACHMENT0, level);
+	FrameBuffer* fbo = new FrameBuffer(width, height, GL_COLOR_ATTACHMENT0, level);
 	fbo->enableHDR;
 	unsigned int framebuffer;
 	glGenFramebuffers(1, &framebuffer);
@@ -166,9 +157,9 @@ FrameBufferObject* FrameBufferObject::GenSingleHDRColorFramebuffer(int width, in
 	return fbo;
 }
 
-FrameBufferObject* FrameBufferObject::GenHDRColorFramebuffer(int width, int height, int level, unsigned int size)
+FrameBuffer* FrameBuffer::GenHDRColorFramebuffer(int width, int height, int level, unsigned int size)
 {
-	FrameBufferObject* fbo = new FrameBufferObject(width, height, GL_COLOR_ATTACHMENT0, level);
+	FrameBuffer* fbo = new FrameBuffer(width, height, GL_COLOR_ATTACHMENT0, level);
 	fbo->enableHDR = true;
 	fbo->enableMRT = true;
 	unsigned int framebuffer;
@@ -216,9 +207,9 @@ FrameBufferObject* FrameBufferObject::GenHDRColorFramebuffer(int width, int heig
 	return fbo;
 }
 
-FrameBufferObject* FrameBufferObject::GenDepthFramebuffer(int width, int height) 
+FrameBuffer* FrameBuffer::GenDepthFramebuffer(int width, int height) 
 {
-	FrameBufferObject* fbo = new FrameBufferObject(width, height,GL_DEPTH_ATTACHMENT,0);
+	FrameBuffer* fbo = new FrameBuffer(width, height,GL_DEPTH_ATTACHMENT,0);
 	GLuint framebuffer;
 	glGenFramebuffers(1, &framebuffer);
 	// - Create depth texture
@@ -252,7 +243,110 @@ FrameBufferObject* FrameBufferObject::GenDepthFramebuffer(int width, int height)
 	return fbo;
 }
 
-FrameBufferObject* FrameBufferObject::GenStencilFramebuffer(int width, int height) 
+FrameBuffer* FrameBuffer::GenStencilFramebuffer(int width, int height) 
 {
 	return nullptr;
+}
+
+void FrameBuffer::Initialize()
+{
+	glGenFramebuffers(1, &framebufferId);
+	glBindFramebuffer(GL_FRAMEBUFFER, framebufferId);
+	unsigned int multiSampleLevel = this->getMultiSampleLevel();
+
+	Texture* tex = new Texture(width, height);
+	tex->wrap = this->wrap;
+	tex->filter = this->filter;
+	tex->format = this->colorFormat;
+	tex->generateMipMap = this->generateMipMap;
+	tex->mipmapLevel = this->mipmapLevel;
+	tex->multiSampleLevel = multiSampleLevel;
+	tex->Initialize();
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, tex->textureTarget, tex->textureId, mipmapLevel);
+
+	if (this->depthbuffer != DepthBuffer::NoneDepth)
+	{
+		auto renderBufferFormat = getRenderBufferFormat();
+		this->renderbuffer = new RenderBuffer(width, height, renderBufferFormat);
+		this->renderbuffer->multiSampleLevel = multiSampleLevel;
+		this->renderbuffer->Initialize();
+		this->rbo = this->renderbuffer->buffer;
+	}
+
+	GLenum status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
+	if (status != GL_FRAMEBUFFER_COMPLETE)
+	{
+		PRINT_ERROR("[spring engine] : generate frame buffer object error : (0x%x)", status);
+		glBindFramebuffer(GL_FRAMEBUFFER, 0);
+		delete tex;
+		delete renderbuffer;
+		return;
+	}
+	this->texture = tex;
+	this->buffer = this->texture->textureId;
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	this->framebuffers.push_back(this);
+}
+void FrameBuffer::Release()
+{
+	for (auto item = this->framebuffers.begin(); item != this->framebuffers.end(); item++)
+	{
+		FrameBuffer* fbo = *item;
+		if (fbo->framebufferId == this->framebufferId)
+		{
+			this->framebuffers.erase(item);
+			break;
+		}
+	}
+	if (nullptr != this->texture)
+	{
+		this->texture->Release();
+		delete this->texture;
+	}
+	if (nullptr != this->renderbuffer)
+	{
+		this->renderbuffer->Release();
+		delete this->renderbuffer;
+	}
+	glDeleteFramebuffers(1, &this->framebufferId);
+}
+
+Colorf FrameBuffer::ReadPixel(unsigned int x, unsigned int y) 
+{
+	if (nullptr == this->texture)
+		return Colorf::black;
+	return this->texture->ReadPixel(x,y);
+}
+
+RenderBuffer::RenderBufferFormat FrameBuffer::getRenderBufferFormat()
+{
+	switch (this->depthbuffer)
+	{
+	case DepthBuffer::OnlyDepth:
+		return RenderBuffer::Depth;
+	case DepthBuffer::OnlyStencil:
+		return RenderBuffer::Stencil;
+	case DepthBuffer::DepthWithStencil:
+		return RenderBuffer::DepthWithStencil;
+	default:
+		return RenderBuffer::RenderBufferFormat::DepthWithStencil;
+	}
+}
+unsigned int FrameBuffer::getMultiSampleLevel()
+{
+	switch (this->antiAliasing)
+	{
+	case AntiAliasingLevel::Level0:
+		return 0;
+	case AntiAliasingLevel::Level2:
+		return 2;
+	case AntiAliasingLevel::Level4:
+		return 4;
+	case AntiAliasingLevel::Level8:
+		return 8;
+	case AntiAliasingLevel::Level16:
+		return 16;
+	default:
+		return 0;
+	}
 }

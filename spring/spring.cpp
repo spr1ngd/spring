@@ -5,13 +5,10 @@
 #include <stdio.h>
 // todo : replaced input module by glfw interfaces.
 // #include <windows.h>
-#include "GL/glew.h"
-#include "GL/wglew.h"
-#include <gl/GL.h>
-#include "GLFW/glfw3.h"
+
+#include "springengine.h"
 // todo : integrate spring engine all .h file to springengine.h and clean up solution directory.
 #include "springeditor.h"
-#include "springengine.h"
 #include "spring.h"
 #include "sample.h"
 #include "vector2.h"
@@ -110,10 +107,17 @@ int main(int, char**)
 	PostProcessing::postprocessing->bloom->enable = true;
 	PostProcessing::postprocessing->Initialize();
 
-	// FrameBufferObject* mainFramebuffer = FrameBufferObject::GenMSColorFramebuffer(Screen::width, Screen::height, 16);  // TODO: 这一张多重采样纹理，占用了200MB内存
-	FrameBufferObject* mainFramebuffer = FrameBufferObject::GenColorFramebuffer(Screen::width, Screen::height,0);
 	if (PostProcessing::postprocessing->enabled == false)
+	{
+		// FrameBuffer* mainFramebuffer = FrameBuffer::GenMSColorFramebuffer(Screen::width, Screen::height, 8);  // TODO: 这一张多重采样纹理，占用了200MB内存
+		// FrameBuffer* mainFramebuffer = FrameBuffer::GenColorFramebuffer(Screen::width, Screen::height,0);
+		FrameBuffer* mainFramebuffer = new FrameBuffer(Screen::width, Screen::height);
+		mainFramebuffer->antiAliasing = AntiAliasingLevel::Level0; // enable multiple sample , the framebuffer display wrong result.
+		mainFramebuffer->colorFormat = ColorFormat::RGB24;
+		mainFramebuffer->depthbuffer = FrameBuffer::OnlyDepth;
+		mainFramebuffer->Initialize();
 		Camera::main->framebuffer = mainFramebuffer;
+	}
 	 
 	// standalone shader compiler (in a independent thread)
 	ShaderCompiler shader_compiler;

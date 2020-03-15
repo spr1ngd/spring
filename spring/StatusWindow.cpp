@@ -1,4 +1,5 @@
 #include "statuswindow.h"
+#include "fps.h"
 
 using namespace spring;
 using namespace spring::editor;
@@ -17,5 +18,6 @@ void StatusWindow::OnDrawWindow()
 {
 	ImGui::SetNextItemOpen(this->enabled, ImGuiCond_Once);
 
-	ImGui::Text("FPS %d",60);
+	ImGui::Text("FPS:%d",FPS::fps);
+	ImGui::Text("Elapsed seconds per frame:%.2f",FPS::perFrameElapsed);
 }

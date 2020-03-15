@@ -5,3 +5,4 @@ using namespace spring::editor;
 
 float FPS::lastFrameTime = 0.0f;// timeGetTime() * 0.001f;
 int FPS::fps = 0;
+float FPS::perFrameElapsed;

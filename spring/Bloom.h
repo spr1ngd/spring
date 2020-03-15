@@ -1,5 +1,5 @@
 #pragma once
-#include "framebufferobject.h"
+#include "framebuffer.h"
 #include "material.h"
 
 namespace spring 
@@ -7,9 +7,9 @@ namespace spring
 	class Bloom 
 	{
 	public:
-		FrameBufferObject* buffer;
-		FrameBufferObject* bloomBuffer;
-		FrameBufferObject* bloomTemp;
+		FrameBuffer* buffer;
+		FrameBuffer* bloomBuffer;
+		FrameBuffer* bloomTemp;
 
 		Material* material;
 		Material* gaussianBlurMaterial;

@@ -1,6 +1,6 @@
 #pragma once 
 #include "springengine.h"
-#include "framebufferobject.h"
+#include "framebuffer.h"
 #include "fullscreenrenderer.h"
 #include "antialiasing.h"
 #include "bloom.h"
@@ -12,15 +12,15 @@ namespace spring
 	class PostProcessing
 	{
 	private:
-		void Blit(FrameBufferObject* src,FrameBufferObject* dst);
-		void Blit(FrameBufferObject* src,FrameBufferObject* dst,Material* material);
-		void Blit(FrameBufferObject* src,FrameBufferObject* dst,Material* material,unsigned int attachment);
+		void Blit(FrameBuffer* src,FrameBuffer* dst);
+		void Blit(FrameBuffer* src,FrameBuffer* dst,Material* material);
+		void Blit(FrameBuffer* src,FrameBuffer* dst,Material* material,unsigned int attachment);
 
 	public:
 
 		FullScreenRenderer* fsRenderer;
-		FrameBufferObject* srcFramebuffer;
-		FrameBufferObject* dstFramebuffer;
+		FrameBuffer* srcFramebuffer;
+		FrameBuffer* dstFramebuffer;
 
 		bool enabled;
 		AntiAliasing* antiAliasing;
@@ -35,6 +35,6 @@ namespace spring
 		void Process();
 	public:
 		static PostProcessing* postprocessing;
-		static FrameBufferObject* outputFramebuffer;
+		static FrameBuffer* outputFramebuffer;
 	};
 }

@@ -11,7 +11,10 @@
 #else
 #define DEBUG_NEW new
 #endif
-
+#include "GL/glew.h"
+#include "GL/wglew.h"
+#include <gl/GL.h>
+#include "GLFW/glfw3.h"
 #include "fileio.h"
 #include "console.h"
 #include "space.h"

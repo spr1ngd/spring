@@ -3,7 +3,7 @@
 using namespace spring;
 
 bool Picking::enable;
-FrameBufferObject* Picking::colorbuffer;
+FrameBuffer* Picking::colorbuffer;
 Material* Picking::material;
 
 Picking::Picking()
@@ -15,7 +15,10 @@ void Picking::Initialize()
 {
 	if (!enable)
 		return;
-	colorbuffer = FrameBufferObject::GenColorFramebuffer(Screen::width, Screen::height, 0);
+	// colorbuffer = FrameBuffer::GenColorFramebuffer(Screen::width, Screen::height, 0);
+	colorbuffer = new FrameBuffer(Screen::width,Screen::height);
+	colorbuffer->colorFormat = ColorFormat::RGB24;
+	colorbuffer->Initialize();
 	material = new Material(Shader::Load("physical/gpu_picking.vs","physical/gpu_picking.fs"));
 }
 
@@ -23,13 +26,14 @@ Node* Picking::Pick(unsigned int x, unsigned int y)
 {
 	if (!enable)
 		return nullptr;
-	float* pixel = new float[4]{0};
+	float* pixel = new float[4]{ 0 };
 	glBindFramebuffer(GL_READ_FRAMEBUFFER, colorbuffer->framebufferId);
 	// glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-	glReadPixels(x, y, 1,1, GL_RGBA, GL_FLOAT, pixel);
-	Colorf color = Colorf(pixel[0],pixel[1],pixel[2],pixel[3]);
+	glReadPixels(x, y, 1, 1, GL_RGBA, GL_FLOAT, pixel);
+	Colorf color = Colorf(pixel[0], pixel[1], pixel[2], pixel[3]);
+	// Colorf color = colorbuffer->ReadPixel(x, y);
 	unsigned int identify = Convert2Identify(color);
-	delete[] pixel;
+	// delete[] pixel;
 	glBindFramebuffer(GL_READ_FRAMEBUFFER, 0);
 	return (Node*)MeshRenderer::GetMeshRenderer(identify);
 }

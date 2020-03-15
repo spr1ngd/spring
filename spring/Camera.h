@@ -5,7 +5,7 @@
 #include "transform.h"
 #include "vector3.h"
 #include "color.h"
-#include "framebufferobject.h"
+#include "framebuffer.h"
 
 namespace spring 
 {
@@ -46,7 +46,7 @@ namespace spring
 		float nearClip = 0.1f;
 		float farClip = 1000.0f; 
 
-		FrameBufferObject* framebuffer = nullptr;
+		FrameBuffer* framebuffer = nullptr;
 		bool enableHDR = false;
 
 	public:

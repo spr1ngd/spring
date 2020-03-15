@@ -26,10 +26,7 @@ private:
 	MeshRenderer* aircraft;
 	MeshRenderer* aircraftNormal;
 
-	FrameBufferObject* framebuffer = FrameBufferObject::GenColorFramebuffer(Screen::width, Screen::height,0);
-
-	Texture* texture = TextureLoader::Load("res/texture/grass.jpg", true);
-	Texture* rawTexture = new Texture();
+	Texture* texture = nullptr;
 
 	Image* image; 
 	Image* leftbttom;
@@ -45,7 +42,7 @@ public:
 	{
 		if (!enabled)
 			return;
-
+		texture = TextureLoader::Load("res/texture/grass.jpg", true);
 		if (this->drawGround)
 			this->DrawGround();
 
@@ -176,7 +173,6 @@ public:
 		if (drawFourFrame)
 		{
 			// rawTexture->textureId = Light::main->shadow->buffer;
-			image->texture = rawTexture;
 			// image->material->shader->setTexture(MAIN_TEX, Light::main->shadow->buffer);
 
 			// Camera::main->transform->SetPosition(Light::main->transform->GetPosition());

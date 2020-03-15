@@ -220,7 +220,7 @@
     <ClInclude Include="Font.h" />
     <ClInclude Include="FontEngine.h" />
     <ClInclude Include="FPS.h" />
-    <ClInclude Include="FrameBufferObject.h" />
+    <ClInclude Include="FrameBuffer.h" />
     <ClInclude Include="FullScreenRenderer.h" />
     <ClInclude Include="Gizmos.h" />
     <ClInclude Include="Graphic.h" />
@@ -272,6 +272,7 @@
     <ClInclude Include="Rect.h" />
     <ClInclude Include="RectTransform.h" />
     <ClInclude Include="Renderable.h" />
+    <ClInclude Include="RenderBuffer.h" />
     <ClInclude Include="RenderOrder.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="Resources.h" />
@@ -324,7 +325,7 @@
     <ClCompile Include="Font.cpp" />
     <ClCompile Include="FontEngine.cpp" />
     <ClCompile Include="FPS.cpp" />
-    <ClCompile Include="FrameBufferObject.cpp" />
+    <ClCompile Include="FrameBuffer.cpp" />
     <ClCompile Include="FullScreenRenderer.cpp" />
     <ClCompile Include="Gizmos.cpp" />
     <ClCompile Include="Graphic.cpp" />
@@ -375,6 +376,7 @@
     <ClCompile Include="Rect.cpp" />
     <ClCompile Include="RectTransform.cpp" />
     <ClCompile Include="Renderable.cpp" />
+    <ClCompile Include="RenderBuffer.cpp" />
     <ClCompile Include="RenderOrder.cpp" />
     <ClCompile Include="Resources.cpp" />
     <ClCompile Include="Sample.cpp" />

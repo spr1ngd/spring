@@ -7,7 +7,7 @@
 #include "vector3.h"
 #include "vector4.h"
 #include "material.h"
-#include "framebufferobject.h"
+#include "framebuffer.h"
 #include "layer.h"
 
 using namespace std;
@@ -61,7 +61,7 @@ namespace spring
 		LayerMask* cullingMask;
 		ShadowType shadowType = ShadowType::HardShadow;
 		glm::mat4 lightSpaceMatrix;
-		FrameBufferObject* shadow;
+		FrameBuffer* shadow;
 
 	public:
 		Light();

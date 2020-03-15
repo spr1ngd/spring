@@ -1,5 +1,5 @@
 #pragma once
-#include "framebufferobject.h"
+#include "framebuffer.h"
 #include "material.h"
 #include "node.h"
 #include <map>

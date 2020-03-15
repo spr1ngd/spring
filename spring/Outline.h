@@ -7,10 +7,10 @@ namespace spring
 	class Outline 
 	{
 	public:
-		FrameBufferObject* buffer;
-		FrameBufferObject* originBuffer;
-		FrameBufferObject* blendBuffer;
-		FrameBufferObject* outputBuffer;
+		FrameBuffer* buffer;
+		FrameBuffer* originBuffer;
+		FrameBuffer* blendBuffer;
+		FrameBuffer* outputBuffer;
 		Material* outlineMaterial;
 		Material* outlineBlendMaterial;
 		Material* outputMateiral;

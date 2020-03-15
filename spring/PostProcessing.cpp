@@ -4,7 +4,7 @@
 using namespace spring;
 
 class::spring::PostProcessing* PostProcessing::postprocessing;
-FrameBufferObject* PostProcessing::outputFramebuffer;
+FrameBuffer* PostProcessing::outputFramebuffer;
 
 Material* outputMaterial;
 
@@ -18,17 +18,21 @@ PostProcessing::PostProcessing()
 	this->outline->outlineMaterial = new Material(Shader::Load("postprocessing/outline/outline.vs","postprocessing/outline/outline.fs"));
 	this->outline->outlineBlendMaterial = new Material(Shader::Load("fullscreen/fullscreen.vs","postprocessing/outline/outline(blend).fs"));
 	this->outline->outputMateiral = new Material(Shader::Load("fullscreen/fullscreen.vs","postprocessing/add.fs"));
-	this->outline->buffer = FrameBufferObject::GenSingleHDRColorFramebuffer(Screen::width,Screen::height,0);
-	this->outline->originBuffer = FrameBufferObject::GenSingleHDRColorFramebuffer(Screen::width, Screen::height, 0);
-	this->outline->blendBuffer = FrameBufferObject::GenSingleHDRColorFramebuffer(Screen::width, Screen::height, 0);
-	this->outline->outputBuffer = FrameBufferObject::GenSingleHDRColorFramebuffer(Screen::width, Screen::height, 0);
+	this->outline->buffer = FrameBuffer::GenSingleHDRColorFramebuffer(Screen::width,Screen::height,0);
+	this->outline->originBuffer = FrameBuffer::GenSingleHDRColorFramebuffer(Screen::width, Screen::height, 0);
+	this->outline->blendBuffer = FrameBuffer::GenSingleHDRColorFramebuffer(Screen::width, Screen::height, 0);
+	this->outline->outputBuffer = FrameBuffer::GenSingleHDRColorFramebuffer(Screen::width, Screen::height, 0);
 }
 
 void PostProcessing::Initialize() 
 { 
 	if (this->enabled == false)
 		return;
-	outputFramebuffer = FrameBufferObject::GenColorFramebuffer(Screen::width, Screen::height, 0);
+	// outputFramebuffer = FrameBuffer::GenColorFramebuffer(Screen::width, Screen::height, 0);
+	outputFramebuffer = new FrameBuffer(Screen::width,Screen::height);
+	outputFramebuffer->colorFormat = ColorFormat::RGB24;
+	outputFramebuffer->Initialize();
+
 	outputMaterial = new Material(Shader::Load("fullscreen/fullscreen.vs", "fullscreen/fullscreen.fs"));
 	
 	this->fsRenderer = new FullScreenRenderer();
@@ -37,7 +41,7 @@ void PostProcessing::Initialize()
 
 	// if (this->antiAliasing->enabled)
 	// {
-	// 	this->srcFramebuffer = FrameBufferObject::GenMSColorFramebuffer(Screen::width, Screen::height, this->antiAliasing->samples);
+	// 	this->srcFramebuffer = FrameBuffer::GenMSColorFramebuffer(Screen::width, Screen::height, this->antiAliasing->samples);
 	// }
 
 	if (this->bloom->enable)
@@ -46,20 +50,23 @@ void PostProcessing::Initialize()
 		this->bloom->gaussianBlurMaterial = new Material(Shader::Load("fullscreen/fullscreen.vs","postprocessing/bloom/gaussianblur.fs"));
 		this->bloom->bloomAddMaterial = new Material(Shader::Load("fullscreen/fullscreen.vs","postprocessing/bloom/bloomadd.fs"));
 		this->bloom->material->shader->enableLighting = false;
-		this->bloom->buffer = FrameBufferObject::GenHDRColorFramebuffer(Screen::width, Screen::height, 0, 2);
-		this->bloom->bloomBuffer = FrameBufferObject::GenSingleHDRColorFramebuffer(Screen::width,Screen::height,0);
-		this->bloom->bloomTemp = FrameBufferObject::GenSingleHDRColorFramebuffer(Screen::width, Screen::height, 0);
+		this->bloom->buffer = FrameBuffer::GenHDRColorFramebuffer(Screen::width, Screen::height, 0, 2);
+		this->bloom->bloomBuffer = FrameBuffer::GenSingleHDRColorFramebuffer(Screen::width,Screen::height,0);
+		this->bloom->bloomTemp = FrameBuffer::GenSingleHDRColorFramebuffer(Screen::width, Screen::height, 0);
 	}
 
 	if (this->toneMapping->enable) 
 	{
 		this->toneMapping->material = new Material(Shader::Load("fullscreen/fullscreen.vs","postprocessing/tonemapping/tonemapping.fs"));
 		this->toneMapping->material->shader->enableLighting = false;
-		this->toneMapping->buffer = FrameBufferObject::GenColorFramebuffer(Screen::width, Screen::height, 0);
+		// this->toneMapping->buffer = FrameBuffer::GenColorFramebuffer(Screen::width, Screen::height, 0);
+		this->toneMapping->buffer = new FrameBuffer(Screen::width,Screen::height);
+		this->toneMapping->buffer->colorFormat = ColorFormat::RGB24;
+		this->toneMapping->buffer->Initialize();
 	}
 
-	this->srcFramebuffer = FrameBufferObject::GenSingleHDRColorFramebuffer(Screen::width, Screen::height, 0);
-	this->dstFramebuffer = FrameBufferObject::GenSingleHDRColorFramebuffer(Screen::width, Screen::height, 0);
+	this->srcFramebuffer = FrameBuffer::GenSingleHDRColorFramebuffer(Screen::width, Screen::height, 0);
+	this->dstFramebuffer = FrameBuffer::GenSingleHDRColorFramebuffer(Screen::width, Screen::height, 0);
 	Camera::main->framebuffer = this->srcFramebuffer;
 }
 
@@ -76,7 +83,7 @@ void PostProcessing::Process()
 		return;
 
 	this->Blit(this->srcFramebuffer,this->dstFramebuffer);
-	FrameBufferObject* transfer = this->dstFramebuffer;
+	FrameBuffer* transfer = this->dstFramebuffer;
 
 	// bloom 
 	if (this->bloom->enable)
@@ -129,7 +136,7 @@ void PostProcessing::Process()
 	this->Blit(transfer, outputFramebuffer);
 }
 
-void PostProcessing::Blit(FrameBufferObject* src,FrameBufferObject* dst)
+void PostProcessing::Blit(FrameBuffer* src,FrameBuffer* dst)
 {
 	glBindFramebuffer(GL_READ_FRAMEBUFFER, src->framebufferId);
 	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, dst->framebufferId);
@@ -137,7 +144,7 @@ void PostProcessing::Blit(FrameBufferObject* src,FrameBufferObject* dst)
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
-void PostProcessing::Blit(FrameBufferObject* src, FrameBufferObject* dst, Material* material) 
+void PostProcessing::Blit(FrameBuffer* src, FrameBuffer* dst, Material* material) 
 {
 	this->fsRenderer->material = material;
 	this->fsRenderer->material->shader->setTexture(MAIN_TEX, src->buffer);// 这里根据是否运行使用MTR取不同的buffer attachment
@@ -153,7 +160,7 @@ void PostProcessing::Blit(FrameBufferObject* src, FrameBufferObject* dst, Materi
 	delete[] postProcessingLayer;
 }
 
-void PostProcessing::Blit(FrameBufferObject* src, FrameBufferObject* dst, Material* material,unsigned int attachment)
+void PostProcessing::Blit(FrameBuffer* src, FrameBuffer* dst, Material* material,unsigned int attachment)
 {
 	this->fsRenderer->material = material;
 	this->fsRenderer->material->shader->setTexture(MAIN_TEX, src->buffers[attachment]);// 这里根据是否运行使用MTR取不同的buffer attachment

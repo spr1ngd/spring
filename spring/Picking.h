@@ -15,7 +15,7 @@ namespace spring
 	public:
 		static bool enable;
 
-		static FrameBufferObject* colorbuffer;
+		static FrameBuffer* colorbuffer;
 		static Material* material;
 		static void Initialize();
 		static Node* Pick(unsigned int x, unsigned int y);

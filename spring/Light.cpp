@@ -49,7 +49,7 @@ void Light::CastShadow()
 		if (light->shadowType == Light::NoShadow)
 			continue;
 		if (light->shadow == nullptr)
-			light->shadow = FrameBufferObject::GenDepthFramebuffer(Screen::width, Screen::height);
+			light->shadow = FrameBuffer::GenDepthFramebuffer(Screen::width, Screen::height);
 
 		camera->transform->SetPosition(light->transform->GetPosition());
 		camera->transform->SetEulerangle(light->transform->GetEulerangle());

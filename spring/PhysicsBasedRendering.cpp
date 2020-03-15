@@ -70,7 +70,7 @@ Cubemap* PhysicsBasedRendering::CubemapConvolution(Cubemap* cubemap)
 	};
 	glm::mat4 projection = glm::perspective(glm::radians(90.0f),1.0f, 0.1f, 1000.0f);
 
-	FrameBufferObject* capture = FrameBufferObject::GenColorFramebuffer(cubemapSize, cubemapSize, 0);
+	FrameBuffer* capture = FrameBuffer::GenColorFramebuffer(cubemapSize, cubemapSize, 0);
 	glViewport(0, 0, cubemapSize, cubemapSize);
 	capture->Bind();
 	for (unsigned int i = 0; i < 6; i++) 
@@ -122,7 +122,7 @@ Cubemap* PhysicsBasedRendering::PreFilter(Cubemap* cubemap)
 	};
 	glm::mat4 projection = glm::perspective(glm::radians(90.0f), 1.0f, 0.1f, 1000.0f);
 
-	FrameBufferObject* fbo = FrameBufferObject::GenColorFramebuffer(cubemapSize, cubemapSize);
+	FrameBuffer* fbo = FrameBuffer::GenColorFramebuffer(cubemapSize, cubemapSize);
 
 	fbo->Bind();
 	for (unsigned int level = 0; level < mipmapLevel; level++) 
@@ -167,7 +167,7 @@ Texture* PhysicsBasedRendering::PreBRDF(Cubemap* cubemap)
 	fsRenderer->material = preBRDFMaterial;
 
 	glViewport(0, 0, textureSize, textureSize);
-	FrameBufferObject* fbo = FrameBufferObject::GenColorFramebuffer(textureSize, textureSize, 0);
+	FrameBuffer* fbo = FrameBuffer::GenColorFramebuffer(textureSize, textureSize, 0);
 	fbo->Bind();
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glClearColor(1.0f,0.0f,0.0f,1.0f);

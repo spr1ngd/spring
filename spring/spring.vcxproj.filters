@@ -427,9 +427,6 @@
     <ClInclude Include="Material.h">
       <Filter>头文件\Core\Renderer\BasicModule</Filter>
     </ClInclude>
-    <ClInclude Include="FrameBufferObject.h">
-      <Filter>头文件\Core\Renderer\BasicModule</Filter>
-    </ClInclude>
     <ClInclude Include="UniformBuffer.h">
       <Filter>头文件\Core\Renderer\BasicModule</Filter>
     </ClInclude>
@@ -522,6 +519,12 @@
     </ClInclude>
     <ClInclude Include="StatusWindow.h">
       <Filter>头文件\Editor\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="FrameBuffer.h">
+      <Filter>头文件\Core\Renderer\BasicModule</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderBuffer.h">
+      <Filter>头文件\Core\Renderer\BasicModule</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -726,9 +729,6 @@
     <ClCompile Include="Behaviour.cpp">
       <Filter>源文件\Core\Renderer\BasicModule</Filter>
     </ClCompile>
-    <ClCompile Include="FrameBufferObject.cpp">
-      <Filter>源文件\Core\Renderer\BasicModule</Filter>
-    </ClCompile>
     <ClCompile Include="Layer.cpp">
       <Filter>源文件\Core\Renderer\BasicModule</Filter>
     </ClCompile>
@@ -821,6 +821,12 @@
     </ClCompile>
     <ClCompile Include="StatusWindow.cpp">
       <Filter>源文件\Editor\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="FrameBuffer.cpp">
+      <Filter>源文件\Core\Renderer\BasicModule</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderBuffer.cpp">
+      <Filter>源文件\Core\Renderer\BasicModule</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
