@@ -633,7 +633,7 @@ void Shader::setLighting()
 			{
 				if (nullptr != light->shadow)
 				{
-					GLuint shadowmap = light->shadow->buffer;
+					GLuint shadowmap = light->shadow->GetBuffer();
 					this->setTexture(SHADOWMAP, shadowmap);
 					// set light space matrix.
 					this->setMat4("LightSpaceMatrix", light->lightSpaceMatrix);

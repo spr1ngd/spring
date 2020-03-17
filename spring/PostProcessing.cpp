@@ -18,22 +18,16 @@ PostProcessing::PostProcessing()
 	this->outline->outlineMaterial = new Material(Shader::Load("postprocessing/outline/outline.vs","postprocessing/outline/outline.fs"));
 	this->outline->outlineBlendMaterial = new Material(Shader::Load("fullscreen/fullscreen.vs","postprocessing/outline/outline(blend).fs"));
 	this->outline->outputMateiral = new Material(Shader::Load("fullscreen/fullscreen.vs","postprocessing/add.fs"));
-	// this->outline->buffer = FrameBuffer::GenSingleHDRColorFramebuffer(Screen::width,Screen::height,0);
 
 	this->outline->buffer = new FrameBuffer(Screen::width,Screen::height);
 	this->outline->buffer->Initialize();
 
-	// this->outline->originBuffer = FrameBuffer::GenSingleHDRColorFramebuffer(Screen::width, Screen::height, 0);
-
 	this->outline->originBuffer = new FrameBuffer(Screen::width,Screen::height);
 	this->outline->originBuffer->Initialize();
-
-	// this->outline->blendBuffer = FrameBuffer::GenSingleHDRColorFramebuffer(Screen::width, Screen::height, 0);
 
 	this->outline->blendBuffer = new FrameBuffer(Screen::width, Screen::height);
 	this->outline->blendBuffer->Initialize();
 
-	// this->outline->outputBuffer = FrameBuffer::GenSingleHDRColorFramebuffer(Screen::width, Screen::height, 0);
 	this->outline->outputBuffer = new FrameBuffer(Screen::width,Screen::height);
 	this->outline->outputBuffer->Initialize();
 }
@@ -42,9 +36,7 @@ void PostProcessing::Initialize()
 { 
 	if (this->enabled == false)
 		return;
-	// outputFramebuffer = FrameBuffer::GenColorFramebuffer(Screen::width, Screen::height, 0);
 	outputFramebuffer = new FrameBuffer(Screen::width,Screen::height);
-	outputFramebuffer->colorFormat = ColorFormat::RGB24;
 	outputFramebuffer->Initialize();
 
 	outputMaterial = new Material(Shader::Load("fullscreen/fullscreen.vs", "fullscreen/fullscreen.fs"));
@@ -60,20 +52,17 @@ void PostProcessing::Initialize()
 
 	if (this->bloom->enable)
 	{
-		this->bloom->material = new Material(Shader::Load("fullscreen/fullscreen.vs", "postprocessing/bloom/bloom.fs"));
-		this->bloom->gaussianBlurMaterial = new Material(Shader::Load("fullscreen/fullscreen.vs","postprocessing/bloom/gaussianblur.fs"));
-		this->bloom->bloomAddMaterial = new Material(Shader::Load("fullscreen/fullscreen.vs","postprocessing/bloom/bloomadd.fs"));
+		this->bloom->material = new Material(Shader::Load("fullscreen/fullscreen.vs", "postprocessing/bloom/bloom.fs")); // extract hdr portion
+		this->bloom->gaussianBlurMaterial = new Material(Shader::Load("fullscreen/fullscreen.vs","postprocessing/bloom/gaussianblur.fs")); // use gaussian blur post hdr portion
+		this->bloom->bloomAddMaterial = new Material(Shader::Load("fullscreen/fullscreen.vs","postprocessing/bloom/bloomadd.fs")); // blend hdr portion and normal buffer
 		this->bloom->material->shader->enableLighting = false;
-		this->bloom->buffer = FrameBuffer::GenHDRColorFramebuffer(Screen::width, Screen::height, 0, 2);
-		// this->bloom->bloomBuffer = FrameBuffer::GenSingleHDRColorFramebuffer(Screen::width,Screen::height,0);
-		// this->bloom->bloomTemp = FrameBuffer::GenSingleHDRColorFramebuffer(Screen::width, Screen::height, 0);
+		this->bloom->buffer = new FrameBuffer(Screen::width,Screen::height,ColorFormat::RGB16Float,2);
+		this->bloom->buffer->Initialize();
 
-		this->bloom->bloomBuffer = new FrameBuffer(Screen::width,Screen::height);
-		this->bloom->bloomBuffer->colorFormat = ColorFormat::RGB16Float;
+		this->bloom->bloomBuffer = new FrameBuffer(Screen::width,Screen::height, ColorFormat::RGB16Float);
 		this->bloom->bloomBuffer->Initialize();
 
-		this->bloom->bloomTemp = new FrameBuffer(Screen::width,Screen::height);
-		this->bloom->bloomTemp->colorFormat = ColorFormat::RGB16Float;
+		this->bloom->bloomTemp = new FrameBuffer(Screen::width,Screen::height, ColorFormat::RGB16Float);
 		this->bloom->bloomTemp->Initialize();
 	}
 
@@ -81,21 +70,15 @@ void PostProcessing::Initialize()
 	{
 		this->toneMapping->material = new Material(Shader::Load("fullscreen/fullscreen.vs","postprocessing/tonemapping/tonemapping.fs"));
 		this->toneMapping->material->shader->enableLighting = false;
-		// this->toneMapping->buffer = FrameBuffer::GenColorFramebuffer(Screen::width, Screen::height, 0);
 		this->toneMapping->buffer = new FrameBuffer(Screen::width,Screen::height);
-		this->toneMapping->buffer->colorFormat = ColorFormat::RGB24;
 		this->toneMapping->buffer->Initialize();
 	}
 
-	// this->srcFramebuffer = FrameBuffer::GenSingleHDRColorFramebuffer(Screen::width, Screen::height, 0);
-	// this->dstFramebuffer = FrameBuffer::GenSingleHDRColorFramebuffer(Screen::width, Screen::height, 0);
-	this->srcFramebuffer = new FrameBuffer(Screen::width,Screen::height);
-	this->srcFramebuffer->colorFormat = ColorFormat::RGBA16Float;
+	this->srcFramebuffer = new FrameBuffer(Screen::width,Screen::height, ColorFormat::RGBA16Float);
 	this->srcFramebuffer->depthbuffer = FrameBuffer::OnlyDepth;
 	this->srcFramebuffer->Initialize();
 
-	this->dstFramebuffer = new FrameBuffer(Screen::width,Screen::height);
-	this->dstFramebuffer->colorFormat = ColorFormat::RGB16Float;
+	this->dstFramebuffer = new FrameBuffer(Screen::width,Screen::height, ColorFormat::RGBA16Float);
 	this->dstFramebuffer->Initialize();
 
 	Camera::main->framebuffer = this->srcFramebuffer;
@@ -132,13 +115,15 @@ void PostProcessing::Process()
 			if (firstTransfer)
 				this->Blit(transfer, this->bloom->bloomBuffer, this->bloom->gaussianBlurMaterial, 1);
 			else
-				this->Blit(hSample ? this->bloom->bloomTemp : this->bloom->bloomBuffer, hSample ? this->bloom->bloomBuffer : this->bloom->bloomTemp, this->bloom->gaussianBlurMaterial);
+				this->Blit(hSample ? this->bloom->bloomTemp : this->bloom->bloomBuffer,
+					hSample ? this->bloom->bloomBuffer : this->bloom->bloomTemp,
+					this->bloom->gaussianBlurMaterial);
 			firstTransfer = false;
 			transfer = this->bloom->bloomTemp;
 		 	hSample = !hSample;
 		}
 
-		this->bloom->bloomAddMaterial->shader->setTexture("BrightTexture",transfer->buffer);
+		this->bloom->bloomAddMaterial->shader->setTexture("BrightTexture",transfer->GetBuffer());
 		this->Blit(this->bloom->buffer, this->bloom->bloomBuffer, this->bloom->bloomAddMaterial, 0);
 		transfer = this->bloom->bloomBuffer;
 		// blend src and bright area
@@ -147,10 +132,10 @@ void PostProcessing::Process()
 	// outline
 	if (this->outline->enable)
 	{
-		this->outline->outlineBlendMaterial->shader->setTexture("outlineTexture", this->outline->buffer->buffer);
+		this->outline->outlineBlendMaterial->shader->setTexture("outlineTexture", this->outline->buffer->GetBuffer());
 		this->Blit(this->outline->originBuffer, this->outline->blendBuffer, this->outline->outlineBlendMaterial);
 
-		this->outline->outputMateiral->shader->setTexture("addTexture", this->outline->blendBuffer->buffer);
+		this->outline->outputMateiral->shader->setTexture("addTexture", this->outline->blendBuffer->GetBuffer());
 		this->Blit(transfer, this->outline->outputBuffer, this->outline->outputMateiral);
 		transfer = this->outline->outputBuffer;
 	}
@@ -178,7 +163,7 @@ void PostProcessing::Blit(FrameBuffer* src,FrameBuffer* dst)
 void PostProcessing::Blit(FrameBuffer* src, FrameBuffer* dst, Material* material) 
 {
 	this->fsRenderer->material = material;
-	this->fsRenderer->material->shader->setTexture(MAIN_TEX, src->buffer);// 这里根据是否运行使用MTR取不同的buffer attachment
+	this->fsRenderer->material->shader->setTexture(MAIN_TEX, src->GetBuffer());
 
 	Camera::current = Camera::main;
 	Camera::current->framebuffer = dst;
@@ -194,7 +179,7 @@ void PostProcessing::Blit(FrameBuffer* src, FrameBuffer* dst, Material* material
 void PostProcessing::Blit(FrameBuffer* src, FrameBuffer* dst, Material* material,unsigned int attachment)
 {
 	this->fsRenderer->material = material;
-	this->fsRenderer->material->shader->setTexture(MAIN_TEX, src->buffers[attachment]);// 这里根据是否运行使用MTR取不同的buffer attachment
+	this->fsRenderer->material->shader->setTexture(MAIN_TEX, src->GetBuffer(attachment));
 
 	Camera::current = Camera::main;
 	Camera::current->framebuffer = dst;

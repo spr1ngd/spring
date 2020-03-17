@@ -5,162 +5,12 @@ using namespace spring;
 
 std::vector<FrameBuffer*> FrameBuffer::framebuffers;
 
-FrameBuffer::FrameBuffer(unsigned int width, unsigned int height) : width(256), height(256)
+FrameBuffer::FrameBuffer(unsigned int width, unsigned int height , ColorFormat colorFormat ,unsigned int bufferSize)
 {
 	this->width = width;
 	this->height = height;
-}
-
-FrameBuffer::FrameBuffer(int width,int height,GLenum attachment,int level)
-{
-	this->width = width;
-	this->height = height;
-	this->attachment = attachment;
-	this->level = level;
-}
-
-void FrameBuffer::Bind() 
-{
-	glBindFramebuffer(GL_FRAMEBUFFER, this->framebufferId);
-}
-
-void FrameBuffer::BindRenderbuffer() 
-{
-	glBindFramebuffer(GL_RENDERBUFFER,this->rbo);
-}
-
-void FrameBuffer::CaptureMipmap(unsigned int level/* =0 */) 
-{
-	glFramebufferTexture2D(GL_FRAMEBUFFER,this->attachment, GL_TEXTURE_2D, this->buffer, level);
-}
-
-void FrameBuffer::CubemapCapture(unsigned int cubemapId ,unsigned int index, unsigned int level)
-{
-	glFramebufferTexture2D(GL_FRAMEBUFFER,this->attachment,GL_TEXTURE_CUBE_MAP_POSITIVE_X + index,cubemapId, level);
-}
-
-void FrameBuffer::Unbind()
-{
-	glBindFramebuffer(GL_FRAMEBUFFER, 0);
-}
-
-FrameBuffer* FrameBuffer::GenMSColorFramebuffer( int width, int height, int samples)
-{
-	FrameBuffer* fbo = new FrameBuffer(width, height, GL_COLOR_ATTACHMENT0, 0);
-	unsigned int framebuffer;
-	glGenFramebuffers(1, &framebuffer);
-	glBindFramebuffer(GL_FRAMEBUFFER, framebuffer);
-
-	unsigned int colorbuffer;
-	glGenTextures(1, &colorbuffer);
-	glBindTexture(GL_TEXTURE_2D_MULTISAMPLE, colorbuffer);
-	glTexImage2DMultisample(GL_TEXTURE_2D_MULTISAMPLE, samples, GL_RGB, fbo->width, fbo->height, GL_TRUE);
-	glFramebufferTexture2D(GL_FRAMEBUFFER, fbo->attachment, GL_TEXTURE_2D_MULTISAMPLE, colorbuffer, fbo->level);
-	glBindTexture(GL_TEXTURE_2D_MULTISAMPLE, 0);
-
-	unsigned int renderbuffer;
-	glGenRenderbuffers(1, &renderbuffer);
-	glBindRenderbuffer(GL_RENDERBUFFER, renderbuffer);
-	glRenderbufferStorageMultisample(GL_RENDERBUFFER, samples, GL_DEPTH24_STENCIL8, fbo->width, fbo->height);
-	glBindRenderbuffer(GL_RENDERBUFFER, 0);
-	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, renderbuffer);
-
-	GLenum status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
-	if (status != GL_FRAMEBUFFER_COMPLETE) 
-	{
-		PRINT_ERROR("[spring engine] : generate multi sample color buffer object error : (0x%x)", status);
-		return nullptr;
-	}
-	fbo->framebufferId = framebuffer;
-	fbo->buffer = colorbuffer;
-	fbo->rbo = renderbuffer;
-	glBindFramebuffer(GL_FRAMEBUFFER, 0);
-	framebuffers.push_back(fbo);
-	return fbo;
-}
-FrameBuffer* FrameBuffer::GenHDRColorFramebuffer(int width, int height, int level, unsigned int size)
-{
-	FrameBuffer* fbo = new FrameBuffer(width, height, GL_COLOR_ATTACHMENT0, level);
-	fbo->enableHDR = true;
-	fbo->enableMRT = true;
-	unsigned int framebuffer;
-	glGenFramebuffers(1, &framebuffer);
-	glBindFramebuffer(GL_FRAMEBUFFER, framebuffer);
-
-	unsigned int* textures = new unsigned int[size];
-	glGenTextures(size, textures);
-	for (unsigned int i = 0; i < size; i++) 
-	{
-		glBindTexture(GL_TEXTURE_2D, textures[i]);
-		glTexImage2D(GL_TEXTURE_2D, fbo->level, GL_RGB16F, fbo->width, fbo->height, 0, GL_RGBA, GL_FLOAT, NULL);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + i, GL_TEXTURE_2D, textures[i], fbo->level);
-		glBindTexture(GL_TEXTURE_2D, 0);
-	}
-
-	unsigned int renderbuffer;
-	glGenRenderbuffers(1, &renderbuffer);
-	glBindRenderbuffer(GL_RENDERBUFFER,renderbuffer);
-	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, fbo->width, fbo->height);
-	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, renderbuffer);
-	glBindRenderbuffer(GL_RENDERBUFFER, 0);
-
-	GLenum status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
-	if (status != GL_FRAMEBUFFER_COMPLETE) 
-	{
-		PRINT_ERROR("[spring engine] : generate hdr color buffer object error : (0x%x)", status);
-		return nullptr;
-	}
-	fbo->framebufferId = framebuffer;
-	fbo->buffers = textures;
-	fbo->rbo = renderbuffer;
-	GLuint* attachments = new GLuint[size];
-	for (unsigned int i = 0; i < size; i++)
-		attachments[i] = GL_COLOR_ATTACHMENT0 + i;
-	glDrawBuffers(size, attachments);
-	glBindFramebuffer(GL_FRAMEBUFFER, 0);
-	framebuffers.push_back(fbo);
-	// delete[] textures;
-	delete[] attachments;
-	return fbo;
-}
-FrameBuffer* FrameBuffer::GenDepthFramebuffer(int width, int height)  // TODO : ÍØÕ¹
-{
-	FrameBuffer* fbo = new FrameBuffer(width, height,GL_DEPTH_ATTACHMENT,0);
-	GLuint framebuffer;
-	glGenFramebuffers(1, &framebuffer);
-	// - Create depth texture
-	GLuint depthbuffer;
-	glGenTextures(1, &depthbuffer);
-	glBindTexture(GL_TEXTURE_2D, depthbuffer);
-
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, fbo->width, fbo->height, 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
-	float* buffer = new float[4]{ 1.0f,1.0f ,1.0,1.0f };
-	glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, buffer);
-	glBindFramebuffer(GL_FRAMEBUFFER, framebuffer);
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, depthbuffer, 0);
-	glDrawBuffer(GL_NONE);
-	glReadBuffer(GL_NONE);
-	delete[] buffer;
-	glBindFramebuffer(GL_FRAMEBUFFER, 0);
-
-	GLenum status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
-	if (status != GL_FRAMEBUFFER_COMPLETE)
-	{
-		PRINT_ERROR("[spring engine] : generate depth buffer object error : (0x%x)", status);
-		return nullptr;
-	}
-	fbo->framebufferId = framebuffer;
-	fbo->buffer = depthbuffer;
-	framebuffers.push_back(fbo);
-	return fbo;
+	this->colorFormat = colorFormat;
+	this->buffersSize = bufferSize;
 }
 
 void FrameBuffer::Initialize()
@@ -169,15 +19,28 @@ void FrameBuffer::Initialize()
 	glBindFramebuffer(GL_FRAMEBUFFER, framebufferId);
 	unsigned int multiSampleLevel = this->getMultiSampleLevel();
 
-	Texture* tex = new Texture(width, height);
-	tex->wrap = this->wrap;
-	tex->filter = this->filter;
-	tex->format = this->colorFormat;
-	tex->generateMipMap = this->generateMipMap;
-	tex->mipmapLevel = this->mipmapLevel;
-	tex->multiSampleLevel = multiSampleLevel;
-	tex->Initialize();
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, tex->textureTarget, tex->textureId, mipmapLevel);
+	for (unsigned int i = 0; i < this->buffersSize; i++) 
+	{
+		Texture* tex = new Texture(width, height);
+		tex->wrap = this->wrap;
+		tex->filter = this->filter;
+		tex->format = this->colorFormat;
+		tex->generateMipMap = this->generateMipMap;
+		tex->mipmapLevel = this->mipmapLevel;
+		tex->multiSampleLevel = multiSampleLevel;
+		tex->Initialize();
+		if (this->colorFormat == ColorFormat::Shadow) 
+			glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_COMPONENT , tex->textureTarget, tex->textureId, mipmapLevel);
+		else 
+			glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + i, tex->textureTarget, tex->textureId, mipmapLevel);
+		this->textures.push_back(tex);
+	}
+
+	GLuint* attachments = new GLuint[this->buffersSize];
+	for (unsigned int i = 0; i < buffersSize; i++)
+		attachments[i] = GL_COLOR_ATTACHMENT0 + i;
+	glDrawBuffers(buffersSize, attachments);
+	delete[] attachments;
 
 	if (this->depthbuffer != DepthBuffer::NoneDepth)
 	{
@@ -193,12 +56,16 @@ void FrameBuffer::Initialize()
 	{
 		PRINT_ERROR("[spring engine] : generate frame buffer object error : (0x%x)", status);
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
-		delete tex;
+		for (auto item = textures.begin(); item != textures.end(); item++)
+		{
+			Texture* tex = *item;
+			tex->Release();
+			delete tex;
+		}
 		delete renderbuffer;
 		return;
 	}
-	this->texture = tex;
-	this->buffer = this->texture->textureId;
+	this->textures = textures;
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	this->framebuffers.push_back(this);
 }
@@ -213,10 +80,11 @@ void FrameBuffer::Release()
 			break;
 		}
 	}
-	if (nullptr != this->texture)
+	for (auto item = textures.begin(); item != textures.end(); item++)
 	{
-		this->texture->Release();
-		delete this->texture;
+		Texture* tex = *item;
+		tex->Release();
+		delete tex;
 	}
 	if (nullptr != this->renderbuffer)
 	{
@@ -226,11 +94,35 @@ void FrameBuffer::Release()
 	glDeleteFramebuffers(1, &this->framebufferId);
 }
 
-Colorf FrameBuffer::ReadPixel(unsigned int x, unsigned int y) 
+void FrameBuffer::Bind() 
 {
-	if (nullptr == this->texture)
-		return Colorf::black;
-	return this->texture->ReadPixel(x,y);
+	glBindFramebuffer(GL_FRAMEBUFFER, this->framebufferId);
+}
+void FrameBuffer::Unbind()
+{
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+} 
+
+void FrameBuffer::BindRenderbuffer() 
+{
+	glBindFramebuffer(GL_RENDERBUFFER,this->rbo);
+}
+void FrameBuffer::CaptureMipmap(unsigned int level) 
+{
+	glFramebufferTexture2D(GL_FRAMEBUFFER,GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, this->GetBuffer(), level);
+}
+void FrameBuffer::CubemapCapture(unsigned int cubemapId ,unsigned int index, unsigned int level)
+{
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0,GL_TEXTURE_CUBE_MAP_POSITIVE_X + index,cubemapId, level);
+}
+unsigned int FrameBuffer::GetBuffer(unsigned int index) 
+{
+	return this->textures[index]->textureId;
+}
+Colorf FrameBuffer::ReadPixel(unsigned int x, unsigned int y,unsigned int index ) 
+{
+	Texture* tex = this->textures[index];
+	return tex->ReadPixel(x, y);
 }
 
 RenderBuffer::RenderBufferFormat FrameBuffer::getRenderBufferFormat()
@@ -264,4 +156,12 @@ unsigned int FrameBuffer::getMultiSampleLevel()
 	default:
 		return 0;
 	}
+}
+
+void FrameBuffer::Blit(FrameBuffer& dst) 
+{
+	glBindFramebuffer(GL_READ_FRAMEBUFFER, this->framebufferId);
+	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, dst.framebufferId);
+	glBlitFramebuffer(0, 0, this->width, this->height, 0, 0, dst.width, dst.height, GL_COLOR_BUFFER_BIT, GL_NEAREST);
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }

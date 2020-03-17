@@ -47,6 +47,12 @@ void Texture::Initialize()
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, wrapMode);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, wrapMode);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_R, wrapMode);
+
+		if (this->format == ColorFormat::Shadow)
+		{
+			float* border = new float[4]{1.0f,1.0f,1.0f,1.0f};
+			glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, border);
+		}
 		glBindTexture(GL_TEXTURE_2D, 0);
 	}
 	else 
@@ -56,11 +62,11 @@ void Texture::Initialize()
 		glTexImage2DMultisample(GL_TEXTURE_2D_MULTISAMPLE, this->multiSampleLevel, internalFormat, this->width, this->height, GL_TRUE);
 		if (this->generateMipMap)
 			glGenerateMipmap(GL_TEXTURE_2D_MULTISAMPLE);
-		glTexParameteri(GL_TEXTURE_2D_MULTISAMPLE, GL_TEXTURE_MIN_FILTER, filterMode);
-		glTexParameteri(GL_TEXTURE_2D_MULTISAMPLE, GL_TEXTURE_MAG_FILTER, filterMode);
-		glTexParameteri(GL_TEXTURE_2D_MULTISAMPLE, GL_TEXTURE_WRAP_T, wrapMode);
-		glTexParameteri(GL_TEXTURE_2D_MULTISAMPLE, GL_TEXTURE_WRAP_S, wrapMode);
-		glTexParameteri(GL_TEXTURE_2D_MULTISAMPLE, GL_TEXTURE_WRAP_R, wrapMode);
+		//glTexParameteri(GL_TEXTURE_2D_MULTISAMPLE, GL_TEXTURE_MIN_FILTER, filterMode);
+		//glTexParameteri(GL_TEXTURE_2D_MULTISAMPLE, GL_TEXTURE_MAG_FILTER, filterMode);
+		//glTexParameteri(GL_TEXTURE_2D_MULTISAMPLE, GL_TEXTURE_WRAP_T, wrapMode);
+		//glTexParameteri(GL_TEXTURE_2D_MULTISAMPLE, GL_TEXTURE_WRAP_S, wrapMode);
+		//glTexParameteri(GL_TEXTURE_2D_MULTISAMPLE, GL_TEXTURE_WRAP_R, wrapMode);
 		glBindTexture(GL_TEXTURE_2D_MULTISAMPLE, 0);
 	}
 }
@@ -135,6 +141,8 @@ unsigned int Texture::getInternalFormat()
 		return GL_RGBA16F;
 	case spring::ColorFormat::RGBA32Float:
 		return GL_RGBA32F;
+	case spring::ColorFormat::Shadow:
+		return GL_DEPTH_COMPONENT;
 	default:
 		return GL_RGBA;
 	}
@@ -159,6 +167,8 @@ unsigned int Texture::getOutputFormat()
 		return GL_RGBA;
 	case spring::ColorFormat::RGBA32Float:
 		return GL_RGBA;
+	case spring::ColorFormat::Shadow:
+		return GL_DEPTH_COMPONENT;
 	default:
 		return GL_RGBA;
 	}
@@ -176,6 +186,8 @@ unsigned int Texture::getDataType()
 	case spring::ColorFormat::RGBA32:
 		return GL_UNSIGNED_BYTE;
 	case spring::ColorFormat::RGBA32Float:
+		return GL_FLOAT;
+	case spring::ColorFormat::Shadow:
 		return GL_FLOAT;
 	default:
 		return GL_UNSIGNED_BYTE;

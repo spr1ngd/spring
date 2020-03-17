@@ -47,6 +47,7 @@ namespace spring
 		float farClip = 1000.0f; 
 
 		FrameBuffer* framebuffer = nullptr;
+		FrameBuffer* renderTarget = nullptr;
 		bool enableHDR = false;
 
 	public:

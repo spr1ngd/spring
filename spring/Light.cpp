@@ -49,7 +49,12 @@ void Light::CastShadow()
 		if (light->shadowType == Light::NoShadow)
 			continue;
 		if (light->shadow == nullptr)
-			light->shadow = FrameBuffer::GenDepthFramebuffer(Screen::width, Screen::height);
+		{
+			// light->shadow = FrameBuffer::GenDepthFramebuffer(Screen::width, Screen::height);
+			light->shadow = new FrameBuffer(Screen::width, Screen::height);
+			light->shadow->colorFormat = ColorFormat::Shadow;
+			light->shadow->Initialize();
+		}
 
 		camera->transform->SetPosition(light->transform->GetPosition());
 		camera->transform->SetEulerangle(light->transform->GetEulerangle());
@@ -58,7 +63,7 @@ void Light::CastShadow()
 		// todo : fixed light space matrix
 		light->lightSpaceMatrix = camera->GetProjectionMatrix() * camera->GetViewMatrix();
 
-		glBindFramebuffer(GL_FRAMEBUFFER,light->shadow->framebufferId);
+		light->shadow->Bind();
 		glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		Renderable::Draw(1,new unsigned int[1]{ 0x0001 }, [&](MeshRenderer* renderer)
@@ -72,7 +77,7 @@ void Light::CastShadow()
 					renderer->material = srcMaterial;
 				}
 			});
-		glBindFramebuffer(GL_FRAMEBUFFER,0);
+		light->shadow->Unbind();
 	}
 	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);

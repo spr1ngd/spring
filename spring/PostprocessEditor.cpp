@@ -35,11 +35,11 @@ void PostprocessEditor::OnDrawInspector()
 		if (pp->bloom->enable)
 		{
 			ImGui::Text("buffer 0");
-			ImGui::Image((ImTextureID)pp->bloom->buffer->buffers[0], stdSize, ImVec2(0, 1), ImVec2(1, 0));
+			ImGui::Image((ImTextureID)pp->bloom->buffer->GetBuffer(1), stdSize, ImVec2(0, 1), ImVec2(1, 0));
 			ImGui::Text("buffer 1");
-			ImGui::Image((ImTextureID)pp->bloom->buffer->buffers[1], stdSize, ImVec2(0, 1), ImVec2(1, 0));
+			ImGui::Image((ImTextureID)pp->bloom->bloomTemp->GetBuffer(), stdSize, ImVec2(0, 1), ImVec2(1, 0));
 			ImGui::Text("bloom buffer");
-			ImGui::Image((ImTextureID)pp->bloom->bloomBuffer->buffer, stdSize, ImVec2(0, 1), ImVec2(1, 0));
+			ImGui::Image((ImTextureID)pp->bloom->bloomBuffer->GetBuffer(), stdSize, ImVec2(0, 1), ImVec2(1, 0));
 		}
 		ImGui::Separator();
 	}
@@ -53,7 +53,7 @@ void PostprocessEditor::OnDrawInspector()
 		ImGui::DragFloat("exposure",exposure,0.1f,0.01f,5.0f);
 		pp->toneMapping->exposure = exposure[0];
 		if (pp->toneMapping->enable)
-			ImGui::Image((ImTextureID)pp->toneMapping->buffer->buffer, stdSize, ImVec2(0, 1), ImVec2(1, 0));
+			ImGui::Image((ImTextureID)pp->toneMapping->buffer->GetBuffer(), stdSize, ImVec2(0, 1), ImVec2(1, 0));
 		delete[] exposure;
 		ImGui::Separator();
 	}
@@ -64,9 +64,9 @@ void PostprocessEditor::OnDrawInspector()
 	{
 		ImGui::Checkbox("Enable Outline",&pp->outline->enable);
 
-		ImGui::Image((ImTextureID)pp->outline->buffer->buffer, stdSize, ImVec2(0, 1), ImVec2(1, 0));
-		ImGui::Image((ImTextureID)pp->outline->originBuffer->buffer, stdSize, ImVec2(0, 1), ImVec2(1, 0));
-		ImGui::Image((ImTextureID)pp->outline->blendBuffer->buffer, stdSize, ImVec2(0, 1), ImVec2(1, 0));
+		ImGui::Image((ImTextureID)pp->outline->buffer->GetBuffer(), stdSize, ImVec2(0, 1), ImVec2(1, 0));
+		ImGui::Image((ImTextureID)pp->outline->originBuffer->GetBuffer(), stdSize, ImVec2(0, 1), ImVec2(1, 0));
+		ImGui::Image((ImTextureID)pp->outline->blendBuffer->GetBuffer(), stdSize, ImVec2(0, 1), ImVec2(1, 0));
 
 		float* color = new float[4]{ pp->outline->outlineColor.a,pp->outline->outlineColor.g,pp->outline->outlineColor.b,pp->outline->outlineColor.a };
 		ImGui::ColorEdit4("outline Color", color);

@@ -97,28 +97,26 @@ int main(int, char**)
 	uiCamera->cullingMask->set(uiRenderLayer);
 	uiCamera->clearFlag = Camera::None;
 
-	// 0. construct post processing instance.
+	// post processing
 	PostProcessing::postprocessing = new class::PostProcessing();
 	PostProcessing::postprocessing->enabled = true;
-	// 
-	PostProcessing::postprocessing->antiAliasing->enabled = false;
-	PostProcessing::postprocessing->antiAliasing->samples = 16;
-	// bloom 
+	// pp->bloom 
 	PostProcessing::postprocessing->bloom->enable = true;
 	PostProcessing::postprocessing->Initialize();
 
 	if (PostProcessing::postprocessing->enabled == false)
 	{
-		// FrameBuffer* mainFramebuffer = FrameBuffer::GenMSColorFramebuffer(Screen::width, Screen::height, 8);  // TODO: 这一张多重采样纹理，占用了200MB内存
-		// FrameBuffer* mainFramebuffer = FrameBuffer::GenColorFramebuffer(Screen::width, Screen::height,0);
 		FrameBuffer* mainFramebuffer = new FrameBuffer(Screen::width, Screen::height);
-		mainFramebuffer->antiAliasing = AntiAliasingLevel::Level0; // enable multiple sample , the framebuffer display wrong result.
-		mainFramebuffer->colorFormat = ColorFormat::RGB24;
+		mainFramebuffer->antiAliasing = AntiAliasingLevel::Level2; // enable multiple sample , the framebuffer display wrong result.
 		mainFramebuffer->depthbuffer = FrameBuffer::OnlyDepth;
 		mainFramebuffer->Initialize();
 		Camera::main->framebuffer = mainFramebuffer;
+
+		FrameBuffer* renderTarget = new FrameBuffer(Screen::width, Screen::height);
+		renderTarget->Initialize();
+		Camera::main->renderTarget = renderTarget;
 	}
-	 
+
 	// standalone shader compiler (in a independent thread)
 	ShaderCompiler shader_compiler;
 
@@ -215,6 +213,10 @@ int main(int, char**)
 		// Input system
 		Input::setMouseWheel(0.0f);
 		Input::mouseDelta = Vector2::zero; 
+
+		// blit to render target
+		if (PostProcessing::postprocessing->enabled == false) 
+			Camera::main->framebuffer->Blit(*Camera::main->renderTarget);
 
 		SpringEditor::DrawEditor();
 		GUILayout::Render(window);

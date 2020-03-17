@@ -33,6 +33,7 @@ namespace spring
 		RGBA32,
 		RGBA16Float,
 		RGBA32Float,
+		Shadow
 	};
 
 	enum AntiAliasingLevel

@@ -184,7 +184,7 @@ Texture* PhysicsBasedRendering::PreBRDF(Cubemap* cubemap)
 	fsRenderer->Render(glm::mat4(0.0),glm::mat4(0.0));
 	fbo->Unbind();
 
-	result->textureId = fbo->buffer;
+	result->textureId = fbo->GetBuffer();
 	delete preBRDFShader;
 	delete preBRDFMaterial;
 	delete fsRenderer;
