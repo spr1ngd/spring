@@ -7,12 +7,12 @@ A LONG LONG LONG , VERY LONG TRIP.
 
 - memory optimization
 
-    - refactor frambufferobject module
-        - customize color format
-        - enable anti-aliasing
-        - enable depth/stencil buffer
-        - enable minmaps
-        - set wrap mode and filter mode
+    - refactor frambufferobject module **(Finished)**
+        - customize color format **(Finished)**
+        - enable anti-aliasing **(Finished)**
+        - enable depth/stencil buffer **(Finished)**
+        - enable minmaps **(Finished)**
+        - set wrap mode and filter mode **(Finished)**
   
 - renderer core
 
