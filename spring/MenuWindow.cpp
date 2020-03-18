@@ -1,5 +1,6 @@
 #include "menuwindow.h"
 #include "scene.h"
+#include "springeditor.h"
 
 using namespace spring;
 using namespace spring::editor;
@@ -78,9 +79,9 @@ void MenuWindow::OnDrawWindow()
 		ImGui::EndMenuBar();
 	}
 
-	if (ImGui::Button("Play")) 
+	if (ImGui::Button("Maximize Window")) 
 	{
-		
+		SpringEditor::maximize = true;
 	}
 
 	ImGui::End();

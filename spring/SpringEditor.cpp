@@ -8,6 +8,7 @@ using namespace spring;
 using namespace spring::editor;
 
 bool SpringEditor::enabled = true;
+bool SpringEditor::maximize = false;
 InspectorWindow* SpringEditor::inspector = nullptr;
 HierarchyWindow* SpringEditor::hierarchy = nullptr;
 SceneWindow* SpringEditor::scene = nullptr;

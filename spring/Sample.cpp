@@ -120,6 +120,7 @@ void Sample::Awake()
 
 	orbit = new OrbitCamera();
 	orbit->name = "OrbitCamera";
+	// TODO : 支持查找另一个Node对象
 	orbit->target = Vector3(0.0f, 0.0f, 0.0f);// Vector3::zero;
 	orbit->zoomSpeed = 1.0f;
 

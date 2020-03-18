@@ -23,6 +23,7 @@ namespace spring
 			static StatusWindow* status;
 		public:
 			static bool enabled;
+			static bool maximize;
 
 			static void Initialize();
 			static void Release();

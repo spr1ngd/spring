@@ -1,5 +1,8 @@
 #include "editorwindow.h"
 #include "guilayout.h"
+#include <typeinfo>
+#include "scenewindow.h"
+#include "springeditor.h"
 
 using namespace spring;
 using namespace spring::editor;
@@ -15,7 +18,7 @@ EditorWindow::EditorWindow(const char* name, bool openDefault )
 
 void EditorWindow::BeginWindow() 
 {
-	GUILayout::Begin(this->name, &this->enabled, this->windowFlags);
+	ImGui::Begin(this->name, &this->enabled, this->windowFlags);
 }
 
 void EditorWindow::OnDrawWindow() 
@@ -25,7 +28,7 @@ void EditorWindow::OnDrawWindow()
 
 void EditorWindow::EndWindow() 
 {
-	GUILayout::End();
+	ImGui::End();
 }
 
 void EditorWindow::Show() 
@@ -75,6 +78,8 @@ void EditorWindow::RenderWindows()
 	for (auto item = editorWindows.begin(); item != editorWindows.end(); item++) 
 	{
 		EditorWindow* window = *item;
+		if(SpringEditor::maximize && window->name != "Scene")
+			continue;
 		window->BeginWindow();
 		window->OnDrawWindow();
 		window->EndWindow();

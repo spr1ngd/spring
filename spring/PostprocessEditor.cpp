@@ -1,5 +1,6 @@
 #include "postprocesseditor.h"
 #include "postprocessing.h"
+#include "picking.h"
 
 using namespace spring;
 using namespace spring::editor;
@@ -64,6 +65,8 @@ void PostprocessEditor::OnDrawInspector()
 	{
 		ImGui::Checkbox("Enable Outline",&pp->outline->enable);
 
+
+		ImGui::Image((ImTextureID)Picking::pickBuffer->GetBuffer(), stdSize, ImVec2(0, 1), ImVec2(1, 0));
 		ImGui::Image((ImTextureID)pp->outline->buffer->GetBuffer(), stdSize, ImVec2(0, 1), ImVec2(1, 0));
 		ImGui::Image((ImTextureID)pp->outline->originBuffer->GetBuffer(), stdSize, ImVec2(0, 1), ImVec2(1, 0));
 		ImGui::Image((ImTextureID)pp->outline->blendBuffer->GetBuffer(), stdSize, ImVec2(0, 1), ImVec2(1, 0));

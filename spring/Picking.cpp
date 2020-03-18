@@ -3,7 +3,7 @@
 using namespace spring;
 
 bool Picking::enable;
-FrameBuffer* Picking::colorbuffer;
+FrameBuffer* Picking::pickBuffer;
 Material* Picking::material;
 
 Picking::Picking()
@@ -15,10 +15,8 @@ void Picking::Initialize()
 {
 	if (!enable)
 		return;
-	// colorbuffer = FrameBuffer::GenColorFramebuffer(Screen::width, Screen::height, 0);
-	colorbuffer = new FrameBuffer(Screen::width,Screen::height);
-	colorbuffer->colorFormat = ColorFormat::RGB24;
-	colorbuffer->Initialize();
+	pickBuffer = new FrameBuffer(Screen::width,Screen::height,ColorFormat::RGB24);
+	pickBuffer->Initialize();
 	material = new Material(Shader::Load("physical/gpu_picking.vs","physical/gpu_picking.fs"));
 }
 
@@ -26,15 +24,14 @@ Node* Picking::Pick(unsigned int x, unsigned int y)
 {
 	if (!enable)
 		return nullptr;
-	float* pixel = new float[4]{ 0 };
-	glBindFramebuffer(GL_READ_FRAMEBUFFER, colorbuffer->framebufferId);
+	unsigned char pixel[3];
+	pickBuffer->Bind();
 	// glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-	glReadPixels(x, y, 1, 1, GL_RGBA, GL_FLOAT, pixel);
-	Colorf color = Colorf(pixel[0], pixel[1], pixel[2], pixel[3]);
-	// Colorf color = colorbuffer->ReadPixel(x, y);
+	glReadPixels(x, y, 1, 1, GL_RGB, GL_UNSIGNED_BYTE, pixel);
+	PRINT_ERROR("pick color (%d,%d,%d)",pixel[0], pixel[1], pixel[2]);
+	Color color = Color(pixel[0], pixel[1], pixel[2],0);
 	unsigned int identify = Convert2Identify(color);
-	// delete[] pixel;
-	glBindFramebuffer(GL_READ_FRAMEBUFFER, 0);
+	pickBuffer->Unbind();
 	return (Node*)MeshRenderer::GetMeshRenderer(identify);
 }
 
@@ -51,14 +48,19 @@ unsigned int Picking::Convert2Identify(Colorf color)
 	return color.r * 255 + color.g * 255 + color.b * 255;
 }
 
+unsigned int Picking::Convert2Identify(Color color) 
+{
+	return color.r + color.g + color.b;
+}
+
 void Picking::Render(std::function<void()> func) 
 {
 	if (!enable)
 		return;
-	colorbuffer->Bind();
+	pickBuffer->Bind();
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 	if( nullptr != func )
 		func();
-	colorbuffer->Unbind();
+	pickBuffer->Unbind();
 }

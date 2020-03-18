@@ -244,11 +244,7 @@ void physically_based_rendering::Awake()
 	starFighter();
 	generateParticle();
 	generateParticle2();
-	// displaySpheres();
-
-	// Scene::current->AddNode(fighter);
-	// Scene::current->AddNode(particle);
-	// Scene::current->AddNode(particle2);
+	// displaySpheres(); 
 }
 
 void physically_based_rendering::Update() 
@@ -256,13 +252,10 @@ void physically_based_rendering::Update()
 	if (!this->enabled)
 		return;
 
-	if (Input::mousePosition.x <= Screen::width * 0.6f && Input::mousePosition.y <= Screen::height * 0.6f) 
-	{
-		// Node* selected = Picking::Pick((int)(Input::mousePosition.x / 0.6f), (int)(Input::mousePosition.y / 0.6f));
-		/*	if (selected != nullptr)
-				Console::LogFormat("[Picking]:pick %s", selected->name);
-			else Console::LogFormat("[Picking]:pick %s", "empty");*/
-	}
+	Vector3 offset = Vector3(0.0f, 0.0f, 100.0f) * Timer::deltaTime;
+	fighter->transform->position += offset;
+	particle->transform->position += offset;
+	particle2->transform->position += offset; 
 }
 
 void physically_based_rendering::Destroy()

@@ -30,8 +30,8 @@ void OrbitCamera::Destroy()
 
 void OrbitCamera::Update() 
 {    
-	if (Input::mousePosition.x > Screen::width * 0.6f || Input::mousePosition.y > Screen::height * 0.6f)
-		return;
+	//if (Input::mousePosition.x > Screen::width * 0.6f || Input::mousePosition.y > Screen::height * 0.6f)
+	//	return;
 	if (Input::GetMouseDown(MouseID::MOUSE_LEFT)) 
 	{
 

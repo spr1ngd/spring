@@ -2,6 +2,7 @@
 #include "scenewindow.h"
 #include "springengine.h"
 #include "postprocessing.h"
+#include "springeditor.h"
 
 using namespace spring;
 using namespace spring::editor;
@@ -11,12 +12,28 @@ SceneWindow::SceneWindow(const char* name, bool defaultOpen) :EditorWindow(name,
 	this->windowFlags = ImGuiWindowFlags_NoInputs | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoMove;
 }
 
+void SceneWindow::BeginWindow() 
+{
+	float sceneWindowWidth = SpringEditor::maximize ? Screen::width : Screen::width * 0.6f;
+	float sceneWInowHeight = SpringEditor::maximize ? Screen::height : Screen::height * 0.6f;
+	if(SpringEditor::maximize)
+		ImGui::SetNextWindowPos(ImVec2(0.0f, 0.0f));
+	ImGui::SetNextWindowSize(ImVec2(sceneWindowWidth, sceneWInowHeight));
+	ImGui::Begin(this->name, &this->enabled, this->windowFlags);
+}
+
 void SceneWindow::OnDrawWindow() 
 {
 	glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
 	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-	if( nullptr != PostProcessing::postprocessing && PostProcessing::postprocessing->enabled )
-		ImGui::Image((ImTextureID)PostProcessing::outputFramebuffer->GetBuffer(), ImVec2(Screen::width * 0.6f, Screen::height * 0.6f), ImVec2(0, 1), ImVec2(1, 0));
-	else
-		ImGui::Image((ImTextureID)Camera::main->renderTarget->GetBuffer(), ImVec2(Screen::width * 0.8f, Screen::height * 0.8f), ImVec2(0, 1), ImVec2(1, 0));
+
+	float sceneWindowWidth = SpringEditor::maximize ? Screen::width : Screen::width * 0.6f;
+	float sceneWInowHeight = SpringEditor::maximize ? Screen::height : Screen::height * 0.6f;
+	unsigned int buffer = -1;
+
+	if (nullptr != PostProcessing::postprocessing && PostProcessing::postprocessing->enabled)
+		buffer = PostProcessing::outputFramebuffer->GetBuffer();
+	else buffer = Camera::main->renderTarget->GetBuffer();
+
+	ImGui::Image((ImTextureID)buffer, ImVec2(sceneWindowWidth, sceneWInowHeight), ImVec2(0, 1), ImVec2(1, 0),ImVec4(1.0f,1.0f,1.0f,1.0f),ImVec4(0.0f, 0.0f, 0.0f, 0.0f));
 }
