@@ -2,6 +2,7 @@
 #include "imgui.h"
 #include "node.h"
 #include "selection.h"
+#include "scene.h"
 
 using namespace spring;
 using namespace spring::editor;
@@ -20,11 +21,12 @@ void HierarchyWindow::OnDrawWindow()
 	{
 		static int selection_mask = (1 << 2);
 		int clickedNode = -1;
-		for (int i = 0; i < (int)Node::allNodes.size(); i++) 
+		
+		for (int i = 0; i < (int)Scene::current->nodes.size(); i++)
 		{
 			if (i == 0)
 				ImGui::SetNextItemOpen(true,ImGuiCond_Once);
-			Node* node = Node::allNodes[i];
+			Node* node = Scene::current->nodes[i];
 			ImGuiTreeNodeFlags node_flags = base_flags;
 			const bool isSelected = (selection_mask & (1 << i)) != 0;
 			if (isSelected)

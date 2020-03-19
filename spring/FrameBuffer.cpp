@@ -119,10 +119,13 @@ unsigned int FrameBuffer::GetBuffer(unsigned int index)
 {
 	return this->textures[index]->textureId;
 }
-Colorf FrameBuffer::ReadPixel(unsigned int x, unsigned int y,unsigned int index ) 
+Colorf FrameBuffer::ReadPixel(unsigned int x, unsigned int y) 
 {
-	Texture* tex = this->textures[index];
-	return tex->ReadPixel(x, y);
+	glBindFramebuffer(GL_READ_FRAMEBUFFER, this->framebufferId);
+	float rgb[3];
+	glReadPixels(x, y, 1, 1, GL_RGB, GL_FLOAT, rgb);
+	glBindFramebuffer(GL_READ_FRAMEBUFFER, 0);
+	return Colorf(rgb[0], rgb[1], rgb[2], 1.0f);
 }
 
 RenderBuffer::RenderBufferFormat FrameBuffer::getRenderBufferFormat()

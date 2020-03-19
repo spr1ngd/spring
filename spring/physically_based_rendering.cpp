@@ -244,6 +244,14 @@ void physically_based_rendering::Awake()
 	starFighter();
 	generateParticle();
 	generateParticle2();
+	particle->SetParent(fighter);
+	particle2->SetParent(fighter);
+
+	Node* leftParticle = Node::Query("Particle System Left");
+	if (nullptr != leftParticle)
+	{
+		PRINT_LOG("I have got the node : %s",leftParticle->name);
+	}
 	// displaySpheres(); 
 }
 
@@ -252,10 +260,10 @@ void physically_based_rendering::Update()
 	if (!this->enabled)
 		return;
 
-	Vector3 offset = Vector3(0.0f, 0.0f, 100.0f) * Timer::deltaTime;
-	fighter->transform->position += offset;
-	particle->transform->position += offset;
-	particle2->transform->position += offset; 
+	// Vector3 offset = Vector3(0.0f, 0.0f, 100.0f) * Timer::deltaTime;
+	// fighter->transform->position += offset;
+	// particle->transform->position += offset;
+	// particle2->transform->position += offset; 
 }
 
 void physically_based_rendering::Destroy()

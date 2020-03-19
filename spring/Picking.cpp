@@ -24,14 +24,8 @@ Node* Picking::Pick(unsigned int x, unsigned int y)
 {
 	if (!enable)
 		return nullptr;
-	unsigned char pixel[3];
-	pickBuffer->Bind();
-	// glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-	glReadPixels(x, y, 1, 1, GL_RGB, GL_UNSIGNED_BYTE, pixel);
-	PRINT_ERROR("pick color (%d,%d,%d)",pixel[0], pixel[1], pixel[2]);
-	Color color = Color(pixel[0], pixel[1], pixel[2],0);
+	Colorf color = pickBuffer->ReadPixel(x, y);
 	unsigned int identify = Convert2Identify(color);
-	pickBuffer->Unbind();
 	return (Node*)MeshRenderer::GetMeshRenderer(identify);
 }
 

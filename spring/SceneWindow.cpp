@@ -14,10 +14,12 @@ SceneWindow::SceneWindow(const char* name, bool defaultOpen) :EditorWindow(name,
 
 void SceneWindow::BeginWindow() 
 {
-	float sceneWindowWidth = SpringEditor::maximize ? Screen::width : Screen::width * 0.6f;
-	float sceneWInowHeight = SpringEditor::maximize ? Screen::height : Screen::height * 0.6f;
-	if(SpringEditor::maximize)
+	float sceneWindowWidth = SpringEditor::maximize ? Screen::width : Screen::width * 0.6f + 30.0f;
+	float sceneWInowHeight = SpringEditor::maximize ? Screen::height : Screen::height * 0.6f + 30.0f;
+	if (SpringEditor::maximize)
 		ImGui::SetNextWindowPos(ImVec2(0.0f, 0.0f));
+	else
+		ImGui::SetNextWindowPos(ImVec2(0.0f, 50.0f));
 	ImGui::SetNextWindowSize(ImVec2(sceneWindowWidth, sceneWInowHeight));
 	ImGui::Begin(this->name, &this->enabled, this->windowFlags);
 }

@@ -13,17 +13,16 @@ void Outline::Render(std::function<void()> func)
 {	
 	if (!PostProcessing::postprocessing->enabled)
 		return;
-	float minX = 0.0f;
+	float minX = 10.0f;
 	float maxX = minX + Screen::width * 0.6f;
-	float minY = 80.0f;
+	float minY = Screen::height - 50.0f - Screen::height * 0.6f - 30.0f;
 	float maxY = minY + Screen::height * 0.6f;
 	float mouseX = Input::mousePosition.x;
 	float mouseY = Input::mousePosition.y;
 
-	//if ((mouseX >= minX && mouseX <= maxX) && (mouseY >= minY && mouseY <= maxY) )
+	if ((mouseX >= minX && mouseX <= maxX) && (mouseY >= minY && mouseY <= maxY) )
 	{
-		Node* selected = Picking::Pick(mouseX, mouseY);
-		//Node* selected = Picking::Pick((mouseX - minX) / 0.6f, (mouseY - minY) / 0.6f);
+		Node* selected = Picking::Pick((mouseX - minX) / 0.6f, (mouseY - minY) / 0.6f);
 		if (nullptr != selected)
 		{
 			this->buffer->Bind();

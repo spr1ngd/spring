@@ -1,6 +1,7 @@
 #include "input.h"
-#include "console.h"
 #include "GLFW/glfw3.h"
+#include "console.h"
+#include "screen.h"
 
 using namespace spring;
 
@@ -294,7 +295,7 @@ float Input::GetMouseWheel()
 
 void Input::setMousePosition(float xPos, float yPos) 
 {
-	Vector2 newMousePosition = Vector2(xPos, yPos);
+	Vector2 newMousePosition = Vector2(xPos, Screen::height - yPos);
 	Input::mouseDelta = Vector2(newMousePosition.x - Input::mousePosition.x,Input::mousePosition.y - newMousePosition.y);
 	Input::mousePosition = newMousePosition;
 }

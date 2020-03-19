@@ -50,7 +50,7 @@ namespace spring
 		void Unbind();
 		void BindRenderbuffer();
 		unsigned int GetBuffer(unsigned int index = 0);
-		Colorf ReadPixel(unsigned int x,unsigned int y,unsigned int index = 0);
+		Colorf ReadPixel(unsigned int x,unsigned int y);
 		void CaptureMipmap(unsigned int level = 0);
 		void CubemapCapture(unsigned int cubemapId, unsigned int index, unsigned int level = 0);
 

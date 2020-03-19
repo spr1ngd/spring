@@ -14,8 +14,6 @@ Node::Node()
 	this->transform = new Transform();
 	allNodes.push_back(this);
 	this->name = misc::gen_guid();
-	PRINT_LOG("instantiate node %s",this->name);
-	//Scene::current->AddNode(this);
 }
 
 Node::Node(const char* nodeName) 
@@ -23,8 +21,6 @@ Node::Node(const char* nodeName)
 	this->name = nodeName;
 	this->transform = new Transform();
 	allNodes.push_back(this);
-	PRINT_LOG("instantiate node %s", nodeName);
-	//Scene::current->AddNode(this);
 }
 
 Node::~Node() 
@@ -55,6 +51,21 @@ Node* Node::GetChild(const char* nodeName)
 void Node::SetParent(Node* node) 
 {
 	Scene::current->RemoveNode(this);
-	node->parent = this;
-	this->children.insert(this->children.end(), node);
+	this->parent = node;
+	node->children.insert(node->children.end(), this);
 }
+
+#pragma region static methods 
+
+Node* Node::Query(const char* name) 
+{
+	for (vector<Node*>::iterator item = allNodes.begin(); item != allNodes.end(); item++) 
+	{
+		Node* node = *item;
+		if (node->name == name)
+			return node;
+	}
+	return nullptr;
+}
+
+#pragma endregion static methods 

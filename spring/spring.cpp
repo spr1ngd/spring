@@ -191,7 +191,7 @@ int main(int, char**)
 						meshRenderer->Render();
 						meshRenderer->material = originMaterial;
 					});
-			});
+			}); 
 
 		PostProcessing::postprocessing->outline->Render(nullptr);
 		PostProcessing::postprocessing->Process();

@@ -9,7 +9,6 @@ StatusWindow::StatusWindow(const char* name, bool openDefault /* = false */) : E
 	this->windowFlags =
 		ImGuiWindowFlags_NoResize|
 		ImGuiWindowFlags_NoMove|
-		ImGuiWindowFlags_NoBackground |
 		ImGuiWindowFlags_NoScrollWithMouse |
 		ImGuiWindowFlags_NoScrollbar;
 }

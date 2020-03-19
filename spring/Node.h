@@ -22,10 +22,13 @@ namespace spring
 		
 	protected:
 		Node();
-		Node( const char*nodeName );
+		Node(const char*nodeName);
 		~Node();
 
 	public:
+		// query node object by name in current scene. if have return node* ,if not return nullptr.
+		static Node* Query(const char* name);
+
 		template <typename T>
 		Node* GetNode(T nodeType) 
 		{

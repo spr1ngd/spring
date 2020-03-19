@@ -78,7 +78,7 @@ void OrbitCamera::Rotate()
 	float maxY = 90.0f;
 
 	x -= Input::mouseDelta.x / 10.0f * rotateSpeed;
-	y += Input::mouseDelta.y / 10.0f * rotateSpeed;
+	y -= Input::mouseDelta.y / 10.0f * rotateSpeed;
 
 	y = Mathf::Clamp(y, minY, maxY);
 	Quaternion rotation = Quaternion::Euler(x, y, 0.0f);
