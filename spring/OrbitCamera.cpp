@@ -29,9 +29,18 @@ void OrbitCamera::Destroy()
 }
 
 void OrbitCamera::Update() 
-{    
-	//if (Input::mousePosition.x > Screen::width * 0.6f || Input::mousePosition.y > Screen::height * 0.6f)
-	//	return;
+{
+	float minX = 10.0f;
+	float maxX = minX + Screen::width * 0.6f;
+	float minY = Screen::height - 50.0f - Screen::height * 0.6f - 30.0f;
+	float maxY = minY + Screen::height * 0.6f;
+	float mouseX = Input::mousePosition.x;
+	float mouseY = Input::mousePosition.y;
+
+	if ((mouseX < minX || mouseX > maxX) || (mouseY < minY || mouseY > maxY))
+	{
+		return;
+	}
 	if (Input::GetMouseDown(MouseID::MOUSE_LEFT)) 
 	{
 
