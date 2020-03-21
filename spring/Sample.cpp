@@ -134,18 +134,15 @@ void Sample::Awake()
 	if (enabled) 
 	{
 		// draw light model
-		ModelLoader loader = ModelLoader();
-		loader.Load("res/model/obj/cube.obj");
+		Mesh& mesh = ModelLoader::Load("obj/cube.obj");
 		Material* lightModelMat = new Material(Shader::Load("unlit/color.vs", "unlit/color.fs"));
 		lightModel = new MeshRenderer(lightModelMat);
-		lightModel->meshes = loader.meshes;
-		lightModel->textures = loader.loadedTextures;
+		lightModel->mesh = &mesh;
 		lightModel->Init();
 		lightModel->transform->scale = Vector3(1.0f);
 		lightModel->material->shader->setColor(MAIN_COLOR, Color::yellow);
 
-		ModelLoader modelLoader = ModelLoader();
-		modelLoader.Load("res/model/fbx/sphere.fbx");
+		Mesh& sphere = ModelLoader::Load("fbx/sphere.fbx");
 
 		int sphereCount = 1;
 		for (int i = 0; i < sphereCount; i++)
@@ -158,8 +155,7 @@ void Sample::Awake()
 				mats.push_back(mat);
 
 				MeshRenderer* meshRenderer = new MeshRenderer(mat);
-				meshRenderer->meshes = modelLoader.meshes;
-				meshRenderer->textures = modelLoader.loadedTextures;
+				meshRenderer->mesh = &sphere;
 				meshRenderer->Init();
 				meshRenderer->transform->position = Vector3(-10.0f + i * 2.0f, 0.0, -10.0f + j * 2.0f);
 				meshRenderer->transform->scale = Vector3(1.0f);

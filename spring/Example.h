@@ -46,17 +46,13 @@ public:
 		if (this->drawGround)
 			this->DrawGround();
 
-		ModelLoader loader = ModelLoader();
-		loader.Load("res/model/fbx/747/747-400.fbx"); 
-		// loader.Load("res/model/obj/cube.obj");
-
+		Mesh& mesh = ModelLoader::Load("fbx/747/747-400.fbx");
 		Material* mat = new Material(Shader::Load("diffuse/diffuse.vs", "diffuse/diffuse.fs"));
 		mat->renderMode = Material::RenderMode::Fill;
 		mat->CullFaceFunc(true);
 		aircraft = new MeshRenderer(mat);
 		aircraft->name = "aircraft";
-		aircraft->meshes = loader.meshes;
-		aircraft->textures = loader.loadedTextures;
+		aircraft->mesh = &mesh;
 		aircraft->Init();
 		aircraft->transform->position = Vector3::zero;
 		aircraft->transform->scale = Vector3(5.0f);
@@ -75,8 +71,7 @@ public:
 			normalMat->renderMode = Material::RenderMode::Fill;
 			normalMat->CullFaceFunc(true);
 			aircraftNormal = new MeshRenderer(normalMat);
-			aircraftNormal->meshes = loader.meshes;
-			aircraftNormal->textures = loader.loadedTextures;
+			aircraftNormal->mesh = &mesh;
 			aircraftNormal->Init();
 			aircraftNormal->transform->position = Vector3(6.0f,0.0f,0.0f);
 			aircraftNormal->transform->scale = Vector3(5.0f);
@@ -144,13 +139,10 @@ public:
 
 	void DrawGround() 
 	{
-		ModelLoader* modelloader = new ModelLoader();
-		modelloader->Load("res/model/obj/quad.obj");
-
 		Material* groundMaterial = new Material(Shader::Load("diffuse/diffuse.vs", "diffuse/diffuse.fs"));
 		ground = new MeshRenderer(groundMaterial);
-		ground->meshes = modelloader->meshes;
-		ground->textures = modelloader->loadedTextures;
+		Mesh& mesh = ModelLoader::Load("obj/quad.obj");
+		ground->mesh = &mesh;
 		ground->Init();
 
 		ground->transform->SetScale(Vector3(50.0f));

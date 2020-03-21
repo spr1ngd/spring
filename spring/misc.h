@@ -8,6 +8,17 @@ namespace spring
 	{
 	public:
 
+		static char* strcat(const char* a, const char* b) // todo : consider use ... parameters list 
+		{
+			unsigned int lengthA = strlen(a) + 1;
+			unsigned int totalLength = lengthA + strlen(b);
+			char* result = new char[totalLength];
+			memset(result, 0, totalLength);
+			strcat_s(result, lengthA, a);
+			strcat_s(result, totalLength, b);
+			return result;
+		}
+
 		static char* string2c(std::string str) 
 		{
 			char* result = new char[str.size() + 1];
@@ -19,7 +30,7 @@ namespace spring
 		static char* gen_guid() 
 		{
 			GUID guid;
-			CoCreateGuid(&guid);
+			auto hr = CoCreateGuid(&guid);
 			char buffer[64];
 			sprintf_s(buffer, "%08X-%04X-%04X-%02X%02X-%02X%02X%02X%02X%02X%02X",
 				guid.Data1,guid.Data2,guid.Data3,

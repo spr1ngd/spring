@@ -7,7 +7,12 @@ Mesh::Mesh()
 {
 
 }
-
+Mesh::Mesh(vector<Vertex> vertices, vector<unsigned int>indices, vector<Texture*> textures) 
+{
+	this->vertices = vertices;
+	this->indices = indices;
+	this->textures = textures;
+}
 Mesh::~Mesh() 
 {
 	glDeleteBuffers(1, &this->VBO);
@@ -15,11 +20,22 @@ Mesh::~Mesh()
 	glDeleteVertexArrays(1, &this->VAO);
 }
 
-Mesh::Mesh(vector<Vertex> vertices, vector<unsigned int>indices, vector<Texture> textures) 
+unsigned int Mesh::GetSubMeshCount() 
 {
-	this->vertices = vertices;
-	this->indices = indices;
-	this->textures = textures;
+	return this->subMeshes.size();
+}
+vector<Mesh*> Mesh::GetAllSubMeshes()
+{
+	return this->subMeshes;
+}
+Mesh& Mesh::GetSubMesh(unsigned int subMeshIndex) 
+{
+	return *this->subMeshes[subMeshIndex];
+}
+void Mesh::SetSubMesh(Mesh* subMesh) 
+{
+	PRINT_LOG("set sub mesh.");
+	this->subMeshes.push_back(subMesh);
 }
 
 void Mesh::Init(function<void()> setting) 
@@ -31,7 +47,6 @@ void Mesh::Init(function<void()> setting)
 	this->GenEBO();
 	this->initialized = true;
 }
-
 void Mesh::GenVBO()
 {
 	glGenBuffers(1, &VBO);
@@ -39,7 +54,6 @@ void Mesh::GenVBO()
 	glBufferData(GL_ARRAY_BUFFER, sizeof(Vertex) * vertices.size(), &vertices[0], this->GetDrawUsage());
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
-
 void Mesh::GenVAO( function<void()> setting )
 {
 	glGenVertexArrays(1, &VAO);
@@ -52,7 +66,6 @@ void Mesh::GenVAO( function<void()> setting )
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindVertexArray(0);
 }
-
 void Mesh::GenEBO()
 {
 	glGenBuffers(1, &EBO);
@@ -60,7 +73,6 @@ void Mesh::GenEBO()
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned int) * indices.size(), &indices[0], this->GetDrawUsage());
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 }
-
 void Mesh::Draw( function<void()> render )
 {
 	glBindVertexArray(VAO);
@@ -73,7 +85,6 @@ void Mesh::Draw( function<void()> render )
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,0);
 	glBindVertexArray(0);
 }
-
 void Mesh::DrawInstanced(unsigned int instancedCount,function<void()> render) 
 {
 	glBindVertexArray(VAO);

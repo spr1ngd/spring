@@ -2,28 +2,23 @@
 
 using namespace spring;
 
-Texture::Texture(const char* filePath) 
-{
-	this->Load(filePath);
-}
-
-void Texture::Load(const char* filePath)
-{
-	Texture* texture = nullptr;
-	if (!TextureLoader::IsExist(filePath, texture))
-	{
-		auto loader = TextureLoader();
-		auto texture = loader.Load(filePath);
-		this->textureId = texture->textureId;
-		TextureLoader::Caching(filePath, this);
-	}
-	else // load from memory cache
-	{
-		// this->textureId = texture->textureId;
-		// this->textureName = texture->textureName;
-		// this->textureType = texture->textureType;
-	}
-}
+//void Texture::Load(const char* filePath)
+//{
+//	Texture* texture = nullptr;
+//	if (!TextureLoader::IsExist(filePath, texture))
+//	{
+//		TextureLoader* loader = new TextureLoader();
+//		auto texture = loader->Load(filePath);
+//		this->textureId = texture->textureId;
+//		TextureLoader::Caching(filePath, this);
+//	}
+//	else // load from memory cache
+//	{
+//		// this->textureId = texture->textureId;
+//		// this->textureName = texture->textureName;
+//		// this->textureType = texture->textureType;
+//	}
+//}
 
 void Texture::Initialize()
 {

@@ -173,6 +173,26 @@ namespace spring
 			Value* shaderParameters = toJson(*shader);
 			value->AddMember("_shader",*shaderParameters,this->document->GetAllocator());
 			// 导出mesh引用
+			Mesh* mesh = meshrenderer.mesh;
+			if (nullptr != mesh)
+			{
+				Value* meshParamters = toJson(*mesh);
+				value->AddMember("_mesh",*meshParamters,this->document->GetAllocator());
+			}
+			return value;
+		}
+		Value* toJson(Mesh& mesh) 
+		{
+			Document::AllocatorType& allocator = this->document->GetAllocator();
+			Value* value = new Value(kObjectType);
+			// model resource path.
+			const char* reference = ModelLoader::GetReference(&mesh);
+
+			Value resValue = Value(kStringType);
+			resValue.SetString(reference,strlen(reference));
+			value->AddMember("_res", resValue, allocator);
+			value->AddMember("_draw_type",mesh.drawType, allocator);
+			value->AddMember("_mesh_mode",mesh.mode,allocator);
 			return value;
 		}
 		Value* toJson(Material& material) 

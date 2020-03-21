@@ -1,61 +1,84 @@
 #include "modelloader.h"
 #include "console.h"
+#include "misc.h"
 
 using namespace spring;
 using namespace std; 
+
+map<const char*, Mesh*> ModelLoader::meshesMap;
 
 ModelLoader::ModelLoader()
 {
 
 }
 
-void ModelLoader::processNode(aiNode* node, const aiScene* scene) 
+const char* ModelLoader::GetReference(Mesh* mesh) 
 {
+	for (std::map<const char*, Mesh*>::iterator item = meshesMap.begin(); item != meshesMap.end(); item++) 
+	{
+		Mesh* cache = item->second;
+		if (cache == mesh)
+		{
+			PRINT_ERROR("======> get reference successfully = %s", item->first);
+			return item->first;
+		}
+	}
+	return "";
+}
+Mesh& ModelLoader::Load(const char* meshFilePath)
+{
+	Mesh* mesh = GetMesh(meshFilePath);
+	if (nullptr != mesh)
+		return *mesh;
+	const char* prefix = "res/model/";
+	char* filePath = misc::strcat(prefix, meshFilePath);
+	ModelLoader loader;
+	Mesh* meshObj = loader.LoadMesh(filePath);
+	CacheMesh(meshFilePath, meshObj);
+	delete[] filePath;
+	return *meshObj;
+}
+
+Mesh* ModelLoader::LoadMesh(const char* filePath)
+{
+	Assimp::Importer importer;
+	const aiScene* scene = importer.ReadFile(filePath, aiProcess_Triangulate | aiProcess_FlipUVs);
+
+	if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode) 
+		PRINT_ERROR("load model failed.");
+	if (scene == nullptr)
+		return nullptr;
+	string path = filePath;
+	this->directory = path.substr(0, path.find_last_of('/'));
+	Mesh* mesh = new Mesh();
+	processNode(scene->mRootNode, scene, *mesh,false);
+	return mesh;
+}
+void ModelLoader::processNode(aiNode* node, const aiScene* scene, Mesh& parentNode ,bool isSubMesh)
+{
+	if (node->mNumMeshes > 1)
+	{
+		PRINT_ERROR("do not support to load multi root node mesh resource.");
+		return;
+	}
 	for (unsigned int i = 0; i < node->mNumMeshes; i++) 
 	{
-		aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
-		meshes.push_back(processMesh(mesh,scene));
+		aiMesh* aimesh = scene->mMeshes[node->mMeshes[i]];
+		Mesh* mesh = processMesh(aimesh,scene);
+		if (isSubMesh)
+			parentNode.SetSubMesh(mesh);
+		else 
+			parentNode = *mesh;
 	}
 	for (unsigned int i = 0; i < node->mNumChildren; i++) 
-		processNode(node->mChildren[i], scene);
+		processNode(node->mChildren[i], scene, parentNode, parentNode.vertices.size() != 0);
 }
-
-vector<Texture> ModelLoader::loadMaterialTextures(aiMaterial*mateiral,aiTextureType textureType,string typeName) 
-{
-	vector<Texture> textures;
-	for (unsigned int i = 0; i < mateiral->GetTextureCount(textureType); i++) 
-	{
-		aiString str;
-		mateiral->GetTexture(textureType,i, &str);
-		bool skip = false;
-		for (unsigned int j = 0; j < this->loadedTextures.size(); j++)
-		{
-			if (std::strcmp(this->loadedTextures[j].textureName, str.C_Str()) == 0) 
-			{
-				textures.push_back(this->loadedTextures[j]);
-				skip = true;
-				break;
-			}
-		}
-		if (skip == false) 
-		{
-			Texture tex;
-			tex.textureType = typeName.c_str();
-			tex.textureName = str.C_Str();
-			PRINT_LOG("[ModelLoader] : load texture : %s",tex.textureName);
-			string filePath = directory + '/' + str.C_Str();
-			tex.Load(filePath.c_str());
-		}
-	}
-	return textures;
-}
-
-Mesh ModelLoader::processMesh( aiMesh*mesh,const aiScene*scene )
+Mesh* ModelLoader::processMesh( aiMesh*mesh,const aiScene*scene )
 {
 	// transfer aiMesh to spring::Mesh
 	vector<Vertex> vertices;
 	vector<unsigned int> indices;
-	vector<Texture> textures;
+	vector<Texture*> textures;
 
 #pragma region parse for model vertices
 
@@ -121,15 +144,15 @@ Mesh ModelLoader::processMesh( aiMesh*mesh,const aiScene*scene )
 
 #pragma endregion
 
-#pragma region parse for model textures
+#pragma region parse mesh texture resources
 
 	if (scene->HasMaterials())
 	{
 		aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
-		vector<Texture> diffuseTextures = loadMaterialTextures(material, aiTextureType_DIFFUSE, "texture_diffuse");
-		vector<Texture> specularTexturess = loadMaterialTextures(material, aiTextureType_SPECULAR, "texture_specular");
-		vector<Texture> normalTextures = loadMaterialTextures(material, aiTextureType_NORMALS, "texture_normal");
-		vector<Texture> heightTextures = loadMaterialTextures(material, aiTextureType_HEIGHT, "texture_height");
+		vector<Texture*> diffuseTextures = loadMaterialTextures(material, aiTextureType_DIFFUSE, "texture_diffuse");
+		vector<Texture*> specularTexturess = loadMaterialTextures(material, aiTextureType_SPECULAR, "texture_specular");
+		vector<Texture*> normalTextures = loadMaterialTextures(material, aiTextureType_NORMALS, "texture_normal");
+		vector<Texture*> heightTextures = loadMaterialTextures(material, aiTextureType_HEIGHT, "texture_height");
 		textures.insert(textures.end(), diffuseTextures.begin(), diffuseTextures.end());
 		textures.insert(textures.end(), specularTexturess.begin(), specularTexturess.end());
 		textures.insert(textures.end(), normalTextures.begin(), normalTextures.end());
@@ -138,19 +161,46 @@ Mesh ModelLoader::processMesh( aiMesh*mesh,const aiScene*scene )
 
 #pragma endregion
 
-	PRINT_LOG("[ModelLoader] : load mesh %s load textures %d ",mesh->mName.C_Str(),textures.size());
-	return Mesh(vertices, indices, textures);
+	// PRINT_LOG("[ModelLoader] : load mesh %s load textures %d ",mesh->mName.C_Str(),textures.size());
+	return new Mesh(vertices, indices, textures);
+}
+vector<Texture*> ModelLoader::loadMaterialTextures(aiMaterial* mateiral, aiTextureType textureType, string typeName)
+{
+	vector<Texture*> textures;
+	for (unsigned int i = 0; i < mateiral->GetTextureCount(textureType); i++)
+	{
+		aiString str;
+		mateiral->GetTexture(textureType, i, &str);
+		string filePath = directory + '/' + str.C_Str();
+		Texture* tex = TextureLoader::Load(filePath.c_str());
+		tex->textureType = typeName.c_str();
+		tex->textureName = str.C_Str();
+		textures.push_back(tex);
+	}
+	return textures;
 }
 
-void ModelLoader::Load(const string filePath) 
+void ModelLoader::CacheMesh(const char* resName, Mesh* mesh) 
 {
-	// todo : load model from file.
-	Assimp::Importer importer;
-	const aiScene* scene = importer.ReadFile(filePath, aiProcess_Triangulate | aiProcess_FlipUVs);
-
-	if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode) 
-		PRINT_ERROR("load model failed.");
-	directory = filePath.substr(0, filePath.find_last_of('/'));
-	if( scene )
-		processNode(scene->mRootNode, scene);
+	PRINT_ERROR("cache model :%s ", resName);
+	meshesMap.insert(std::pair<const char*,Mesh*>(resName, mesh));
+}
+void ModelLoader::ReleaseMesh(const char* resName) 
+{
+	std::map<const char*,Mesh*>::iterator pair = meshesMap.find(resName);
+	if (pair != meshesMap.end())
+	{
+		delete pair->second;
+		meshesMap.erase(pair);
+	}
+}
+Mesh* ModelLoader::GetMesh(const char* resName) 
+{
+	std::map<const char*, Mesh*>::iterator pair = meshesMap.find(resName);
+	if (pair != meshesMap.end())
+	{
+		PRINT_ERROR("share model :%s ",resName);
+		return pair->second;
+	}
+	return nullptr;
 }

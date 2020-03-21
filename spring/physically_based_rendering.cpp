@@ -23,8 +23,7 @@ physically_based_rendering::physically_based_rendering()
 
 void displaySpheres() 
 {
-	ModelLoader* loader = new ModelLoader(); // todo : replaced model loader by resources manager
-	loader->Load("res/model/obj/sphere.obj");
+	Mesh& mesh = ModelLoader::Load("obj/sphere.obj");
 
 	const char* albedo = "albedo";
 	const char* metal = "metal";
@@ -60,7 +59,7 @@ void displaySpheres()
 			pbsMat->shader->setColor(ambient, ambientValue); // 环境光照
 
 			MeshRenderer* meshRenderer = new MeshRenderer(pbsMat);
-			meshRenderer->meshes = loader->meshes;
+			meshRenderer->mesh = &mesh;
 			meshRenderer->Init();
 			meshRenderer->name = "pbs(ibl)";
 			meshRenderer->transform->SetPosition(pos);
@@ -76,14 +75,16 @@ void starFighter()
 	// Texture* albedoTex = TextureLoader::Load("res/model/fbx/star fighter/StarSparrow_Red.png");
 	// Texture* emissionTex = TextureLoader::Load("res/model/fbx/star fighter/StarSparrow_Emission.png");
 
+	// ModelLoader::Load("fbx/star fighter 02/star fighter 01.fbx");
+
 	Texture* metallicTex = TextureLoader::Load("res/model/fbx/star fighter 02/StarSparrow_MetallicSmoothness.png");
 	Texture* normalTex = TextureLoader::Load("res/model/fbx/star fighter 02/StarSparrow_Normal.png");
 	Texture* albedoTex = TextureLoader::Load("res/model/fbx/star fighter 02/StarSparrow_Green.png");
 	Texture* emissionTex = TextureLoader::Load("res/model/fbx/star fighter 02/StarSparrow_Emission.png");
 
-	ModelLoader* loader = new ModelLoader();
-	// loader->Load("res/model/fbx/star fighter/star fighter 01.fbx");
-	loader->Load("res/model/fbx/star fighter 02/star fighter 02.fbx");
+	// // loader->Load("res/model/fbx/star fighter/star fighter 01.fbx");
+	Mesh& mesh = ModelLoader::Load("fbx/star fighter 02/star fighter 02.fbx");
+
 	Shader* shader = Shader::Load("pbs/pbs.vs", "pbs/pbs(ibl).fs");
 	Material* material = new Material(shader);
 
@@ -111,13 +112,11 @@ void starFighter()
 	material->shader->setColor(emission,emissionValue);// 自发光
 
 	fighter = new MeshRenderer(material);
-	fighter->meshes = loader->meshes;
+	fighter->mesh = &mesh;
 	fighter->Init();
 	fighter->name = "star fighter 01";
 	fighter->transform->position = Vector3::zero;
 	fighter->transform->scale = Vector3(0.06f);
-
-	delete loader;
 }
 
 void generateParticle() 

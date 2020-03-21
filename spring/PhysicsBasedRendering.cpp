@@ -19,13 +19,11 @@ void DrawGroundxxx()
 {
 	if (nullptr != ground)
 		return;
-	ModelLoader* modelloader = new ModelLoader();
-	modelloader->Load("res/model/obj/quad.obj");
+	Mesh& mesh = ModelLoader::Load("obj/quad.obj");
 
 	Material* groundMaterial = new Material(Shader::Load("diffuse/diffuse(texture).vs", "diffuse/diffuse(texture).fs"));
 	ground = new MeshRenderer(groundMaterial);
-	ground->meshes = modelloader->meshes;
-	ground->textures = modelloader->loadedTextures;
+	ground->mesh = &mesh;
 	ground->Init();
 
 	ground->transform->SetScale(Vector3(50.0f));
@@ -51,11 +49,10 @@ Cubemap* PhysicsBasedRendering::CubemapConvolution(Cubemap* cubemap)
 	material->CullFaceFunc(false, GL_FRONT);
 	material->shader->setCubemap("environmentCubemap",cubemap);
 
-	ModelLoader loader;
-	loader.Load("res/model/obj/cube.obj");
+	Mesh& mesh = ModelLoader::Load("obj/cube.obj");
 	MeshRenderer* meshRenderer = new MeshRenderer(material);
 	meshRenderer->name = "PBR CubemapConvolution";
-	meshRenderer->meshes = loader.meshes;
+	meshRenderer->mesh = &mesh;
 	meshRenderer->Init();
 	meshRenderer->transform->position = Vector3::zero;
 
@@ -105,12 +102,10 @@ Cubemap* PhysicsBasedRendering::PreFilter(Cubemap* cubemap)
 	prefilterMaterial->CullFaceFunc(false, GL_FRONT);
 	prefilterMaterial->shader->setCubemap("environmentCubemap", cubemap);
 
-	ModelLoader loader;
-	loader.Load("res/model/obj/cube.obj");
-
+	Mesh& mesh = ModelLoader::Load("obj/cube.obj");
 	MeshRenderer* meshrenderer = new MeshRenderer(prefilterMaterial);
 	meshrenderer->name = "PBR PreFilter";
-	meshrenderer->meshes = loader.meshes;
+	meshrenderer->mesh = &mesh;
 	meshrenderer->Init();
 	meshrenderer->transform->position = Vector3::zero;
 

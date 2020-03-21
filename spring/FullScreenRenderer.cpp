@@ -44,9 +44,10 @@ void FullScreenRenderer::Init()
 	Mesh* mesh = new Mesh();
 	mesh->vertices = vertices;
 	mesh->indices = indices;
-	meshes.push_back(*mesh);
-	delete mesh;
+	/*meshes.push_back(*mesh);
+	delete mesh;*/
 
-	this->meshes = meshes;
+	// this->meshes = meshes;
+	this->mesh = mesh;
 	MeshRenderer::Init();
 }

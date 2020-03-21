@@ -35,6 +35,7 @@ namespace spring
 		};
 	private:
 		bool initialized = false;
+		vector<Mesh*> subMeshes;// 利用子网格将树结构搭建起来
 
 		void GenVAO(function<void()> setting);
 		void GenVBO();
@@ -81,21 +82,28 @@ namespace spring
 				return GL_STATIC_DRAW;
 			}
 		}
+
 	public:
 		DrawType drawType = DrawType::StaticDraw;
-		Mode mode = Mode::Triangles; 
+		Mode mode = Mode::Triangles;
 
 		vector<Vertex> vertices;
 		vector<unsigned int> indices;
-		vector<Texture> textures; 
-
+		vector<Texture*> textures;
 		unsigned int VAO = 0, VBO = 0, EBO = 0;
+
 		Mesh();
+		Mesh(vector<Vertex> vertices,vector<unsigned int>indices,vector<Texture*> textures);
 		~Mesh();
-		Mesh(vector<Vertex> vertices,vector<unsigned int>indices,vector<Texture> textures);
 
 		void Init(function<void()> setting);
 		void Draw(function<void()> render = nullptr );
 		void DrawInstanced(unsigned int instancedCount,function<void()> render = nullptr);
+
+		// 子网格接口
+		unsigned int GetSubMeshCount();
+		vector<Mesh*> GetAllSubMeshes();
+		Mesh& GetSubMesh( unsigned int subMeshIndex );
+		void SetSubMesh(Mesh* subMesh);
 	};
 }

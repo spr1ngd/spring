@@ -67,8 +67,6 @@ namespace spring
 			this->width = width;
 			this->height = height;
 		}
-		Texture(const char* filePath);
-		void Load(const char* filePath);
 		void Release();
 		void Initialize();
 		

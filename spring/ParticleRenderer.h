@@ -22,7 +22,6 @@ namespace spring
 
 		float emitTimer = 0.0f;
 	public:
-		Mesh* mesh;
 
 		unsigned int colorBuffer;
 		unsigned int transformBuffer;

@@ -56,10 +56,11 @@ void Gizmos::DrawLine(Vector3 origin, Vector3 end)
 	gizmos->mesh->vertices = vertices;
 	gizmos->mesh->indices = indices;
 	gizmos->mesh->mode = Mesh::Lines;
-	vector<Mesh> meshes;
-	meshes.push_back(*gizmos->mesh);
+	//vector<Mesh> meshes;
+	//meshes.push_back(*gizmos->mesh);
 
-	gizmos->meshrenderer->meshes = meshes;
+	// gizmos->meshrenderer->meshes = meshes;
+	gizmos->meshrenderer->mesh = gizmos->mesh;
 	gizmos->meshrenderer->Init();
 	Gizmos::gizmos.push_back(gizmos);
 } 
@@ -106,10 +107,11 @@ void Gizmos::DrawCircle(Vector3 pos, Vector3 up, float radius, unsigned int smoo
 	mesh.vertices = vertices;
 	mesh.indices = indices;
 	mesh.mode = Mesh::LineLoop;
-	vector<Mesh> meshes;
-	meshes.push_back(mesh);
+	//vector<Mesh> meshes;
+	//meshes.push_back(mesh);
 
-	gizmos->meshrenderer->meshes = meshes;
+	// gizmos->meshrenderer->meshes = meshes;
+	gizmos->meshrenderer->mesh = &mesh;
 	gizmos->meshrenderer->Init();
 	Gizmos::gizmos.push_back(gizmos);
 } 

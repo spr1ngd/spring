@@ -25,11 +25,10 @@ void MeshRenderer::Init()
 	{
 		PRINT_WARNING("can not render skybox without skybox material,please assign a sky box material.");
 		return;
-	}
+	} 
 
-	for (unsigned int i = 0; i < this->meshes.size(); i++) 
+	auto initMesh = [&](Mesh* mesh) 
 	{
-		Mesh* mesh = &meshes[i];
 		mesh->Init([&](void)
 			{
 				GLuint verexLocation = this->material->shader->getAttribLocation(VERTEX);
@@ -46,9 +45,15 @@ void MeshRenderer::Init()
 
 				GLuint colorLocation = this->material->shader->getAttribLocation(COLOR);
 				glEnableVertexAttribArray(colorLocation);
-				glVertexAttribPointer(colorLocation,4,GL_FLOAT,GL_FALSE,sizeof(Vertex),(void*)(sizeof(float) * 8));
+				glVertexAttribPointer(colorLocation, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)(sizeof(float) * 8));
 			});
-	}
+	};
+
+	initMesh(this->mesh);
+	// sub mesh
+	vector<Mesh*> subMeshes = this->mesh->GetAllSubMeshes();
+	for (std::vector<Mesh*>::iterator subMesh = subMeshes.begin(); subMesh != subMeshes.end(); subMesh++) 
+		initMesh(*subMesh);
 } 
 
 void MeshRenderer::Render() 
@@ -87,15 +92,12 @@ void MeshRenderer::Render(glm::mat4 view, glm::mat4 projection)
 	this->material->EnableStencilTest();
 	this->material->EnableCullFace();
 
-	for (unsigned int i = 0; i < this->meshes.size(); i++)
+	auto drawMesh = [&](Mesh* mesh) 
 	{
-		Mesh* mesh = &this->meshes[i];
-
-		// todo : refactor these code
 		if (mesh->textures.size() > 0)
 		{
-			vector<Texture> textures = mesh->textures;
-			this->material->shader->setTexture(MAIN_TEX, textures[0].textureId);
+			vector<Texture*> textures = mesh->textures;
+			this->material->shader->setTexture(MAIN_TEX, textures[0]->textureId);
 		}
 
 		// TODO: if model's transform data does not change , model matrix is necessary to recalculate
@@ -117,7 +119,12 @@ void MeshRenderer::Render(glm::mat4 view, glm::mat4 projection)
 		this->material->shader->use();
 		mesh->Draw();
 		this->material->shader->disuse();
-	}
+	};
+	drawMesh(this->mesh);
+	// sub mesh
+	vector<Mesh*> subMeshes = this->mesh->GetAllSubMeshes();
+	for (std::vector<Mesh*>::iterator subMesh = subMeshes.begin(); subMesh != subMeshes.end(); subMesh++)
+		drawMesh(*subMesh);
 }
 
 MeshRenderer* MeshRenderer::GetMeshRenderer(unsigned int renderableId) 

@@ -122,11 +122,12 @@ void AxisHelper::RenderAxis()
 	mesh.vertices = vertices;
 	mesh.indices = indices;
 	mesh.mode = Mesh::Lines;
-	vector<Mesh> meshes;
-	meshes.push_back(mesh);
+	// vector<Mesh> meshes;
+	//meshes.push_back(mesh);
 
 	this->mesh = &mesh;
-	this->meshRenderer->meshes = meshes;
+	// this->meshRenderer->meshes = meshes;
+	this->meshRenderer->mesh = &mesh;
 	this->meshRenderer->Init();
 }
 

@@ -15,13 +15,10 @@ public:
 	{ 
 		if (!enabled)
 			return;
-		ModelLoader loader = ModelLoader();
-		loader.Load("res/model/obj/sphere.obj");
-
+		Mesh& mesh = ModelLoader::Load("obj/sphere.obj");
 		Material* sunMaterial = new Material(Shader::Load("diffuse/diffuse.vs", "diffuse/diffuse.fs"));
 		sun = new MeshRenderer(sunMaterial);
-		sun->meshes = loader.meshes;
-		sun->textures = loader.loadedTextures;
+		sun->mesh = &mesh;
 		sun->Init();
 		sun->transform->position = Vector3::zero;
 		sun->transform->scale = Vector3(5.0f);
@@ -34,8 +31,7 @@ public:
 
 		Material* earthMaterial = new Material(Shader::Load("diffuse/diffuse.vs", "diffuse/diffuse.fs"));
 		earth = new MeshRenderer(earthMaterial);
-		earth->meshes = loader.meshes;
-		earth->textures = loader.loadedTextures;
+		earth->mesh = &mesh;
 		earth->Init();
 		earth->transform->scale = Vector3(0.5f);
 		// earth->transform->position = Vector3(6.0f, 0.0f, 0.0f);

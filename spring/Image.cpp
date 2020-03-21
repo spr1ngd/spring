@@ -51,7 +51,8 @@ void Image::GenerateMesh()
 	mesh->vertices = vertices;
 	mesh->indices = indices;
 	 
-	this->meshes.push_back(*mesh);
+	// this->meshes.push_back(*mesh);
+	this->mesh = mesh;
 	this->Init();
 }
 

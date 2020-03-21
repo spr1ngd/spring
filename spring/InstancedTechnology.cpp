@@ -20,8 +20,6 @@ void InstancedTechnology::Awake()
 	if (!this->enabled)
 		return;
 
-	ModelLoader* loader = new ModelLoader();
-	loader->Load("res/model/obj/cube.obj");
 	Texture* texture = TextureLoader::Load("res/model/fbx/747/747-400 texture.png");
 
 	Material* instancedMaterial = new Material(Shader::Load("diffuse/diffuse(instance).vs", "diffuse/diffuse.fs"));
@@ -47,7 +45,8 @@ void InstancedTechnology::Awake()
 
 	instanceRenderer = new InstancedRenderer(instancedMaterial);
 	instanceRenderer->name = "InstanceRenderer";
-	instanceRenderer->mesh = loader->meshes[0];
+	Mesh& mesh = ModelLoader::Load("obj/cube.obj");
+	instanceRenderer->mesh = mesh;
 
 	// instanceRendererNormal = new InstancedRenderer(instancedMaterialNormal);
 	// instanceRendererNormal->mesh = loader->meshes[0];

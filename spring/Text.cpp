@@ -31,7 +31,7 @@ Mesh* GenerateCharacterMesh(Character* character , Vector2 origin )
 	Mesh* mesh = new Mesh();
 	vector<Vertex> vertices;
 	vector<unsigned int> indices;
-	vector<Texture> textures;
+	vector<Texture*> textures;
 
 	// left top
 	Vertex lefttop;
@@ -61,7 +61,7 @@ Mesh* GenerateCharacterMesh(Character* character , Vector2 origin )
 	indices = {0,1,2,2,3,0};
 
 	// textures
-	textures.push_back(*character->character);
+	textures.push_back(character->character);
 
 	mesh->vertices = vertices;
 	mesh->indices = indices;
@@ -80,10 +80,9 @@ void Text::GenerateMesh()
 		this->material = new Material(Shader::Load("ui/default.vs", "ui/default.fs"));
 	this->setRenderOrder(10000);
 
-	std::vector<Mesh>().swap(this->meshes);
 	Vector2 origin = Vector2(-this->rectTransform->size.x / 2.0f,0.0f);
-	vector<Mesh> meshes;
-
+	// vector<Mesh> meshes;
+	Mesh* fontMesh = new Mesh();
 	if (this->richText == false)
 	{
 		auto chars = this->text.c_str();
@@ -91,9 +90,10 @@ void Text::GenerateMesh()
 		for (int i = 0; i < cLen; i++)
 		{
 			Character* character = this->font->GetCharacter(chars[i]);
-			Mesh* mesh = GenerateCharacterMesh(character, origin);
+			Mesh* cMesh = GenerateCharacterMesh(character, origin);
 			origin += Vector2((float)character->advance + this->characterSpace, 0.0f);
-			meshes.push_back(*mesh);
+			//meshes.push_back(*mesh);
+			fontMesh->SetSubMesh(cMesh);
 			delete mesh;
 		}
 	}
@@ -139,13 +139,15 @@ void Text::GenerateMesh()
 		for (int i = 0; i < cLen; i++)
 		{
 			Character* character = this->font->GetCharacter(chars[i]);
-			Mesh* mesh = GenerateCharacterMesh(character, origin);
+			Mesh* cMesh = GenerateCharacterMesh(character, origin);
 			origin += Vector2((float)character->advance + this->characterSpace, 0.0f);
-			meshes.push_back(*mesh);
+			// meshes.push_back(*cMesh);
+			fontMesh->SetSubMesh(cMesh);
 			delete mesh;
 		}
 	}
-	this->meshes = meshes;
+	// this->meshes = meshes;
+	this->mesh = fontMesh;
 	this->Init();
 }
 

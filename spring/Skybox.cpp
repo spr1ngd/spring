@@ -11,10 +11,8 @@ Texture* spring::Skybox::prebrdf;
 
 Skybox::Skybox(Material* material,Cubemap* cubemap) 
 {
-	ModelLoader* loader = new ModelLoader();
-	loader->Load("res/model/obj/Cube.obj");
-	this->meshes = loader->meshes;
-	delete loader;
+	Mesh& mesh = ModelLoader::Load("obj/cube.obj");
+	this->mesh = &mesh;
 	this->setRenderOrder(RenderOrder::Skybox);
 	this->material = material;
 	this->material->DepthTestFunc(false);
