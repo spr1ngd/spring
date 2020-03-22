@@ -20,12 +20,10 @@ namespace spring
 		vector<Node*> children;
 		Transform* transform;
 		
-	protected:
 		Node();
-		Node(const char*nodeName);
+		Node(const char* nodeName);
 		~Node();
 
-	public:
 		// query node object by name in current scene. if have return node* ,if not return nullptr.
 		static Node* Query(const char* name);
 

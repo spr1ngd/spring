@@ -2,6 +2,7 @@
 #include "console.h"
 #include "sceneserializer.h"
 #include <time.h>
+#include "misc.h"
 
 using namespace spring;
 
@@ -10,24 +11,14 @@ Scene* Scene::current;
 
 Scene::Scene() 
 {
-	SYSTEMTIME st = { 0 };
-	GetLocalTime(&st);
-	char buffer[48];
-	sprintf_s(buffer, "scene_%d%d%d%d%d%d", st.wYear, st.wMonth, st.wDay, st.wHour, st.wMinute, st.wSecond);
-
-	int length = (int)strlen(buffer);
-	this->name = (char*)malloc(length * sizeof(char));
-	memset(this->name, 0, length);
-	strcpy_s(this->name, length + 1, buffer);
+	this->name = "spring";
 	AddScene(this);
 }
 
 Scene::Scene(const char* name) 
 {
 	int length = (int)strlen(name);
-	this->name = (char*)malloc(length * sizeof(char));
-	memset(this->name, 0, length);
-	strcpy_s(this->name, length + 1, name);
+	this->name = name;
 	AddScene(this);
 }
 
@@ -35,7 +26,10 @@ Scene::Scene(const char* name)
 
 void Scene::Load(const char* sceneName)
 {
-	// todo : restore scene data to actual scene object
+	char scenePath[128];
+	sprintf_s(scenePath, "res/scene/%s.json", sceneName);
+	SceneSerializer serializer(scenePath);
+	serializer.Deserialize();
 }
 
 void Scene::Unload(const char* sceneName)
@@ -53,15 +47,15 @@ void Scene::SaveScene()
 {
 	char scenePath[128];
 	sprintf_s(scenePath,"res/scene/%s.json",Scene::current->name);
-	Scene::SaveScene(scenePath, *Scene::current);
+	Scene::SaveScene(scenePath, Scene::current);
 }
 
-void Scene::SaveScene(const char* scenePath, Scene& scene)
+void Scene::SaveScene(const char* scenePath, Scene* scene)
 {
 	SceneSerializer sceneSerializer(scene);
 	sceneSerializer.scenePath = scenePath;
 	sceneSerializer.Serialize();
-	PRINT_LOG("[Scene] : save scene [%s] successfully.",scene.name);
+	PRINT_LOG("[Scene] : save scene [%s] successfully.",scene->name);
 }
 
 void Scene::AddScene(Scene* scene) 

@@ -290,6 +290,7 @@
     <ClInclude Include="spring.h" />
     <ClInclude Include="SpringEditor.h" />
     <ClInclude Include="SpringEngine.h" />
+    <ClInclude Include="springengine_scene.h" />
     <ClInclude Include="StatusWindow.h" />
     <ClInclude Include="Text.h" />
     <ClInclude Include="Texture.h" />
@@ -392,6 +393,7 @@
     <ClCompile Include="spring.cpp" />
     <ClCompile Include="SpringEditor.cpp" />
     <ClCompile Include="SpringEngine.cpp" />
+    <ClCompile Include="springengine_scene.cpp" />
     <ClCompile Include="StatusWindow.cpp" />
     <ClCompile Include="Text.cpp" />
     <ClCompile Include="Texture.cpp" />

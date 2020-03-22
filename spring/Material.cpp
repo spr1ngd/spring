@@ -153,7 +153,6 @@ GLenum Material::GetPolygonMode()
 
 void Material::Caching(Material* material) 
 {
-	PRINT_LOG("[Material] : generate material instance %s,%s",material->shader->vertexShaderName,material->shader->fragmentShaderName);
 	materials.push_back(material);
 }
 

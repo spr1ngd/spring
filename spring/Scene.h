@@ -15,13 +15,13 @@ namespace spring
 		static void Unload(const char* sceneName);
 		static Scene* ReadScene(const char* scenePath);
 		static void SaveScene();
-		static void SaveScene(const char* scenePath,Scene& scene);
+		static void SaveScene(const char* scenePath,Scene* scene);
 		static void AddScene(Scene* scene);
 		static void RemoveScene(Scene* scene);
 
 		// interfaces about scene object
 	public:
-		char* name;
+		const char* name;
 		std::vector<Node*> nodes;
 
 		Scene();

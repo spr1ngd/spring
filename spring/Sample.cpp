@@ -5,6 +5,7 @@
 #include "instancedtechnology.h"
 #include "physically_based_rendering.h"
 #include "physicsbasedrendering.h"
+#include "springengine_scene.h"
 
 using namespace spring;
 using namespace spring::editor;
@@ -13,6 +14,7 @@ Matrix4x4Sample* matrix4x4Sample;
 Example* example;
 InstancedTechnology* instanced;
 physically_based_rendering* pbr;
+springengine_scene* esScene;
 
 bool enabled = false;
 bool renderSkybox = true;
@@ -29,7 +31,12 @@ float timer = 0.0f;
 float speed = 5.0f;
 
 Sample::Sample() 
-{ 
+{
+	esScene = new springengine_scene();
+
+	if (!enabled)
+		return;
+
 	matrix4x4Sample = new Matrix4x4Sample();
 	matrix4x4Sample->name = "Matrix4x4 Example";
 	matrix4x4Sample->enabled = false;
@@ -49,6 +56,30 @@ Sample::Sample()
 
 void Sample::Awake()
 {
+#pragma region scene camera setting
+
+	camera = new Camera();
+	camera->name = "Main Camera";
+	camera->clearFlag = Camera::ClearFlag::Skybox;
+	camera->background = Color(31, 113, 113, 255);
+	camera->transform->SetPosition(Vector3(0.0f, 0.0f, 25.0f));
+	camera->transform->LookAt(Vector3::zero);
+	camera->cullingMask->remove(Layer::UI);
+	Camera::main = camera;
+
+	orbit = new OrbitCamera();
+	orbit->name = "OrbitCamera";
+	// TODO : 支持查找另一个Node对象
+	orbit->target = Vector3(0.0f, 0.0f, 0.0f);// Vector3::zero;
+	orbit->zoomSpeed = 1.0f;
+
+	// world position coordinate
+	// Gizmos::DrawAxis(Vector3::zero, Vector3(3.0f));
+
+#pragma endregion
+
+	if (!enabled)
+		return;
 	auto createLight = [&](Light::Type lightType, Color lightColor, float intensity, Vector3 position, Vector3 eulerangle)
 	{
 		Light* light = new Light();
@@ -107,28 +138,6 @@ void Sample::Awake()
 
 #pragma endregion
 
-#pragma region scene camera setting
-
-	camera = new Camera();
-	camera->name = "Main Camera";
-	camera->clearFlag = Camera::ClearFlag::Skybox;
-	camera->background = Color(31, 113, 113, 255);
-	camera->transform->SetPosition(Vector3(0.0f, 0.0f, 25.0f));
-	camera->transform->LookAt(Vector3::zero);
-	camera->cullingMask->remove(Layer::UI);
-	Camera::main = camera;
-
-	orbit = new OrbitCamera();
-	orbit->name = "OrbitCamera";
-	// TODO : 支持查找另一个Node对象
-	orbit->target = Vector3(0.0f, 0.0f, 0.0f);// Vector3::zero;
-	orbit->zoomSpeed = 1.0f;
-
-	// world position coordinate
-	// Gizmos::DrawAxis(Vector3::zero, Vector3(3.0f));
-
-#pragma endregion
-
 #pragma region draw triangle by encapsuled object 
 
 	if (enabled) 
@@ -176,6 +185,8 @@ void Sample::Awake()
 
 void Sample::Update() 
 {
+	if (!enabled)
+		return;
 	timer += Timer::deltaTime;
 	// skybox->material->shader->setFloat("time", timer);
 	if (renderSkybox)

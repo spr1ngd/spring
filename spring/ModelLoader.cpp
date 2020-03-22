@@ -182,7 +182,6 @@ vector<Texture*> ModelLoader::loadMaterialTextures(aiMaterial* mateiral, aiTextu
 
 void ModelLoader::CacheMesh(const char* resName, Mesh* mesh) 
 {
-	PRINT_ERROR("cache model :%s ", resName);
 	meshesMap.insert(std::pair<const char*,Mesh*>(resName, mesh));
 }
 void ModelLoader::ReleaseMesh(const char* resName) 

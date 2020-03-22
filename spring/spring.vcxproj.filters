@@ -526,6 +526,9 @@
     <ClInclude Include="RenderBuffer.h">
       <Filter>头文件\Core\Renderer\BasicModule</Filter>
     </ClInclude>
+    <ClInclude Include="springengine_scene.h">
+      <Filter>sample</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="spring.cpp">
@@ -827,6 +830,9 @@
     </ClCompile>
     <ClCompile Include="RenderBuffer.cpp">
       <Filter>源文件\Core\Renderer\BasicModule</Filter>
+    </ClCompile>
+    <ClCompile Include="springengine_scene.cpp">
+      <Filter>sample</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
