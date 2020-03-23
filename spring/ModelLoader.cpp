@@ -197,9 +197,6 @@ Mesh* ModelLoader::GetMesh(const char* resName)
 {
 	std::map<const char*, Mesh*>::iterator pair = meshesMap.find(resName);
 	if (pair != meshesMap.end())
-	{
-		PRINT_ERROR("share model :%s ",resName);
 		return pair->second;
-	}
 	return nullptr;
 }

@@ -32,6 +32,8 @@ void DrawTree(int& clickedNode,int& clickedIndex, Node& node ,ImGuiTreeNodeFlags
 		{
 			if (ImGui::IsItemClicked())
 				clickedNode = clickedIndex;
+			ImGui::SameLine(0.0f);
+			ImGui::Checkbox("", &child->visible);
 			DrawTree(clickedNode,clickedIndex,*child,flags);
 			ImGui::TreePop();
 		}
@@ -46,12 +48,13 @@ void HierarchyWindow::OnDrawWindow()
 	if (ImGui::TreeNode("SceneName")) 
 	{
 		int clickedNode = -1;
-		int clickedIndex = -1;
+		int clickedIndex = 0;
 		
 		for (int i = 0; i < (int)Scene::current->nodes.size(); i++)
 		{
-			clickedIndex++;
 			Node* node = Scene::current->nodes[i];
+			if (node->flags == NodeFlags::BuiltIn)
+				continue;
 			ImGuiTreeNodeFlags node_flags = base_flags;
 			const bool isSelected = (selection_mask & (1 << clickedIndex)) != 0; // 不能和id匹配，因为i无法递归到别的函数
 			if (isSelected)
@@ -63,9 +66,12 @@ void HierarchyWindow::OnDrawWindow()
 			{
 				if (ImGui::IsItemClicked())
 					clickedNode = clickedIndex;
+				ImGui::SameLine(0.0f);
+				ImGui::Checkbox("", &node->visible);
 				DrawTree(clickedNode, clickedIndex, *node, base_flags);
 				ImGui::TreePop();
 			}
+			clickedIndex++;
 		}
 		if (clickedNode != -1) 
 		{

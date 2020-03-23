@@ -97,6 +97,7 @@ namespace spring
 		}
 
 		Value* toJson(Scene& scene);
+		Value* toJson(Behaviour& behaviour);
 		Value* toJson(Node& node);
 		Value* toJson(Transform& transform);
 		Value* toJson(MeshRenderer& meshrenderer);

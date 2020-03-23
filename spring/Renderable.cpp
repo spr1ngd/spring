@@ -48,11 +48,18 @@ void Renderable::Draw(unsigned int layerCount, unsigned int* layers)
 		for (unsigned int j = 0; j < layerCount; j++)
 		{
 			unsigned int layer = layers[j];
-			auto node = (MeshRenderer*)object;
-			if (node->layer == layer) 
+			try 
 			{
-				object->Render();
-				break;
+				MeshRenderer* node = dynamic_cast<MeshRenderer*>(object);
+				if (node->layer == layer)
+				{
+					object->Render();
+					break;
+				}
+			}
+			catch (bad_cast) 
+			{
+				PRINT_ERROR("cast renderable object to meshrenderer failed.");
 			}
 		}
 	}
@@ -68,12 +75,19 @@ void Renderable::Draw(unsigned int layerCount, unsigned int* layers , std::funct
 		for (unsigned int j = 0; j < layerCount; j++)
 		{
 			unsigned int layer = layers[j];
-			auto node = (MeshRenderer*)object;
-			if (node->layer == layer)
+			try
 			{
-				if (nullptr != func)
-					func(node);
-				break;
+				MeshRenderer* renderer = dynamic_cast<MeshRenderer*>(object);
+				if (renderer->layer == layer)
+				{
+					if (nullptr != func)
+						func(renderer);
+					break;
+				}
+			}
+			catch (bad_cast)
+			{
+				PRINT_ERROR("cast renderable object to meshrenderer failed.");
 			}
 		}
 	}

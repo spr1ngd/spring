@@ -18,7 +18,7 @@ ParticleRenderer* particle2;
 
 physically_based_rendering::physically_based_rendering() 
 {
-	this->enabled = false;
+
 }
 
 void displaySpheres() 
@@ -237,9 +237,6 @@ void generateParticle2()
 
 void physically_based_rendering::Awake() 
 {
-	if (!this->enabled)
-		return;
-
 	starFighter();
 	generateParticle();
 	generateParticle2();
@@ -255,10 +252,7 @@ void physically_based_rendering::Awake()
 }
 
 void physically_based_rendering::Update() 
-{
-	if (!this->enabled)
-		return;
-
+{ 
 	// Vector3 offset = Vector3(0.0f, 0.0f, 100.0f) * Timer::deltaTime;
 	// fighter->transform->position += offset;
 	// particle->transform->position += offset;
@@ -266,7 +260,5 @@ void physically_based_rendering::Update()
 }
 
 void physically_based_rendering::Destroy()
-{
-	if (!this->enabled)
-		return;
+{ 
 }

@@ -12,14 +12,11 @@ InstancedRenderer* instanceRendererNormal;
 
 InstancedTechnology::InstancedTechnology() 
 {
-	
+	this->enabled = false;
 }
 
 void InstancedTechnology::Awake() 
-{
-	if (!this->enabled)
-		return;
-
+{ 
 	Texture* texture = TextureLoader::Load("res/model/fbx/747/747-400 texture.png");
 
 	Material* instancedMaterial = new Material(Shader::Load("diffuse/diffuse(instance).vs", "diffuse/diffuse.fs"));
@@ -72,15 +69,9 @@ void InstancedTechnology::Awake()
 }
 
 void InstancedTechnology::Update() 
-{
-	if (!this->enabled)
-		return;
-
+{ 
 }
 
 void InstancedTechnology::Destroy()
-{
-	if (!this->enabled)
-		return;
-
+{ 
 }

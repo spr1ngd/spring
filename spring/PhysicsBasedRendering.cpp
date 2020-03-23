@@ -131,7 +131,6 @@ Cubemap* PhysicsBasedRendering::PreFilter(Cubemap* cubemap)
 	{
 		float roughness = static_cast<float>(level) / static_cast<float>((mipmapLevel - 1));
 		meshrenderer->material->shader->setFloat("roughness", roughness);
-		PRINT_WARNING("roughness = %f",roughness);
 
 		unsigned int mipmapWidth  = static_cast<int>(cubemapSize * Mathf::Pow(0.5f, (float)level));
 		unsigned int minmapHeight = static_cast<int>(cubemapSize * Mathf::Pow(0.5f,(float)level));

@@ -1,7 +1,6 @@
 #pragma once
 #include "springengine.h"
 
-
 using namespace spring;
 using namespace spring::editor;
 

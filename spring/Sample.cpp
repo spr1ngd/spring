@@ -16,7 +16,6 @@ InstancedTechnology* instanced;
 physically_based_rendering* pbr;
 springengine_scene* esScene;
 
-bool enabled = false;
 bool renderSkybox = true;
 bool enableLights = true;
 
@@ -33,25 +32,7 @@ float speed = 5.0f;
 Sample::Sample() 
 {
 	esScene = new springengine_scene();
-
-	if (!enabled)
-		return;
-
-	matrix4x4Sample = new Matrix4x4Sample();
-	matrix4x4Sample->name = "Matrix4x4 Example";
-	matrix4x4Sample->enabled = false;
-
-	example = new Example();
-	example->name = "Example";
-	example->enabled = false;
-
-	instanced = new InstancedTechnology();
-	instanced->name = "Instancing Rendering Example";
-	instanced->enabled = false;
-
-	pbr = new physically_based_rendering();
-	pbr->name = "Physically Based Rendering Example"; 
-	pbr->enabled = true;
+	esScene->name = "scene loader";
 }
 
 void Sample::Awake()
@@ -78,8 +59,6 @@ void Sample::Awake()
 
 #pragma endregion
 
-	if (!enabled)
-		return;
 	auto createLight = [&](Light::Type lightType, Color lightColor, float intensity, Vector3 position, Vector3 eulerangle)
 	{
 		Light* light = new Light();
@@ -111,13 +90,13 @@ void Sample::Awake()
 		// refactor these code to environment class.
 		Cubemap* irradianceCubemap = PhysicsBasedRendering::CubemapConvolution(cubemap);
 		PhysicsBasedRendering::irradiance = irradianceCubemap;
-		
+
 		Cubemap* prefilter = PhysicsBasedRendering::PreFilter(cubemap);
 		PhysicsBasedRendering::prefilter = prefilter;
-		
+
 		Texture* prebrdf = PhysicsBasedRendering::PreBRDF(cubemap);
 		PhysicsBasedRendering::prebrdf = prebrdf;
-		
+
 		skybox->SetCubemap(prefilter);
 		Skybox::irradianceCubemap = irradianceCubemap;
 		Skybox::prefilter = prefilter;
@@ -138,55 +117,21 @@ void Sample::Awake()
 
 #pragma endregion
 
-#pragma region draw triangle by encapsuled object 
+	// matrix4x4Sample = new Matrix4x4Sample();
+	// matrix4x4Sample->name = "Matrix4x4 Example";
+	// 
+	// example = new Example();
+	// example->name = "Example";
 
-	if (enabled) 
-	{
-		// draw light model
-		Mesh& mesh = ModelLoader::Load("obj/cube.obj");
-		Material* lightModelMat = new Material(Shader::Load("unlit/color.vs", "unlit/color.fs"));
-		lightModel = new MeshRenderer(lightModelMat);
-		lightModel->mesh = &mesh;
-		lightModel->Init();
-		lightModel->transform->scale = Vector3(1.0f);
-		lightModel->material->shader->setColor(MAIN_COLOR, Color::yellow);
+	// instanced = new InstancedTechnology();
+	// instanced->name = "Instancing Rendering Example";
 
-		Mesh& sphere = ModelLoader::Load("fbx/sphere.fbx");
-
-		int sphereCount = 1;
-		for (int i = 0; i < sphereCount; i++)
-		{
-			for (int j = 0; j < sphereCount; j++)
-			{
-				Material* mat = new Material(Shader::Load("diffuse/diffuse.vs", "diffuse/transparency.fs"));
-				mat->name = "diffuse";
-				mat->renderMode = Material::Fill;
-				mats.push_back(mat);
-
-				MeshRenderer* meshRenderer = new MeshRenderer(mat);
-				meshRenderer->mesh = &sphere;
-				meshRenderer->Init();
-				meshRenderer->transform->position = Vector3(-10.0f + i * 2.0f, 0.0, -10.0f + j * 2.0f);
-				meshRenderer->transform->scale = Vector3(1.0f);
-				meshRenderer->transform->SetEulerangle(Vector3(-90.0f, 0.0f, 0.0f));
-				meshRenderer->material->shader->setColor(MAIN_COLOR, Color(204, 204, 204, 128));
-				meshRenderer->material->shader->setColor("Specular_Color", Color::white);
-				meshRenderer->material->shader->setFloat("Specular_Intensity", 1.0f);
-				meshRenderer->material->shader->setFloat("Specular_Attenuation", 64.0f);
-				renderers.push_back(meshRenderer);
-			}
-		}
-
-		Gizmos::DrawAxis(lightModel->transform);
-	}
-
-#pragma endregion
+	pbr = new physically_based_rendering();
+	pbr->name = "Physically Based Rendering Example";
 }
 
 void Sample::Update() 
 {
-	if (!enabled)
-		return;
 	timer += Timer::deltaTime;
 	// skybox->material->shader->setFloat("time", timer);
 	if (renderSkybox)
@@ -195,7 +140,7 @@ void Sample::Update()
 	}
 	if (visible) 
 	{
-		float angleDelta = speed * Timer::deltaTime;
+		// float angleDelta = speed * Timer::deltaTime;
 		/*lightModel->transform->eulerangle.z += angleDelta;
 		if (lightModel->transform->eulerangle.z > 360.0f)
 			lightModel->transform->eulerangle.z -= 360.0f;*/
@@ -204,6 +149,5 @@ void Sample::Update()
 
 void Sample::Destroy() 
 {
-	if (enabled == false)
-		return;
+
 }

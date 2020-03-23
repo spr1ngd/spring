@@ -86,16 +86,22 @@ int main(int, char**)
 	// draw sample scene
 	Sample* sample = new Sample();
 	sample->name = "SPRING";
+	sample->enabled = true;
+	sample->flags = NodeFlags::Static;
 
 	Timer::Start();
 	for (auto behaviour : Behaviour::behaviours)
-		behaviour.second->Awake();
+	{
+		if( behaviour.second->enabled )
+			behaviour.second->Awake();
+	}
 	unsigned int* uiRenderLayer = new unsigned int[1]{ Layer::UI };
 	unsigned int* defaultRenderLayer = new unsigned int[2]{ Layer::Default,Layer::Skybox };
 	Camera* uiCamera = new Camera();
 	uiCamera->name = "Internal UI Camera";
 	uiCamera->cullingMask->set(uiRenderLayer);
 	uiCamera->clearFlag = Camera::None;
+	uiCamera->flags = NodeFlags::BuiltIn;
 
 	// post processing
 	PostProcessing::postprocessing = new class::PostProcessing();
@@ -150,11 +156,17 @@ int main(int, char**)
 			(*cam)->Update();
 
 		for (auto behaviour : Behaviour::behaviours)
-			behaviour.second->Update();
+		{
+			if( behaviour.second->enabled )
+				behaviour.second->Update();
+		}
 		ParticleRenderer::Update();
 
 		for (auto behaviour : Behaviour::behaviours)
-			behaviour.second->OnPreRender();
+		{
+			if (behaviour.second->enabled)
+				behaviour.second->OnPreRender();
+		}
 
 		PostProcessing::postprocessing->Preprocess();
 
@@ -197,10 +209,16 @@ int main(int, char**)
 		PostProcessing::postprocessing->Process();
 
 		for (auto behaviour : Behaviour::behaviours)
-			behaviour.second->OnPostRender();
+		{
+			if(behaviour.second->enabled)
+				behaviour.second->OnPostRender();
+		}
 
 		for (auto behaviour : Behaviour::behaviours)
-			behaviour.second->OnGUI();
+		{
+			if(behaviour.second->enabled)
+				behaviour.second->OnGUI();
+		}
 
 		// render 2d ui object.
 		Camera::current = uiCamera;
@@ -228,7 +246,10 @@ int main(int, char**)
 	SpringEditor::Release();
 	AssetLoader::Release();
 	for (auto behaviour : Behaviour::behaviours)
-		behaviour.second->Destroy();
+	{
+		if (behaviour.second->enabled)
+			behaviour.second->Destroy();
+	}
 
 	// Cleanup remove those code to spring editor imgui...controller.
 	ImGui_ImplOpenGL3_Shutdown();

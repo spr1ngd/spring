@@ -7,8 +7,6 @@ using namespace spring::editor;
 class physically_based_rendering : public spring::Behaviour
 {
 public:
-	bool enabled = false;
-
 	physically_based_rendering();
 	void Awake() override;
 	void Update() override;

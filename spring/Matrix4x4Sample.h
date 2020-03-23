@@ -10,7 +10,6 @@ private:
 	MeshRenderer* earth;
 	Vector3 sunRotateAxis;
 public:
-	bool enabled =  false;
 	void Awake() override 
 	{ 
 		if (!enabled)
@@ -18,6 +17,7 @@ public:
 		Mesh& mesh = ModelLoader::Load("obj/sphere.obj");
 		Material* sunMaterial = new Material(Shader::Load("diffuse/diffuse.vs", "diffuse/diffuse.fs"));
 		sun = new MeshRenderer(sunMaterial);
+		sun->name = "Sun";
 		sun->mesh = &mesh;
 		sun->Init();
 		sun->transform->position = Vector3::zero;
@@ -31,6 +31,7 @@ public:
 
 		Material* earthMaterial = new Material(Shader::Load("diffuse/diffuse.vs", "diffuse/diffuse.fs"));
 		earth = new MeshRenderer(earthMaterial);
+		earth->name = "Earth";
 		earth->mesh = &mesh;
 		earth->Init();
 		earth->transform->scale = Vector3(0.5f);

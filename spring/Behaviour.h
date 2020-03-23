@@ -13,6 +13,8 @@ namespace spring
 	public:
 		static std::map<const unsigned long, Behaviour*> behaviours; 
 	public:
+		bool enabled = true;
+
 		Behaviour();
 		virtual void Awake();
 		virtual void Update();

@@ -14,12 +14,37 @@ Value* JsonSerializer::toJson(Scene& scene)
 	for (auto item = scene.nodes.begin(); item != scene.nodes.end(); item++)
 	{
 		Node* node = *item;
-		Value* nodeValue = toJson(*node);
+		// only nodes that are marked as static can be exported ==> static meaning is created in editor scene.
+		if( node->flags != NodeFlags::Static )
+			continue;
+
+		// try to cast to behaviour type.
 		Value strValue = Value(kStringType);
 		strValue.SetString(node->name, strlen(node->name));
-		hierarchyValue.AddMember(strValue, *nodeValue, this->document->GetAllocator());
+		try
+		{
+			Behaviour* behaviour = dynamic_cast<Behaviour*>(node);
+			Value* hehaviourValue = toJson(*behaviour);
+			hierarchyValue.AddMember(strValue, *hehaviourValue, this->document->GetAllocator());
+		}
+		catch (bad_cast)
+		{
+			Value* nodeValue = toJson(*node);
+			hierarchyValue.AddMember(strValue, *nodeValue, this->document->GetAllocator());
+		}
 	}
 	value->AddMember("hierarchy", hierarchyValue, this->document->GetAllocator());
+	return value;
+}
+Value* JsonSerializer::toJson(Behaviour& behaviour) 
+{
+	Value* value = toJson((Node&)behaviour);
+	value->AddMember("_type","behaviour",this->document->GetAllocator());
+	const char* scriptName = typeid(Behaviour).name();
+	PRINT_LOG("serialize behaviour script : %s", scriptName);
+	Value scriptNameValue = Value(kStringType);
+	scriptNameValue.SetString(scriptName,strlen(scriptName));
+	value->AddMember("_behaviour",scriptNameValue,this->document->GetAllocator());
 	return value;
 }
 Value* JsonSerializer::toJson(Node& node)
