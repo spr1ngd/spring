@@ -19,7 +19,7 @@ public:
 		sun = new MeshRenderer(sunMaterial);
 		sun->name = "Sun";
 		sun->mesh = &mesh;
-		sun->Init();
+		sun->Initialize();
 		sun->transform->position = Vector3::zero;
 		sun->transform->scale = Vector3(5.0f);
 		auto sunTexture = TextureLoader::Load("res/texture/sun.jpg");
@@ -33,7 +33,7 @@ public:
 		earth = new MeshRenderer(earthMaterial);
 		earth->name = "Earth";
 		earth->mesh = &mesh;
-		earth->Init();
+		earth->Initialize();
 		earth->transform->scale = Vector3(0.5f);
 		// earth->transform->position = Vector3(6.0f, 0.0f, 0.0f);
 		auto earthTexture = TextureLoader::Load("res/texture/earth.jpg");

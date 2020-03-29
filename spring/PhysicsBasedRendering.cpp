@@ -24,7 +24,7 @@ void DrawGroundxxx()
 	Material* groundMaterial = new Material(Shader::Load("diffuse/diffuse(texture).vs", "diffuse/diffuse(texture).fs"));
 	ground = new MeshRenderer(groundMaterial);
 	ground->mesh = &mesh;
-	ground->Init();
+	ground->Initialize();
 
 	ground->transform->SetScale(Vector3(50.0f));
 	ground->transform->SetPosition(Vector3(0.0f, -2.0f, 0.0f));
@@ -53,7 +53,7 @@ Cubemap* PhysicsBasedRendering::CubemapConvolution(Cubemap* cubemap)
 	MeshRenderer* meshRenderer = new MeshRenderer(material);
 	meshRenderer->name = "PBR CubemapConvolution";
 	meshRenderer->mesh = &mesh;
-	meshRenderer->Init();
+	meshRenderer->Initialize();
 	meshRenderer->transform->position = Vector3::zero;
 
 	glm::mat4 views[] =
@@ -106,7 +106,7 @@ Cubemap* PhysicsBasedRendering::PreFilter(Cubemap* cubemap)
 	MeshRenderer* meshrenderer = new MeshRenderer(prefilterMaterial);
 	meshrenderer->name = "PBR PreFilter";
 	meshrenderer->mesh = &mesh;
-	meshrenderer->Init();
+	meshrenderer->Initialize();
 	meshrenderer->transform->position = Vector3::zero;
 
 	glm::mat4 views[] =
@@ -164,7 +164,7 @@ Texture* PhysicsBasedRendering::PreBRDF(Cubemap* cubemap)
 	// render a fullscreen quad
 	FullScreenRenderer* fsRenderer = new FullScreenRenderer();
 	fsRenderer->name = "FPS(PreBRDF)";
-	fsRenderer->Init();
+	fsRenderer->Initialize();
 	fsRenderer->material = preBRDFMaterial;
 
 	glViewport(0, 0, textureSize, textureSize);

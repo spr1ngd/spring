@@ -25,7 +25,7 @@ namespace spring
 		MeshRenderer(Material* mateiral);
 		~MeshRenderer();
 
-		virtual void Init();
+		virtual void Initialize();
 		void Render() override;
 		virtual void Render( Camera* camera );
 		virtual void Render( glm::mat4 view ,glm::mat4 projection);

@@ -148,7 +148,7 @@ void Text::GenerateMesh()
 	}
 	// this->meshes = meshes;
 	this->mesh = fontMesh;
-	this->Init();
+	this->Initialize();
 }
 
 string* Text::parseTags(string text)

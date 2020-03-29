@@ -43,6 +43,8 @@
 #include "input.h"
 #include "physicsbasedrendering.h"
 #include "scene.h"
+#include "primitive.h"
+#include "gameobject.h"
 
 #include "orbitcamera.h"
 #include "firstplayercamera.h"

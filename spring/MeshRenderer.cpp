@@ -6,11 +6,12 @@ using namespace spring;
 
 MeshRenderer::MeshRenderer()
 {
-
+	this->type = "class spring::MeshRenderer";
 }
 
 MeshRenderer::MeshRenderer(Material* mateiral)
 {
+	this->type = "class spring::MeshRenderer";
 	this->material = mateiral;
 }
 
@@ -19,7 +20,7 @@ MeshRenderer::~MeshRenderer()
 
 }
 
-void MeshRenderer::Init() 
+void MeshRenderer::Initialize() 
 {
 	if (this->material == nullptr)
 	{

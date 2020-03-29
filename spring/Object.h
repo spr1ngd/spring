@@ -12,6 +12,7 @@ namespace spring
 		unsigned long instanceId;
 	public:
 		const char* name;
+		const char* type = "Object";
 
 		Object();
 		virtual void Destroy();

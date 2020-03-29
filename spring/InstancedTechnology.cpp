@@ -64,7 +64,7 @@ void InstancedTechnology::Awake()
 		instanceRenderer->AddInstance(position, Vector3::zero, scale);
 		// instanceRendererNormal->AddInstance(position, Vector3::zero, Vector3::one);
 	}
-	instanceRenderer->Init();
+	instanceRenderer->Initialize();
 	// instanceRendererNormal->Init();
 }
 

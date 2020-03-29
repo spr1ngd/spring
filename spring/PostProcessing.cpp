@@ -43,7 +43,7 @@ void PostProcessing::Initialize()
 	
 	this->fsRenderer = new FullScreenRenderer();
 	this->fsRenderer->name = "(FSR)PostProcessing";
-	this->fsRenderer->Init();
+	this->fsRenderer->Initialize();
 
 	// if (this->antiAliasing->enabled)
 	// {

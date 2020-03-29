@@ -36,12 +36,13 @@ namespace spring
 		static Node* Query(const char* name);
 
 		template <typename T>
-		Node* GetNode(T nodeType) 
+		T* GetNode() 
 		{
 			for (Node* node : this->nodes)
 			{
-				if (typeid(node).name() == typeid(nodeType).name())
-					return node;
+				const char* queryTypeName = typeid(T).name();
+				if (strcmp(node->type,queryTypeName) == 0)
+					return (T*)node;
 			}
 			return nullptr;
 		}
@@ -55,14 +56,21 @@ namespace spring
 		}
 
 		template <typename T>
-		Node* AddNode()
+		T& AddNode()
 		{
-			T* instance = new T();
-			this->nodes.push_back((Node*)instance);
-			return (Node*)instance;
+			T* node = new T();
+			this->nodes.push_back(node);
+			return *node;
 		}
 
-		Node* GetChild(const char*nodeName);
+		template <typename T>
+		void AddNode(T& node)
+		{
+			this->nodes.push_back(&node);
+		}
+
+
+		Node* GetChild(const char* nodeName);
 		void SetParent(Node* node);
 	};
 }

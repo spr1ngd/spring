@@ -7,6 +7,6 @@ namespace spring
 	{
 	public:
 		FullScreenRenderer();
-		void Init() override;
+		void Initialize() override;
 	};
 }

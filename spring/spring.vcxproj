@@ -199,6 +199,7 @@
     <Image Include="spring.ico" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AfterImage.h" />
     <ClInclude Include="AntiAliasing.h" />
     <ClInclude Include="Application.h" />
     <ClInclude Include="AssetLoader.h" />
@@ -223,6 +224,7 @@
     <ClInclude Include="FrameBuffer.h" />
     <ClInclude Include="FullScreenRenderer.h" />
     <ClInclude Include="GameApp.h" />
+    <ClInclude Include="GameObject.h" />
     <ClInclude Include="Gizmos.h" />
     <ClInclude Include="Graphic.h" />
     <ClInclude Include="GUI.h" />
@@ -307,6 +309,7 @@
     <ClInclude Include="Vertex.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="AfterImage.cpp" />
     <ClCompile Include="AntiAliasing.cpp" />
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="AssetLoader.cpp" />
@@ -330,6 +333,7 @@
     <ClCompile Include="FrameBuffer.cpp" />
     <ClCompile Include="FullScreenRenderer.cpp" />
     <ClCompile Include="GameApp.cpp" />
+    <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="Gizmos.cpp" />
     <ClCompile Include="Graphic.cpp" />
     <ClCompile Include="GUI.cpp" />

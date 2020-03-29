@@ -532,6 +532,12 @@
     <ClInclude Include="GameApp.h">
       <Filter>sample</Filter>
     </ClInclude>
+    <ClInclude Include="GameObject.h">
+      <Filter>头文件\Core\Renderer\BasicModule</Filter>
+    </ClInclude>
+    <ClInclude Include="AfterImage.h">
+      <Filter>头文件\Core\Renderer\PostProcessing</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="spring.cpp">
@@ -839,6 +845,12 @@
     </ClCompile>
     <ClCompile Include="GameApp.cpp">
       <Filter>sample</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObject.cpp">
+      <Filter>源文件\Core\Renderer\BasicModule</Filter>
+    </ClCompile>
+    <ClCompile Include="AfterImage.cpp">
+      <Filter>源文件\Core\Renderer\PostProcessing</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

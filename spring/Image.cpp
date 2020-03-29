@@ -53,7 +53,7 @@ void Image::GenerateMesh()
 	 
 	// this->meshes.push_back(*mesh);
 	this->mesh = mesh;
-	this->Init();
+	this->Initialize();
 }
 
 void Image::Render()

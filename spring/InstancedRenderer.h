@@ -16,7 +16,7 @@ namespace spring
 		InstancedRenderer();
 		InstancedRenderer(Material* instancedMaterial);
 
-		void Init() override;
+		void Initialize() override;
 		void Render(Camera* camera) override;
 		void AddInstance(Vector3 position,Vector3 eulerangle,Vector3 scale);
 	};

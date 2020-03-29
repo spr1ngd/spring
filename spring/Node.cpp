@@ -11,6 +11,7 @@ vector<Node*> Node::allNodes;
 
 Node::Node() 
 {
+	this->type = "Node";
 	this->transform = new Transform();
 	allNodes.push_back(this);
 	this->name = misc::gen_guid();
@@ -20,6 +21,7 @@ Node::Node()
 
 Node::Node(const char* nodeName) 
 {
+	this->type = "Node";
 	this->name = nodeName;
 	this->transform = new Transform();
 	allNodes.push_back(this);

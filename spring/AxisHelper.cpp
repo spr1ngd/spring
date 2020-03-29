@@ -128,7 +128,7 @@ void AxisHelper::RenderAxis()
 	this->mesh = &mesh;
 	// this->meshRenderer->meshes = meshes;
 	this->meshRenderer->mesh = &mesh;
-	this->meshRenderer->Init();
+	this->meshRenderer->Initialize();
 }
 
 void AxisHelper::RenderRotator()

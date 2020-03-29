@@ -1,6 +1,7 @@
 #include "menuwindow.h"
 #include "scene.h"
 #include "springeditor.h"
+// #include "primitive.h"
 
 using namespace spring;
 using namespace spring::editor;
@@ -36,7 +37,9 @@ void MenuWindow::OnDrawWindow()
 		{
 			if (ImGui::MenuItem("new scene", "CTRL+N", false)) 
 			{
-
+				Scene* scene = new Scene("new scene");
+				scene->Initialize();
+				Scene::current = scene;
 			}
 			if (ImGui::MenuItem("load scene", "Ctrl+L", false))
 			{
@@ -61,7 +64,7 @@ void MenuWindow::OnDrawWindow()
 				{
 					if (ImGui::MenuItem("Cube", NULL, false, true)) 
 					{
-
+						// Primitive::CreatePrimitive(Primitive::Type::Plane);
 					}
 					if (ImGui::MenuItem("Sphere", NULL, false, true))
 					{

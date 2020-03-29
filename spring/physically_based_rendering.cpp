@@ -60,7 +60,7 @@ void displaySpheres()
 
 			MeshRenderer* meshRenderer = new MeshRenderer(pbsMat);
 			meshRenderer->mesh = &mesh;
-			meshRenderer->Init();
+			meshRenderer->Initialize();
 			meshRenderer->name = "pbs(ibl)";
 			meshRenderer->transform->SetPosition(pos);
 			spheres.push_back(meshRenderer);
@@ -113,7 +113,7 @@ void starFighter()
 
 	fighter = new MeshRenderer(material);
 	fighter->mesh = &mesh;
-	fighter->Init();
+	fighter->Initialize();
 	fighter->name = "star fighter 01";
 	fighter->transform->position = Vector3::zero;
 	fighter->transform->scale = Vector3(0.06f);

@@ -36,7 +36,7 @@ void InstancedRenderer::AddInstance(Vector3 position, Vector3 eulerangle, Vector
 	this->normalmatrixes.push_back(nm);
 }
 
-void InstancedRenderer::Init() 
+void InstancedRenderer::Initialize()
 {
 	if (this->material == nullptr)
 	{

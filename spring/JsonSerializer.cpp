@@ -388,7 +388,7 @@ MeshRenderer* JsonSerializer::toMeshRenderer(Value& value)
 	material->shader = shader;
 	MeshRenderer* meshrenderer = new MeshRenderer(material);
 	meshrenderer->mesh = mesh;
-	meshrenderer->Init();
+	meshrenderer->Initialize();
 	return meshrenderer;
 }
 Transform* JsonSerializer::toTransform(Value& value)

@@ -84,7 +84,7 @@ void Sample::Awake()
 		// auto cubemap = TextureLoader::LoadCubemap("res/texture/skybox/night");
 		skybox = new class::Skybox(skyboxMaterial, cubemap);
 		skybox->name = "__SKYBOX__";
-		skybox->Init();
+		skybox->Initialize();
 
 		// TODO : 这部分预处理占用了20MB内存
 		// refactor these code to environment class.

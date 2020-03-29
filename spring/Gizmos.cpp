@@ -61,7 +61,7 @@ void Gizmos::DrawLine(Vector3 origin, Vector3 end)
 
 	// gizmos->meshrenderer->meshes = meshes;
 	gizmos->meshrenderer->mesh = gizmos->mesh;
-	gizmos->meshrenderer->Init();
+	gizmos->meshrenderer->Initialize();
 	Gizmos::gizmos.push_back(gizmos);
 } 
 
@@ -112,7 +112,7 @@ void Gizmos::DrawCircle(Vector3 pos, Vector3 up, float radius, unsigned int smoo
 
 	// gizmos->meshrenderer->meshes = meshes;
 	gizmos->meshrenderer->mesh = &mesh;
-	gizmos->meshrenderer->Init();
+	gizmos->meshrenderer->Initialize();
 	Gizmos::gizmos.push_back(gizmos);
 } 
 

@@ -53,7 +53,7 @@ public:
 		aircraft = new MeshRenderer(mat);
 		aircraft->name = "aircraft";
 		aircraft->mesh = &mesh;
-		aircraft->Init();
+		aircraft->Initialize();
 		aircraft->transform->position = Vector3::zero;
 		aircraft->transform->scale = Vector3(5.0f);
 		auto sunTexture = TextureLoader::Load("res/model/fbx/747/747-400 texture.png");
@@ -72,7 +72,7 @@ public:
 			normalMat->CullFaceFunc(true);
 			aircraftNormal = new MeshRenderer(normalMat);
 			aircraftNormal->mesh = &mesh;
-			aircraftNormal->Init();
+			aircraftNormal->Initialize();
 			aircraftNormal->transform->position = Vector3(6.0f,0.0f,0.0f);
 			aircraftNormal->transform->scale = Vector3(5.0f);
 			aircraftNormal->material->shader->setTexture("MainTextureData.texture", sunTexture->textureId);
@@ -143,7 +143,7 @@ public:
 		ground = new MeshRenderer(groundMaterial);
 		Mesh& mesh = ModelLoader::Load("obj/quad.obj");
 		ground->mesh = &mesh;
-		ground->Init();
+		ground->Initialize();
 
 		ground->transform->SetScale(Vector3(50.0f));
 		ground->transform->SetPosition(Vector3(0.0f,-2.0f,0.0f));

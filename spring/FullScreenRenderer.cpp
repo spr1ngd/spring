@@ -10,7 +10,7 @@ FullScreenRenderer::FullScreenRenderer()
 	
 }
 
-void FullScreenRenderer::Init() 
+void FullScreenRenderer::Initialize()
 {
 	this->layer = Layer::PostProcessing;
 	this->material = new Material(Shader::Load("fullscreen/fullscreen.vs", "fullscreen/fullscreen.fs"));
@@ -49,5 +49,5 @@ void FullScreenRenderer::Init()
 
 	// this->meshes = meshes;
 	this->mesh = mesh;
-	MeshRenderer::Init();
+	MeshRenderer::Initialize();
 }
