@@ -8,6 +8,7 @@
 #include "serializer.h"
 #include "modelloader.h"
 
+
 using namespace rapidjson;
 
 namespace spring 
@@ -112,8 +113,9 @@ namespace spring
 		
 		Scene* toScene(Value& value);
 		Node* toNode(Value& value);
-		Transform* toTransform(Value& value);
+		Behaviour* toBehaviour(Value& value);
 		MeshRenderer* toMeshRenderer(Value& value);
+		Transform* toTransform(Value& value);
 		Material* toMaterial(Value& value);
 		Shader* toShader(Value& value);
 		Mesh* toMesh(Value& value);

@@ -18,6 +18,8 @@
 #include "picking.h"
 #include "console.h"
 
+#include "gameapp.h"
+
 using namespace spring;
 using namespace spring::editor;
 
@@ -79,30 +81,25 @@ int main(int, char**)
 	// Our state
 	bool show_demo_window = true;
 
-	// create a scene.
-	Scene* scene = new Scene();
-	Scene::current = scene;
-
-	// draw sample scene
-	Sample* sample = new Sample();
-	sample->name = "SPRING";
-	sample->enabled = true;
-	sample->flags = NodeFlags::Static;
+	// TODO: try to load scene data
+	// // create a scene or load a scene from scene data.
+	// Scene* scene = new Scene();
+	// Scene::current = scene;
+	// 
+	// // Game application entrance. this should be created by editor.
+	// GameApp* gameApp = new GameApp();
+	// gameApp->name = "GameApp";
+	// gameApp->flags = NodeFlags::Static;
 
 	Timer::Start();
-	for (auto behaviour : Behaviour::behaviours)
-	{
-		if( behaviour.second->enabled )
-			behaviour.second->Awake();
-	}
 	unsigned int* uiRenderLayer = new unsigned int[1]{ Layer::UI };
 	unsigned int* defaultRenderLayer = new unsigned int[2]{ Layer::Default,Layer::Skybox };
 	Camera* uiCamera = new Camera();
 	uiCamera->name = "Internal UI Camera";
 	uiCamera->cullingMask->set(uiRenderLayer);
 	uiCamera->clearFlag = Camera::None;
-	uiCamera->flags = NodeFlags::BuiltIn;
 
+	// TODO: serialize postprocessing setting to json
 	// post processing
 	PostProcessing::postprocessing = new class::PostProcessing();
 	PostProcessing::postprocessing->enabled = true;
@@ -113,7 +110,7 @@ int main(int, char**)
 	if (PostProcessing::postprocessing->enabled == false)
 	{
 		FrameBuffer* mainFramebuffer = new FrameBuffer(Screen::width, Screen::height);
-		mainFramebuffer->antiAliasing = AntiAliasingLevel::Level2; // enable multiple sample , the framebuffer display wrong result.
+		mainFramebuffer->antiAliasing = AntiAliasingLevel::Level2;
 		mainFramebuffer->depthbuffer = FrameBuffer::OnlyDepth;
 		mainFramebuffer->Initialize();
 		Camera::main->framebuffer = mainFramebuffer;
@@ -157,6 +154,11 @@ int main(int, char**)
 
 		for (auto behaviour : Behaviour::behaviours)
 		{
+			if (behaviour.second->awaked == false)
+			{
+				behaviour.second->Awake();
+				behaviour.second->awaked = true;
+			}
 			if( behaviour.second->enabled )
 				behaviour.second->Update();
 		}

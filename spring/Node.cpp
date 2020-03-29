@@ -14,7 +14,8 @@ Node::Node()
 	this->transform = new Transform();
 	allNodes.push_back(this);
 	this->name = misc::gen_guid();
-	Scene::current->AddNode(this);
+	if (nullptr != Scene::current)
+		Scene::current->AddNode(this);
 }
 
 Node::Node(const char* nodeName) 
@@ -22,7 +23,8 @@ Node::Node(const char* nodeName)
 	this->name = nodeName;
 	this->transform = new Transform();
 	allNodes.push_back(this);
-	Scene::current->AddNode(this);
+	if (nullptr != Scene::current)
+		Scene::current->AddNode(this);
 }
 
 Node::~Node() 

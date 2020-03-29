@@ -529,6 +529,9 @@
     <ClInclude Include="springengine_scene.h">
       <Filter>sample</Filter>
     </ClInclude>
+    <ClInclude Include="GameApp.h">
+      <Filter>sample</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="spring.cpp">
@@ -832,6 +835,9 @@
       <Filter>源文件\Core\Renderer\BasicModule</Filter>
     </ClCompile>
     <ClCompile Include="springengine_scene.cpp">
+      <Filter>sample</Filter>
+    </ClCompile>
+    <ClCompile Include="GameApp.cpp">
       <Filter>sample</Filter>
     </ClCompile>
   </ItemGroup>

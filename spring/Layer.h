@@ -21,6 +21,7 @@ namespace spring
 		vector<unsigned int> layers;
 
 	public:
+		Layer layer;
 		LayerMask();
 
 		void set(unsigned int layers[]);

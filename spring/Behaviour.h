@@ -13,6 +13,7 @@ namespace spring
 	public:
 		static std::map<const unsigned long, Behaviour*> behaviours; 
 	public:
+		bool awaked = false;
 		bool enabled = true;
 
 		Behaviour();

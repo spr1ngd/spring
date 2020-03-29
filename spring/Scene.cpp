@@ -3,6 +3,7 @@
 #include "sceneserializer.h"
 #include <time.h>
 #include "misc.h"
+#include "behaviour.h"
 
 using namespace spring;
 
@@ -20,6 +21,16 @@ Scene::Scene(const char* name)
 	int length = (int)strlen(name);
 	this->name = name;
 	AddScene(this);
+}
+
+void Scene::Initialize() 
+{
+
+}
+
+void Scene::Release() 
+{
+
 }
 
 #pragma region manage methods

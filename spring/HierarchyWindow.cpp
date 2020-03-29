@@ -44,6 +44,9 @@ void HierarchyWindow::OnDrawWindow()
 {
 	static ImGuiTreeNodeFlags base_flags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_OpenOnDoubleClick | ImGuiTreeNodeFlags_SpanAvailWidth;
 
+	if (Scene::current == nullptr)
+		return;
+
 	ImGui::SetNextItemOpen(true, ImGuiCond_Once);
 	if (ImGui::TreeNode("SceneName")) 
 	{

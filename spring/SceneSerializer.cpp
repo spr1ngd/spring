@@ -25,4 +25,5 @@ void SceneSerializer::Deserialize()
 	JsonSerializer* jsonSerializer = new JsonSerializer();
 	jsonSerializer->ReadFrom(this->scenePath);
 	Scene* scene = jsonSerializer->Deserialize<Scene>();
+	scene->Initialize();
 }

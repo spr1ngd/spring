@@ -30,15 +30,4 @@ Object* Object::Instantiate(Object obj)
 unsigned long Object::GetInstanceID() 
 {
 	return Object::instanceCounts++;
-}
-
-//Json::Value Object::Serialize()
-//{
-//	Json::Value result;
-//	return result;
-//}
-//
-//void Object::Deserialize(Json::Value jsonData)
-//{
-//
-//}
+} 

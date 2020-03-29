@@ -40,7 +40,8 @@ void MenuWindow::OnDrawWindow()
 			}
 			if (ImGui::MenuItem("load scene", "Ctrl+L", false))
 			{
-
+				const char* sceneName = "spring";
+				Scene::Load(sceneName);
 			}
 			if (ImGui::MenuItem("save scene", "Ctrl+S", false))
 			{

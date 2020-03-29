@@ -28,5 +28,8 @@ namespace spring
 		Scene(const char* name);
 		void AddNode(Node* node);
 		void RemoveNode(Node* node);
+
+		void Initialize();
+		void Release();
 	};
 }

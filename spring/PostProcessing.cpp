@@ -44,7 +44,6 @@ void PostProcessing::Initialize()
 	this->fsRenderer = new FullScreenRenderer();
 	this->fsRenderer->name = "(FSR)PostProcessing";
 	this->fsRenderer->Init();
-	this->fsRenderer->flags = NodeFlags::BuiltIn;
 
 	// if (this->antiAliasing->enabled)
 	// {

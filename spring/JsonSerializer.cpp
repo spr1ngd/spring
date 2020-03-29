@@ -1,6 +1,8 @@
 #include "jsonserializer.h"
 #include "scene.h"
 
+#include "gameapp.h"
+
 using namespace spring;
 
 Value* JsonSerializer::toJson(Scene& scene)
@@ -40,11 +42,19 @@ Value* JsonSerializer::toJson(Behaviour& behaviour)
 {
 	Value* value = toJson((Node&)behaviour);
 	value->AddMember("_type","behaviour",this->document->GetAllocator());
-	const char* scriptName = typeid(Behaviour).name();
-	PRINT_LOG("serialize behaviour script : %s", scriptName);
+	const char* scriptName = nullptr;
+	try 
+	{
+		auto gameApp = dynamic_cast<GameApp&>(behaviour);
+		scriptName = "class::spring::GameApp";
+	}
+	catch (bad_cast) 
+	{
+
+	}
 	Value scriptNameValue = Value(kStringType);
 	scriptNameValue.SetString(scriptName,strlen(scriptName));
-	value->AddMember("_behaviour",scriptNameValue,this->document->GetAllocator());
+	value->AddMember("_behaviourType",scriptNameValue,this->document->GetAllocator());
 	return value;
 }
 Value* JsonSerializer::toJson(Node& node)
@@ -288,8 +298,8 @@ Scene* JsonSerializer::toScene(Value& value)
 {
 	Value::MemberIterator  sceneIdMemeber = value.FindMember("scene_id");
 	const char* sceneName = sceneIdMemeber->value.GetString();
-	Scene* scene = new Scene();
-	scene->name = sceneName;
+	Scene* scene = new Scene(sceneName);
+	Scene::current = scene;
 
 	Value::MemberIterator hierarchyMember = value.FindMember("hierarchy");
 	for (auto member = hierarchyMember->value.MemberBegin(); member != hierarchyMember->value.MemberEnd(); member++)
@@ -297,19 +307,30 @@ Scene* JsonSerializer::toScene(Value& value)
 		Node* node = toNode(member->value);
 		if (nullptr == node)
 			continue;
-		scene->AddNode(node);
 	}
 	return scene;
 }
 Node* JsonSerializer::toNode(Value& value)
 {
 	Node* node = nullptr;
-	if (value.HasMember("_meshrenderer"))
+	if (value.HasMember("_type"))
 	{
-		auto meshrendererMember = value.FindMember("_meshrenderer");
-		MeshRenderer* meshrenderer = toMeshRenderer(meshrendererMember->value);
-		node = &(*meshrenderer);
-		// delete meshrenderer;
+		auto nodeType = value.FindMember("_type")->value.GetString();
+		if (strcmp(nodeType,"behaviour") == 0) 
+		{
+			Behaviour* behaviour = toBehaviour(value);
+			node = dynamic_cast<Node*>(behaviour);
+		}
+		else if (strcmp(nodeType,"meshRenderer") == 0)
+		{
+			auto meshrendererMember = value.FindMember("_meshrenderer");
+			MeshRenderer* meshrenderer = toMeshRenderer(meshrendererMember->value);
+			node = dynamic_cast<Node*>(meshrenderer);
+		}
+		else 
+		{
+			PRINT_ERROR("does not support to deserialize type=[%s].",nodeType);
+		}
 	}
 	else
 	{
@@ -347,19 +368,13 @@ Node* JsonSerializer::toNode(Value& value)
 	}
 	return node;
 }
-Transform* JsonSerializer::toTransform(Value& value)
+Behaviour* JsonSerializer::toBehaviour(Value& value) 
 {
-	auto positionMember = value.FindMember("position");
-	auto eulerangleMember = value.FindMember("eulerangle");
-	auto scaleMember = value.FindMember("scale");
-	Vector3 position = toVector3(positionMember->value);
-	Vector3 eulerangle = toVector3(eulerangleMember->value);
-	Vector3 scale = toVector3(scaleMember->value);
-	Transform* transform = new Transform();
-	transform->position = position;
-	transform->eulerangle = eulerangle;
-	transform->scale = scale;
-	return transform;
+	Behaviour* hehaviour = nullptr;
+	auto behaviourType = value.FindMember("_behaviourType")->value.GetString();
+	if (strcmp(behaviourType,"class::spring::GameApp") == 0)
+		hehaviour = new GameApp();
+	return hehaviour;
 }
 MeshRenderer* JsonSerializer::toMeshRenderer(Value& value)
 {
@@ -375,6 +390,20 @@ MeshRenderer* JsonSerializer::toMeshRenderer(Value& value)
 	meshrenderer->mesh = mesh;
 	meshrenderer->Init();
 	return meshrenderer;
+}
+Transform* JsonSerializer::toTransform(Value& value)
+{
+	auto positionMember = value.FindMember("position");
+	auto eulerangleMember = value.FindMember("eulerangle");
+	auto scaleMember = value.FindMember("scale");
+	Vector3 position = toVector3(positionMember->value);
+	Vector3 eulerangle = toVector3(eulerangleMember->value);
+	Vector3 scale = toVector3(scaleMember->value);
+	Transform* transform = new Transform();
+	transform->position = position;
+	transform->eulerangle = eulerangle;
+	transform->scale = scale;
+	return transform;
 }
 Material* JsonSerializer::toMaterial(Value& value)
 {
