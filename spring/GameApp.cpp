@@ -5,7 +5,7 @@ void GameApp::Awake()
 {
 	Sample* sample = new Sample();
 	sample->name = "SPRING";
-	sample->enabled = true;
+	sample->enabled = false;
 }
 
 void GameApp::Update() 

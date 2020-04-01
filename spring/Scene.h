@@ -2,6 +2,7 @@
 #include <map>
 #include <vector>
 #include "node.h"
+#include "gameobject.h"
 
 namespace spring 
 {
@@ -23,11 +24,15 @@ namespace spring
 	public:
 		const char* name;
 		std::vector<Node*> nodes;
-
+		std::vector<GameObject*> gameobjects;
+		
 		Scene();
 		Scene(const char* name);
+
 		void AddNode(Node* node);
 		void RemoveNode(Node* node);
+		void AddGameObject(GameObject* gameobject);
+		void RemoveGameObject(GameObject* gameobject);
 
 		void Initialize();
 		void Release();

@@ -2,7 +2,8 @@
 #include <vector>
 #include "layer.h"
 #include "object.h"
-#include "transform.h"
+#include "transform.h" // todo 将transform移动到gameobject节点
+#include "gameobject.h"
 
 using namespace std;
 

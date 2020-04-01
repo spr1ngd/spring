@@ -113,4 +113,22 @@ void Scene::RemoveNode(Node* node)
 	}
 }
 
+void Scene::AddGameObject(GameObject* gameobject) 
+{
+	this->gameobjects.push_back(gameobject);
+}
+
+void Scene::RemoveGameObject(GameObject* gameobject) 
+{
+	for (auto go = gameobjects.begin(); go != gameobjects.end(); go++) 
+	{
+		GameObject* goPtr = *go;
+		if (goPtr == gameobject)
+		{
+			gameobjects.erase(go);
+			return;
+		}
+	}
+}
+
 #pragma endregion
