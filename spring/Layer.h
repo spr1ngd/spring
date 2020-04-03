@@ -15,16 +15,13 @@ namespace spring
 		Everything = 0x11111111
 	};
 
-	class LayerMask // replaced use bit operation.
+	class LayerMask
 	{
-	private:
-		vector<unsigned int> layers;
-
 	public:
-		Layer layer;
+		int layers = Layer::Default | Layer::UI | Layer::Skybox | Layer::PostProcessing;
 		LayerMask();
 
-		void set(unsigned int layers[]);
+		void set(int layers);
 		void add(unsigned int layer);
 		void remove(unsigned int layer);
 		bool contains(unsigned int layer);

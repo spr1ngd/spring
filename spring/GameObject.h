@@ -23,7 +23,8 @@ namespace spring
 
 	public:
 		bool visible = true;
-		Transform transform; // only store position/rotation/scale/eulerangle data
+		int flags = 0x0000;
+		Transform* transform; // only store position/rotation/scale/eulerangle data
 
 		GameObject* parent;
 		std::vector<GameObject*> children;
@@ -38,6 +39,8 @@ namespace spring
 			this->nodes.push_back(node);
 			Node* nodeptr = dynamic_cast<Node*>(node);
 			nodeptr->gameobject = this;
+			delete nodeptr->transform;
+			nodeptr->transform = this->transform;
 			return node;
 		}
 

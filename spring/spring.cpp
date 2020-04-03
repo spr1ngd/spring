@@ -96,7 +96,7 @@ int main(int, char**)
 	unsigned int* defaultRenderLayer = new unsigned int[2]{ Layer::Default,Layer::Skybox };
 	Camera* uiCamera = new Camera();
 	uiCamera->name = "Internal UI Camera";
-	uiCamera->cullingMask->set(uiRenderLayer);
+	uiCamera->cullingMask->set(Layer::UI);
 	uiCamera->clearFlag = Camera::None;
 
 	// TODO: serialize postprocessing setting to json

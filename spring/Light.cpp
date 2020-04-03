@@ -21,7 +21,7 @@ Light::Light()
 	this->color = Color::white;
 	this->intensity = 1.0f;
 	this->cullingMask = new LayerMask();
-	this->cullingMask->set(new unsigned int[1] {0x0001});
+	this->cullingMask->set(Layer::Default);
 	this->shadowType = ShadowType::HardShadow;
 
 	if (lights.size() == 0)

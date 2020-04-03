@@ -4,45 +4,26 @@ using namespace std;
 using namespace spring;
 
 LayerMask::LayerMask() 
-{
-	this->add(Layer::Default);
-	this->add(Layer::UI);
-	this->add(Layer::Skybox);
-	this->add(Layer::PostProcessing);
+{ 
+
 }
 
-void LayerMask::set(unsigned int layers[]) 
+void LayerMask::set(int layers) 
 {
-	// issue , error array length
-	vector<unsigned int>().swap(this->layers);
-	for (int i = 0; i < sizeof(layers) / 4; i++)
-		this->add(layers[i]);
+	this->layers = layers;
 }
 
 void LayerMask::add(unsigned int layer) 
 {
-	if (!this->contains(layer))
-		this->layers.push_back(layer);
+	this->layers |= layer;
 }
 
 void LayerMask::remove(unsigned int layer) 
 {
-	for (vector<unsigned int>::iterator l = this->layers.begin(); l != this->layers.end(); l++) 
-	{
-		if (*l == layer) 
-		{
-			this->layers.erase(l);
-			return;
-		}
-	}
+	this->layers ^= layer;
 }
 
 bool LayerMask::contains(unsigned int layer) 
 {
-	for (auto l : this->layers)
-	{
-		if (l == layer)
-			return true;
-	}
-	return false;
+	return (this->layers & layer) == layer;
 }

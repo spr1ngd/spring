@@ -9,6 +9,14 @@ Cubemap* spring::Skybox::irradianceCubemap;
 Cubemap* spring::Skybox::prefilter;
 Texture* spring::Skybox::prebrdf;
 
+Skybox::Skybox()
+{
+	Mesh& mesh = ModelLoader::Load("obj/cube.obj");
+	this->mesh = &mesh;
+	this->setRenderOrder(RenderOrder::Skybox);
+	this->layer = Layer::Skybox;
+}
+
 Skybox::Skybox(Material* material,Cubemap* cubemap) 
 {
 	Mesh& mesh = ModelLoader::Load("obj/cube.obj");

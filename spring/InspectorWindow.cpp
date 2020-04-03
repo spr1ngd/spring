@@ -20,7 +20,7 @@ void InspectorWindow::OnDrawWindow()
 	ImGui::SetNextItemOpen(true, ImGuiCond_Once);
 	if (ImGui::TreeNode("Transform")) 
 	{
-		Transform* node = &Selection::gameobject->transform;
+		Transform* node = Selection::gameobject->transform;
 
 		float* position = new float[3]{ node->position.x,node->position.y,node->position.z };
 		ImGui::DragFloat3("position", position);

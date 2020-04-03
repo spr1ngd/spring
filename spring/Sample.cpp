@@ -41,23 +41,18 @@ void Sample::Awake()
 
 #pragma region scene camera setting
 
-	camera = new Camera();
-	camera->name = "Main Camera";
+	GameObject* mainCamera = new GameObject("Main Camera");
+	camera = mainCamera->AddNode<Camera>();
+	Camera::main = camera;
 	camera->clearFlag = Camera::ClearFlag::Skybox;
 	camera->background = Color(31, 113, 113, 255);
-	camera->transform->SetPosition(Vector3(0.0f, 0.0f, 25.0f));
-	camera->transform->LookAt(Vector3::zero);
 	camera->cullingMask->remove(Layer::UI);
-	Camera::main = camera;
+	mainCamera->transform->SetPosition(Vector3(0.0f, 0.0f, 25.0f));
+	mainCamera->transform->LookAt(Vector3::zero);
 
-	orbit = new OrbitCamera();
-	orbit->name = "OrbitCamera";
-	// TODO : 支持查找另一个Node对象
+	orbit = mainCamera->AddNode<OrbitCamera>();
 	orbit->target = Vector3(0.0f, 0.0f, 0.0f);// Vector3::zero;
 	orbit->zoomSpeed = 1.0f;
-
-	// world position coordinate
-	// Gizmos::DrawAxis(Vector3::zero, Vector3(3.0f));
 
 #pragma endregion
 
@@ -81,12 +76,16 @@ void Sample::Awake()
 	if (renderSkybox) 
 	{ 
 		// TODO : 50MB内存消耗？？？？？
+		GameObject* skyboxGO = new GameObject("Skybox");
+		skybox = skyboxGO->AddNode<class::Skybox>();
 		Material* skyboxMaterial = new Material(Shader::Load("skybox/6 Sided.vs", "skybox/6 Sided.fs"));
+		skyboxMaterial->DepthTestFunc(false);
+		skyboxMaterial->CullFaceFunc(false, GL_FRONT);
 		auto cubemap = TextureLoader::LoadCubemap("res/texture/skybox/nature");
-		// auto cubemap = TextureLoader::LoadCubemap("res/texture/skybox/night");
-		skybox = new class::Skybox(skyboxMaterial, cubemap);
-		skybox->name = "__SKYBOX__";
+		skybox->material = skyboxMaterial;
+		skybox->cubemap = cubemap;
 		skybox->Initialize();
+		// auto cubemap = TextureLoader::LoadCubemap("res/texture/skybox/night");
 
 		// TODO : 这部分预处理占用了20MB内存
 		// refactor these code to environment class.

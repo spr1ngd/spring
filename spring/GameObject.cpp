@@ -10,12 +10,14 @@ std::vector<GameObject*> GameObject::gameobjects;
 GameObject::GameObject() 
 {
 	this->name = "GameObject";
+	this->transform = new Transform();
 	AddGameObject(this);
 }
 
 GameObject::GameObject(const char* name) 
 {
 	this->name = name;
+	this->transform = new Transform();
 	AddGameObject(this);
 }
 
