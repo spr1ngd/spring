@@ -13,7 +13,9 @@ namespace spring
 {
 	class MeshRenderer : public Node, public Renderable
 	{
-	private:
+	protected:
+		bool initialized = false;
+
 	public:
 		bool enableGPUInstance = false;
 		Mesh* mesh;
@@ -31,5 +33,11 @@ namespace spring
 		virtual void Render( glm::mat4 view ,glm::mat4 projection);
 
 		static MeshRenderer* GetMeshRenderer(unsigned int renderableId);
+		TypeInfo GetTypeInfo() override 
+		{
+			if (nullptr == this->typeInfo)
+				this->typeInfo = new TypeInfo("MeshRenderer");
+			return *this->typeInfo;
+		}
 	};
 }

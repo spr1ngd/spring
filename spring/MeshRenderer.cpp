@@ -22,6 +22,9 @@ MeshRenderer::~MeshRenderer()
 
 void MeshRenderer::Initialize() 
 {
+	if (this->initialized)
+		return;
+
 	if (this->material == nullptr)
 	{
 		PRINT_WARNING("can not render skybox without skybox material,please assign a sky box material.");
@@ -55,6 +58,8 @@ void MeshRenderer::Initialize()
 	vector<Mesh*> subMeshes = this->mesh->GetAllSubMeshes();
 	for (std::vector<Mesh*>::iterator subMesh = subMeshes.begin(); subMesh != subMeshes.end(); subMesh++) 
 		initMesh(*subMesh);
+
+	this->initialized = true;
 } 
 
 void MeshRenderer::Render() 
@@ -77,9 +82,12 @@ void MeshRenderer::Render(glm::mat4 view, glm::mat4 projection)
 {
 	if (this->material == nullptr)
 	{
-		PRINT_WARNING("can not render skybox without skybox material,please assign a sky box material.");
+		PRINT_WARNING("material is null.");
 		return;
 	}
+	if (this->initialized == false)
+		this->Initialize();
+
 
 	if (this->visible == false)
 	{

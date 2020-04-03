@@ -27,7 +27,9 @@ namespace spring
 		Node* parent = nullptr;
 		vector<Node*> nodes;
 		vector<Node*> children;
+
 		Transform* transform;
+		GameObject* gameobject;
 		
 		Node();
 		Node(const char* nodeName);
@@ -73,5 +75,12 @@ namespace spring
 
 		Node* GetChild(const char* nodeName);
 		void SetParent(Node* node);
+
+		TypeInfo GetTypeInfo() override
+		{
+			if (nullptr == this->typeInfo)
+				this->typeInfo = new TypeInfo("Node");
+			return *this->typeInfo;
+		}
 	};
 }

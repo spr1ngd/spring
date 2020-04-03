@@ -3,6 +3,7 @@
 #include "selection.h"
 #include "inspectorwindow.h"
 #include "imgui.h"
+#include "gameobject.h"
 
 using namespace spring;
 using namespace spring::editor;
@@ -14,12 +15,12 @@ InspectorWindow::InspectorWindow(const char* name, bool openDefault) : EditorWin
 
 void InspectorWindow::OnDrawWindow() 
 {
-	if (nullptr == Selection::node)
+	if (nullptr == Selection::gameobject)
 		return;
 	ImGui::SetNextItemOpen(true, ImGuiCond_Once);
 	if (ImGui::TreeNode("Transform")) 
 	{
-		Transform* node = Selection::node->transform;
+		Transform* node = &Selection::gameobject->transform;
 
 		float* position = new float[3]{ node->position.x,node->position.y,node->position.z };
 		ImGui::DragFloat3("position", position);

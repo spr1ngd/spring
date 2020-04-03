@@ -154,13 +154,15 @@ int main(int, char**)
 
 		for (auto behaviour : Behaviour::behaviours)
 		{
-			if (behaviour.second->awaked == false)
+			if (behaviour.second->enabled)
 			{
-				behaviour.second->Awake();
-				behaviour.second->awaked = true;
-			}
-			if( behaviour.second->enabled )
+				if (behaviour.second->awaked == false)
+				{
+					behaviour.second->Awake();
+					behaviour.second->awaked = true;
+				}
 				behaviour.second->Update();
+			}
 		}
 		ParticleRenderer::Update();
 

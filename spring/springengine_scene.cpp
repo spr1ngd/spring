@@ -7,9 +7,10 @@ void springengine_scene::Awake()
 
 void springengine_scene::Update() 
 {
-	// if (Input::GetKeyDown(KeyCode::L)) 
-	// {
-	// 	   const char* sceneName = "spring";
-	// 	   Scene::Load(sceneName);
-	// }
+
+}
+
+void springengine_scene::Destroy() 
+{
+
 }

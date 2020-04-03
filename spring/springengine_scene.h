@@ -9,5 +9,6 @@ class springengine_scene : public Behaviour
 public:
 	void Awake() override;
 	void Update() override;
+	void Destroy() override;
 };
 

@@ -44,7 +44,7 @@ namespace spring
 		};
 
 		Transform* transform;
-		ShapeType shapeType = Cube;
+		ShapeType shapeType = ShapeType::Cone;
 		// cube properties
 		CubeProperty cubeProperties;
 		// sphere properties

@@ -1,6 +1,8 @@
 #pragma once
 #include <functional>
 #include "node.h"
+#include "gameobject.h"
+
 typedef void (*SelectionChanged)();
 
 namespace spring 
@@ -10,6 +12,7 @@ namespace spring
 		class Selection 
 		{
 		public:
+			static GameObject* gameobject;
 			static Node* node;
 			static Node* nodes;
 			static SelectionChanged selectionChanged;

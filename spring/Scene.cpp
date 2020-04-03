@@ -4,6 +4,8 @@
 #include <time.h>
 #include "misc.h"
 #include "behaviour.h"
+#include "node.h"
+#include "gameobject.h"
 
 using namespace spring;
 
@@ -115,6 +117,15 @@ void Scene::RemoveNode(Node* node)
 
 void Scene::AddGameObject(GameObject* gameobject) 
 {
+	for (auto go = this->gameobjects.begin(); go != this->gameobjects.end(); go++) 
+	{
+		GameObject* goPtr = *go;
+		if (goPtr == gameobject)
+		{
+			PRINT_ERROR("Can not add the same gameobject.");
+			return;
+		}
+	}
 	this->gameobjects.push_back(gameobject);
 }
 

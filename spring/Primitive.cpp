@@ -41,11 +41,10 @@ GameObject& Primitive::CreatePlane()
 {
 	GameObject* plane = new GameObject("Plane");
 	Mesh* planeMesh = GenPlane();
-	MeshRenderer renderer = plane->AddNode<MeshRenderer>();
-	renderer.material = new Material(Shader::Load("diffuse/diffuse.vs", "diffuse/diffuse.fs"));
-	renderer.mesh = planeMesh;
-	renderer.Initialize();
-	Scene::current->AddNode(plane);
+	MeshRenderer* renderer = plane->AddNode<MeshRenderer>();
+	renderer->material = new Material(Shader::Load("diffuse/diffuse.vs", "diffuse/diffuse.fs"));
+	renderer->mesh = planeMesh;
+	renderer->Initialize();
 	return *plane;
 }
 

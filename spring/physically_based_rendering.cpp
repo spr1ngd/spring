@@ -12,9 +12,12 @@ using namespace spring::editor;
 using namespace std;
 
 vector<MeshRenderer*> spheres;
-MeshRenderer* fighter;
-ParticleRenderer* particle;
-ParticleRenderer* particle2;
+// ParticleRenderer* particle;
+// ParticleRenderer* particle2;
+
+GameObject* fighterGO;
+GameObject* particleGO;
+GameObject* particle2GO;
 
 physically_based_rendering::physically_based_rendering() 
 {
@@ -74,8 +77,8 @@ void starFighter()
 	// Texture* normalTex = TextureLoader::Load("res/model/fbx/star fighter/StarSparrow_Normal.png");
 	// Texture* albedoTex = TextureLoader::Load("res/model/fbx/star fighter/StarSparrow_Red.png");
 	// Texture* emissionTex = TextureLoader::Load("res/model/fbx/star fighter/StarSparrow_Emission.png");
-
-	// ModelLoader::Load("fbx/star fighter 02/star fighter 01.fbx");
+	fighterGO = new GameObject("star fighter");
+	auto fighter = fighterGO->AddNode<MeshRenderer>();
 
 	Texture* metallicTex = TextureLoader::Load("res/model/fbx/star fighter 02/StarSparrow_MetallicSmoothness.png");
 	Texture* normalTex = TextureLoader::Load("res/model/fbx/star fighter 02/StarSparrow_Normal.png");
@@ -84,14 +87,12 @@ void starFighter()
 
 	// // loader->Load("res/model/fbx/star fighter/star fighter 01.fbx");
 	Mesh& mesh = ModelLoader::Load("fbx/star fighter 02/star fighter 02.fbx");
-
 	Shader* shader = Shader::Load("pbs/pbs.vs", "pbs/pbs(ibl).fs");
 	Material* material = new Material(shader);
 
 	material->shader->setCubemap("irradianceMap", Skybox::irradianceCubemap);
 	material->shader->setCubemap("prefilterMap", Skybox::prefilter);
 	material->shader->setTexture("prebrdfMap", Skybox::prebrdf->textureId);
-
 	material->shader->setTexture("metallicTex", metallicTex->textureId);
 	material->shader->setTexture("normalTex", normalTex->textureId);
 	material->shader->setTexture("albedoTex", albedoTex->textureId);
@@ -111,26 +112,27 @@ void starFighter()
 	material->shader->setColor(ambient, ambientValue); // 环境光照
 	material->shader->setColor(emission,emissionValue);// 自发光
 
-	fighter = new MeshRenderer(material);
+	fighter->material = material;
 	fighter->mesh = &mesh;
-	fighter->Initialize();
-	fighter->name = "star fighter 01";
+	// fighter->Initialize();
 	fighter->transform->position = Vector3::zero;
 	fighter->transform->scale = Vector3(0.06f);
 }
 
 void generateParticle() 
 {
-	particle = new ParticleRenderer();
+	particleGO = new GameObject("particle system left");
+	// auto particle = new ParticleRenderer();
+	auto particle = particleGO->AddNode<ParticleRenderer>();
 	particle->name = "Particle System Left";
 	auto texture = TextureLoader::Load("res/texture/photon.png");
-	particle->material->shader->setTexture(MAIN_TEX,texture->textureId);
+	particle->material->shader->setTexture(MAIN_TEX, texture->textureId);
 	particle->maxNumber = 5000;
 	particle->lifeTime = .2f;
 	particle->velocity = 10.0f;
 	particle->rotateSpeed = 0.0f;
 	particle->size = 8.0f;
-	particle->material->shader->setColor(MAIN_COLOR, Colorf(1.5f,1.5f,1.5f,1.0f));
+	particle->material->shader->setColor(MAIN_COLOR, Colorf(1.5f, 1.5f, 1.5f, 1.0f));
 
 	particle->enableVariableColor = true;
 	particle->beginColor = Color::yellow;
@@ -172,14 +174,16 @@ void generateParticle()
 	// particle->shapeModule->rectangleProperties.width = 2.0f;
 	// particle->shapeModule->rectangleProperties.length = 80.0f;
 
-	particle->transform->position = Vector3(22.0f,1.5f,-19.0f);
+	particle->transform->position = Vector3(22.0f, 1.5f, -19.0f);
 	particle->transform->eulerangle = Vector3(-90.0f, 0.0f, 0.0f);
 	particle->playing = true;
 }
 
 void generateParticle2()
 {
-	particle2 = new ParticleRenderer();
+	particle2GO = new GameObject("particle system right");
+	// auto particle2 = new ParticleRenderer();
+	auto particle2 = particle2GO->AddNode<ParticleRenderer>();
 	particle2->name = "Particle System Right";
 	auto texture = TextureLoader::Load("res/texture/photon.png");
 	particle2->material->shader->setTexture(MAIN_TEX, texture->textureId);
@@ -240,9 +244,11 @@ void physically_based_rendering::Awake()
 	starFighter();
 	generateParticle();
 	generateParticle2();
-	particle->SetParent(fighter);
-	particle2->SetParent(fighter);
-
+	// particle->SetParent(fighter);
+	// particle2->SetParent(fighter);
+	particleGO->SetParent(fighterGO);
+	particle2GO->SetParent(fighterGO);
+	
 	Node* leftParticle = Node::Query("Particle System Left");
 	if (nullptr != leftParticle)
 	{
@@ -253,10 +259,7 @@ void physically_based_rendering::Awake()
 
 void physically_based_rendering::Update() 
 { 
-	// Vector3 offset = Vector3(0.0f, 0.0f, 100.0f) * Timer::deltaTime;
-	// fighter->transform->position += offset;
-	// particle->transform->position += offset;
-	// particle2->transform->position += offset; 
+
 }
 
 void physically_based_rendering::Destroy()

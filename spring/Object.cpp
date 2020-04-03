@@ -30,4 +30,4 @@ Object* Object::Instantiate(Object obj)
 unsigned long Object::GetInstanceID() 
 {
 	return Object::instanceCounts++;
-} 
+}

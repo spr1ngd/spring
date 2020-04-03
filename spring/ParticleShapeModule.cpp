@@ -4,13 +4,12 @@ using namespace spring;
 
 ParticleShapeModule::ParticleShapeModule() 
 {
-	this->shapeType = ShapeType::Cube;
+
 }
 
 ParticleShapeModule::ParticleShapeModule(Transform* transform) 
 {
 	this->transform = transform;
-	this->shapeType = ShapeType::Cube;
 }
 
 void ParticleShapeModule::getSrcParticle(Vector3& position, Vector3& direction) 

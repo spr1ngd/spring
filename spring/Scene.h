@@ -1,11 +1,11 @@
 #pragma once
 #include <map>
-#include <vector>
-#include "node.h"
-#include "gameobject.h"
+#include <vector> 
 
 namespace spring 
 {
+	class Node;
+	class GameObject;
 	class Scene 
 	{
 	public:

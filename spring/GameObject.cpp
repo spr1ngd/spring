@@ -1,5 +1,6 @@
 #include "gameobject.h"
 #include "scene.h"
+#include "console.h"
 
 using namespace std;
 using namespace spring;

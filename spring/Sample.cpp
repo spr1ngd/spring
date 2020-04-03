@@ -31,12 +31,14 @@ float speed = 5.0f;
 
 Sample::Sample() 
 {
-	esScene = new springengine_scene();
-	esScene->name = "scene loader";
+
 }
 
 void Sample::Awake()
 {
+	esScene = new springengine_scene();
+	esScene->name = "scene loader";
+
 #pragma region scene camera setting
 
 	camera = new Camera();
@@ -128,6 +130,7 @@ void Sample::Awake()
 
 	pbr = new physically_based_rendering();
 	pbr->name = "Physically Based Rendering Example";
+	pbr->enabled = true;
 }
 
 void Sample::Update() 
