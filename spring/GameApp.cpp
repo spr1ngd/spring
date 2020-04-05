@@ -6,6 +6,12 @@ void GameApp::Awake()
 	Sample* sample = new Sample();
 	sample->name = "SPRING";
 	sample->enabled = true;
+
+	GameObject* internalUICamera = new GameObject("Internal UI Camera");
+	internalUICamera->flags = HideFlags::HideFlags_HideInHierarchyWindow;
+	Camera* uiCamera = internalUICamera->AddNode<Camera>();
+	uiCamera->cullingMask->layers = Layer::UI;
+	uiCamera->clearFlag = Camera::None;
 }
 
 void GameApp::Update() 

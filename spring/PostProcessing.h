@@ -9,7 +9,7 @@
 
 namespace spring 
 {
-	class PostProcessing
+	class PostProcessing : public Behaviour
 	{
 	private:
 		void Blit(FrameBuffer* src,FrameBuffer* dst);
@@ -22,7 +22,6 @@ namespace spring
 		FrameBuffer* srcFramebuffer;
 		FrameBuffer* dstFramebuffer;
 
-		bool enabled;
 		AntiAliasing* antiAliasing;
 		Bloom* bloom;
 		ToneMapping* toneMapping;
@@ -33,6 +32,11 @@ namespace spring
 
 		void Preprocess();
 		void Process();
+
+		void Awake() override;
+		void Update() override;
+		void Destroy() override;
+
 	public:
 		static PostProcessing* postprocessing;
 		static FrameBuffer* outputFramebuffer;

@@ -38,57 +38,43 @@ void Renderable::Draw()
 	}
 }
 
-void Renderable::Draw(unsigned int layerCount, unsigned int* layers)
+void Renderable::Draw(int layers)
 {
-	if (layerCount <= 0)
-		return;
 	for (unsigned int i = 0; i < objects.size(); i++)
 	{
 		auto object = objects[i];
-		for (unsigned int j = 0; j < layerCount; j++)
+		try
 		{
-			unsigned int layer = layers[j];
-			try 
-			{
-				MeshRenderer* node = dynamic_cast<MeshRenderer*>(object);
-				if (node->layer == layer)
-				{
-					object->Render();
-					break;
-				}
-			}
-			catch (bad_cast) 
-			{
-				PRINT_ERROR("cast renderable object to meshrenderer failed.");
-			}
+			MeshRenderer* renderer = dynamic_cast<MeshRenderer*>(object);
+			int layer = renderer->gameobject->layer;
+			if ((layers & layer) == layer)
+				renderer->Render();
+		}
+		catch (bad_cast)
+		{
+			PRINT_ERROR("cast renderable object to meshrenderer failed.");
 		}
 	}
 }
 
-void Renderable::Draw(unsigned int layerCount, unsigned int* layers , std::function<void(MeshRenderer*)> func)
+void Renderable::Draw(int layers , std::function<void(MeshRenderer*)> func)
 {
-	if (layerCount <= 0)
-		return;
 	for (unsigned int i = 0; i < objects.size(); i++)
 	{
 		auto object = objects[i];
-		for (unsigned int j = 0; j < layerCount; j++)
+		try
 		{
-			unsigned int layer = layers[j];
-			try
+			MeshRenderer* renderer = dynamic_cast<MeshRenderer*>(object);
+			int layer = renderer->gameobject->layer;
+			if ((layers & layer) == layer)
 			{
-				MeshRenderer* renderer = dynamic_cast<MeshRenderer*>(object);
-				if (renderer->layer == layer)
-				{
-					if (nullptr != func)
-						func(renderer);
-					break;
-				}
+				if (nullptr != func)
+					func(renderer);
 			}
-			catch (bad_cast)
-			{
-				PRINT_ERROR("cast renderable object to meshrenderer failed.");
-			}
+		}
+		catch (bad_cast)
+		{
+			PRINT_ERROR("cast renderable object to meshrenderer failed.");
 		}
 	}
 }

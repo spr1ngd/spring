@@ -77,48 +77,18 @@ int main(int, char**)
 
 	glEnable(GL_MULTISAMPLE);
 	AllocConsole();
-
-	// Our state
+	Timer::Start();
 	bool show_demo_window = true;
 
-	// TODO: try to load scene data
-	// // create a scene or load a scene from scene data.
-	// Scene* scene = new Scene();
-	// Scene::current = scene;
-	// 
-	// // Game application entrance. this should be created by editor.
-	// GameApp* gameApp = new GameApp();
-	// gameApp->name = "GameApp";
-	// gameApp->flags = NodeFlags::Static;
+	// create a scene or load a scene from scene data.
+	Scene* scene = new Scene();
+	Scene::current = scene;
 
-	Timer::Start();
-	unsigned int* uiRenderLayer = new unsigned int[1]{ Layer::UI };
-	unsigned int* defaultRenderLayer = new unsigned int[2]{ Layer::Default,Layer::Skybox };
-	Camera* uiCamera = new Camera();
-	uiCamera->name = "Internal UI Camera";
-	uiCamera->cullingMask->set(Layer::UI);
-	uiCamera->clearFlag = Camera::None;
-
-	// TODO: serialize postprocessing setting to json
-	// post processing
-	PostProcessing::postprocessing = new class::PostProcessing();
-	PostProcessing::postprocessing->enabled = true;
-	// pp->bloom 
-	PostProcessing::postprocessing->bloom->enable = true;
-	PostProcessing::postprocessing->Initialize();
-
-	if (PostProcessing::postprocessing->enabled == false)
-	{
-		FrameBuffer* mainFramebuffer = new FrameBuffer(Screen::width, Screen::height);
-		mainFramebuffer->antiAliasing = AntiAliasingLevel::Level2;
-		mainFramebuffer->depthbuffer = FrameBuffer::OnlyDepth;
-		mainFramebuffer->Initialize();
-		Camera::main->framebuffer = mainFramebuffer;
-
-		FrameBuffer* renderTarget = new FrameBuffer(Screen::width, Screen::height);
-		renderTarget->Initialize();
-		Camera::main->renderTarget = renderTarget;
-	}
+	// Game application entrance. this should be created by editor.
+	GameObject* appGO = new GameObject("GameApp");
+	GameApp* gameApp = appGO->AddNode<GameApp>();
+	gameApp->name = "GameApp";
+	gameApp->flags = NodeFlags::Static;
 
 	// standalone shader compiler (in a independent thread)
 	ShaderCompiler shader_compiler;
@@ -183,13 +153,13 @@ int main(int, char**)
 			Camera::current->Render();
 			if (Camera::current->framebuffer == nullptr)
 			{
-				Renderable::Draw(2, defaultRenderLayer);
+				Renderable::Draw(Layer::Skybox | Layer::Default);
 			}
 			else 
 			{
 				Camera::current->framebuffer->Bind();
 				glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-				Renderable::Draw(2, defaultRenderLayer);
+				Renderable::Draw(Layer::Skybox | Layer::Default);
 				Camera::current->framebuffer->Unbind();
 			}
 		}
@@ -199,7 +169,7 @@ int main(int, char**)
 			{
 				Camera::current = Camera::main;
 				Camera::current->Render();
-				Renderable::Draw(2, defaultRenderLayer, [&](MeshRenderer* meshRenderer) 
+				Renderable::Draw(Layer::Skybox | Layer::Default, [&](MeshRenderer* meshRenderer)
 					{
 						Material* originMaterial = meshRenderer->material;
 						meshRenderer->material = Picking::material;
@@ -225,9 +195,13 @@ int main(int, char**)
 		}
 
 		// render 2d ui object.
-		Camera::current = uiCamera;
-		Camera::current->Render();
-		Renderable::Draw(1, uiRenderLayer);
+		// Camera* uiCamera = GameObject::Query("Internal UI Camera")->GetNode<Camera>();
+		// if (nullptr != uiCamera)
+		// {
+		// 	Camera::current = uiCamera;
+		// 	Camera::current->Render();
+		// 	Renderable::Draw(Camera::current->cullingMask->layers);
+		// }
 
 		// FPS tool
 		FPS::CalculateFramePerSecond();

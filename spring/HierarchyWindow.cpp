@@ -16,12 +16,14 @@ HierarchyWindow::HierarchyWindow(const char* name, bool openDefault) : EditorWin
 
 static int selection_mask = (1 << 0);
 
-void DrawTree(int& clickedNode,int& clickedIndex, GameObject& gameobject ,ImGuiTreeNodeFlags flags)
+void DrawTree(int& clickedNode,int& clickedIndex, GameObject& parent ,ImGuiTreeNodeFlags flags)
 {
-	for (auto go = gameobject.children.begin(); go != gameobject.children.end(); go++) 
+	for (auto go = parent.children.begin(); go != parent.children.end(); go++)
 	{
-		clickedIndex++;
 		GameObject* goPtr = *go;
+		if ((goPtr->flags & HideFlags::HideFlags_HideInHierarchyWindow) == HideFlags::HideFlags_HideInHierarchyWindow)
+			continue;
+		clickedIndex++;
 		ImGuiTreeNodeFlags node_flag = flags;
 		const bool isSelected = (selection_mask & (1 << clickedIndex)) != 0; 
 		if (isSelected)
@@ -29,12 +31,12 @@ void DrawTree(int& clickedNode,int& clickedIndex, GameObject& gameobject ,ImGuiT
 			node_flag |= ImGuiTreeNodeFlags_Selected;
 			Selection::gameobject = goPtr;
 		}
+		ImGui::Checkbox("", &goPtr->visible);
+		ImGui::SameLine(0.0f);
 		if (ImGui::TreeNodeEx(goPtr->name, node_flag))
 		{
 			if (ImGui::IsItemClicked())
 				clickedNode = clickedIndex;
-			ImGui::SameLine(0.0f);
-			ImGui::Checkbox("", &goPtr->visible);
 			DrawTree(clickedNode,clickedIndex,*goPtr,flags);
 			ImGui::TreePop();
 		}
@@ -57,21 +59,21 @@ void HierarchyWindow::OnDrawWindow()
 		for (int i = 0; i < (int)Scene::current->gameobjects.size(); i++)
 		{
 			GameObject* gameobject = Scene::current->gameobjects[i];
-			/*if (gameobject->flags == NodeFlags::BuiltIn) // todo : add gameobject flag.
-				continue;*/
+			if ((gameobject->flags & HideFlags::HideFlags_HideInHierarchyWindow) == HideFlags::HideFlags_HideInHierarchyWindow)
+				continue;
 			ImGuiTreeNodeFlags node_flags = base_flags;
-			const bool isSelected = (selection_mask & (1 << clickedIndex)) != 0; // 不能和id匹配，因为i无法递归到别的函数
+			const bool isSelected = (selection_mask & (1 << clickedIndex)) != 0;
 			if (isSelected)
 			{
 				node_flags |= ImGuiTreeNodeFlags_Selected;
 				Selection::gameobject = gameobject;
 			}
+			ImGui::Checkbox("", &gameobject->visible);
+			ImGui::SameLine(0.0f);
 			if (ImGui::TreeNodeEx(gameobject->name, node_flags))
 			{
 				if (ImGui::IsItemClicked())
 					clickedNode = clickedIndex;
-				ImGui::SameLine(0.0f);
-				ImGui::Checkbox("", &gameobject->visible);
 				DrawTree(clickedNode, clickedIndex, *gameobject, base_flags);
 				ImGui::TreePop();
 			}

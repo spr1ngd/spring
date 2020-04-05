@@ -256,7 +256,7 @@ void ParticleRenderer::Render()
 	auto camera = Camera::current;
 	glm::mat4 view = camera->GetViewMatrix();
 	glm::mat4 projection;
-	if (this->layer == Layer::UI) projection = camera->Get2DProjection();
+	if (this->gameobject->layer == Layer::UI) projection = camera->Get2DProjection();
 	else projection = camera->GetProjectionMatrix();
 	glm::mat4 model =
 		glm::translate(glm::mat4(1.0), glm::vec3(this->transform->position.x, this->transform->position.y, this->transform->position.z)) *

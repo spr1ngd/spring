@@ -125,7 +125,7 @@ void InstancedRenderer::Render(Camera* camera)
 		return;
 	}
 
-	if (!camera->cullingMask->contains(this->layer))
+	if (!camera->cullingMask->contains(this->gameobject->layer))
 		return;
 
 	this->material->EnableAlphaTest();
@@ -168,7 +168,7 @@ void InstancedRenderer::Render(Camera* camera)
 
 	glm::mat4 view = camera->GetViewMatrix();
 	glm::mat4 projection;
-	if (this->layer == Layer::UI) projection = camera->Get2DProjection();
+	if (this->gameobject->layer == Layer::UI) projection = camera->Get2DProjection();
 	else projection = camera->GetProjectionMatrix();
 	// this->material->shader->setMat4(MATRIX_M, model);
 	// this->material->shader->setMat4(MATRIX_NM, nm);

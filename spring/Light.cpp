@@ -39,6 +39,8 @@ void Light::CastShadow()
 {
 	// todo : how to promote shadow map resolution
 	Camera* camera = Camera::main;
+	if (nullptr == camera)
+		return;
 	Camera::Type srcCameraType = camera->cameraType;
 	Vector3 srcPosition = camera->transform->GetPosition();
 	Vector3 srcEulerangle = camera->transform->GetEulerangle();
@@ -66,7 +68,7 @@ void Light::CastShadow()
 		light->shadow->Bind();
 		glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		Renderable::Draw(1,new unsigned int[1]{ 0x0001 }, [&](MeshRenderer* renderer)
+		Renderable::Draw(Layer::Default, [&](MeshRenderer* renderer)
 			{
 				if (renderer->material->castShadow)
 				{

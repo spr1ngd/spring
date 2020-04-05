@@ -6,6 +6,7 @@
 #include "physically_based_rendering.h"
 #include "physicsbasedrendering.h"
 #include "springengine_scene.h"
+#include "postprocessing.h"
 
 using namespace spring;
 using namespace spring::editor;
@@ -46,7 +47,7 @@ void Sample::Awake()
 	Camera::main = camera;
 	camera->clearFlag = Camera::ClearFlag::Skybox;
 	camera->background = Color(31, 113, 113, 255);
-	camera->cullingMask->remove(Layer::UI);
+	camera->cullingMask->layers = Layer::Default | Layer::Skybox | Layer::PostProcessing;
 	mainCamera->transform->SetPosition(Vector3(0.0f, 0.0f, 25.0f));
 	mainCamera->transform->LookAt(Vector3::zero);
 
@@ -77,6 +78,7 @@ void Sample::Awake()
 	{ 
 		// TODO : 50MBÄÚ´æÏûºÄ£¿£¿£¿£¿£¿
 		GameObject* skyboxGO = new GameObject("Skybox");
+		skyboxGO->layer = Layer::Skybox;
 		skybox = skyboxGO->AddNode<class::Skybox>();
 		Material* skyboxMaterial = new Material(Shader::Load("skybox/6 Sided.vs", "skybox/6 Sided.fs"));
 		skyboxMaterial->DepthTestFunc(false);
@@ -130,6 +132,28 @@ void Sample::Awake()
 	pbr = new physically_based_rendering();
 	pbr->name = "Physically Based Rendering Example";
 	pbr->enabled = true;
+
+	// post processing
+	GameObject* postProcessingGameObject = new GameObject("PostProcessing");
+	postProcessingGameObject->layer = Layer::PostProcessing;
+	PostProcessing::postprocessing = postProcessingGameObject->AddNode<class::PostProcessing>();
+	PostProcessing::postprocessing->enabled = true;
+	// pp->bloom 
+	PostProcessing::postprocessing->bloom->enable = true;
+	PostProcessing::postprocessing->Initialize();
+
+	if (PostProcessing::postprocessing->enabled == false)
+	{
+		FrameBuffer* mainFramebuffer = new FrameBuffer(Screen::width, Screen::height);
+		mainFramebuffer->antiAliasing = AntiAliasingLevel::Level2;
+		mainFramebuffer->depthbuffer = FrameBuffer::OnlyDepth;
+		mainFramebuffer->Initialize();
+		Camera::main->framebuffer = mainFramebuffer;
+
+		FrameBuffer* renderTarget = new FrameBuffer(Screen::width, Screen::height);
+		renderTarget->Initialize();
+		Camera::main->renderTarget = renderTarget;
+	}
 }
 
 void Sample::Update() 

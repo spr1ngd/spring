@@ -66,7 +66,7 @@ Value* JsonSerializer::toJson(Node& node)
 	nameValue.SetString(node.name, strlen(node.name));
 	value->AddMember("_name", nameValue, this->document->GetAllocator());
 	value->AddMember("_visible", node.visible, this->document->GetAllocator());
-	value->AddMember("_layer", node.layer, this->document->GetAllocator());
+	value->AddMember("_layer", node.gameobject->layer, this->document->GetAllocator());
 
 	// transform information
 	Value* transform = toJson(*node.transform);
@@ -345,9 +345,10 @@ Node* JsonSerializer::toNode(Value& value)
 	bool visible = visibleMember->value.GetBool();
 	node->visible = visible;
 
-	auto layerMember = value.FindMember("_layer");
-	int layer = layerMember->value.GetInt();
-	node->layer = spring::Layer(layer);
+	// todo : retrieve layer to gameobject.
+	// auto layerMember = value.FindMember("_layer");
+	// int layer = layerMember->value.GetInt();
+	// node->gameobject->layer = spring::Layer(layer);
 
 	auto transformMember = value.FindMember("transform");
 	Transform* transform = toTransform(transformMember->value);

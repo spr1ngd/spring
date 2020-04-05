@@ -18,9 +18,9 @@ namespace spring
 	class LayerMask
 	{
 	public:
-		int layers = Layer::Default | Layer::UI | Layer::Skybox | Layer::PostProcessing;
-		LayerMask();
+		int layers = Layer::Default;
 
+		LayerMask();
 		void set(int layers);
 		void add(unsigned int layer);
 		void remove(unsigned int layer);

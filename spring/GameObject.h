@@ -10,6 +10,12 @@ using namespace std;
 
 namespace spring 
 {
+	enum HideFlags 
+	{
+		HideFlags_None = 0x00000000,
+		HideFlags_HideInHierarchyWindow = 0x00000001,
+	};
+
 	class GameObject : public Object
 	{
 	private:
@@ -24,6 +30,7 @@ namespace spring
 	public:
 		bool visible = true;
 		int flags = 0x0000;
+		int layer;
 		Transform* transform; // only store position/rotation/scale/eulerangle data
 
 		GameObject* parent;
@@ -39,11 +46,11 @@ namespace spring
 			this->nodes.push_back(node);
 			Node* nodeptr = dynamic_cast<Node*>(node);
 			nodeptr->gameobject = this;
+			nodeptr->name = this->name;
 			delete nodeptr->transform;
 			nodeptr->transform = this->transform;
 			return node;
 		}
-
 		template<typename T>
 		T* GetNode() 
 		{
@@ -93,7 +100,6 @@ namespace spring
 				newParent->children.push_back(this);
 			}
 		}
-
 		GameObject* GetChild( int childIndex ) 
 		{
 			if (childIndex >= this->children.size())
@@ -106,6 +112,18 @@ namespace spring
 			if (nullptr == this->typeInfo)
 				this->typeInfo = new TypeInfo("GameObject");
 			return *this->typeInfo;
+		}
+
+	public:
+		static GameObject* Query(const char* name) 
+		{
+			for (auto item = gameobjects.begin(); item != gameobjects.end(); item++) 
+			{
+				GameObject* gameobject = *item;
+				if (strcmp(gameobject->name, name) == 0) 
+					return *item;
+			}
+			return nullptr;
 		}
 	};
 }

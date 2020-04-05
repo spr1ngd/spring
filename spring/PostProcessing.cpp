@@ -32,6 +32,21 @@ PostProcessing::PostProcessing()
 	this->outline->outputBuffer->Initialize();
 }
 
+void PostProcessing::Awake() 
+{
+
+}
+
+void PostProcessing::Update() 
+{
+
+}
+
+void PostProcessing::Destroy() 
+{
+
+}
+
 void PostProcessing::Initialize() 
 { 
 	if (this->enabled == false)
@@ -41,8 +56,10 @@ void PostProcessing::Initialize()
 
 	outputMaterial = new Material(Shader::Load("fullscreen/fullscreen.vs", "fullscreen/fullscreen.fs"));
 	
-	this->fsRenderer = new FullScreenRenderer();
-	this->fsRenderer->name = "(FSR)PostProcessing";
+	GameObject* fsRendererGO = new GameObject("(FSP)PostProcessing");
+	fsRendererGO->layer = Layer::PostProcessing;
+	fsRendererGO->flags |= HideFlags::HideFlags_HideInHierarchyWindow;
+	this->fsRenderer = fsRendererGO->AddNode<FullScreenRenderer>();
 	this->fsRenderer->Initialize();
 
 	// if (this->antiAliasing->enabled)
@@ -170,10 +187,8 @@ void PostProcessing::Blit(FrameBuffer* src, FrameBuffer* dst, Material* material
 	Camera::current->framebuffer->Bind();
 	glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
 	glClearColor(0.1f,0.4f,0.7f,1.0f);
-	unsigned int* postProcessingLayer = new unsigned int[1]{ Layer::PostProcessing };
-	Renderable::Draw(1, postProcessingLayer);
+	Renderable::Draw(Layer::PostProcessing);
 	Camera::current->framebuffer->Unbind();
-	delete[] postProcessingLayer;
 }
 
 void PostProcessing::Blit(FrameBuffer* src, FrameBuffer* dst, Material* material,unsigned int attachment)
@@ -185,8 +200,6 @@ void PostProcessing::Blit(FrameBuffer* src, FrameBuffer* dst, Material* material
 	Camera::current->framebuffer = dst;
 	Camera::current->framebuffer->Bind();
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	unsigned int* postProcessingLayer = new unsigned int[1]{ Layer::PostProcessing };
-	Renderable::Draw(1, postProcessingLayer);
+	Renderable::Draw(Layer::PostProcessing);
 	Camera::current->framebuffer->Unbind();
-	delete[] postProcessingLayer;
 }
