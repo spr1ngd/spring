@@ -14,7 +14,7 @@ Node::Node()
 	this->type = "Node";
 	this->transform = new Transform();
 	allNodes.push_back(this);
-	this->name = this->GetTypeInfo().typeName;
+	this->name = "Node(Instance)";
 	if (nullptr != Scene::current)
 		Scene::current->AddNode(this);
 }

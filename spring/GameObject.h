@@ -24,15 +24,13 @@ namespace spring
 		static void AddGameObject(GameObject* gameobject);
 		static void RemoveGameObject(GameObject* gameobject);
 
-	private:
-		std::vector<Node*> nodes;
-
 	public:
 		bool visible = true;
 		int flags = 0x0000;
 		int layer;
 		Transform* transform; // only store position/rotation/scale/eulerangle data
 
+		std::vector<Node*> nodes;
 		GameObject* parent;
 		std::vector<GameObject*> children;
 

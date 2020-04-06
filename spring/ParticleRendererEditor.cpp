@@ -7,15 +7,10 @@ using namespace spring::editor;
 
 void ParticleRendererEditor::OnDrawInspector() 
 {
-	if (Selection::node == nullptr)
-		return;
-	ParticleRenderer* particleRenderer = (ParticleRenderer*)Selection::node;
+	ParticleRenderer* particleRenderer = Selection::gameobject->GetNode<ParticleRenderer>();
 	if (nullptr == particleRenderer)
 		return;
-	return;
 	ImGui::SetNextItemOpen(true,ImGuiCond_Once);
-
-	ImGui::Text(" %s",particleRenderer->name);
 	ImGui::Text(" %s","Basic Setting");
 
 	ImGui::Checkbox("Is Playing",&particleRenderer->playing);

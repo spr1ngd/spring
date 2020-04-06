@@ -6,7 +6,7 @@ namespace spring
 {
 	namespace editor
 	{
-		class ParticleRendererEditor : InspectorEditor
+		class ParticleRendererEditor : public InspectorEditor
 		{
 		public:
 			ParticleRendererEditor(const char* name, const char* type, bool openDefault = true) :InspectorEditor(name, type, openDefault) {}

@@ -55,6 +55,13 @@ namespace spring
 		virtual void Init();
 		void Render() override;
 
+		TypeInfo GetTypeInfo() override 
+		{
+			if (nullptr == this->typeInfo)     
+				this->typeInfo = new TypeInfo("ParticleRenderer");
+			return *this->typeInfo;
+		}
+
 	// parameters over life
 	public:
 		bool enableVariableColor = false;

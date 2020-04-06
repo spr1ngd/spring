@@ -7,28 +7,16 @@ using namespace spring::editor;
 
 void MaterialEditor::OnDrawInspector() 
 {
-	if (Selection::node == nullptr)
-		return;
-
-	MeshRenderer* meshRenderer = (MeshRenderer*)Selection::node;
+	MeshRenderer* meshRenderer = Selection::gameobject->GetNode<MeshRenderer>();
 	if (nullptr == meshRenderer)
 		return;
-
-	ImGui::SetNextItemOpen(true, ImGuiCond_Once);
-
-	// material name
-	// get material properties
-	// draw properties
 	Material* material = meshRenderer->material;
 	if (nullptr == material)
 		return;
-	
-	return;
-	// funcs
+	ImGui::SetNextItemOpen(true, ImGuiCond_Once);
+
 	if (ImGui::TreeNode("Material"))
 	{
-		ImGui::Text("Name(%s)",meshRenderer->name);
-
 		ImGui::Checkbox("Enable Alpha Test", &material->alphaTest);
 		ImGui::Checkbox("Enable Alpha Blend", &material->blend);
 
