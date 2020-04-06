@@ -5,11 +5,6 @@
 using namespace spring;
 using namespace spring::editor;
 
-ParticleRendererEditor::ParticleRendererEditor( const char* name, bool openDefault) : InspectorEditor(name,openDefault)
-{
-
-}
-
 void ParticleRendererEditor::OnDrawInspector() 
 {
 	if (Selection::node == nullptr)

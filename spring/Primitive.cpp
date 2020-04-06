@@ -3,6 +3,7 @@
 #include "console.h"
 #include "meshrenderer.h"
 #include "scene.h"
+#include "modelloader.h"
 
 using namespace std;
 using namespace spring;
@@ -39,18 +40,23 @@ GameObject& Primitive::CreateTriangle()
 
 GameObject& Primitive::CreatePlane() 
 {
-	GameObject* plane = new GameObject("Plane");
+	auto plane = new GameObject("Plane");
 	Mesh* planeMesh = GenPlane();
-	MeshRenderer* renderer = plane->AddNode<MeshRenderer>();
+	auto renderer = plane->AddNode<MeshRenderer>();
 	renderer->material = new Material(Shader::Load("diffuse/diffuse.vs", "diffuse/diffuse.fs"));
+	renderer->material->shader->setColor(MAIN_COLOR, Color::white);
 	renderer->mesh = planeMesh;
-	renderer->Initialize();
 	return *plane;
 }
 
 GameObject& Primitive::CreateCube() 
 {
-	GameObject* cube = new GameObject("Cube");
+	auto cube = new GameObject("Cube");
+	Mesh* cubeMesh = GenCube();
+	auto renderer = cube->AddNode<MeshRenderer>();
+	renderer->material = new Material(Shader::Load("diffuse/diffuse.vs", "diffuse/diffuse.fs"));
+	renderer->material->shader->setColor(MAIN_COLOR,Color::white);
+	renderer->mesh = cubeMesh;
 	return *cube;
 }
 
@@ -130,7 +136,7 @@ Mesh* Primitive::GenPlane()
 
 Mesh* Primitive::GenCube() 
 {
-	return nullptr;
+	return &ModelLoader::Load("obj/cube.obj");
 }
 
 Mesh* Primitive::GenCylinder()

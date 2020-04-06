@@ -5,11 +5,6 @@
 using namespace spring;
 using namespace spring::editor;
 
-MaterialEditor::MaterialEditor(const char* windowName, bool defaultOpen) : InspectorEditor(windowName, defaultOpen)
-{
-	
-}
-
 void MaterialEditor::OnDrawInspector() 
 {
 	if (Selection::node == nullptr)

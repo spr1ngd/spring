@@ -31,8 +31,6 @@ void DrawTree(int& clickedNode,int& clickedIndex, GameObject& parent ,ImGuiTreeN
 			node_flag |= ImGuiTreeNodeFlags_Selected;
 			Selection::gameobject = goPtr;
 		}
-		ImGui::Checkbox("", &goPtr->visible);
-		ImGui::SameLine(0.0f);
 		if (ImGui::TreeNodeEx(goPtr->name, node_flag))
 		{
 			if (ImGui::IsItemClicked())
@@ -68,8 +66,6 @@ void HierarchyWindow::OnDrawWindow()
 				node_flags |= ImGuiTreeNodeFlags_Selected;
 				Selection::gameobject = gameobject;
 			}
-			ImGui::Checkbox("", &gameobject->visible);
-			ImGui::SameLine(0.0f);
 			if (ImGui::TreeNodeEx(gameobject->name, node_flags))
 			{
 				if (ImGui::IsItemClicked())

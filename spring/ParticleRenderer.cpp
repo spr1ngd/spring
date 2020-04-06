@@ -235,10 +235,11 @@ void ParticleRenderer::Render()
 		PRINT_ERROR("ParticleRenderer's material can not be null.");
 		return;
 	}
-	if (this->visible == false)
-		return;
 
 	if (this->usingParticles.size() <= 0)
+		return;
+
+	if (!this->enabled || ( nullptr != this->gameobject && !this->gameobject->visible) )
 		return;
 
 	// this->material->AlphaTestFunc(GL_LESS, 0.0f);

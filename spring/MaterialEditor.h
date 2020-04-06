@@ -8,10 +8,10 @@ namespace spring
 	{
 		class MaterialEditor : public InspectorEditor
 		{
-		protected:
-			void OnDrawInspector() override;
 		public:
-			MaterialEditor(const char* windowName, bool defaultOpen = true);
+			MaterialEditor(const char* name, const char* type, bool defaultOpen = true) : InspectorEditor(name, type, defaultOpen) {}
+
+			void OnDrawInspector() override;
 		};
 	}
 }

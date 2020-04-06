@@ -104,18 +104,27 @@ void Sample::Awake()
 		Skybox::irradianceCubemap = irradianceCubemap;
 		Skybox::prefilter = prefilter;
 		Skybox::prebrdf = prebrdf;
-		skybox->visible = true;
 	}
 
 	if (enableLights) 
 	{
-		Light* light = createLight(Light::Type::Directional, Color(255, 244, 214, 255), 10.0f, Vector3(0.0f, 5.0f, 0.0f), Vector3::down); 
-		light->shadowType = Light::NoShadow;
-		light->name = "Directional Light";
+		GameObject* directionalLightGO = new GameObject("Directional Light");
+		Light* light = directionalLightGO->AddNode<Light>();
+		light->type = Light::Type::Directional;
+		light->shadowType = Light::HardShadow;
+		light->color = Color(255, 244, 214, 255);
+		light->intensity = 10.0f;
+		directionalLightGO->transform->SetPosition(Vector3(0.0f, 5.0f, 0.0f));
+		directionalLightGO->transform->SetEulerangle(Vector3::down);
 
-		Light* pointLigh1 = createLight(Light::Type::Directional, Color(255, 244, 214, 255), 3.0f, Vector3(10.0f, 10.0f, 10.0f), Vector3::left); 
-		pointLigh1->shadowType = Light::NoShadow;
-		pointLigh1->name = "Point Light";
+		GameObject* pointLightGO = new GameObject("Point Light");
+		Light* pointLight1 = pointLightGO->AddNode<Light>();
+		pointLight1->type = Light::Type::Directional;
+		pointLight1->shadowType = Light::NoShadow;
+		pointLight1->color = Color(255, 244, 214, 255);
+		pointLight1->intensity = 3.0f;
+		pointLightGO->transform->SetPosition(Vector3(10.0f, 10.0f, 10.0f));
+		pointLightGO->transform->SetEulerangle(Vector3::left);
 	}	
 
 #pragma endregion
@@ -139,7 +148,7 @@ void Sample::Awake()
 	PostProcessing::postprocessing = postProcessingGameObject->AddNode<class::PostProcessing>();
 	PostProcessing::postprocessing->enabled = true;
 	// pp->bloom 
-	PostProcessing::postprocessing->bloom->enable = true;
+	PostProcessing::postprocessing->bloom->enable = false;
 	PostProcessing::postprocessing->Initialize();
 
 	if (PostProcessing::postprocessing->enabled == false)
@@ -163,13 +172,6 @@ void Sample::Update()
 	if (renderSkybox)
 	{
 		skybox->transform->position = Camera::main->transform->position;
-	}
-	if (visible) 
-	{
-		// float angleDelta = speed * Timer::deltaTime;
-		/*lightModel->transform->eulerangle.z += angleDelta;
-		if (lightModel->transform->eulerangle.z > 360.0f)
-			lightModel->transform->eulerangle.z -= 360.0f;*/
 	}
 }
 

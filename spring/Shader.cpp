@@ -624,7 +624,6 @@ void Shader::setLighting()
 		{
 
 		}
-		this->setVec3(CAMERA_POSITION, Camera::main->transform->position);
 
 		if (this->receiveShadow)
 		{
@@ -645,6 +644,7 @@ void Shader::setLighting()
 			}
 		}
 	}
+	this->setVec3(CAMERA_POSITION, Camera::main->transform->position);
 }
 
 void Shader::setTime()

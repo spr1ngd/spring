@@ -19,6 +19,12 @@ void FrameBuffer::Initialize()
 	glBindFramebuffer(GL_FRAMEBUFFER, framebufferId);
 	unsigned int multiSampleLevel = this->getMultiSampleLevel();
 
+	if (this->colorFormat == ColorFormat::Shadow)
+	{
+		glDrawBuffer(GL_NONE);
+		glReadBuffer(GL_NONE);
+	}
+
 	for (unsigned int i = 0; i < this->buffersSize; i++) 
 	{
 		Texture* tex = new Texture(width, height);
@@ -30,17 +36,24 @@ void FrameBuffer::Initialize()
 		tex->multiSampleLevel = multiSampleLevel;
 		tex->Initialize();
 		if (this->colorFormat == ColorFormat::Shadow) 
-			glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_COMPONENT , tex->textureTarget, tex->textureId, mipmapLevel);
+			glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT , tex->textureTarget, tex->textureId, mipmapLevel);
 		else 
 			glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + i, tex->textureTarget, tex->textureId, mipmapLevel);
 		this->textures.push_back(tex);
 	}
 
-	GLuint* attachments = new GLuint[this->buffersSize];
-	for (unsigned int i = 0; i < buffersSize; i++)
-		attachments[i] = GL_COLOR_ATTACHMENT0 + i;
-	glDrawBuffers(buffersSize, attachments);
-	delete[] attachments;
+	if (this->colorFormat == ColorFormat::Shadow)
+	{
+
+	}
+	else
+	{
+		GLuint* attachments = new GLuint[this->buffersSize];
+		for (unsigned int i = 0; i < this->buffersSize; i++)
+			attachments[i] = GL_COLOR_ATTACHMENT0 + i;
+		glDrawBuffers(buffersSize, attachments);
+		delete[] attachments;
+	}
 
 	if (this->depthbuffer != DepthBuffer::NoneDepth)
 	{
@@ -54,6 +67,7 @@ void FrameBuffer::Initialize()
 	GLenum status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
 	if (status != GL_FRAMEBUFFER_COMPLETE)
 	{
+		// if the color format is shader GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT
 		PRINT_ERROR("[spring engine] : generate frame buffer object error : (0x%x)", status);
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 		for (auto item = textures.begin(); item != textures.end(); item++)

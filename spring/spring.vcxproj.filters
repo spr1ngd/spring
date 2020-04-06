@@ -538,6 +538,15 @@
     <ClInclude Include="AfterImage.h">
       <Filter>头文件\Core\Renderer\PostProcessing</Filter>
     </ClInclude>
+    <ClInclude Include="LightEditor.h">
+      <Filter>头文件\Editor\Extension</Filter>
+    </ClInclude>
+    <ClInclude Include="TransformEditor.h">
+      <Filter>头文件\Editor\Extension</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObjectEditor.h">
+      <Filter>头文件\Editor\Extension</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="spring.cpp">
@@ -851,6 +860,15 @@
     </ClCompile>
     <ClCompile Include="AfterImage.cpp">
       <Filter>源文件\Core\Renderer\PostProcessing</Filter>
+    </ClCompile>
+    <ClCompile Include="LightEditor.cpp">
+      <Filter>源文件\Editor\Extension</Filter>
+    </ClCompile>
+    <ClCompile Include="TransformEditor.cpp">
+      <Filter>源文件\Editor\Extension</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObjectEditor.cpp">
+      <Filter>源文件\Editor\Extension</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

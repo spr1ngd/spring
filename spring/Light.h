@@ -67,5 +67,11 @@ namespace spring
 		Light();
 
 		static void CastShadow();
+		TypeInfo GetTypeInfo() override 
+		{
+			if (nullptr == this->typeInfo)
+				this->typeInfo = new TypeInfo("Light");
+			return *this->typeInfo;
+		}
 	};
 }

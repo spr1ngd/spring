@@ -225,6 +225,7 @@
     <ClInclude Include="FullScreenRenderer.h" />
     <ClInclude Include="GameApp.h" />
     <ClInclude Include="GameObject.h" />
+    <ClInclude Include="GameObjectEditor.h" />
     <ClInclude Include="Gizmos.h" />
     <ClInclude Include="Graphic.h" />
     <ClInclude Include="GUI.h" />
@@ -244,6 +245,7 @@
     <ClInclude Include="JsonSerializer.h" />
     <ClInclude Include="Layer.h" />
     <ClInclude Include="Light.h" />
+    <ClInclude Include="LightEditor.h" />
     <ClInclude Include="Material.h" />
     <ClInclude Include="MaterialEditor.h" />
     <ClInclude Include="MaterialTexture.h" />
@@ -301,6 +303,7 @@
     <ClInclude Include="Timer.h" />
     <ClInclude Include="ToneMapping.h" />
     <ClInclude Include="Transform.h" />
+    <ClInclude Include="TransformEditor.h" />
     <ClInclude Include="UIElement.h" />
     <ClInclude Include="UniformBuffer.h" />
     <ClInclude Include="Vector2.h" />
@@ -334,6 +337,7 @@
     <ClCompile Include="FullScreenRenderer.cpp" />
     <ClCompile Include="GameApp.cpp" />
     <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="GameObjectEditor.cpp" />
     <ClCompile Include="Gizmos.cpp" />
     <ClCompile Include="Graphic.cpp" />
     <ClCompile Include="GUI.cpp" />
@@ -354,6 +358,7 @@
     <ClCompile Include="JsonSerializer.cpp" />
     <ClCompile Include="Layer.cpp" />
     <ClCompile Include="Light.cpp" />
+    <ClCompile Include="LightEditor.cpp" />
     <ClCompile Include="Material.cpp" />
     <ClCompile Include="MaterialEditor.cpp" />
     <ClCompile Include="MaterialTexture.cpp" />
@@ -407,6 +412,7 @@
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="ToneMapping.cpp" />
     <ClCompile Include="Transform.cpp" />
+    <ClCompile Include="TransformEditor.cpp" />
     <ClCompile Include="UIElement.cpp" />
     <ClCompile Include="UniformBuffer.cpp" />
     <ClCompile Include="Vector2.cpp" />

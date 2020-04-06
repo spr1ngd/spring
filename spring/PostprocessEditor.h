@@ -1,17 +1,16 @@
 #pragma once
-
 #include "inspectoreditor.h"
 
 namespace spring 
 {
 	namespace editor
 	{
-		class PostprocessEditor : InspectorEditor
+		class PostprocessEditor : public InspectorEditor
 		{
-		protected:
-			void OnDrawInspector() override;
 		public:
-			PostprocessEditor(const char* name,bool openDefault = true);
+			PostprocessEditor(const char* name, const char* type, bool openDefault = true) :InspectorEditor(name, type, openDefault) {}
+
+			void OnDrawInspector() override;
 		};
 	}
 }

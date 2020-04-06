@@ -21,7 +21,7 @@ namespace spring
 	public:
 		static vector<Node*> allNodes;
 
-		bool visible = true;
+		bool enabled = true;
 		NodeFlags flags = NodeFlags::Dynamic;
 		Node* parent = nullptr;
 		vector<Node*> nodes;

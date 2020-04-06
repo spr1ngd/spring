@@ -12,19 +12,16 @@ void GameApp::Awake()
 	Camera* uiCamera = internalUICamera->AddNode<Camera>();
 	uiCamera->cullingMask->layers = Layer::UI;
 	uiCamera->clearFlag = Camera::None;
+
 }
 
 void GameApp::Update() 
 {
-	if (Input::GetKeyDown(KeyCode::C)) 
+	if (Input::GetKeyDown(KeyCode::P))
 	{
-		GameObject plane = Primitive::CreatePrimitive(Primitive::Type::Plane);
-		MeshRenderer* renderer = plane.GetNode<MeshRenderer>();
-		if (nullptr != renderer) 
-		{
-			PRINT_LOG("get the renderer node on gameobject.");
-			renderer->transform->SetScale(Vector3(100.0f));
-		}
+		GameObject plane = Primitive::CreatePrimitive(Primitive::Type::Cube);
+		plane.transform->SetScale(Vector3(500.0f, 0.10f, 500.0f));
+		plane.transform->SetPosition(Vector3(0.0f, -5.0f, 0.0f));
 	}
 }
 

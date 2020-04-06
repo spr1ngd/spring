@@ -88,11 +88,9 @@ void MeshRenderer::Render(glm::mat4 view, glm::mat4 projection)
 	if (this->initialized == false)
 		this->Initialize();
 
-
-	if (this->visible == false)
-	{
+	if (!this->enabled || ( nullptr != this->gameobject && !this->gameobject->visible) )
 		return;
-	}
+
 	// this->material->AlphaTestFunc(GL_GREATER, 0.0f);
 	this->material->EnableAlphaTest();
 	this->material->EnableAlphaBlend();

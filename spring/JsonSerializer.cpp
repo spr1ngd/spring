@@ -65,7 +65,8 @@ Value* JsonSerializer::toJson(Node& node)
 	Value nameValue = Value(kStringType);
 	nameValue.SetString(node.name, strlen(node.name));
 	value->AddMember("_name", nameValue, this->document->GetAllocator());
-	value->AddMember("_visible", node.visible, this->document->GetAllocator());
+	// todo : move visible property from node to gameobject
+	// value->AddMember("_visible", node.visible, this->document->GetAllocator());
 	value->AddMember("_layer", node.gameobject->layer, this->document->GetAllocator());
 
 	// transform information
@@ -341,9 +342,10 @@ Node* JsonSerializer::toNode(Value& value)
 	node->name = nodeName;
 	PRINT_LOG("Retrieve node = [%s] from scene data", node->name);
 
-	auto visibleMember = value.FindMember("_visible");
-	bool visible = visibleMember->value.GetBool();
-	node->visible = visible;
+	// todo : move visible property from node to gameobject
+	// auto visibleMember = value.FindMember("_visible");
+	// bool visible = visibleMember->value.GetBool();
+	// node->visible = visible;
 
 	// todo : retrieve layer to gameobject.
 	// auto layerMember = value.FindMember("_layer");

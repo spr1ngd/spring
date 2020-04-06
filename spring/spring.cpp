@@ -169,7 +169,7 @@ int main(int, char**)
 			{
 				Camera::current = Camera::main;
 				Camera::current->Render();
-				Renderable::Draw(Layer::Skybox | Layer::Default, [&](MeshRenderer* meshRenderer)
+				Renderable::Draw( Layer::Default, [&](MeshRenderer* meshRenderer)
 					{
 						Material* originMaterial = meshRenderer->material;
 						meshRenderer->material = Picking::material;
@@ -195,13 +195,13 @@ int main(int, char**)
 		}
 
 		// render 2d ui object.
-		// Camera* uiCamera = GameObject::Query("Internal UI Camera")->GetNode<Camera>();
-		// if (nullptr != uiCamera)
-		// {
-		// 	Camera::current = uiCamera;
-		// 	Camera::current->Render();
-		// 	Renderable::Draw(Camera::current->cullingMask->layers);
-		// }
+		Camera* uiCamera = GameObject::Query("Internal UI Camera")->GetNode<Camera>();
+		if (nullptr != uiCamera)
+		{
+			Camera::current = uiCamera;
+			Camera::current->Render();
+			Renderable::Draw(Camera::current->cullingMask->layers);
+		}
 
 		// FPS tool
 		FPS::CalculateFramePerSecond();

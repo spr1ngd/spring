@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
 #include "imgui.h"
+#include "selection.h"
 
 namespace spring
 {

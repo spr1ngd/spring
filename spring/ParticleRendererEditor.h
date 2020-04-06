@@ -8,11 +8,10 @@ namespace spring
 	{
 		class ParticleRendererEditor : InspectorEditor
 		{
-		protected:
-			void OnDrawInspector() override;
-
 		public:
-			ParticleRendererEditor(const char* name,bool openDefault = true);
+			ParticleRendererEditor(const char* name, const char* type, bool openDefault = true) :InspectorEditor(name, type, openDefault) {}
+
+			void OnDrawInspector() override;
 		};
 	}
 }
