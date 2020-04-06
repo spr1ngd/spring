@@ -81,5 +81,10 @@ namespace spring
 				this->typeInfo = new TypeInfo("Node");
 			return *this->typeInfo;
 		}
+
+		static void Destory(Node* node) 
+		{
+			//todo:
+		}
 	};
 }

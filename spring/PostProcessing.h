@@ -17,8 +17,6 @@ namespace spring
 		void Blit(FrameBuffer* src,FrameBuffer* dst,Material* material,unsigned int attachment);
 
 	public:
-
-		FullScreenRenderer* fsRenderer;
 		FrameBuffer* srcFramebuffer;
 		FrameBuffer* dstFramebuffer;
 

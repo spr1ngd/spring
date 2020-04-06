@@ -50,10 +50,10 @@ Cubemap* PhysicsBasedRendering::CubemapConvolution(Cubemap* cubemap)
 	material->shader->setCubemap("environmentCubemap",cubemap);
 
 	Mesh& mesh = ModelLoader::Load("obj/cube.obj");
-	MeshRenderer* meshRenderer = new MeshRenderer(material);
-	meshRenderer->name = "PBR CubemapConvolution";
+	GameObject* convolution = new GameObject("Convolution");
+	MeshRenderer* meshRenderer = convolution->AddNode<MeshRenderer>();
+	meshRenderer->material = material;
 	meshRenderer->mesh = &mesh;
-	meshRenderer->Initialize();
 	meshRenderer->transform->position = Vector3::zero;
 
 	glm::mat4 views[] =
@@ -82,9 +82,11 @@ Cubemap* PhysicsBasedRendering::CubemapConvolution(Cubemap* cubemap)
 		meshRenderer->Render(view, projection);
 	}
 	capture->Unbind();
-	delete irradiance;
-	delete material;
-	delete meshRenderer;
+	// delete irradiance;
+	// delete material;
+	// delete meshRenderer;
+	// delete convolution;
+	GameObject::Destroy(convolution);
 	return result;
 }
 
@@ -95,18 +97,17 @@ Cubemap* PhysicsBasedRendering::PreFilter(Cubemap* cubemap)
 	unsigned int mipmapLevel = 5;
 
 	Cubemap* result = TextureLoader::CreateCubemapMipmap(cubemapSize, cubemapSize);
-
-	Shader* prefilterShader = Shader::Load("pbs/prefilter.vs","pbs/prefilter.fs");
-	Material* prefilterMaterial = new Material(prefilterShader);
+	Material* prefilterMaterial = new Material(Shader::Load("pbs/prefilter.vs", "pbs/prefilter.fs"));
 	prefilterMaterial->DepthTestFunc(false);
 	prefilterMaterial->CullFaceFunc(false, GL_FRONT);
 	prefilterMaterial->shader->setCubemap("environmentCubemap", cubemap);
 
 	Mesh& mesh = ModelLoader::Load("obj/cube.obj");
-	MeshRenderer* meshrenderer = new MeshRenderer(prefilterMaterial);
-	meshrenderer->name = "PBR PreFilter";
+	GameObject* filter = new GameObject("Filter");
+	// MeshRenderer* meshrenderer = new MeshRenderer(prefilterMaterial);
+	MeshRenderer* meshrenderer = filter->AddNode<MeshRenderer>();
+	meshrenderer->material = prefilterMaterial;
 	meshrenderer->mesh = &mesh;
-	meshrenderer->Initialize();
 	meshrenderer->transform->position = Vector3::zero;
 
 	glm::mat4 views[] =
@@ -147,9 +148,10 @@ Cubemap* PhysicsBasedRendering::PreFilter(Cubemap* cubemap)
 	}
 	fbo->Unbind();
 
-	delete prefilterMaterial;
-	delete prefilterShader;
-	delete meshrenderer;
+	// delete prefilterMaterial;
+	// delete prefilterShader;
+	// delete meshrenderer;
+	GameObject::Destroy(filter);
 	return result;
 }
 
@@ -157,14 +159,13 @@ Texture* PhysicsBasedRendering::PreBRDF(Cubemap* cubemap)
 {
 	unsigned int textureSize = 512;
 	Texture* result = TextureLoader::CreateTexture(textureSize,textureSize,0); // TODO : replace GL_RGB TO GL_RG16F
-
-	Shader* preBRDFShader = Shader::Load("pbs/prebrdf.vs","pbs/prebrdf.fs");
-	Material* preBRDFMaterial = new Material(preBRDFShader);
+	Material* preBRDFMaterial = new Material(Shader::Load("pbs/prebrdf.vs", "pbs/prebrdf.fs"));
 
 	// render a fullscreen quad
-	FullScreenRenderer* fsRenderer = new FullScreenRenderer();
-	fsRenderer->name = "FPS(PreBRDF)";
-	fsRenderer->Initialize();
+	GameObject* brdf = new GameObject("BRDF");
+	// FullScreenRenderer* fsRenderer = new FullScreenRenderer();
+	FullScreenRenderer* fsRenderer = brdf->AddNode<FullScreenRenderer>();
+	fsRenderer->material = preBRDFMaterial;
 	fsRenderer->material = preBRDFMaterial;
 
 	glViewport(0, 0, textureSize, textureSize);
@@ -179,8 +180,9 @@ Texture* PhysicsBasedRendering::PreBRDF(Cubemap* cubemap)
 	fbo->Unbind();
 
 	result->textureId = fbo->GetBuffer();
-	delete preBRDFShader;
-	delete preBRDFMaterial;
-	delete fsRenderer;
+	//delete preBRDFShader;
+	//delete preBRDFMaterial;
+	//delete fsRenderer;
+	GameObject::Destroy(brdf);
 	return result;
 }

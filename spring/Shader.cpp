@@ -48,6 +48,11 @@ Shader::Shader(const char* vertexShader, const char* fragmentShader, const char*
 	Shader::Caching(this);
 }
 
+Shader::~Shader() 
+{
+	Flash(this);
+}
+
 #pragma region shader compile / link / use 
 
 bool Shader::compile(GLenum shaderType, const char* filePath, unsigned int& shader)

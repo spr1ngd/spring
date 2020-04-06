@@ -21,6 +21,20 @@ GameObject::GameObject(const char* name)
 	AddGameObject(this);
 }
 
+GameObject::~GameObject()
+{
+	// destroy from current scene or current parent.
+	RemoveGameObject(this);
+	// destroy all additional nodes
+	for (auto item = nodes.begin(); item != nodes.end(); item++)
+	{
+		Node* node = *item;
+		delete node;
+		// TODO: does not call the destruction method.
+	}
+	// TODO : destroy all children nodes
+}
+
 #pragma region static methods
 
 void GameObject::AddGameObject(GameObject* gameobject) 
@@ -46,7 +60,21 @@ void GameObject::RemoveGameObject(GameObject* gameobject)
 		if (goPtr == gameobject)
 		{
 			gameobjects.erase(go);
-			Scene::current->RemoveGameObject(gameobject);
+			if( nullptr == gameobject->parent )
+				Scene::current->RemoveGameObject(gameobject);
+			else
+			{
+				for (auto child = gameobject->children.begin(); child != gameobject->children.end(); child++) 
+				{
+					GameObject* childPtr = *child;
+					if (childPtr == gameobject)
+					{
+						gameobject->children.erase(child);
+						gameobject->parent = nullptr;
+						break;
+					}
+				}
+			}
 			return;
 		}
 	}

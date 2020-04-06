@@ -104,6 +104,7 @@ namespace spring
 
 		Shader();
 		Shader(const char*vertex,const char*fragment,const char* geometry = nullptr);
+		~Shader();
 
 		void use();
 		void disuse();
