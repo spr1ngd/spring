@@ -11,13 +11,15 @@ MeshRenderer::MeshRenderer()
 
 MeshRenderer::MeshRenderer(Material* mateiral)
 {
+	PRINT_ERROR("DOES NOT ALLOW CONSTRUCT MESH RENDERER DIRECTLY.");
 	this->type = "class spring::MeshRenderer";
 	this->material = mateiral;
 }
 
 MeshRenderer::~MeshRenderer() 
 {
-
+	if (nullptr != this->material)
+		delete this->material;
 }
 
 void MeshRenderer::Initialize() 

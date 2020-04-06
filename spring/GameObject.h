@@ -26,8 +26,8 @@ namespace spring
 
 	public:
 		bool visible = true;
-		int flags = 0x0000;
-		int layer;
+		int flags = 0x00000000;
+		int layer = 0x00000001;
 		Transform* transform; // only store position/rotation/scale/eulerangle data
 
 		std::vector<Node*> nodes;
@@ -36,6 +36,7 @@ namespace spring
 
 		GameObject();
 		GameObject(const char* name);
+		~GameObject();
 
 		template<typename T>
 		T* AddNode() 
@@ -122,6 +123,11 @@ namespace spring
 					return *item;
 			}
 			return nullptr;
+		}
+
+		static void Destroy(GameObject* gameobject) 
+		{
+			delete gameobject;
 		}
 	};
 }

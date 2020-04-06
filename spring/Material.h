@@ -54,6 +54,7 @@ namespace spring
 	public:
 		Material();
 		Material(Shader* shader);
+		~Material();
 
 		void AlphaTestFunc( GLenum alphaTestFunc = GL_GREATER,float alphaTestRef = 0.5f );
 		void EnableAlphaTest();

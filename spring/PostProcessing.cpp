@@ -1,5 +1,6 @@
 #include "postprocessing.h"
 #include "console.h"
+#include "graphic.h"
 
 using namespace spring;
 
@@ -53,14 +54,7 @@ void PostProcessing::Initialize()
 		return;
 	outputFramebuffer = new FrameBuffer(Screen::width,Screen::height);
 	outputFramebuffer->Initialize();
-
 	outputMaterial = new Material(Shader::Load("fullscreen/fullscreen.vs", "fullscreen/fullscreen.fs"));
-	
-	GameObject* fsRendererGO = new GameObject("(FSP)PostProcessing");
-	fsRendererGO->layer = Layer::PostProcessing;
-	fsRendererGO->flags |= HideFlags::HideFlags_HideInHierarchyWindow;
-	this->fsRenderer = fsRendererGO->AddNode<FullScreenRenderer>();
-	this->fsRenderer->Initialize();
 
 	// if (this->antiAliasing->enabled)
 	// {
@@ -171,35 +165,15 @@ void PostProcessing::Process()
 
 void PostProcessing::Blit(FrameBuffer* src,FrameBuffer* dst)
 {
-	glBindFramebuffer(GL_READ_FRAMEBUFFER, src->framebufferId);
-	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, dst->framebufferId);
-	glBlitFramebuffer(0, 0, src->width, src->height, 0, 0, dst->width, dst->height, GL_COLOR_BUFFER_BIT, GL_NEAREST);
-	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	Graphic::Blit(*src, *dst);
 }
 
 void PostProcessing::Blit(FrameBuffer* src, FrameBuffer* dst, Material* material) 
 {
-	this->fsRenderer->material = material;
-	this->fsRenderer->material->shader->setTexture(MAIN_TEX, src->GetBuffer());
-
-	Camera::current = Camera::main;
-	Camera::current->framebuffer = dst;
-	Camera::current->framebuffer->Bind();
-	glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
-	glClearColor(0.1f,0.4f,0.7f,1.0f);
-	Renderable::Draw(Layer::PostProcessing);
-	Camera::current->framebuffer->Unbind();
+	Graphic::Blit(*src, *dst, *material);
 }
 
 void PostProcessing::Blit(FrameBuffer* src, FrameBuffer* dst, Material* material,unsigned int attachment)
 {
-	this->fsRenderer->material = material;
-	this->fsRenderer->material->shader->setTexture(MAIN_TEX, src->GetBuffer(attachment));
-
-	Camera::current = Camera::main;
-	Camera::current->framebuffer = dst;
-	Camera::current->framebuffer->Bind();
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	Renderable::Draw(Layer::PostProcessing);
-	Camera::current->framebuffer->Unbind();
+	Graphic::Blit(*src, *dst, *material, attachment);
 }

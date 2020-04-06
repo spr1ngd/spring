@@ -17,6 +17,12 @@ Material::Material(Shader* shader)
 	Material::Caching(this);
 }
 
+Material::~Material() 
+{
+	if (nullptr != this->shader)
+		delete this->shader;
+}
+
 void Material::AlphaTestFunc(GLenum alphaTestFunc, float alphaTestRef ) 
 {
 	this->alphaTest = true;

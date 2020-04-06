@@ -6,11 +6,8 @@
 
 namespace spring
 { 
-	class Node;
 	class Transform
 	{
-	private:
-
 	public: 
 		Matrix4x4 rotationMatrix = Matrix4x4::indentity;
 		Vector3 up = Vector3::up;
@@ -21,9 +18,6 @@ namespace spring
 		Quaternion rotation = Quaternion::indentity;
 		Vector3 scale = Vector3::one;
 
-	private:
-		friend class Node;
-	public:
 		Transform();
 
 		void SetEulerangle(Vector3 eulerangle);

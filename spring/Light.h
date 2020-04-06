@@ -39,6 +39,7 @@ namespace spring
 
 	private:
 		static Material* depthMaterial;
+		static Material* tMaterial;
 
 	public:
 		static vector<Light*> lights;
@@ -58,10 +59,11 @@ namespace spring
 		float outterAngle = 70.0f;
 
 		// shadow setting
-		LayerMask* cullingMask;
+		LayerMask layers;
 		ShadowType shadowType = ShadowType::HardShadow;
 		glm::mat4 lightSpaceMatrix;
 		FrameBuffer* shadow;
+		FrameBuffer* tbuffer;
 
 	public:
 		Light();

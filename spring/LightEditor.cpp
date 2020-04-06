@@ -18,5 +18,9 @@ void LightEditor::OnDrawInspector()
 		ImGui::Text("ShadowMap");
 		ImGui::SameLine();
 		ImGui::Image((ImTextureID)light->shadow->GetBuffer(), ImVec2(128, 128), ImVec2(0, 1), ImVec2(1, 0));
+
+		ImGui::Text("ShadowMap T");
+		ImGui::SameLine();
+		ImGui::Image((ImTextureID)light->tbuffer->GetBuffer(), ImVec2(128, 128), ImVec2(0, 1), ImVec2(1, 0));
 	}
 }
