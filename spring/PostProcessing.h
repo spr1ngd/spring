@@ -35,6 +35,13 @@ namespace spring
 		void Update() override;
 		void Destroy() override;
 
+		TypeInfo GetTypeInfo() override 
+		{
+			if (nullptr == this->typeInfo)
+				this->typeInfo = new TypeInfo("PostProcessing");
+			return *this->typeInfo;
+		}
+
 	public:
 		static PostProcessing* postprocessing;
 		static FrameBuffer* outputFramebuffer;

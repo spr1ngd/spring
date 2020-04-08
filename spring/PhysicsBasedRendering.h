@@ -11,10 +11,8 @@ namespace spring
 		static Texture* prebrdf;
 
 		static void LoadEquirectangularMap(const char* path);
-		static Cubemap* CubemapConvolution(Cubemap* cubemap);
-
-		
-		static Cubemap* PreFilter(Cubemap* cubemap);
-		static Texture* PreBRDF(Cubemap* cubemap);
+		static void CubemapConvolution(Cubemap* cubemap);
+		static void PreFilter(Cubemap* cubemap);
+		static void PreBRDF(Cubemap* cubemap);
 	};
 }

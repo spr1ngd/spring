@@ -64,6 +64,11 @@ void MeshRenderer::Initialize()
 	this->initialized = true;
 } 
 
+void MeshRenderer::Destroy() 
+{
+	delete this;
+}
+
 void MeshRenderer::Render() 
 {
 	this->Render(Camera::current);

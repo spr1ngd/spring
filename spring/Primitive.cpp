@@ -10,9 +10,9 @@ using namespace spring;
 
 #pragma region Create basic primitive gameobject
 
-GameObject& Primitive::CreatePrimitive(Primitive::Type primitiveType) 
+GameObject* Primitive::CreatePrimitive(Primitive::Type primitiveType)
 {
-	switch (primitiveType) 
+	switch (primitiveType)
 	{
 	case Primitive::Triangle:
 		return CreateTriangle();
@@ -25,20 +25,20 @@ GameObject& Primitive::CreatePrimitive(Primitive::Type primitiveType)
 	case Primitive::Sphere:
 		return CreateSphere();
 	default:
-		PRINT_ERROR("[Primitive]:does not support to create %d",primitiveType);
+		PRINT_ERROR("[Primitive]:does not support to create %d", primitiveType);
 		GameObject* primitive = new GameObject("Primitive");
-		return *primitive;
+		return primitive;
 		break;
 	}
 }
 
-GameObject& Primitive::CreateTriangle() 
+GameObject* Primitive::CreateTriangle()
 {
 	GameObject* triangle = new GameObject("Triangle");
-	return *triangle;
+	return triangle;
 }
 
-GameObject& Primitive::CreatePlane() 
+GameObject* Primitive::CreatePlane()
 {
 	auto plane = new GameObject("Plane");
 	Mesh* planeMesh = GenPlane();
@@ -46,30 +46,30 @@ GameObject& Primitive::CreatePlane()
 	renderer->material = new Material(Shader::Load("diffuse/diffuse.vs", "diffuse/diffuse.fs"));
 	renderer->material->shader->setColor(MAIN_COLOR, Color::white);
 	renderer->mesh = planeMesh;
-	return *plane;
+	return plane;
 }
 
-GameObject& Primitive::CreateCube() 
+GameObject* Primitive::CreateCube()
 {
-	auto cube = new GameObject("Cube");
+	GameObject* cube = new GameObject("Cube");
 	Mesh* cubeMesh = GenCube();
 	auto renderer = cube->AddNode<MeshRenderer>();
 	renderer->material = new Material(Shader::Load("diffuse/diffuse.vs", "diffuse/diffuse.fs"));
-	renderer->material->shader->setColor(MAIN_COLOR,Color::white);
+	renderer->material->shader->setColor(MAIN_COLOR, Color::white);
 	renderer->mesh = cubeMesh;
-	return *cube;
+	return cube;
 }
 
-GameObject& Primitive::CreateCylinder() 
+GameObject* Primitive::CreateCylinder()
 {
 	GameObject* cylinder = new GameObject("Cylinder");
-	return *cylinder;
+	return cylinder;
 }
 
-GameObject& Primitive::CreateSphere() 
+GameObject* Primitive::CreateSphere()
 {
 	GameObject* sphere = new GameObject("Sphere");
-	return *sphere;
+	return sphere;
 }
 
 #pragma endregion

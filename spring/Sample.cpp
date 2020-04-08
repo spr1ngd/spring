@@ -92,19 +92,14 @@ void Sample::Awake()
 
 		// TODO : 这部分预处理占用了20MB内存
 		// refactor these code to environment class.
-		Cubemap* irradianceCubemap = PhysicsBasedRendering::CubemapConvolution(cubemap);
-		PhysicsBasedRendering::irradiance = irradianceCubemap;
+		PhysicsBasedRendering::CubemapConvolution(cubemap);
+		PhysicsBasedRendering::PreFilter(cubemap);
+		PhysicsBasedRendering::PreBRDF(cubemap);
 
-		Cubemap* prefilter = PhysicsBasedRendering::PreFilter(cubemap);
-		PhysicsBasedRendering::prefilter = prefilter;
-
-		Texture* prebrdf = PhysicsBasedRendering::PreBRDF(cubemap);
-		PhysicsBasedRendering::prebrdf = prebrdf;
-
-		skybox->SetCubemap(prefilter);
-		Skybox::irradianceCubemap = irradianceCubemap;
-		Skybox::prefilter = prefilter;
-		Skybox::prebrdf = prebrdf;
+		skybox->SetCubemap(PhysicsBasedRendering::prefilter);
+		Skybox::irradianceCubemap = PhysicsBasedRendering::irradiance;
+		Skybox::prefilter = PhysicsBasedRendering::prefilter;
+		Skybox::prebrdf = PhysicsBasedRendering::prebrdf;
 	}
 
 	if (enableLights) 

@@ -32,12 +32,14 @@ namespace spring
 		virtual void Render( Camera* camera );
 		virtual void Render( glm::mat4 view ,glm::mat4 projection);
 
-		static MeshRenderer* GetMeshRenderer(unsigned int renderableId);
 		TypeInfo GetTypeInfo() override 
 		{
 			if (nullptr == this->typeInfo)
 				this->typeInfo = new TypeInfo("MeshRenderer");
 			return *this->typeInfo;
 		}
+		void Destroy() override;
+
+		static MeshRenderer* GetMeshRenderer(unsigned int renderableId);
 	};
 }

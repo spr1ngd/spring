@@ -112,6 +112,7 @@ namespace spring
 				this->typeInfo = new TypeInfo("GameObject");
 			return *this->typeInfo;
 		}
+		void Destroy() override;
 
 	public:
 		static GameObject* Query(const char* name) 
@@ -127,7 +128,7 @@ namespace spring
 
 		static void Destroy(GameObject* gameobject) 
 		{
-			delete gameobject;
+			gameobject->Destroy();
 		}
 	};
 }

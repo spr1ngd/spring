@@ -19,9 +19,9 @@ void GameApp::Update()
 {
 	if (Input::GetKeyDown(KeyCode::P))
 	{
-		GameObject plane = Primitive::CreatePrimitive(Primitive::Type::Cube);
-		plane.transform->SetScale(Vector3(500.0f, 0.10f, 500.0f));
-		plane.transform->SetPosition(Vector3(0.0f, -5.0f, 0.0f));
+		GameObject* plane = Primitive::CreatePrimitive(Primitive::Type::Cube);
+		plane->transform->SetScale(Vector3(500.0f, 0.10f, 500.0f));
+		plane->transform->SetPosition(Vector3(0.0f, -5.0f, 0.0f));
 	}
 }
 

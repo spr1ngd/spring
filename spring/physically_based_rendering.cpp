@@ -248,12 +248,6 @@ void physically_based_rendering::Awake()
 	// particle2->SetParent(fighter);
 	particleGO->SetParent(fighterGO);
 	particle2GO->SetParent(fighterGO);
-	
-	Node* leftParticle = Node::Query("Particle System Left");
-	if (nullptr != leftParticle)
-	{
-		PRINT_LOG("I have got the node : %s",leftParticle->name);
-	}
 	// displaySpheres(); 
 }
 

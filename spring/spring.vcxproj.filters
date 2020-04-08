@@ -397,9 +397,6 @@
     <ClInclude Include="misc.h">
       <Filter>头文件\Extension\tools</Filter>
     </ClInclude>
-    <ClInclude Include="FullScreenRenderer.h">
-      <Filter>头文件\Core\Renderer</Filter>
-    </ClInclude>
     <ClInclude Include="InstancedRenderer.h">
       <Filter>头文件\Core\Renderer</Filter>
     </ClInclude>
@@ -546,6 +543,9 @@
     </ClInclude>
     <ClInclude Include="GameObjectEditor.h">
       <Filter>头文件\Editor\Extension</Filter>
+    </ClInclude>
+    <ClInclude Include="FullScreenRenderer.h">
+      <Filter>头文件\Core\Renderer\BasicModule</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -726,9 +726,6 @@
     <ClCompile Include="SpringEditor.cpp">
       <Filter>源文件\Editor</Filter>
     </ClCompile>
-    <ClCompile Include="FullScreenRenderer.cpp">
-      <Filter>源文件\Core\Renderer</Filter>
-    </ClCompile>
     <ClCompile Include="InstancedRenderer.cpp">
       <Filter>源文件\Core\Renderer</Filter>
     </ClCompile>
@@ -869,6 +866,9 @@
     </ClCompile>
     <ClCompile Include="GameObjectEditor.cpp">
       <Filter>源文件\Editor\Extension</Filter>
+    </ClCompile>
+    <ClCompile Include="FullScreenRenderer.cpp">
+      <Filter>源文件\Core\Renderer\BasicModule</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
