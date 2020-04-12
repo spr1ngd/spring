@@ -5,7 +5,7 @@ A LONG LONG LONG , VERY LONG TRIP.
 
 ## log
 
--   #TODO: 2020.04.12 provide to replaced material instance in runtime
+-   #TODO: 2020.04.12 supports to replaced material instance in runtime
 -   #TODO: 2020.04.12 provide smiple editor gizmos for spring engine , such as transform gizmos , mesh ground
 -   2020.04.12 fix shadow system
 
