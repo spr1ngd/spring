@@ -108,11 +108,11 @@ void MeshRenderer::Render(glm::mat4 view, glm::mat4 projection)
 
 	auto drawMesh = [&](Mesh* mesh) 
 	{
-		if (mesh->textures.size() > 0)
-		{
-			vector<Texture*> textures = mesh->textures;
-			this->material->shader->setTexture(MAIN_TEX, textures[0]->textureId);
-		}
+		// if (mesh->textures.size() > 0)
+		// {
+		// 	vector<Texture*> textures = mesh->textures;
+		// 	this->material->shader->setTexture(MAIN_TEX, textures[0]->textureId);
+		// }
 
 		// TODO: if model's transform data does not change , model matrix is necessary to recalculate
 		glm::mat4 model =

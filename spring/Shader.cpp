@@ -68,7 +68,7 @@ bool Shader::compile(GLenum shaderType, const char* filePath, unsigned int& shad
 	if (!success)
 	{
 		glGetShaderInfoLog(shaderProgram, 512, NULL, infoLog);
-		PRINT_ERROR("%s", infoLog);
+		PRINT_ERROR("[%s] complie failed : %s", filePath,infoLog);
 		return false;
 	}
 	shader = shaderProgram;
@@ -637,7 +637,7 @@ void Shader::setLighting()
 			{
 				if (nullptr != light->shadow)
 				{
-					GLuint shadowmap = light->shadow->GetBuffer();
+					unsigned int shadowmap = light->shadow->GetBuffer();
 					this->setTexture(SHADOWMAP, shadowmap);
 					// set light space matrix.
 					this->setMat4("LightSpaceMatrix", light->lightSpaceMatrix);

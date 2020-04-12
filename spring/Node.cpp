@@ -35,7 +35,6 @@ Node::~Node()
 		Node* node = *it;
 		if (node == this)
 		{
-			PRINT_ERROR("destroy node %s", node->name);
 			Scene::current->RemoveNode(this);
 			allNodes.erase(it);
 			break;

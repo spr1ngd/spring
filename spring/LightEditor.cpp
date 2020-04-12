@@ -13,14 +13,18 @@ void LightEditor::OnDrawInspector()
 	ImGui::ColorEdit4("Color", value);
 	light->color = Colorf(value[0],value[1],value[2],value[3]);
 
+	ImGui::DragFloat("size", &light->size);
+	ImGui::DragFloat("zNear", &light->zNear);
+	ImGui::DragFloat("zFar", &light->zFar);
+
 	if (nullptr != light->shadow)
 	{
 		ImGui::Text("ShadowMap");
 		ImGui::SameLine();
 		ImGui::Image((ImTextureID)light->shadow->GetBuffer(), ImVec2(128, 128), ImVec2(0, 1), ImVec2(1, 0));
 
-		ImGui::Text("ShadowMap T");
+		/*ImGui::Text("ShadowMap T");
 		ImGui::SameLine();
-		ImGui::Image((ImTextureID)light->tbuffer->GetBuffer(), ImVec2(128, 128), ImVec2(0, 1), ImVec2(1, 0));
+		ImGui::Image((ImTextureID)light->tbuffer->GetBuffer(), ImVec2(128, 128), ImVec2(0, 1), ImVec2(1, 0));*/
 	}
 }

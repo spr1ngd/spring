@@ -72,6 +72,7 @@ void Sample::Awake()
 #pragma region directional light 
 
 	Environment::ambient.color = Color(75, 75, 75, 255);
+	Environment::shadow.sample = Environment::ShadowSetting::Octuple;
 
 	// TODO 70MB
 	if (renderSkybox) 
@@ -110,17 +111,20 @@ void Sample::Awake()
 		light->shadowType = Light::HardShadow;
 		light->color = Color(255, 244, 214, 255);
 		light->intensity = 10.0f;
-		directionalLightGO->transform->SetPosition(Vector3(0.0f, 5.0f, 0.0f));
+		light->size = 150.0f;
+		light->zNear = -1.0f;
+		light->zFar = 300.0f;
+		directionalLightGO->transform->SetPosition(Vector3(18.0f, 36.0f, 32.0f));
 		directionalLightGO->transform->SetEulerangle(Vector3::down);
 
-		GameObject* pointLightGO = new GameObject("Point Light");
-		Light* pointLight1 = pointLightGO->AddNode<Light>();
-		pointLight1->type = Light::Type::Directional;
-		pointLight1->shadowType = Light::NoShadow;
-		pointLight1->color = Color(255, 244, 214, 255);
-		pointLight1->intensity = 3.0f;
-		pointLightGO->transform->SetPosition(Vector3(10.0f, 10.0f, 10.0f));
-		pointLightGO->transform->SetEulerangle(Vector3::left);
+		// GameObject* pointLightGO = new GameObject("Point Light");
+		// Light* pointLight1 = pointLightGO->AddNode<Light>();
+		// pointLight1->type = Light::Type::Directional;
+		// pointLight1->shadowType = Light::NoShadow;
+		// pointLight1->color = Color(255, 244, 214, 255);
+		// pointLight1->intensity = 3.0f;
+		// pointLightGO->transform->SetPosition(Vector3(10.0f, 10.0f, 10.0f));
+		// pointLightGO->transform->SetEulerangle(Vector3::left);
 	}	
 
 #pragma endregion

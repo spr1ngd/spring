@@ -44,7 +44,6 @@ GameObject* Primitive::CreatePlane()
 	Mesh* planeMesh = GenPlane();
 	auto renderer = plane->AddNode<MeshRenderer>();
 	renderer->material = new Material(Shader::Load("diffuse/diffuse.vs", "diffuse/diffuse.fs"));
-	renderer->material->shader->setColor(MAIN_COLOR, Color::white);
 	renderer->mesh = planeMesh;
 	return plane;
 }
@@ -53,8 +52,8 @@ GameObject* Primitive::CreateCube()
 {
 	GameObject* cube = new GameObject("Cube");
 	Mesh* cubeMesh = GenCube();
-	auto renderer = cube->AddNode<MeshRenderer>();
-	renderer->material = new Material(Shader::Load("diffuse/diffuse.vs", "diffuse/diffuse.fs"));
+	MeshRenderer* renderer = cube->AddNode<MeshRenderer>();
+	renderer->material = new Material(Shader::Load("diffuse/diffuse.vs", "diffuse/diffuse(texture).fs"));
 	renderer->material->shader->setColor(MAIN_COLOR, Color::white);
 	renderer->mesh = cubeMesh;
 	return cube;
@@ -102,36 +101,7 @@ Mesh* Primitive::GenTriangle()
 
 Mesh* Primitive::GenPlane() 
 {
-	Mesh* mesh = new Mesh();
-	mesh->mode = Mesh::Triangles;
-	vector<Vertex> vertices;
-	vector<unsigned int> indices;
-
-	Vertex lefttop;
-	lefttop.vertex = Vector3(-.5f, .5f, 0.0f);
-	lefttop.texcoord = Vector2(0.0f, 1.0f);
-	vertices.push_back(lefttop);
-
-	Vertex leftbottom;
-	leftbottom.vertex = Vector3(-.5f, -.5f, 0.0f);
-	leftbottom.texcoord = Vector2(0.0f, 0.0f);
-	vertices.push_back(leftbottom);
-
-	Vertex rightbottom;
-	rightbottom.vertex = Vector3(.5f, -.5f, 0.0f);
-	rightbottom.texcoord = Vector2(1.0f, 0.0f);
-	vertices.push_back(rightbottom);
-
-	Vertex righttop;
-	righttop.vertex = Vector3(.5f, .5f, 0.0f);
-	righttop.texcoord = Vector2(1.0f, 1.0f);
-	vertices.push_back(righttop);
-
-	// indices
-	indices = {0,1,2,2,3,0};
-	mesh->vertices = vertices;
-	mesh->indices = indices;
-	return mesh;
+	return &ModelLoader::Load("obj/quad.obj");
 }
 
 Mesh* Primitive::GenCube() 

@@ -32,7 +32,7 @@ namespace spring
 
 			ShadowSetting()
 			{
-				sample = SampleLevel::Double;
+				// sample = SampleLevel::Double;
 			}
 		};
 
