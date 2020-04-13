@@ -23,13 +23,13 @@ namespace spring
 		static Mesh* GenCylinder();
 		static Mesh* GenSphere();
 
-		static GameObject& CreateTriangle();
-		static GameObject& CreatePlane();
-		static GameObject& CreateCube();
-		static GameObject& CreateCylinder();
-		static GameObject& CreateSphere();
+		static GameObject* CreateTriangle();
+		static GameObject* CreatePlane();
+		static GameObject* CreateCube();
+		static GameObject* CreateCylinder();
+		static GameObject* CreateSphere();
 	public:
 		static Mesh* GenPrimitive(Primitive::Type type);
-		static GameObject& CreatePrimitive(Primitive::Type primitiveType);
+		static GameObject* CreatePrimitive(Primitive::Type primitiveType);
 	};
 }

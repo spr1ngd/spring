@@ -94,7 +94,7 @@ int main(int, char**)
 	ShaderCompiler shader_compiler;
 
 	// gpu picking system
-	Picking::enable = true;
+	Picking::enable = false;
 	Picking::Initialize();
 
 	// gizmos

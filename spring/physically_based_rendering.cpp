@@ -18,6 +18,7 @@ vector<MeshRenderer*> spheres;
 GameObject* fighterGO;
 GameObject* particleGO;
 GameObject* particle2GO;
+GameObject* mobiusband;
 
 physically_based_rendering::physically_based_rendering() 
 {
@@ -117,6 +118,35 @@ void starFighter()
 	// fighter->Initialize();
 	fighter->transform->position = Vector3::zero;
 	fighter->transform->scale = Vector3(0.06f);
+}
+
+void generateMobiusBand() 
+{
+	mobiusband = new GameObject("Mobiusband");//mobiusband.fbx
+	MeshRenderer* mobiusRenderer = mobiusband->AddNode<MeshRenderer>();
+	mobiusRenderer->mesh = &ModelLoader::Load("fbx/mobiusband.fbx");
+	// mobiusRenderer->mesh = &ModelLoader::Load("obj/cube.obj");
+	mobiusRenderer->material = new Material(Shader::Load("pbs/pbs.vs", "pbs/pbs(ibl).fs"));
+	mobiusRenderer->material->shader->setCubemap("irradianceMap", Skybox::irradianceCubemap);
+	mobiusRenderer->material->shader->setCubemap("prefilterMap", Skybox::prefilter);
+	mobiusRenderer->material->shader->setTexture("prebrdfMap", Skybox::prebrdf->textureId);
+	Colorf albedoValue = Colorf::white;
+	Colorf ambientValue = Colorf::white;
+	Colorf emissionValue = Colorf::white;
+	const char* albedo = "albedo";
+	const char* metal = "metal";
+	const char* roughness = "roughness";
+	const char* ambient = "ao";
+	const char* emission = "emissionColor";
+	Texture* albedoTex = TextureLoader::Load("res/model/fbx/star fighter 02/StarSparrow_Green.png");
+	mobiusRenderer->material->shader->setTexture("albedoTex", albedoTex->textureId);
+	mobiusRenderer->material->shader->setColor(albedo, albedoValue); // 反射率
+	mobiusRenderer->material->shader->setFloat(metal, 1.0f); // 金属度
+	mobiusRenderer->material->shader->setFloat(roughness, 0.1f); // 粗糙度
+	mobiusRenderer->material->shader->setColor(ambient, ambientValue); // 环境光照
+	mobiusRenderer->material->shader->setColor(emission, emissionValue);// 自发光
+	mobiusband->transform->scale = Vector3(10.0f);
+	mobiusband->transform->position = Vector3::zero;
 }
 
 void generateParticle() 
@@ -241,25 +271,20 @@ void generateParticle2()
 
 void physically_based_rendering::Awake() 
 {
+	generateMobiusBand();
 	starFighter();
-	generateParticle();
-	generateParticle2();
-	// particle->SetParent(fighter);
-	// particle2->SetParent(fighter);
-	particleGO->SetParent(fighterGO);
-	particle2GO->SetParent(fighterGO);
-	
-	Node* leftParticle = Node::Query("Particle System Left");
-	if (nullptr != leftParticle)
-	{
-		PRINT_LOG("I have got the node : %s",leftParticle->name);
-	}
-	// displaySpheres(); 
+	// generateParticle();
+	// generateParticle2();
+	// particleGO->SetParent(fighterGO);
+	// particle2GO->SetParent(fighterGO);
 }
 
 void physically_based_rendering::Update() 
 { 
-
+	if (nullptr != mobiusband)
+	{
+		mobiusband->transform->eulerangle += Vector3(0.0f,0.5f,0.0f);
+	}
 }
 
 void physically_based_rendering::Destroy()

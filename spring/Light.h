@@ -58,6 +58,10 @@ namespace spring
 		float spotAngle = 25.0f;
 		float outterAngle = 70.0f;
 
+		float size = 10.0f;
+		float zNear = -1.0f;
+		float zFar = 50.0f;
+
 		// shadow setting
 		LayerMask layers;
 		ShadowType shadowType = ShadowType::HardShadow;

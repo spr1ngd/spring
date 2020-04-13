@@ -48,7 +48,6 @@ struct PointLight
 }; 
 
 uniform vec4 Main_Color;
-uniform sampler2D Main_Texture;
 uniform vec4 AmbientColor;
 uniform vec4 Specular_Color = vec4(1.0,1.0,1.0,1.0);
 uniform float Specular_Attenuation = 64.0;
@@ -95,6 +94,7 @@ vec4 calcDirectionalLight(DirectionalLight lightData)
 
     OUT = diffuse + specular;
     return OUT;
+    // return vec4(1.0);
 }
 
 vec4 calcSpotLight( SpotLight lightData )
@@ -183,15 +183,14 @@ float castShadow( vec4 lightSpacePos , vec3 lightDir)
     projCoords = projCoords * 0.5 + vec3(0.5);
     float currentDepth = projCoords.z;
     float shadow = 0.0;
-    // when world normal dot light dir less than zero , the pixel should not be render light and shadow;
     // float bias = max(0.05 * (1.0 - max(0,dot( WorldNormal, lightDir))) ,0.005);
-    float bias = 0.01;
+    float bias = 0.005;
 
     if(  SampleLevel == 0 )
     {
         // no shadow multi sample
-        float closestDepth = texture(ShadowMap,projCoords.xy).r;
-        shadow = currentDepth - bias > closestDepth ? 0.0 : 1.0;
+        float closestDepth = texture(ShadowMap,projCoords.xy).r; // 如果采样区域超出了阴影贴图区域，则恒定 closestDepth = 1
+        shadow = (currentDepth - bias > closestDepth && closestDepth < 1.0 ) ? 0.0 : 1.0; // zero means draw the shadow
     }
     else
     {
@@ -205,7 +204,7 @@ float castShadow( vec4 lightSpacePos , vec3 lightDir)
             for( int y = min; y <= max ;y++ )
             {
                 float pcfDepth = texture(ShadowMap,projCoords.xy + texelSize * vec2(x,y)).r;
-                shadow += (currentDepth - bias >  pcfDepth ? 0.0 : 1.0) / base;
+                shadow += ((currentDepth - bias >  pcfDepth && pcfDepth < 1.0) ? 0.0 : 1.0) / base;
             }
         }
     }
@@ -222,13 +221,14 @@ void main()
     // ambient 
     vec4 ambient = AmbientColor;
     vec3 lighting = vec3(0.0);
+    float shadow = 0.0;
     
     for( int i = 0 ; i < LIGHT_DIRECTIONAL_COUNT;i++ )
     {
         lighting += calcDirectionalLight(dirLights[i]).rgb;
         // directional light shadow map sampler
         vec3 lightDir = normalize(dirLights[i].position.xyz);
-        float shadow = castShadow(LightSpacePos,lightDir);
+        shadow = castShadow(LightSpacePos,lightDir);
         lighting *= shadow;
     }
     for( int i = 0 ; i < LIGHT_SPOT_COUNT;i++ )
@@ -246,5 +246,8 @@ void main()
     vec2 offsetUV = Texcoord + MainTextureData.offset;
     vec2 texcoord = vec2( calcMod(offsetUV.x * MainTextureData.tilling.x,1.0),calcMod(offsetUV.y * MainTextureData.tilling.y ,1.0) ) ;
     vec4 texColor = texture(MainTextureData.texture,texcoord);
-    FragColor = vec4(lighting,1.0) * texColor;
+    FragColor = vec4(lighting,1.0)*texColor;
+    // FragColor = vec4(shadow,shadow,shadow,1.0);
+    // TODO: 为什么阴影贴图占用了MainTexture的位置
+    // FragColor = texColor;
 }

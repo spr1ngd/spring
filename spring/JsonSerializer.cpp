@@ -74,26 +74,28 @@ Value* JsonSerializer::toJson(Node& node)
 	value->AddMember("transform", *transform, this->document->GetAllocator());
 
 	// additional nodes
-	Value nodesValue = Value(kObjectType);
-	for (auto com : node.nodes)
-	{
-		Value* componentValue = toJson(*com);
-		Value comName = Value(kStringType);
-		comName.SetString(node.name, strlen(com->name));
-		nodesValue.AddMember(comName, *componentValue, this->document->GetAllocator());
-	}
-	value->AddMember("nodes", nodesValue, this->document->GetAllocator());
+	// todo : replaced by gameobject's nodes
+	// Value nodesValue = Value(kObjectType);
+	// for (auto com : node.nodes)
+	// {
+	// 	Value* componentValue = toJson(*com);
+	// 	Value comName = Value(kStringType);
+	// 	comName.SetString(node.name, strlen(com->name));
+	// 	nodesValue.AddMember(comName, *componentValue, this->document->GetAllocator());
+	// }
+	// value->AddMember("nodes", nodesValue, this->document->GetAllocator());
 
 	// child nodes
-	Value childrenValue = Value(kObjectType);
-	for (auto child : node.children)
-	{
-		Value* childNode = toJson(*child);
-		Value childName = Value(kStringType);
-		childName.SetString(child->name, strlen(child->name));
-		childrenValue.AddMember(childName, *childNode, this->document->GetAllocator());
-	}
-	value->AddMember("children", childrenValue, this->document->GetAllocator());
+	// todo : replaced by gameobject's children
+	// Value childrenValue = Value(kObjectType);
+	// for (auto child : node.children)
+	// {
+	// 	Value* childNode = toJson(*child);
+	// 	Value childName = Value(kStringType);
+	// 	childName.SetString(child->name, strlen(child->name));
+	// 	childrenValue.AddMember(childName, *childNode, this->document->GetAllocator());
+	// }
+	// value->AddMember("children", childrenValue, this->document->GetAllocator());
 
 	// transfer to mesh renderer.
 	try
@@ -355,20 +357,21 @@ Node* JsonSerializer::toNode(Value& value)
 	auto transformMember = value.FindMember("transform");
 	Transform* transform = toTransform(transformMember->value);
 	node->transform = transform;
-
-	auto nodesMember = value.FindMember("nodes");
-	for (auto comMember = nodesMember->value.MemberBegin(); comMember != nodesMember->value.MemberEnd(); comMember++)
-	{
-		Node* comNode = toNode(comMember->value);
-		PRINT_ERROR("does not support additional component node.");
-	}
-
-	auto childrenMember = value.FindMember("children");
-	for (auto childMember = childrenMember->value.MemberBegin(); childMember != childrenMember->value.MemberEnd(); childMember++)
-	{
-		Node* child = toNode(childMember->value);
-		child->SetParent(node);
-	}
+	
+	// todo : replaced by game object's nodes
+	// auto nodesMember = value.FindMember("nodes");
+	// for (auto comMember = nodesMember->value.MemberBegin(); comMember != nodesMember->value.MemberEnd(); comMember++)
+	// {
+	// 	Node* comNode = toNode(comMember->value);
+	// 	PRINT_ERROR("does not support additional component node.");
+	// }
+	// todo : replaced by game object's children
+	// auto childrenMember = value.FindMember("children");
+	// for (auto childMember = childrenMember->value.MemberBegin(); childMember != childrenMember->value.MemberEnd(); childMember++)
+	// {
+	// 	Node* child = toNode(childMember->value);
+	// 	child->SetParent(node);
+	// }
 	return node;
 }
 Behaviour* JsonSerializer::toBehaviour(Value& value) 

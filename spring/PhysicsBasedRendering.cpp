@@ -37,14 +37,12 @@ void PhysicsBasedRendering::LoadEquirectangularMap(const char* path)
 	// todo: 加载等距柱状投影图
 }
 
-Cubemap* PhysicsBasedRendering::CubemapConvolution(Cubemap* cubemap)
+void PhysicsBasedRendering::CubemapConvolution(Cubemap* cubemap)
 {
 	glEnable(GL_TEXTURE_CUBE_MAP_SEAMLESS);
 	unsigned int cubemapSize = 64;
-	Cubemap* result = TextureLoader::CreateCubemap(cubemapSize, cubemapSize);
-	Shader* irradiance = Shader::Load("pbs/cubemap_convolution.vs","pbs/cubemap_convolution.fs");
-	// Shader* irradiance = Shader::Load("unlit/color.vs", "unlit/color.fs");
-	Material* material = new Material(irradiance);
+	irradiance = TextureLoader::CreateCubemap(cubemapSize, cubemapSize);
+	Material* material = new Material(Shader::Load("pbs/cubemap_convolution.vs", "pbs/cubemap_convolution.fs"));
 	material->DepthTestFunc(false);
 	material->CullFaceFunc(false, GL_FRONT);
 	material->shader->setCubemap("environmentCubemap",cubemap);
@@ -67,7 +65,6 @@ Cubemap* PhysicsBasedRendering::CubemapConvolution(Cubemap* cubemap)
 	};
 	glm::mat4 projection = glm::perspective(glm::radians(90.0f),1.0f, 0.1f, 1000.0f);
 
-	// FrameBuffer* capture = FrameBuffer::GenColorFramebuffer(cubemapSize, cubemapSize, 0);
 	FrameBuffer* capture = new FrameBuffer(cubemapSize, cubemapSize);
 	capture->colorFormat = ColorFormat::RGB24;
 	capture->Initialize();
@@ -75,28 +72,26 @@ Cubemap* PhysicsBasedRendering::CubemapConvolution(Cubemap* cubemap)
 	capture->Bind();
 	for (unsigned int i = 0; i < 6; i++) 
 	{
-		capture->CubemapCapture(result->cubemap, i);
+		capture->CubemapCapture(irradiance->cubemap, i);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glClearColor(0.0f,0.0f,0.0f,1.0f);
 		glm::mat4 view = views[i];
 		meshRenderer->Render(view, projection);
 	}
 	capture->Unbind();
-	// delete irradiance;
 	// delete material;
 	// delete meshRenderer;
 	// delete convolution;
 	GameObject::Destroy(convolution);
-	return result;
 }
 
-Cubemap* PhysicsBasedRendering::PreFilter(Cubemap* cubemap) 
+void PhysicsBasedRendering::PreFilter(Cubemap* cubemap) 
 {
 	glEnable(GL_TEXTURE_CUBE_MAP_SEAMLESS);
 	unsigned int cubemapSize = 256;
 	unsigned int mipmapLevel = 5;
 
-	Cubemap* result = TextureLoader::CreateCubemapMipmap(cubemapSize, cubemapSize);
+	prefilter = TextureLoader::CreateCubemapMipmap(cubemapSize, cubemapSize);
 	Material* prefilterMaterial = new Material(Shader::Load("pbs/prefilter.vs", "pbs/prefilter.fs"));
 	prefilterMaterial->DepthTestFunc(false);
 	prefilterMaterial->CullFaceFunc(false, GL_FRONT);
@@ -104,7 +99,6 @@ Cubemap* PhysicsBasedRendering::PreFilter(Cubemap* cubemap)
 
 	Mesh& mesh = ModelLoader::Load("obj/cube.obj");
 	GameObject* filter = new GameObject("Filter");
-	// MeshRenderer* meshrenderer = new MeshRenderer(prefilterMaterial);
 	MeshRenderer* meshrenderer = filter->AddNode<MeshRenderer>();
 	meshrenderer->material = prefilterMaterial;
 	meshrenderer->mesh = &mesh;
@@ -121,7 +115,6 @@ Cubemap* PhysicsBasedRendering::PreFilter(Cubemap* cubemap)
 	};
 	glm::mat4 projection = glm::perspective(glm::radians(90.0f), 1.0f, 0.1f, 1000.0f);
 
-	// FrameBuffer* fbo = FrameBuffer::GenColorFramebuffer(cubemapSize, cubemapSize);
 	FrameBuffer* fbo = new FrameBuffer(cubemapSize,cubemapSize);
 	fbo->colorFormat = ColorFormat::RGB24;
 	fbo->depthbuffer = FrameBuffer::OnlyDepth;
@@ -140,7 +133,7 @@ Cubemap* PhysicsBasedRendering::PreFilter(Cubemap* cubemap)
 		glViewport(0, 0, mipmapWidth, minmapHeight);
 		for (unsigned int i = 0; i < 6; i++) 
 		{
-			fbo->CubemapCapture(result->cubemap, i,level);
+			fbo->CubemapCapture(prefilter->cubemap, i,level);
 			glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
 			glClearColor(0.0f,0.0f,0.0f,1.0f);
 			meshrenderer->Render(views[i], projection);
@@ -149,27 +142,20 @@ Cubemap* PhysicsBasedRendering::PreFilter(Cubemap* cubemap)
 	fbo->Unbind();
 
 	// delete prefilterMaterial;
-	// delete prefilterShader;
 	// delete meshrenderer;
 	GameObject::Destroy(filter);
-	return result;
 }
 
-Texture* PhysicsBasedRendering::PreBRDF(Cubemap* cubemap)
+void PhysicsBasedRendering::PreBRDF(Cubemap* cubemap)
 {
 	unsigned int textureSize = 512;
-	Texture* result = TextureLoader::CreateTexture(textureSize,textureSize,0); // TODO : replace GL_RGB TO GL_RG16F
+	prebrdf = TextureLoader::CreateTexture(textureSize,textureSize,0); // TODO : replace GL_RGB TO GL_RG16F
 	Material* preBRDFMaterial = new Material(Shader::Load("pbs/prebrdf.vs", "pbs/prebrdf.fs"));
-
-	// render a fullscreen quad
 	GameObject* brdf = new GameObject("BRDF");
-	// FullScreenRenderer* fsRenderer = new FullScreenRenderer();
 	FullScreenRenderer* fsRenderer = brdf->AddNode<FullScreenRenderer>();
-	fsRenderer->material = preBRDFMaterial;
 	fsRenderer->material = preBRDFMaterial;
 
 	glViewport(0, 0, textureSize, textureSize);
-	// FrameBuffer* fbo = FrameBuffer::GenColorFramebuffer(textureSize, textureSize, 0);
 	FrameBuffer* fbo = new FrameBuffer(textureSize, textureSize);
 	fbo->colorFormat = ColorFormat::RG16;
 	fbo->Initialize();
@@ -179,10 +165,8 @@ Texture* PhysicsBasedRendering::PreBRDF(Cubemap* cubemap)
 	fsRenderer->Render(glm::mat4(0.0),glm::mat4(0.0));
 	fbo->Unbind();
 
-	result->textureId = fbo->GetBuffer();
-	//delete preBRDFShader;
-	//delete preBRDFMaterial;
-	//delete fsRenderer;
+	prebrdf->textureId = fbo->GetBuffer();
+	// delete preBRDFMaterial;
+	// delete fsRenderer;
 	GameObject::Destroy(brdf);
-	return result;
 }

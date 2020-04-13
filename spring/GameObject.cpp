@@ -1,4 +1,5 @@
 #include "gameobject.h"
+#include "node.h"
 #include "scene.h"
 #include "console.h"
 
@@ -26,13 +27,17 @@ GameObject::~GameObject()
 	// destroy from current scene or current parent.
 	RemoveGameObject(this);
 	// destroy all additional nodes
-	for (auto item = nodes.begin(); item != nodes.end(); item++)
-	{
-		Node* node = *item;
-		delete node;
-		// TODO: does not call the destruction method.
-	}
-	// TODO : destroy all children nodes
+	for (Node* node : nodes)
+		node->Destroy();
+	// destroy all children nodes
+	for (GameObject* child : children)
+		child->Destroy();
+	PRINT_WARNING("Gameobject [%s] has been destroy from memory.",this->name);
+}
+
+void GameObject::Destroy() 
+{
+	delete this;
 }
 
 #pragma region static methods

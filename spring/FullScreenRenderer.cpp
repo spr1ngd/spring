@@ -12,7 +12,8 @@ FullScreenRenderer::FullScreenRenderer()
 
 void FullScreenRenderer::Initialize()
 {
-	this->material = new Material(Shader::Load("fullscreen/fullscreen.vs", "fullscreen/fullscreen.fs"));
+	if( nullptr == this->material )
+		this->material = new Material(Shader::Load("fullscreen/fullscreen.vs", "fullscreen/fullscreen.fs"));
 	vector<Mesh> meshes;
 	vector<Vertex> vertices;
 	vector<unsigned int> indices;

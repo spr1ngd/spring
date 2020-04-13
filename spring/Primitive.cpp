@@ -10,9 +10,9 @@ using namespace spring;
 
 #pragma region Create basic primitive gameobject
 
-GameObject& Primitive::CreatePrimitive(Primitive::Type primitiveType) 
+GameObject* Primitive::CreatePrimitive(Primitive::Type primitiveType)
 {
-	switch (primitiveType) 
+	switch (primitiveType)
 	{
 	case Primitive::Triangle:
 		return CreateTriangle();
@@ -25,51 +25,50 @@ GameObject& Primitive::CreatePrimitive(Primitive::Type primitiveType)
 	case Primitive::Sphere:
 		return CreateSphere();
 	default:
-		PRINT_ERROR("[Primitive]:does not support to create %d",primitiveType);
+		PRINT_ERROR("[Primitive]:does not support to create %d", primitiveType);
 		GameObject* primitive = new GameObject("Primitive");
-		return *primitive;
+		return primitive;
 		break;
 	}
 }
 
-GameObject& Primitive::CreateTriangle() 
+GameObject* Primitive::CreateTriangle()
 {
 	GameObject* triangle = new GameObject("Triangle");
-	return *triangle;
+	return triangle;
 }
 
-GameObject& Primitive::CreatePlane() 
+GameObject* Primitive::CreatePlane()
 {
 	auto plane = new GameObject("Plane");
 	Mesh* planeMesh = GenPlane();
 	auto renderer = plane->AddNode<MeshRenderer>();
 	renderer->material = new Material(Shader::Load("diffuse/diffuse.vs", "diffuse/diffuse.fs"));
-	renderer->material->shader->setColor(MAIN_COLOR, Color::white);
 	renderer->mesh = planeMesh;
-	return *plane;
+	return plane;
 }
 
-GameObject& Primitive::CreateCube() 
+GameObject* Primitive::CreateCube()
 {
-	auto cube = new GameObject("Cube");
+	GameObject* cube = new GameObject("Cube");
 	Mesh* cubeMesh = GenCube();
-	auto renderer = cube->AddNode<MeshRenderer>();
-	renderer->material = new Material(Shader::Load("diffuse/diffuse.vs", "diffuse/diffuse.fs"));
-	renderer->material->shader->setColor(MAIN_COLOR,Color::white);
+	MeshRenderer* renderer = cube->AddNode<MeshRenderer>();
+	renderer->material = new Material(Shader::Load("diffuse/diffuse.vs", "diffuse/diffuse(texture).fs"));
+	renderer->material->shader->setColor(MAIN_COLOR, Color::white);
 	renderer->mesh = cubeMesh;
-	return *cube;
+	return cube;
 }
 
-GameObject& Primitive::CreateCylinder() 
+GameObject* Primitive::CreateCylinder()
 {
 	GameObject* cylinder = new GameObject("Cylinder");
-	return *cylinder;
+	return cylinder;
 }
 
-GameObject& Primitive::CreateSphere() 
+GameObject* Primitive::CreateSphere()
 {
 	GameObject* sphere = new GameObject("Sphere");
-	return *sphere;
+	return sphere;
 }
 
 #pragma endregion
@@ -102,36 +101,7 @@ Mesh* Primitive::GenTriangle()
 
 Mesh* Primitive::GenPlane() 
 {
-	Mesh* mesh = new Mesh();
-	mesh->mode = Mesh::Triangles;
-	vector<Vertex> vertices;
-	vector<unsigned int> indices;
-
-	Vertex lefttop;
-	lefttop.vertex = Vector3(-.5f, .5f, 0.0f);
-	lefttop.texcoord = Vector2(0.0f, 1.0f);
-	vertices.push_back(lefttop);
-
-	Vertex leftbottom;
-	leftbottom.vertex = Vector3(-.5f, -.5f, 0.0f);
-	leftbottom.texcoord = Vector2(0.0f, 0.0f);
-	vertices.push_back(leftbottom);
-
-	Vertex rightbottom;
-	rightbottom.vertex = Vector3(.5f, -.5f, 0.0f);
-	rightbottom.texcoord = Vector2(1.0f, 0.0f);
-	vertices.push_back(rightbottom);
-
-	Vertex righttop;
-	righttop.vertex = Vector3(.5f, .5f, 0.0f);
-	righttop.texcoord = Vector2(1.0f, 1.0f);
-	vertices.push_back(righttop);
-
-	// indices
-	indices = {0,1,2,2,3,0};
-	mesh->vertices = vertices;
-	mesh->indices = indices;
-	return mesh;
+	return &ModelLoader::Load("obj/quad.obj");
 }
 
 Mesh* Primitive::GenCube() 

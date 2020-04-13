@@ -10,5 +10,5 @@ in vec2 Texcoord;
 
 void main()
 {
-    FragColor = Main_Color * texture(Main_Texture,Texcoord);
+    FragColor = texture(Main_Texture,Texcoord);
 }

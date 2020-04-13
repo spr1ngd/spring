@@ -33,7 +33,7 @@ void MaterialEditor::OnDrawInspector()
 	if (ImGui::TreeNode("Lighting"))
 	{
 		ImGui::Checkbox("Cast Shadow", &material->castShadow);;
-		ImGui::Checkbox("Receive Shadow", &material->receiveShadow);
+		ImGui::Checkbox("Receive Shadow", &material->shader->receiveShadow);
 		ImGui::TreePop();
 	}
 

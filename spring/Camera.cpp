@@ -46,6 +46,8 @@ void Camera::Update()
 		glm::vec3(this->center.x, this->center.y, this->center.z),
 		glm::vec3(up.x, up.y, up.z));
 
+	glm::mat4 lightView = glm::lookAt(glm::vec3(0.0f,5.0f,0.0f), glm::vec3(0.0f, 1.01f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+
 	if (this->cameraType == Camera::Perspective)
 		this->ProjectionMatrix = glm::perspective(glm::radians(this->fov), float(Screen::width) / float(Screen::height), this->nearClip, this->farClip);
 	else if (this->cameraType == Camera::Orthographic)

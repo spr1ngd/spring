@@ -20,6 +20,7 @@ Node::Node()
 
 Node::Node(const char* nodeName) 
 {
+	PRINT_ERROR("Can not allow to construct node throught with name");
 	this->type = "Node";
 	this->name = nodeName;
 	allNodes.push_back(this);
@@ -34,7 +35,6 @@ Node::~Node()
 		Node* node = *it;
 		if (node == this)
 		{
-			PRINT_ERROR("destroy node %s", node->name);
 			Scene::current->RemoveNode(this);
 			allNodes.erase(it);
 			break;
@@ -42,34 +42,7 @@ Node::~Node()
 	}
 }
 
-Node* Node::GetChild(const char* nodeName) 
+void Node::Destroy() 
 {
-	for (Node* node : this->children)
-	{
-		if (node->name == nodeName)
-			return node;
-	}
-	return nullptr;
+	delete this;
 }
-
-void Node::SetParent(Node* node) 
-{
-	Scene::current->RemoveNode(this);
-	this->parent = node;
-	node->children.insert(node->children.end(), this);
-}
-
-#pragma region static methods 
-
-Node* Node::Query(const char* name) 
-{
-	for (vector<Node*>::iterator item = allNodes.begin(); item != allNodes.end(); item++) 
-	{
-		Node* node = *item;
-		if (node->name == name)
-			return node;
-	}
-	return nullptr;
-}
-
-#pragma endregion static methods 
