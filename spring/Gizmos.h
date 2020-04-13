@@ -22,11 +22,13 @@ namespace spring
 	public:
 		static bool enable;
 		static Colorf color;
-		static void DrawAxis(Vector3 pos, Vector3 size = Vector3::one);
-		static void DrawAxis(Transform* transform, Vector3 size = Vector3::one);
+
 
 		static void DrawLine(Vector3 start, Vector3 end);
 		static void DrawCircle(Vector3 pos,Vector3 up,float radius,unsigned int smoothness = 12);
 		static void Render();
+
+		static void DrawAxis(Vector3 pos, Vector3 size = Vector3::one);
+		static void DrawAxis(Transform* transform, Vector3 size = Vector3::one);
 	};
 }

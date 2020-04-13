@@ -7,7 +7,7 @@ using namespace spring::editor;
 
 void ParticleRendererEditor::OnDrawInspector() 
 {
-	ParticleRenderer* particleRenderer = Selection::gameobject->GetNode<ParticleRenderer>();
+	ParticleRenderer* particleRenderer = Selection::GetSelected()->GetNode<ParticleRenderer>();
 	if (nullptr == particleRenderer)
 		return;
 	ImGui::SetNextItemOpen(true,ImGuiCond_Once);

@@ -28,7 +28,7 @@ void GameApp::Awake()
 	renderer->material = new Material(Shader::Load("editor/gizmos/editor_gizmos_mesh.vs","editor/gizmos/editor_gizmos_mesh.fs","editor/gizmos/editor_gizmos_mesh.gs"));
 	renderer->material->AlphaBlendFunc();
 	renderer->material->EnableAlphaBlend();
-	renderer->mesh->mode = Mesh::Points;
+	renderer->mesh->mode = Mesh::Mode::Triangles;
 }
 
 void GameApp::Update() 

@@ -1,44 +1,27 @@
 #version 330 core
 
-layout (points) in;
-layout (line_strip, max_vertices = 2) out;
+layout (triangles) in;
+layout (line_strip, max_vertices = 6) out;
 
-in gl_Vertex
+in VS_OUT
 {
-    vec4  gl_Position;
-    float gl_PointSize;
-    float gl_ClipDistance[];
-} gl_in[];
+    vec4 pos;
+} gs_in[];
 
-const int meshCount = 5;
-const vec3 origin = vec3(-0.5,-0.5,0.0);
+const float NormalMagnitude = 0.5;
+
+void drawNormal( int index )
+{
+    gl_Position = gs_in[index].pos;
+    EmitVertex();
+    gl_Position = gs_in[index].pos + vec4(1.0,0.0,0.0,0.0) * NormalMagnitude;
+    EmitVertex();
+    EndPrimitive();
+}
 
 void main()
 {
-    // float per = 1.0 / meshCount;
-// 
-    // for( int i = 0 ; i <= meshCount; i++ )
-    // {
-    //     gl_Position = gl_in[0].gl_Position + vec4( i * per ,0.0,0.0,0.0 );
-    //     EmitVertex();
-    //     gl_Position = gl_in[0].gl_Position + vec4( i * per ,1.0,0.0,0.0 );
-    //     EmitVertex();
-    //     EndPrimitive();
-    // }
-    // for( int i = 0; i <= meshCount;i++ )
-    // {
-    //     gl_Position = gl_in[0].gl_Position + vec4(0.0, i * per,0.0,0.0 );
-    //     EmitVertex();
-    //     gl_Position = gl_in[0].gl_Position + vec4(1.0, i * per,0.0,0.0 );
-    //     EmitVertex();
-    //     
-    //     EndPrimitive();
-    // }
-    gl_Position = gl_in[0].gl_Position + vec4(-0.1, 0.0, 0.0, 0.0); 
-    EmitVertex();
-
-    gl_Position = gl_in[0].gl_Position + vec4( 0.1, 0.0, 0.0, 0.0);
-    EmitVertex();
-
-    EndPrimitive();
+    drawNormal(0);
+    drawNormal(1);
+    drawNormal(2);
 }

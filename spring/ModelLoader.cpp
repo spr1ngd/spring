@@ -119,10 +119,10 @@ Mesh* ModelLoader::processMesh( aiMesh*mesh,const aiScene*scene )
 		// vertex color
 		if (mesh->HasVertexColors(0)) 
 		{
-			unsigned char r = (unsigned char)mesh->mColors[i]->r;
-			unsigned char g = (unsigned char)mesh->mColors[i]->g;
-			unsigned char b = (unsigned char)mesh->mColors[i]->b;
-			unsigned char a = (unsigned char)mesh->mColors[i]->a;
+			unsigned char r = (unsigned char)mesh->mColors[0]->r;
+			unsigned char g = (unsigned char)mesh->mColors[0]->g;
+			unsigned char b = (unsigned char)mesh->mColors[0]->b;
+			unsigned char a = (unsigned char)mesh->mColors[0]->a;
 			Color color = Color(r,g,b,a);
 			vertex.color = color;
 		}

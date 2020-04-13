@@ -62,7 +62,6 @@ public:
 		/*aircraft->material->shader->setColor("Specular_Color", Color::white);
 		aircraft->material->shader->setFloat("Specular_Intensity", 0.0f);
 		aircraft->material->shader->setFloat("Specular_Attenuation", 64.0f);*/
-		Selection::node = aircraft;
 
 		// aircraft normal visualization.
 		if (drwaAirCraftNormal) 

@@ -5,7 +5,7 @@ using namespace spring::editor;
 
 void TransformEditor::OnDrawInspector() 
 {
-	Transform* node = Selection::gameobject->transform;
+	Transform* node = Selection::GetSelected()->transform;
 
 	float* position = new float[3]{ node->position.x,node->position.y,node->position.z };
 	ImGui::DragFloat3("position", position);

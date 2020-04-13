@@ -4,7 +4,7 @@ using namespace spring::editor;
 
 void GameObjectEditor::OnDrawInspector() 
 {
-	GameObject* gameobject = Selection::gameobject;
+	GameObject* gameobject = Selection::GetSelected();
 	if (nullptr == gameobject)
 		return;
 

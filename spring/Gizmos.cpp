@@ -2,6 +2,7 @@
 #include "transform.h"
 #include "matrix4x4.h"
 #include "console.h"
+#include "modelloader.h"
 
 using namespace std;
 using namespace spring;
@@ -14,16 +15,26 @@ Colorf Gizmos::color = Colorf::gray;
 
 void Gizmos::DrawAxis(Vector3 pos , Vector3 size)
 {
-	AxisHelper* axis = new AxisHelper(pos);
-	axis->meshRenderer->transform->SetScale(size);
-	axisHelpers.push_back(axis);
+	// AxisHelper* axis = new AxisHelper(pos);
+	// axis->meshRenderer->transform->SetScale(size);
+	// axisHelpers.push_back(axis);
+
+	GameObject* axis = new GameObject("Axis");
+	axis->flags = HideFlags::HideFlags_HideInHierarchyWindow;
+	MeshRenderer* renderer = axis->AddNode<MeshRenderer>();
+	renderer->mesh = &ModelLoader::Load("builtin/xyz.fbx");
+	renderer->material = new Material(Shader::Load("unlit/color.vs","unlit/color.fs"));
+	renderer->material->shader->setColor(MAIN_COLOR, Color::white);
+	axis->transform->position = pos;
+	axis->transform->scale = size;
 }
 
 void Gizmos::DrawAxis(Transform* transform,Vector3 size)
 {
-	AxisHelper* axis = new AxisHelper(transform);
-	axis->meshRenderer->transform->SetScale(size);
-	axisHelpers.push_back(axis);
+	// AxisHelper* axis = new AxisHelper(transform);
+	// axis->meshRenderer->transform->SetScale(size);
+	// axisHelpers.push_back(axis);
+	Gizmos::DrawAxis(transform->position,size);
 }
 
 void Gizmos::DrawLine(Vector3 origin, Vector3 end) 

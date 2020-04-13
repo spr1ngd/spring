@@ -547,6 +547,9 @@
     <ClInclude Include="FullScreenRenderer.h">
       <Filter>头文件\Core\Renderer\BasicModule</Filter>
     </ClInclude>
+    <ClInclude Include="EditorGizmosUtility.h">
+      <Filter>头文件\Editor\Gizmos</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="spring.cpp">
@@ -869,6 +872,9 @@
     </ClCompile>
     <ClCompile Include="FullScreenRenderer.cpp">
       <Filter>源文件\Core\Renderer\BasicModule</Filter>
+    </ClCompile>
+    <ClCompile Include="EditorGizmosUtility.cpp">
+      <Filter>源文件\Editor\Gizmos</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

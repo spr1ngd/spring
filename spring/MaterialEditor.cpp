@@ -7,7 +7,7 @@ using namespace spring::editor;
 
 void MaterialEditor::OnDrawInspector() 
 {
-	MeshRenderer* meshRenderer = Selection::gameobject->GetNode<MeshRenderer>();
+	MeshRenderer* meshRenderer = Selection::GetSelected()->GetNode<MeshRenderer>();
 	if (nullptr == meshRenderer)
 		return;
 	Material* material = meshRenderer->material;
