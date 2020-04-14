@@ -522,6 +522,9 @@ void Shader::setEngineEnvironment()
 	if( this->textures.size() <= 0 )
 		this->setTexture("MainTextureData.texture", TextureLoader::CreatePureWhiteTexture()->textureId);
 
+	// camera pos
+	this->setVec3(WorldSpaceCameraPos, Camera::main->transform->position);
+
 	// ambient setting
 	this->setColor(AMBIENT_COLOR,Environment::ambient.color);
 

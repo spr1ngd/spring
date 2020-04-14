@@ -12,5 +12,5 @@ void EditorGizmosUtility::Initialize()
 
 void EditorGizmosUtility::DrawAxis(GameObject& target) 
 {
-	Gizmos::DrawAxis(target.transform);
+	// Gizmos::DrawAxis(target.transform);
 }

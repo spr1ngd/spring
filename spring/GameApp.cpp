@@ -14,8 +14,9 @@ void GameApp::Awake()
 	uiCamera->clearFlag = Camera::None;
 
 	GameObject* plane = Primitive::CreatePrimitive(Primitive::Type::Plane);
-	plane->transform->SetScale(Vector3(200.0f, 200.0f, 200.0f));
-	plane->transform->SetPosition(Vector3(0.0f, -25.0f, 0.0f));
+	plane->transform->SetScale(Vector3(1, 1, 1));
+	plane->transform->SetPosition(Vector3(0.0f, 0.0f, 0.0f));
+	//plane->transform->SetPosition(Vector3(0.0f, -25.0f, 0.0f));
 	plane->transform->SetEulerangle(Vector3(-90.0f, 0.0f, 0.0f));
 	MeshRenderer* renderer = plane->GetNode<MeshRenderer>();
 
@@ -25,7 +26,7 @@ void GameApp::Awake()
 	renderer->material->shader->setColor(MAIN_COLOR, Color::white);
 	renderer->material->shader->receiveShadow = true;
 
-	renderer->material = new Material(Shader::Load("editor/gizmos/editor_gizmos_mesh.vs","editor/gizmos/editor_gizmos_mesh.fs","editor/gizmos/editor_gizmos_mesh.gs"));
+	renderer->material = new Material(Shader::Load("editor/gizmos/editor_gizmos_mesh.vs","editor/gizmos/editor_gizmos_mesh.fs"));
 	renderer->material->AlphaBlendFunc();
 	renderer->material->EnableAlphaBlend();
 	renderer->mesh->mode = Mesh::Mode::Triangles;
