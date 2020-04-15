@@ -146,7 +146,7 @@ void Sample::Awake()
 	GameObject* postProcessingGameObject = new GameObject("PostProcessing");
 	postProcessingGameObject->layer = Layer::PostProcessing;
 	PostProcessing::postprocessing = postProcessingGameObject->AddNode<class::PostProcessing>();
-	PostProcessing::postprocessing->enabled = true;
+	PostProcessing::postprocessing->enabled = false;
 	// pp->bloom 
 	PostProcessing::postprocessing->bloom->enable = false;
 	PostProcessing::postprocessing->Initialize();
