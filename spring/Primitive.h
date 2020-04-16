@@ -14,6 +14,7 @@ namespace spring
 			Cube,
 			Cylinder,
 			Sphere,
+			Cone,
 		};
 
 	private:
@@ -22,12 +23,14 @@ namespace spring
 		static Mesh* GenCube();
 		static Mesh* GenCylinder();
 		static Mesh* GenSphere();
+		static Mesh* GenCone();
 
 		static GameObject* CreateTriangle();
 		static GameObject* CreatePlane();
 		static GameObject* CreateCube();
 		static GameObject* CreateCylinder();
 		static GameObject* CreateSphere();
+		static GameObject* CreateCone();
 	public:
 		static Mesh* GenPrimitive(Primitive::Type type);
 		static GameObject* CreatePrimitive(Primitive::Type primitiveType);
