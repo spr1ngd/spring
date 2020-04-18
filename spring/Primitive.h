@@ -15,6 +15,8 @@ namespace spring
 			Cylinder,
 			Sphere,
 			Cone,
+			Band,
+			Mobiusband,
 		};
 
 	private:
@@ -24,6 +26,8 @@ namespace spring
 		static Mesh* GenCylinder();
 		static Mesh* GenSphere();
 		static Mesh* GenCone();
+		static Mesh* GenBand();
+		static Mesh* GenMobiusband();
 
 		static GameObject* CreateTriangle();
 		static GameObject* CreatePlane();
@@ -31,6 +35,9 @@ namespace spring
 		static GameObject* CreateCylinder();
 		static GameObject* CreateSphere();
 		static GameObject* CreateCone();
+		static GameObject* CreateBand();
+		static GameObject* CreateMobiusband();
+
 	public:
 		static Mesh* GenPrimitive(Primitive::Type type);
 		static GameObject* CreatePrimitive(Primitive::Type primitiveType);

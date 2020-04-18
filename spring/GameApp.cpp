@@ -17,7 +17,7 @@ void GameApp::Awake()
 	plane->transform->SetScale(Vector3(10000, 10000, 10000));
 	plane->transform->SetPosition(Vector3(0.0f, 0.0f, 0.0f));
 	//plane->transform->SetPosition(Vector3(0.0f, -25.0f, 0.0f));
-	plane->transform->SetEulerangle(Vector3(-90.0f, 0.0f, 0.0f));
+	plane->transform->SetEulerangle(Vector3(0.0f, 0.0f, 0.0f));
 	MeshRenderer* renderer = plane->GetNode<MeshRenderer>();
 
 	Texture* tex = TextureLoader::Load("res/texture/standarduv.jpg");
@@ -32,6 +32,22 @@ void GameApp::Awake()
 
 	GameObject* triangle = Primitive::CreatePrimitive(Primitive::Type::Triangle);
 	triangle->transform->SetScale(Vector3(2.0f));
+
+	GameObject* cube = Primitive::CreatePrimitive(Primitive::Type::Cube);
+	cube->transform->SetScale(Vector3(2.0f));
+	cube->transform->SetPosition(Vector3(5.0f, 0.0f, 0.0f));
+
+	GameObject* cylinder = Primitive::CreatePrimitive(Primitive::Type::Cylinder);
+	cylinder->transform->SetScale(Vector3(2.0f));
+	cylinder->transform->SetPosition(Vector3(-5.0f, 0.0f, 0.0f));
+
+	GameObject* cone = Primitive::CreatePrimitive(Primitive::Type::Cone);
+	cone->transform->SetScale(Vector3(2.0f));
+	cone->transform->SetPosition(Vector3(5.0f,3.0f,0.0f));
+
+	GameObject* sphere = Primitive::CreatePrimitive(Primitive::Type::Sphere);
+	sphere->transform->SetScale(Vector3(2.0f));
+	sphere->transform->SetPosition(Vector3(0.0f,3.0f,0.0f));
 }
 
 void GameApp::Update() 
