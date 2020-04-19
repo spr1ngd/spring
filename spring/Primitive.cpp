@@ -10,6 +10,24 @@ using namespace spring;
 
 #pragma region Create basic primitive gameobject
 
+GameObject* Primitive::CreateGizmo(Primitive::GizmoType gizmoType) 
+{
+	switch (gizmoType)
+	{
+	case spring::Primitive::Move:
+		return CreateGizmoMove();
+	case spring::Primitive::Rotate:
+		return CreateGizmoRotate();
+	case spring::Primitive::Scale:
+		return CreateGizmoScale();
+	default:
+		PRINT_ERROR("[Primitive]:does not support to create %d", gizmoType);
+		GameObject* gizmo = new GameObject("gizmo");
+		return gizmo;
+		break;
+	}
+}
+
 GameObject* Primitive::CreatePrimitive(Primitive::Type primitiveType)
 {
 	switch (primitiveType)
@@ -117,12 +135,106 @@ GameObject* Primitive::CreateBand()
 GameObject* Primitive::CreateMobiusband() 
 {
 	GameObject* mobiusband = new GameObject("Mobiusband");
-	Mesh* mobiusbandMesh = GenBand();
+	Mesh* mobiusbandMesh = GenMobiusband();
 	MeshRenderer* renderer = mobiusband->AddNode<MeshRenderer>();
 	renderer->material = new Material(Shader::Load("diffuse/diffuse.vs", "diffuse/diffuse.fs"));
 	renderer->material->shader->setColor(MAIN_COLOR, Color::gray);
 	renderer->mesh = mobiusbandMesh;
 	return mobiusband;
+}
+
+GameObject* Primitive::CreateGizmoMove()
+{
+	GameObject* moveGizmo = new GameObject("editor_gizmos_move");
+	// moveGizmo->flags = HideFlags::HideFlags_HideInHierarchyWindow;
+
+	// x axis
+	Material* xAxisMaterial = new Material(Shader::Load("unlit/color.vs", "unlit/color.fs"));
+	xAxisMaterial->shader->setColor(MAIN_COLOR, Color::red);
+
+	GameObject* xAxis = new GameObject("editor_gizmos_x_axis");
+	MeshRenderer* xAxisRenderer = xAxis->AddNode<MeshRenderer>();
+	xAxisRenderer->material = xAxisMaterial;
+	Mesh* xAxisMesh = GenPrimitive(Primitive::Type::Cylinder);
+	xAxisRenderer->mesh = xAxisMesh;
+	xAxis->SetParent(moveGizmo);
+	xAxis->transform->SetEulerangle(Vector3(0.0f,0.0f,90.0f));
+	xAxis->transform->SetPosition(Vector3(0.5f,0.0f,0.0f));
+	xAxis->transform->SetScale(Vector3(0.02f, 1.0f, 0.02f));
+
+	GameObject* xAxisArrow = new GameObject("editor_gizmos_x_axis_arrow");
+	MeshRenderer* xAxisArrowRenderer = xAxisArrow->AddNode<MeshRenderer>();
+	xAxisArrowRenderer->material = xAxisMaterial;
+	Mesh* xAxisArrowMesh = GenPrimitive(Primitive::Type::Cone);
+	xAxisArrowRenderer->mesh = xAxisArrowMesh;
+	xAxisArrow->SetParent(moveGizmo);
+	xAxisArrow->transform->SetEulerangle(Vector3(0.0f, 0.0f, -90.0f));
+	xAxisArrow->transform->SetPosition(Vector3(1.0f, 0.0f, 0.0f));
+	xAxisArrow->transform->SetScale(Vector3(0.2f, 0.4f, 0.2f));
+
+	// y axis
+	Material* yAxisMaterial = new Material(Shader::Load("unlit/color.vs", "unlit/color.fs"));
+	yAxisMaterial->shader->setColor(MAIN_COLOR, Color::blue);
+
+	GameObject* yAxis = new GameObject("editor_gizmos_y_axis");
+	MeshRenderer* yAxisRenderer = yAxis->AddNode<MeshRenderer>();
+	yAxisRenderer->material = yAxisMaterial;
+	Mesh* yAxisMesh = GenPrimitive(Primitive::Type::Cylinder);
+	yAxisRenderer->mesh = yAxisMesh;
+	yAxis->SetParent(moveGizmo);
+	yAxis->transform->SetEulerangle(Vector3(0.0f, 0.0f, 0.0f));
+	yAxis->transform->SetPosition(Vector3(0.0f, 0.5f, 0.0f));
+	yAxis->transform->SetScale(Vector3(0.02f, 1.0f, 0.02f));
+
+	GameObject* yAxisArrow = new GameObject("editor_gizmos_y_axis_arrow");
+	MeshRenderer* yAxisArrowRenderer = yAxisArrow->AddNode<MeshRenderer>();
+	yAxisArrowRenderer->material = yAxisMaterial;
+	Mesh* yAxisArrowMesh = GenPrimitive(Primitive::Type::Cone);
+	yAxisArrowRenderer->mesh = yAxisArrowMesh;
+	yAxisArrow->SetParent(moveGizmo);
+	yAxisArrow->transform->SetEulerangle(Vector3(0.0f, 0.0f, 0.0f));
+	yAxisArrow->transform->SetPosition(Vector3(0.0f, 1.0f, 0.0f));
+	yAxisArrow->transform->SetScale(Vector3(0.2f, 0.4f, 0.2f));
+
+	// z axis
+	Material* zAxisMaterial = new Material(Shader::Load("unlit/color.vs", "unlit/color.fs"));
+	zAxisMaterial->shader->setColor(MAIN_COLOR, Color::green);
+
+	GameObject* zAxis = new GameObject("editor_gizmos_z_axis");
+	MeshRenderer* zAxisRenderer = zAxis->AddNode<MeshRenderer>();
+	zAxisRenderer->material = zAxisMaterial;
+	Mesh* zAxisMesh = GenPrimitive(Primitive::Type::Cylinder);
+	zAxisRenderer->mesh = zAxisMesh;
+	zAxis->SetParent(moveGizmo);
+	zAxis->transform->SetEulerangle(Vector3(90.0f, 0.0f, 0.0f));
+	zAxis->transform->SetPosition(Vector3(0.0f, 0.0f, 0.5f));
+	zAxis->transform->SetScale(Vector3(0.02f, 1.0f, 0.02f));
+
+	GameObject* zAxisArrow = new GameObject("editor_gizmos_z_axis_arrow");
+	MeshRenderer* zAxisArrowRenderer = zAxisArrow->AddNode<MeshRenderer>();
+	zAxisArrowRenderer->material = zAxisMaterial;
+	Mesh* zAxisArrowMesh = GenPrimitive(Primitive::Type::Cone);
+	zAxisArrowRenderer->mesh = zAxisArrowMesh;
+	zAxisArrow->SetParent(moveGizmo);
+	zAxisArrow->transform->SetEulerangle(Vector3(90.0f, 0.0f, 0.0f));
+	zAxisArrow->transform->SetPosition(Vector3(0.0f, 0.0f, 1.0f));
+	zAxisArrow->transform->SetScale(Vector3(0.2f, 0.4f, 0.2f));
+
+	return moveGizmo;
+}
+
+GameObject* Primitive::CreateGizmoScale() 
+{
+	GameObject* scaleGizmo = new GameObject("editor_gizmos_scale");
+
+	return scaleGizmo;
+}
+
+GameObject* Primitive::CreateGizmoRotate() 
+{
+	GameObject* rotateGizmo = new GameObject("editor_gizmos_rotate");
+
+	return rotateGizmo;
 }
 
 #pragma endregion
@@ -542,12 +654,108 @@ Mesh* Primitive::GenSphere()
 
 Mesh* Primitive::GenBand() 
 {
-	return nullptr;
+	float maxRadius = 0.5f;
+	float radius = 0.15f;
+	int subdivision = 64;
+	int bandSubdivision = 64;
+
+	float perRadian = (1.0f / subdivision) * Mathf::pi * 2;
+	float perBRadian = (1.0f / bandSubdivision) * Mathf::pi * 2;
+
+	Mesh* band = new Mesh();
+	std::vector<Vertex> vertices;
+	std::vector<unsigned int> indices;
+
+	int vertexCount = 0;
+	for (unsigned int i = 0; i <= subdivision; i++)
+	{
+		float radian = perRadian * i;
+		float x = Mathf::Cos(radian);
+		float z = Mathf::Sin(radian);
+		Vector3 dir = Vector3(x, 0.0f, z);
+		Vector3 origin = Vector3(x, 0.0f, z) * maxRadius;
+
+		vertexCount = vertices.size();
+		for (unsigned int bIndex = 0; bIndex <= bandSubdivision; bIndex++)
+		{
+			float bRadian = perBRadian * bIndex;
+			float bX = Mathf::Cos(bRadian);
+			float bY = Mathf::Sin(bRadian);
+
+			Vertex vertex;
+			vertex.vertex = origin + dir * bX * radius + Vector3(0.0f, bY * radius, 0.0f);
+			vertex.normal = Vector3::Normalize(vertex.vertex - origin);
+			vertices.push_back(vertex);
+
+			if (bIndex < bandSubdivision && i < subdivision)
+			{
+				indices.push_back(vertexCount + bIndex);
+				indices.push_back(vertexCount + bIndex + 1);
+				indices.push_back(vertexCount + bIndex + 2 + bandSubdivision);
+
+				indices.push_back(vertexCount + bIndex + 2 + bandSubdivision);
+				indices.push_back(vertexCount + bIndex + 1+ bandSubdivision);
+				indices.push_back(vertexCount + bIndex);
+			}
+		}
+	}
+
+	band->vertices = vertices;
+	band->indices = indices;
+	return band;
 }
 
 Mesh* Primitive::GenMobiusband() 
 {
-	return nullptr;
+	unsigned int outterSubdivision = 128;
+	float outterRadius = 0.5f;
+	float outterPerRadian = (1.0 / outterSubdivision) * Mathf::pi * 2;
+
+	unsigned int innerSubdivision = 4;
+	float innerRadius = 0.15f;
+	float innerPerRadian = (1.0 / innerSubdivision) * Mathf::pi * 2;
+
+	float rotateRadian = Mathf::pi / outterSubdivision;
+	int vertexCount = 0;
+
+	Mesh* mobiusband = new Mesh();
+	std::vector<Vertex> vertices;
+	std::vector<unsigned int> indices;
+
+	for (unsigned int outterIndex = 0; outterIndex <= outterSubdivision; outterIndex++)
+	{
+		float outterRadian = outterIndex * outterPerRadian;
+		float outX = Mathf::Cos(outterRadian);
+		float outZ = Mathf::Sin(outterRadian);
+		Vector3 dir = Vector3(outX, 0.0f, outZ);
+		Vector3 origin = dir * outterRadius;
+		vertexCount = vertices.size();
+		for (unsigned int innerIndex = 0; innerIndex <= innerSubdivision; innerIndex++)
+		{
+			float innerRadian = innerPerRadian * innerIndex + rotateRadian * outterIndex;
+			float innerX = Mathf::Cos(innerRadian);
+			float innerY = Mathf::Sin(innerRadian);
+			Vertex vertex;
+			vertex.vertex = origin + dir * innerX * innerRadius + Vector3(0.0f,innerY,0.0f) * innerRadius;
+			vertex.normal = Vector3::Normalize(vertex.vertex - origin);
+			vertices.push_back(vertex);
+
+			if (innerIndex < innerSubdivision && outterIndex < outterSubdivision) 
+			{
+				indices.push_back(vertexCount + innerIndex);
+				indices.push_back(vertexCount + innerIndex + 1);
+				indices.push_back(vertexCount + innerIndex + 2 + innerSubdivision);
+
+				indices.push_back(vertexCount + innerIndex + 2 + innerSubdivision);
+				indices.push_back(vertexCount + innerIndex + 1 + innerSubdivision);
+				indices.push_back(vertexCount + innerIndex);
+			}
+		}
+	}
+
+	mobiusband->vertices = vertices;
+	mobiusband->indices = indices;
+	return mobiusband;
 }
 
 #pragma endregion

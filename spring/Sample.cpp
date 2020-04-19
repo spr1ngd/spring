@@ -110,7 +110,7 @@ void Sample::Awake()
 		light->type = Light::Type::Directional;
 		light->shadowType = Light::HardShadow;
 		light->color = Color(255, 244, 214, 255);
-		light->intensity = 10.0f;
+		light->intensity = 2.0f;
 		light->size = 150.0f;
 		light->zNear = -1.0f;
 		light->zFar = 300.0f;
@@ -146,7 +146,7 @@ void Sample::Awake()
 	GameObject* postProcessingGameObject = new GameObject("PostProcessing");
 	postProcessingGameObject->layer = Layer::PostProcessing;
 	PostProcessing::postprocessing = postProcessingGameObject->AddNode<class::PostProcessing>();
-	PostProcessing::postprocessing->enabled = false;
+	PostProcessing::postprocessing->enabled = true;
 	// pp->bloom 
 	PostProcessing::postprocessing->bloom->enable = false;
 	PostProcessing::postprocessing->Initialize();

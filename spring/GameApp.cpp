@@ -1,7 +1,7 @@
 #include "gameapp.h"
 #include "sample.h"
 
-void GameApp::Awake() 
+void GameApp::Awake()
 {
 	Sample* sample = new Sample();
 	sample->name = "SPRING";
@@ -26,8 +26,9 @@ void GameApp::Awake()
 	renderer->material->shader->setColor(MAIN_COLOR, Color::white);
 	renderer->material->shader->receiveShadow = true;
 
-	renderer->material = new Material(Shader::Load("editor/gizmos/editor_gizmos_mesh.vs","editor/gizmos/editor_gizmos_mesh.fs"));
-	renderer->material->AlphaBlendFunc();
+	renderer->material = new Material(Shader::Load("editor/gizmos/editor_gizmos_mesh.vs", "editor/gizmos/editor_gizmos_mesh.fs"));
+	renderer->material->AlphaBlendFunc(); 
+	renderer->material->CullFaceFunc(false);
 	renderer->mesh->mode = Mesh::Mode::Triangles;
 
 	GameObject* triangle = Primitive::CreatePrimitive(Primitive::Type::Triangle);
@@ -43,11 +44,21 @@ void GameApp::Awake()
 
 	GameObject* cone = Primitive::CreatePrimitive(Primitive::Type::Cone);
 	cone->transform->SetScale(Vector3(2.0f));
-	cone->transform->SetPosition(Vector3(5.0f,3.0f,0.0f));
+	cone->transform->SetPosition(Vector3(5.0f, 3.0f, 0.0f));
 
 	GameObject* sphere = Primitive::CreatePrimitive(Primitive::Type::Sphere);
 	sphere->transform->SetScale(Vector3(2.0f));
-	sphere->transform->SetPosition(Vector3(0.0f,3.0f,0.0f));
+	sphere->transform->SetPosition(Vector3(0.0f, 3.0f, 0.0f));
+
+	GameObject* band = Primitive::CreatePrimitive(Primitive::Type::Band);
+	band->transform->SetScale(Vector3(2.0f));
+	band->transform->SetPosition(Vector3(0.0f, 0.0f, 3.0f));
+
+	GameObject* mobiusband = Primitive::CreatePrimitive(Primitive::Type::Mobiusband);
+	mobiusband->transform->SetScale(Vector3(2.0f));
+	mobiusband->transform->SetPosition(Vector3(0.0f,0.0f,-3.0f));
+
+	GameObject* axisGizmos = Primitive::CreateGizmo(Primitive::GizmoType::Move);
 }
 
 void GameApp::Update() 
