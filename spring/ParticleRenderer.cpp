@@ -248,7 +248,7 @@ void ParticleRenderer::Render()
 	this->material->AlphaBlendFunc();
 	this->material->EnableAlphaBlend();
 
-	this->material->EnableDepthWrite(false);
+	this->material->EnableDepthWrite();
 	this->material->EnableDepthTest();
 	this->material->EnableStencilTest();
 	this->material->EnableCullFace();

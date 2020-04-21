@@ -712,6 +712,7 @@ Mesh* Primitive::GenMobiusband()
 	float outterPerRadian = (1.0 / outterSubdivision) * Mathf::pi * 2;
 
 	unsigned int innerSubdivision = 4;
+	unsigned int meshSubdivision = 32;
 	float innerRadius = 0.15f;
 	float innerPerRadian = (1.0 / innerSubdivision) * Mathf::pi * 2;
 
@@ -719,6 +720,7 @@ Mesh* Primitive::GenMobiusband()
 	int vertexCount = 0;
 
 	Mesh* mobiusband = new Mesh();
+	// mobiusband->mode = Mesh::Lines;
 	std::vector<Vertex> vertices;
 	std::vector<unsigned int> indices;
 
@@ -732,26 +734,71 @@ Mesh* Primitive::GenMobiusband()
 		vertexCount = vertices.size();
 		for (unsigned int innerIndex = 0; innerIndex <= innerSubdivision; innerIndex++)
 		{
+			// vertexCount = vertices.size();
 			float innerRadian = innerPerRadian * innerIndex + rotateRadian * outterIndex;
 			float innerX = Mathf::Cos(innerRadian);
 			float innerY = Mathf::Sin(innerRadian);
 			Vertex vertex;
 			vertex.vertex = origin + dir * innerX * innerRadius + Vector3(0.0f,innerY,0.0f) * innerRadius;
 			vertex.normal = Vector3::Normalize(vertex.vertex - origin);
+			vertex.texcoord = Vector2(outterIndex/outterSubdivision,1.0f);
 			vertices.push_back(vertex);
-
-			if (innerIndex < innerSubdivision && outterIndex < outterSubdivision) 
+			if (meshSubdivision > 0 && innerIndex < innerSubdivision )
 			{
-				indices.push_back(vertexCount + innerIndex);
-				indices.push_back(vertexCount + innerIndex + 1);
-				indices.push_back(vertexCount + innerIndex + 2 + innerSubdivision);
+				if (outterIndex < outterSubdivision)
+				{
+					indices.push_back(vertexCount);
+					indices.push_back(vertexCount + 1);
+					indices.push_back(vertexCount + 2 + innerSubdivision + meshSubdivision * innerSubdivision);
 
-				indices.push_back(vertexCount + innerIndex + 2 + innerSubdivision);
-				indices.push_back(vertexCount + innerIndex + 1 + innerSubdivision);
-				indices.push_back(vertexCount + innerIndex);
+					indices.push_back(vertexCount + 2 + innerSubdivision + meshSubdivision * innerSubdivision);
+					indices.push_back(vertexCount + 1 + innerSubdivision + meshSubdivision * innerSubdivision);
+					indices.push_back(vertexCount);
+				}
+
+				float nextInnerRadian = innerPerRadian * (innerIndex + 1) + rotateRadian * outterIndex;
+				float nextInnerX = Mathf::Cos(nextInnerRadian);
+				float nextInnerY = Mathf::Sin(nextInnerRadian);
+				Vector3 nextVertexPos = origin + dir * nextInnerX * innerRadius + Vector3(0.0f, nextInnerY, 0.0f) * innerRadius;
+				Vector3 offset = nextVertexPos - vertex.vertex;
+				Vector3 perOffset = offset / meshSubdivision;
+				for (unsigned int meshIndex = 1; meshIndex <= meshSubdivision; meshIndex++) 
+				{
+					Vertex divisionVertex;
+					divisionVertex.vertex = vertex.vertex + perOffset * meshIndex;
+					divisionVertex.normal = vertex.normal;
+					// vertex.texcoord = Vector2(outterIndex / outterSubdivision, 1.0f);
+					vertices.push_back(divisionVertex);
+					if (outterIndex < outterSubdivision) 
+					{
+						indices.push_back(vertexCount + meshIndex);
+						indices.push_back(vertexCount + meshIndex + 1);
+						indices.push_back(vertexCount + meshIndex + 2 + innerSubdivision + meshSubdivision * innerSubdivision);
+
+						indices.push_back(vertexCount + meshIndex + 2 + innerSubdivision + meshSubdivision * innerSubdivision);
+						indices.push_back(vertexCount + meshIndex + 1 + innerSubdivision + meshSubdivision * innerSubdivision);
+						indices.push_back(vertexCount + meshIndex);
+					}
+				}
+				vertexCount = vertices.size();
+			}
+			else if(meshSubdivision == 0)
+			{
+				if (innerIndex < innerSubdivision && outterIndex < outterSubdivision)
+				{
+					indices.push_back(vertexCount + innerIndex);
+					indices.push_back(vertexCount + innerIndex + 1);
+					indices.push_back(vertexCount + innerIndex + 2 + innerSubdivision);
+
+					indices.push_back(vertexCount + innerIndex + 2 + innerSubdivision);
+					indices.push_back(vertexCount + innerIndex + 1 + innerSubdivision);
+					indices.push_back(vertexCount + innerIndex);
+				}
 			}
 		}
 	}
+
+	PRINT_ERROR("mesh vertex count : %d",vertices.size());
 
 	mobiusband->vertices = vertices;
 	mobiusband->indices = indices;

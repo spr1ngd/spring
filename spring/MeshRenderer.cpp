@@ -103,7 +103,7 @@ void MeshRenderer::Render(glm::mat4 view, glm::mat4 projection)
 	this->material->EnableAlphaBlend();
 	this->material->EnableDepthWrite();
 	this->material->EnableDepthTest();
-	this->material->EnableStencilTest();
+	// this->material->EnableStencilTest();
 	this->material->EnableCullFace();
 
 	auto drawMesh = [&](Mesh* mesh) 
