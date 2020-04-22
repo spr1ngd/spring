@@ -13,7 +13,7 @@ void GameApp::Awake()
 	uiCamera->cullingMask->layers = Layer::UI;
 	uiCamera->clearFlag = Camera::None;
 
-	GameObject* plane = Primitive::CreatePrimitive(Primitive::Type::Plane);
+	GameObject* plane = Primitive::CreatePrimitive(Primitive::Type::Quad);
 	plane->transform->SetScale(Vector3(10000, 10000, 10000));
 	plane->transform->SetPosition(Vector3(0.0f, 0.0f, 0.0f));
 	//plane->transform->SetPosition(Vector3(0.0f, -25.0f, 0.0f));
@@ -59,25 +59,40 @@ void GameApp::Awake()
 	// 
 	// GameObject* band = Primitive::CreatePrimitive(Primitive::Type::Band);
 	// band->transform->SetScale(Vector3(2.0f));
-	// band->transform->SetPosition(Vector3(0.0f, 0.0f, 3.0f));
+	// band->transform->SetPosition(Vector3(0.0f, 0.0f, 3.0f)); 
 
-	GameObject* mobiusband = Primitive::CreatePrimitive(Primitive::Type::Mobiusband);
-	mobiusband->transform->SetScale(Vector3(10.0f));
-	mobiusband->transform->SetPosition(Vector3(0.0f, 0.0f, 0.0f));
-
-	GameObject* mobiusbandGrass = Primitive::CreatePrimitive(Primitive::Type::Mobiusband);
+	// plant grass on the plane mesh
+	GameObject* ground = Primitive::CreatePrimitive(Primitive::Type::Plane);
+	ground->name = "GrassGround";
 	Material* grassMaterial = new Material(Shader::Load("custom/geometry_grass.vs", "custom/geometry_grass.fs", "custom/geometry_grass.gs"));
-	Texture* grassTex = TextureLoader::Load("res/texture/snow.png");
-	grassMaterial->AlphaBlendFunc();
+	grassMaterial->CullFaceFunc(false);
+	// grassMaterial->AlphaBlendFunc();
 	grassMaterial->DepthTestFunc(true, GL_LESS, false);
+	Texture* grassTex = TextureLoader::Load("res/texture/grass_gradent.jpg");
+	Texture* grassAlpha = TextureLoader::Load("res/texture/grass.png");
 	grassMaterial->shader->setTexture(MAIN_TEX, grassTex->textureId);
-	MeshRenderer* grassRenderer = mobiusbandGrass->GetNode<MeshRenderer>();
+	grassMaterial->shader->setTexture("AlphaTexture", grassAlpha->textureId);
+	MeshRenderer* grassRenderer = ground->GetNode<MeshRenderer>();
 	grassRenderer->setRenderOrder(3000);
 	grassRenderer->material = grassMaterial;
-	mobiusbandGrass->transform->SetScale(Vector3(10.0f));
-	mobiusbandGrass->transform->SetPosition(Vector3(0.0f, 0.0f, 0.0f));
 
-	GameObject* axisGizmos = Primitive::CreateGizmo(Primitive::GizmoType::Move);
+	// GameObject* mobiusband = Primitive::CreatePrimitive(Primitive::Type::Mobiusband);
+	// mobiusband->transform->SetScale(Vector3(10.0f));
+	// mobiusband->transform->SetPosition(Vector3(0.0f, 0.0f, 0.0f));
+	// 
+	// GameObject* mobiusbandGrass = Primitive::CreatePrimitive(Primitive::Type::Mobiusband);
+	// Material* grassMaterial = new Material(Shader::Load("custom/geometry_grass.vs", "custom/geometry_grass.fs", "custom/geometry_grass.gs"));
+	// Texture* grassTex = TextureLoader::Load("res/texture/snow.png");
+	// grassMaterial->AlphaBlendFunc();
+	// grassMaterial->DepthTestFunc(true, GL_LESS, false);
+	// grassMaterial->shader->setTexture(MAIN_TEX, grassTex->textureId);
+	// MeshRenderer* grassRenderer = mobiusbandGrass->GetNode<MeshRenderer>();
+	// grassRenderer->setRenderOrder(3000);
+	// grassRenderer->material = grassMaterial;
+	// mobiusbandGrass->transform->SetScale(Vector3(10.0f));
+	// mobiusbandGrass->transform->SetPosition(Vector3(0.0f, 0.0f, 0.0f));
+	// 
+	// GameObject* axisGizmos = Primitive::CreateGizmo(Primitive::GizmoType::Move);
 }
 
 void GameApp::Update() 

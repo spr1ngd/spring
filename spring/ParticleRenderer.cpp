@@ -198,7 +198,7 @@ float ParticleRenderer::getEmitInterval(float lifePercent)
 
 void ParticleRenderer::Init() 
 {
-	this->mesh = Primitive::GenPrimitive(Primitive::Type::Plane);
+	this->mesh = Primitive::GenPrimitive(Primitive::Type::Quad);
 	mesh->Init([&](void) 
 		{
 			unsigned int vertexLocation = this->material->shader->getAttribLocation(VERTEX);

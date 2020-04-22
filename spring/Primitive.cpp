@@ -34,6 +34,8 @@ GameObject* Primitive::CreatePrimitive(Primitive::Type primitiveType)
 	{
 	case Primitive::Triangle:
 		return CreateTriangle();
+	case Primitive::Quad:
+		return CreateQuad();
 	case Primitive::Plane:
 		return CreatePlane();
 	case Primitive::Cube:
@@ -66,7 +68,18 @@ GameObject* Primitive::CreateTriangle()
 	return triangle;
 }
 
-GameObject* Primitive::CreatePlane()
+GameObject* Primitive::CreateQuad()
+{
+	auto plane = new GameObject("Quad");
+	Mesh* quadMesh = GenQuad();
+	auto renderer = plane->AddNode<MeshRenderer>();
+	renderer->material = new Material(Shader::Load("diffuse/diffuse.vs", "diffuse/diffuse.fs"));
+	renderer->material->shader->setColor(MAIN_COLOR, Color::gray);
+	renderer->mesh = quadMesh;
+	return plane;
+}
+
+GameObject* Primitive::CreatePlane() 
 {
 	auto plane = new GameObject("Plane");
 	Mesh* planeMesh = GenPlane();
@@ -245,8 +258,8 @@ Mesh* Primitive::GenPrimitive(Primitive::Type type)
 { 
 	if (type == Primitive::Triangle)
 		return Primitive::GenTriangle();
-	else if (type == Primitive::Plane)
-		return Primitive::GenPlane();
+	else if (type == Primitive::Quad)
+		return Primitive::GenQuad();
 	else if (type == Primitive::Cube)
 		return Primitive::GenCube();
 	else if (type == Primitive::Cylinder)
@@ -301,7 +314,7 @@ Mesh* Primitive::GenTriangle()
 	return triangle;
 }
 
-Mesh* Primitive::GenPlane() 
+Mesh* Primitive::GenQuad() 
 {
 	Mesh* plane = new Mesh();
 	std::vector<Vertex> vertices;
@@ -341,6 +354,49 @@ Mesh* Primitive::GenPlane()
 
 	plane->vertices = vertices;
 	plane->indices = indices;
+	return plane;
+}
+
+Mesh* Primitive::GenPlane() 
+{
+	int subdivision = 128;
+	float length = 10.0f;
+	float perLength = length / subdivision;
+	float perUV = 1.0 / subdivision;
+	Vector3 origin = Vector3(length * 0.5f, 0.0f, length * 0.5f);
+	Vector2 uvOrigin = Vector2(1.0f,0.0f);
+
+	Mesh* plane = new Mesh();
+
+	std::vector<Vertex> vertices;
+	std::vector<unsigned int> indices;
+
+	for (unsigned int x = 0; x <= subdivision; x++) 
+	{
+		for (unsigned int z = 0; z <= subdivision; z++) 
+		{
+			Vertex vertex;
+			vertex.vertex = origin + Vector3(-perLength * x, 0.0f,-perLength * z);
+			vertex.normal = Vector3(0.0f,1.0f,0.0f);
+			vertex.texcoord = uvOrigin + Vector2(-perUV * x, perUV * z);
+			vertices.push_back(vertex);
+
+			if (z < subdivision && x < subdivision) 
+			{
+				indices.push_back(subdivision * x + z);
+				indices.push_back(subdivision * x + z + 1);
+				indices.push_back(subdivision * x + z + 2 + subdivision);
+
+				indices.push_back(subdivision * x + z + 2 + subdivision);
+				indices.push_back(subdivision * x + z + 1 + subdivision);
+				indices.push_back(subdivision * x + z);
+			}
+		}
+	}
+
+	plane->vertices = vertices;
+	plane->indices = indices;
+
 	return plane;
 }
 
