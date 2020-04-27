@@ -6,6 +6,7 @@
 
 namespace spring
 {
+	class Texture;
 	class Skybox : public MeshRenderer
 	{
 	private:

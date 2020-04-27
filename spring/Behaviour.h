@@ -17,6 +17,8 @@ namespace spring
 		bool enabled = true;
 
 		Behaviour();
+		~Behaviour() override;
+		
 		virtual void Awake();
 		virtual void Update();
 		void Destroy() override;

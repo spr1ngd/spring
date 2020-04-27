@@ -1,6 +1,7 @@
 #include "text.h"
 #include "console.h"
 #include <vector>
+#include "mesh.h"
 
 using namespace spring;
 using namespace spring::ui;
@@ -65,7 +66,9 @@ Mesh* GenerateCharacterMesh(Character* character , Vector2 origin )
 
 	mesh->vertices = vertices;
 	mesh->indices = indices;
-	mesh->textures = textures;
+
+	// todo : add texture for text object.
+	// mesh->textures = textures;
 	return mesh;
 }
 

@@ -56,6 +56,7 @@ uniform float Specular_Intensity = 0.0;
 uniform vec3 CameraPosition; 
 uniform TextureData MainTextureData;
 uniform sampler2D ShadowMap;
+
 uniform int SampleLevel = 0;
 uniform DirectionalLight dirLights[LIGHT_DIRECTIONAL_COUNT];
 uniform SpotLight spotLights[LIGHT_SPOT_COUNT];

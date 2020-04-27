@@ -1,18 +1,17 @@
 #include "meshrenderer.h"
+#include "mesh.h"
 #include "graphic.h"
 #include "matrix4x4.h"
 
 using namespace spring;
 
-MeshRenderer::MeshRenderer()
+MeshRenderer::MeshRenderer() : material(nullptr), mesh(nullptr)
 {
-	this->type = "class spring::MeshRenderer";
 }
 
-MeshRenderer::MeshRenderer(Material* mateiral)
+MeshRenderer::MeshRenderer(Material* mateiral) : material(nullptr), mesh(nullptr)
 {
 	PRINT_ERROR("DOES NOT ALLOW CONSTRUCT MESH RENDERER DIRECTLY.");
-	this->type = "class spring::MeshRenderer";
 	this->material = mateiral;
 }
 

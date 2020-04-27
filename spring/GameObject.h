@@ -71,6 +71,21 @@ namespace spring
 			return nullptr;
 		}
 
+		template<typename T>
+		std::vector<T*> GetNodesInChildren()
+		{
+			std::vector<T*> result;
+			for (auto child = this->children.begin(); child != children.end(); child++)
+			{
+				GameObject* childPtr = *child;
+				T* node = childPtr->GetNode<T>();
+				result.push_back(node);
+				std::vector<T*> resultInChildren = childPtr->GetNodesInChildren<T>();
+				result.insert(result.end(), resultInChildren.begin(), resultInChildren.end());
+			}
+			return result;
+		}
+
 		void SetParent( GameObject* newParent ) 
 		{
 			if (this->parent == newParent)

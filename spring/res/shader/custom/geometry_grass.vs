@@ -8,11 +8,13 @@ layout (location = 2) in vec2 texcoord;
 
 out VS_OUT{
     vec3 Normal;
+    vec2 UV;
 } vs_out;
 
 void main()
 {
     // vs_out.WorldNormal = MVP * vec4(normal,1.0);
     vs_out.Normal = normal;
+    vs_out.UV = texcoord;
     gl_Position = vec4(vertex,0.0);
 }

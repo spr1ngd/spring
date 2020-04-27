@@ -550,6 +550,9 @@
     <ClInclude Include="EditorGizmosUtility.h">
       <Filter>头文件\Editor\Gizmos</Filter>
     </ClInclude>
+    <ClInclude Include="ThirdPlayerCamera.h">
+      <Filter>头文件\Extension\Camera</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="spring.cpp">
@@ -875,6 +878,9 @@
     </ClCompile>
     <ClCompile Include="EditorGizmosUtility.cpp">
       <Filter>源文件\Editor\Gizmos</Filter>
+    </ClCompile>
+    <ClCompile Include="ThirdPlayerCamera.cpp">
+      <Filter>源文件\Extension\Camera</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -340,3 +340,5 @@ ASALocalRun/
 healthchecksdb
 
 scene/
+spring/res/texture/
+spring/res/model/

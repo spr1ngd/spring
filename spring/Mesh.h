@@ -2,15 +2,13 @@
 #include "GL/glew.h"
 #include <vector>
 #include "vertex.h"
-#include "vector2.h"
-#include "vector3.h"
-#include "texture.h"
 #include <functional>
 
 using namespace std;
 
 namespace spring 
 {
+	class Matrix4x4;
 	class Mesh
 	{
 	public:
@@ -89,11 +87,10 @@ namespace spring
 
 		vector<Vertex> vertices;
 		vector<unsigned int> indices;
-		vector<Texture*> textures;
 		unsigned int VAO = 0, VBO = 0, EBO = 0;
 
 		Mesh();
-		Mesh(vector<Vertex> vertices,vector<unsigned int>indices,vector<Texture*> textures);
+		Mesh(vector<Vertex> vertices,vector<unsigned int>indices);
 		~Mesh();
 
 		void Init(function<void()> setting);
@@ -105,5 +102,9 @@ namespace spring
 		vector<Mesh*> GetAllSubMeshes();
 		Mesh& GetSubMesh( unsigned int subMeshIndex );
 		void SetSubMesh(Mesh* subMesh);
+		void RTS(Matrix4x4 rts);
+
+		void Combine(Mesh& mesh);
+		void Clear();
 	};
 }

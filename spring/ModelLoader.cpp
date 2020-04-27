@@ -1,6 +1,7 @@
 #include "modelloader.h"
 #include "console.h"
 #include "misc.h"
+#include "texture.h"
 
 using namespace spring;
 using namespace std; 
@@ -160,9 +161,9 @@ Mesh* ModelLoader::processMesh( aiMesh*mesh,const aiScene*scene )
 	}
 
 #pragma endregion
-
+	// spring engine texture instance assign for meshrendeerer.
 	// PRINT_LOG("[ModelLoader] : load mesh %s load textures %d ",mesh->mName.C_Str(),textures.size());
-	return new Mesh(vertices, indices, textures);
+	return new Mesh(vertices, indices);
 }
 vector<Texture*> ModelLoader::loadMaterialTextures(aiMaterial* mateiral, aiTextureType textureType, string typeName)
 {

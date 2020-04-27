@@ -11,7 +11,6 @@ vector<Node*> Node::allNodes;
 
 Node::Node() 
 {
-	this->type = "Node";
 	allNodes.push_back(this);
 	this->name = "Node(Instance)";
 	if (nullptr != Scene::current)
@@ -21,7 +20,6 @@ Node::Node()
 Node::Node(const char* nodeName) 
 {
 	PRINT_ERROR("Can not allow to construct node throught with name");
-	this->type = "Node";
 	this->name = nodeName;
 	allNodes.push_back(this);
 	if (nullptr != Scene::current)

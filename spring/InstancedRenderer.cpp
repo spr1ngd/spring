@@ -136,11 +136,11 @@ void InstancedRenderer::Render(Camera* camera)
 
 	Mesh* mesh = &this->mesh;
 
-	if (mesh->textures.size() > 0)
-	{
-		vector<Texture*> textures = mesh->textures;
-		this->material->shader->setTexture(MAIN_TEX, textures[0]->textureId);
-	}
+	// if (mesh->textures.size() > 0)
+	// {
+	// 	vector<Texture*> textures = mesh->textures;
+	// 	this->material->shader->setTexture(MAIN_TEX, textures[0]->textureId);
+	// }
 
 	glBindBuffer(GL_ARRAY_BUFFER, instanceVBO); 
 	glBufferData(GL_ARRAY_BUFFER, mat4Size * this->instances.size(), &this->matrixes[0], GL_STATIC_DRAW);

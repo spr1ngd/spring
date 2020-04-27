@@ -1,6 +1,7 @@
 #include <vector>
 #include "image.h"
 #include "console.h"
+#include "mesh.h"
 
 using namespace spring;
 using namespace spring::ui;
@@ -58,7 +59,6 @@ void Image::GenerateMesh()
 
 void Image::Render()
 {
-	// todo : calculate transform.position through recttransform.pivot
 	if (nullptr != this->texture)
 		this->material->shader->setTexture(MAIN_TEX,this->texture->textureId);
 	UIElement::Render();

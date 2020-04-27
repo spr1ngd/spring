@@ -11,6 +11,11 @@ Behaviour::Behaviour()
 	Behaviour::behaviours.insert(std::pair<const unsigned long, Behaviour*>(GetInstanceID(),this));
 }
 
+Behaviour::~Behaviour() 
+{
+
+}
+
 void Behaviour::Awake()
 {
 

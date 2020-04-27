@@ -199,6 +199,11 @@ Matrix4x4 Matrix4x4::Inverse(const Matrix4x4 mat4)
 	return mat4;
 }
 
+Matrix4x4 Matrix4x4::RTS( const Vector3 translation,const Vector3 scale,const Vector3 eulerangle ) 
+{
+	return RotateZ(eulerangle.z)* RotateX(eulerangle.x)* RotateY(eulerangle.y)* Scale(scale.x, scale.y, scale.z)* Translate(translation.x, translation.y, translation.z);
+}
+
 void Matrix4x4::transpose() 
 {
 	auto mat4 = Matrix4x4::Transpose(*this);

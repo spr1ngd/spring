@@ -7,6 +7,8 @@
 #include "physicsbasedrendering.h"
 #include "springengine_scene.h"
 #include "postprocessing.h"
+#include "firstplayercamera.h"
+#include "thirdplayercamera.h"
 
 using namespace spring;
 using namespace spring::editor;
@@ -21,7 +23,6 @@ bool renderSkybox = true;
 bool enableLights = true;
 
 Camera* camera;
-OrbitCamera* orbit;
 class::spring::Skybox* skybox; 
 MeshRenderer* lightModel;
 vector<Material*> mats;
@@ -51,9 +52,16 @@ void Sample::Awake()
 	mainCamera->transform->SetPosition(Vector3(0.0f, 0.0f, 25.0f));
 	mainCamera->transform->LookAt(Vector3::zero);
 
-	orbit = mainCamera->AddNode<OrbitCamera>();
-	orbit->target = Vector3(0.0f, 0.0f, 0.0f);// Vector3::zero;
-	orbit->zoomSpeed = 1.0f;
+	// first player camera
+	// FirstPlayerCamera* fpc = mainCamera->AddNode<FirstPlayerCamera>();
+	
+	// orbit camera 
+	OrbitCamera* cam = mainCamera->AddNode<OrbitCamera>();
+	cam->target = Vector3(0.0f, 0.0f, 0.0f);// Vector3::zero;
+	cam->zoomSpeed = 1.0f;
+
+	// third player camera
+	// ThirdPlayerCamera* tpc = mainCamera->AddNode<ThirdPlayerCamera>();
 
 #pragma endregion
 
@@ -85,7 +93,8 @@ void Sample::Awake()
 		Material* skyboxMaterial = new Material(Shader::Load("skybox/6 Sided.vs", "skybox/6 Sided.fs"));
 		skyboxMaterial->DepthTestFunc(false);
 		skyboxMaterial->CullFaceFunc(false, GL_FRONT);
-		auto cubemap = TextureLoader::LoadCubemap("res/texture/skybox/nature");
+		auto cubemap = TextureLoader::LoadCubemap("res/texture/skybox/anotherplanet");
+		// auto cubemap = TextureLoader::LoadCubemap("res/texture/skybox/nature");
 		skybox->material = skyboxMaterial;
 		skybox->cubemap = cubemap;
 		skybox->Initialize();
@@ -97,7 +106,8 @@ void Sample::Awake()
 		PhysicsBasedRendering::PreFilter(cubemap);
 		PhysicsBasedRendering::PreBRDF(cubemap);
 
-		skybox->SetCubemap(PhysicsBasedRendering::prefilter);
+		skybox->SetCubemap(cubemap);
+		// skybox->SetCubemap(PhysicsBasedRendering::prefilter);
 		Skybox::irradianceCubemap = PhysicsBasedRendering::irradiance;
 		Skybox::prefilter = PhysicsBasedRendering::prefilter;
 		Skybox::prebrdf = PhysicsBasedRendering::prebrdf;
@@ -146,10 +156,12 @@ void Sample::Awake()
 	GameObject* postProcessingGameObject = new GameObject("PostProcessing");
 	postProcessingGameObject->layer = Layer::PostProcessing;
 	PostProcessing::postprocessing = postProcessingGameObject->AddNode<class::PostProcessing>();
-	PostProcessing::postprocessing->enabled = true;
+	PostProcessing::postprocessing->enabled = false;
 	// pp->bloom 
 	PostProcessing::postprocessing->bloom->enable = false;
 	PostProcessing::postprocessing->Initialize();
+
+	PostProcessing::postprocessing->toneMapping->enable = false;
 
 	if (PostProcessing::postprocessing->enabled == false)
 	{

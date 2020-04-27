@@ -12,6 +12,7 @@ using namespace std;
 
 namespace spring 
 {
+	class Texture;
 	class ModelLoader :public AssetLoader
 	{
 	private:
