@@ -666,6 +666,11 @@ void Shader::setTime()
 
 #pragma region loading | caching | flash
 
+Shader* Shader::Load(const char* shaderName) 
+{
+	return nullptr;
+}
+
 Shader* Shader::Load(const char* vertexShaderName, const char* fragmentShaderName, const char* geometryShaderName)
 {
 	const char* pathPrefix = "res/shader/";

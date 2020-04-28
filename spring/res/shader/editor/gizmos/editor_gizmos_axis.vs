@@ -12,7 +12,7 @@ const float rate = 5;
 void main()
 {
     vec3 offset = WorldSpaceCameraPos - WorldSpaceAxisPos;
-    float d = sqrt(offset.x * offset.x + offset.y + offset.y + offset.z * offset.z);
+    float d = sqrt(offset.x * offset.x + offset.y * offset.y + offset.z * offset.z);
     float realRate = d / 5;
-    gl_Position = MVP * vec4(vertex,1.0);
+    gl_Position = MVP * vec4(vertex * realRate,1.0);
 }

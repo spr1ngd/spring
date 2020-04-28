@@ -165,81 +165,58 @@ GameObject* Primitive::CreateGizmoMove()
 	Material* xAxisMaterial = new Material(Shader::Load("editor/gizmos/editor_gizmos_axis.vs", "editor/gizmos/editor_gizmos_axis.fs"));
 	xAxisMaterial->shader->setColor(MAIN_COLOR, Color::red);
 	xAxisMaterial->DepthTestFunc(true, GL_ALWAYS, true);
-
 	GameObject* xAxis = new GameObject("editor_gizmos_x_axis");
 	MeshRenderer* xAxisRenderer = xAxis->AddNode<MeshRenderer>();
 	xAxisRenderer->material = xAxisMaterial;
 	xAxisRenderer->setRenderOrder(15000);
 	Mesh* xAxisMesh = GenPrimitive(Primitive::Type::Cylinder);
-	xAxisMesh->Clear();
+	Matrix4x4 xAxisRTS = Matrix4x4::RTS(Vector3(0.5f,0.0f,0.0f), Vector3(0.02f, 1.0f, 0.02f), Vector3(0.0f, 0.0f, -90.0f));
+	xAxisMesh->RTS(xAxisRTS);
 	Mesh* xAxisArrowMesh = GenPrimitive(Primitive::Type::Cone);
-	Matrix4x4 rts = Matrix4x4::RTS(Vector3(10.0f, 0.0f, 0.0f), Vector3(1.0f, 1.0f, 1.0f), Vector3(0.0f, 0.0f, 0.0f));
-	xAxisArrowMesh->RTS(rts);
+	Matrix4x4 xAxisArrowRTS = Matrix4x4::RTS(Vector3(1.0f, 0.0f, 0.0f), Vector3(0.2f, 0.4f, 0.2f), Vector3(0.0f, 0.0f, -90.0f));
+	xAxisArrowMesh->RTS(xAxisArrowRTS);
 	xAxisMesh->Combine(*xAxisArrowMesh);
 	delete xAxisArrowMesh;
 	xAxisRenderer->mesh = xAxisMesh;
 	xAxis->SetParent(moveGizmo);
-	//xAxis->transform->SetEulerangle(Vector3(0.0f,0.0f,90.0f));
-	//xAxis->transform->SetPosition(Vector3(0.5f,0.0f,0.0f));
-	//xAxis->transform->SetScale(Vector3(0.02f, 1.0f, 0.02f));
-	// xAxisArrow->transform->SetEulerangle(Vector3(0.0f, 0.0f, -90.0f));
-	// xAxisArrow->transform->SetPosition(Vector3(0.5f, 0.0f, 0.0f));
-	// xAxisArrow->transform->SetScale(Vector3(0.2f, 0.4f, 0.2f));
 
 	// y axis
 	Material* yAxisMaterial = new Material(Shader::Load("editor/gizmos/editor_gizmos_axis.vs", "editor/gizmos/editor_gizmos_axis.fs"));
 	yAxisMaterial->shader->setColor(MAIN_COLOR, Color::blue);
 	yAxisMaterial->DepthTestFunc(true, GL_ALWAYS, true);
-
 	GameObject* yAxis = new GameObject("editor_gizmos_y_axis");
 	MeshRenderer* yAxisRenderer = yAxis->AddNode<MeshRenderer>();
 	yAxisRenderer->setRenderOrder(15000);
 	yAxisRenderer->material = yAxisMaterial;
 	Mesh* yAxisMesh = GenPrimitive(Primitive::Type::Cylinder);
+	Matrix4x4 yAxisRTS = Matrix4x4::RTS(Vector3(0.0f, 0.5f, 0.0f), Vector3(0.02f, 1.0f, 0.02f), Vector3(0.0f, 0.0f, 0.0f));
+	yAxisMesh->RTS(yAxisRTS);	
+	Mesh* yAxisArrowMesh = GenPrimitive(Primitive::Type::Cone);
+	Matrix4x4 yAxisArrowRTS = Matrix4x4::RTS(Vector3(0.0f, 1.0f, 0.0f), Vector3(0.2f, 0.4f, 0.2f), Vector3(0.0f, 0.0f, 0.0f));
+	yAxisArrowMesh->RTS(yAxisArrowRTS);
+	yAxisMesh->Combine(*yAxisArrowMesh);
+	delete yAxisArrowMesh;
 	yAxisRenderer->mesh = yAxisMesh;
 	yAxis->SetParent(moveGizmo);
-	yAxis->transform->SetEulerangle(Vector3(0.0f, 0.0f, 0.0f));
-	yAxis->transform->SetPosition(Vector3(0.0f, 0.5f, 0.0f));
-	yAxis->transform->SetScale(Vector3(0.02f, 1.0f, 0.02f));
-
-	GameObject* yAxisArrow = new GameObject("editor_gizmos_y_axis_arrow");
-	MeshRenderer* yAxisArrowRenderer = yAxisArrow->AddNode<MeshRenderer>();
-	yAxisArrowRenderer->setRenderOrder(15000);
-	yAxisArrowRenderer->material = yAxisMaterial;
-	Mesh* yAxisArrowMesh = GenPrimitive(Primitive::Type::Cone);
-	yAxisArrowRenderer->mesh = yAxisArrowMesh;
-	yAxisArrow->SetParent(moveGizmo);
-	yAxisArrow->transform->SetEulerangle(Vector3(0.0f, 0.0f, 0.0f));
-	yAxisArrow->transform->SetPosition(Vector3(0.0f, 1.0f, 0.0f));
-	yAxisArrow->transform->SetScale(Vector3(0.2f, 0.4f, 0.2f));
 
 	// z axis
 	Material* zAxisMaterial = new Material(Shader::Load("editor/gizmos/editor_gizmos_axis.vs", "editor/gizmos/editor_gizmos_axis.fs"));
 	zAxisMaterial->shader->setColor(MAIN_COLOR, Color::green);
 	zAxisMaterial->DepthTestFunc(true, GL_ALWAYS, true);
-
 	GameObject* zAxis = new GameObject("editor_gizmos_z_axis");
 	MeshRenderer* zAxisRenderer = zAxis->AddNode<MeshRenderer>();
 	zAxisRenderer->setRenderOrder(15000);
 	zAxisRenderer->material = zAxisMaterial;
 	Mesh* zAxisMesh = GenPrimitive(Primitive::Type::Cylinder);
+	Matrix4x4 zAxisRTS = Matrix4x4::RTS(Vector3(0.0f, 0.0f, 0.5f), Vector3(0.02f, 1.0f, 0.02f), Vector3(90.0f, 0.0f, 0.0f));
+	zAxisMesh->RTS(zAxisRTS);
+	Mesh* zAxisArrowMesh = GenPrimitive(Primitive::Type::Cone);
+	Matrix4x4 zAxisArrowRTS = Matrix4x4::RTS(Vector3(0.0f, 0.0f, 1.0f), Vector3(0.2f, 0.4f, 0.2f), Vector3(90.0f, 0.0f, 0.0f));
+	zAxisArrowMesh->RTS(zAxisArrowRTS);
+	zAxisMesh->Combine(*zAxisArrowMesh);
+	delete zAxisArrowMesh;
 	zAxisRenderer->mesh = zAxisMesh;
 	zAxis->SetParent(moveGizmo);
-	zAxis->transform->SetEulerangle(Vector3(90.0f, 0.0f, 0.0f));
-	zAxis->transform->SetPosition(Vector3(0.0f, 0.0f, 0.5f));
-	zAxis->transform->SetScale(Vector3(0.02f, 1.0f, 0.02f));
-
-	GameObject* zAxisArrow = new GameObject("editor_gizmos_z_axis_arrow");
-	MeshRenderer* zAxisArrowRenderer = zAxisArrow->AddNode<MeshRenderer>();
-	zAxisArrowRenderer->setRenderOrder(15000);
-	zAxisArrowRenderer->material = zAxisMaterial;
-	Mesh* zAxisArrowMesh = GenPrimitive(Primitive::Type::Cone);
-	zAxisArrowRenderer->mesh = zAxisArrowMesh;
-	zAxisArrow->SetParent(moveGizmo);
-	zAxisArrow->transform->SetEulerangle(Vector3(90.0f, 0.0f, 0.0f));
-	zAxisArrow->transform->SetPosition(Vector3(0.0f, 0.0f, 1.0f));
-	zAxisArrow->transform->SetScale(Vector3(0.2f, 0.4f, 0.2f));
-
 	return moveGizmo;
 }
 

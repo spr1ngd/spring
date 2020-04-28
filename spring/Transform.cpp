@@ -46,11 +46,23 @@ const Quaternion& Transform::GetRotation()
 void Transform::SetPosition(Vector3 position) 
 {
 	this->position = position;
+	// todo : sync to local position (local space)
 }
 
 const Vector3& Transform::GetPosition() 
 {
 	return this->position;
+}
+
+void Transform::SetLocalPosition(Vector3 localPosition) 
+{
+	this->localPosition = localPosition;
+	// todo : sync to position(world space)
+}
+
+Vector3 Transform::GetLocalPosition() 
+{
+	return this->localPosition;
 }
 
 void Transform::SetScale(Vector3 scale) 
@@ -65,8 +77,7 @@ const Vector3& Transform::GetScale()
 
 void Transform::LookAt(Vector3 target,bool isLocal)
 {
-	// todo : 
-	// set transform eulerangle.
+
 }
 
 void Transform::Rotate(Vector3 axis, float angle)

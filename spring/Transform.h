@@ -8,15 +8,20 @@ namespace spring
 { 
 	class Transform
 	{
+	private:
+		Vector3 localPosition = Vector3::zero;		
+
 	public: 
-		Matrix4x4 rotationMatrix = Matrix4x4::indentity;
 		Vector3 up = Vector3::up;
 		Vector3 right = Vector3::right;
 		Vector3 forword = Vector3::forward;
-		Vector3 position = Vector3::zero;
-		Vector3 eulerangle = Vector3::zero;
+
+		Matrix4x4 rotationMatrix = Matrix4x4::indentity;
 		Quaternion rotation = Quaternion::indentity;
+
+		Vector3 eulerangle = Vector3::zero;
 		Vector3 scale = Vector3::one;
+		Vector3 position = Vector3::zero;
 
 		Transform();
 
@@ -28,6 +33,9 @@ namespace spring
 
 		void SetPosition(Vector3 position);
 		const Vector3& GetPosition();
+
+		void SetLocalPosition(Vector3 localPosition);
+		Vector3 GetLocalPosition();
 
 		void SetScale(Vector3 scale);
 		const Vector3& GetScale();
