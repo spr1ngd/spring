@@ -6,10 +6,17 @@
 
 namespace spring
 { 
+	class GameObject;
 	class Transform
 	{
 	private:
+		bool transformChangedInThisFrame = true;
 		Vector3 localPosition = Vector3::zero;		
+
+		glm::mat4 mMatrix;
+		glm::mat4 nmMatrix;
+
+		void RecalculateTransform();
 
 	public: 
 		Vector3 up = Vector3::up;
@@ -22,6 +29,8 @@ namespace spring
 		Vector3 eulerangle = Vector3::zero;
 		Vector3 scale = Vector3::one;
 		Vector3 position = Vector3::zero;
+
+		GameObject* gameobject = nullptr;
 
 		Transform();
 
@@ -43,5 +52,8 @@ namespace spring
 		void LookAt(Vector3 target,bool isLocal = true);
 		void Rotate(Vector3 axis,float angle);
 		void RotateAround(Vector3 point,Vector3 axis,float angle);
+
+		glm::mat4& GetModelMatrix();
+		glm::mat4& GetNMMatrix();
 	};
 }

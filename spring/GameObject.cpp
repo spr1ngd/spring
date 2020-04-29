@@ -12,6 +12,7 @@ GameObject::GameObject()
 {
 	this->name = "GameObject";
 	this->transform = new Transform();
+	this->transform->gameobject = this;
 	AddGameObject(this);
 }
 
@@ -19,6 +20,7 @@ GameObject::GameObject(const char* name)
 {
 	this->name = name;
 	this->transform = new Transform();
+	this->transform->gameobject = this;
 	AddGameObject(this);
 }
 

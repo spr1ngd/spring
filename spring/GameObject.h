@@ -50,6 +50,7 @@ namespace spring
 			nodeptr->transform = this->transform;
 			return node;
 		}
+
 		template<typename T>
 		T* GetNode() 
 		{

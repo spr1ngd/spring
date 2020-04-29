@@ -6,19 +6,28 @@ using namespace spring::editor;
 void TransformEditor::OnDrawInspector() 
 {
 	Transform* node = Selection::GetSelected()->transform;
+	const Vector3 worldSpacePos = node->GetPosition();
+	const Vector3 localSpacePos = node->GetLocalPosition();
+	const Vector3 localSpaceEulerangle = node->GetEulerangle();
+	const Vector3 localSpaceScale = node->GetScale();
 
-	float* position = new float[3]{ node->position.x,node->position.y,node->position.z };
+	float* localPosition = new float[3]{ localSpacePos.x,localSpacePos.y,localSpacePos.z };
+	ImGui::DragFloat3("local position", localPosition);
+	node->SetLocalPosition(Vector3(localPosition[0], localPosition[1], localPosition[2]));
+	delete[] localPosition;
+
+	float* position = new float[3]{ worldSpacePos.x,worldSpacePos.y,worldSpacePos.z };
 	ImGui::DragFloat3("position", position);
 	node->SetPosition(Vector3(position[0], position[1], position[2]));
 	delete[] position;
 
-	float* eulerangle = new float[3]{ node->eulerangle.x,node->eulerangle.y,node->eulerangle.z };
-	ImGui::DragFloat3("eulerangle", eulerangle);
-	node->SetEulerangle(Vector3(eulerangle[0], eulerangle[1], eulerangle[2]));
-	delete[] eulerangle;
+	float* localEulerangle = new float[3]{ localSpaceEulerangle.x,localSpaceEulerangle.y,localSpaceEulerangle.z };
+	ImGui::DragFloat3("eulerangle", localEulerangle);
+	node->SetEulerangle(Vector3(localEulerangle[0], localEulerangle[1], localEulerangle[2]));
+	delete[] localEulerangle;
 
-	float* scale = new float[3]{ node->scale.x,node->scale.y,node->scale.z };
-	ImGui::DragFloat3("scale", scale);
-	node->SetScale(Vector3(scale[0], scale[1], scale[2]));
-	delete[] scale;
+	float* localScale = new float[3]{ localSpaceScale.x,localSpaceScale.y,localSpaceScale.z };
+	ImGui::DragFloat3("scale", localScale);
+	node->SetScale(Vector3(localScale[0], localScale[1], localScale[2]));
+	delete[] localScale;
 }

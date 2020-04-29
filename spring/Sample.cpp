@@ -183,7 +183,7 @@ void Sample::Update()
 	// skybox->material->shader->setFloat("time", timer);
 	if (renderSkybox)
 	{
-		skybox->transform->position = Camera::main->transform->position;
+		skybox->transform->SetPosition(Camera::main->transform->position);
 	}
 }
 

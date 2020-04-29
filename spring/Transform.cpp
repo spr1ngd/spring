@@ -45,8 +45,16 @@ const Quaternion& Transform::GetRotation()
 
 void Transform::SetPosition(Vector3 position) 
 {
+	this->transformChangedInThisFrame = true;
 	this->position = position;
-	// todo : sync to local position (local space)
+	if (nullptr == this->gameobject->parent) 
+	{
+		this->localPosition = position;
+	}
+	else
+	{ 
+		this->localPosition = this->position - this->gameobject->parent->transform->position;
+	}
 }
 
 const Vector3& Transform::GetPosition() 
@@ -56,8 +64,16 @@ const Vector3& Transform::GetPosition()
 
 void Transform::SetLocalPosition(Vector3 localPosition) 
 {
+	this->transformChangedInThisFrame = true;
 	this->localPosition = localPosition;
-	// todo : sync to position(world space)
+	if (nullptr == this->gameobject->parent) 
+	{
+		this->position = localPosition;
+	}
+	else 
+	{
+		this->position = this->position + localPosition;
+	}
 }
 
 Vector3 Transform::GetLocalPosition() 
@@ -94,4 +110,39 @@ void Transform::RotateAround(Vector3 point,Vector3 axis, float angle)
 	Matrix4x4 R = Matrix4x4::Rotate(angle, axis);
 	Matrix4x4 mix = IT * R * T;
 	this->position = point + mix * offset;
+}
+
+void Transform::RecalculateTransform() 
+{
+	// TODO: 将当前矩阵与父级矩阵向乘，得出最终的模型矩阵
+	// recalculate model matrix
+	// recalculate nm matrix
+	this->mMatrix =
+		glm::translate(glm::mat4(1.0), glm::vec3(this->position.x, this->position.y, this->position.z)) *
+		glm::rotate(glm::mat4(1.0f), glm::radians(this->eulerangle.z), glm::vec3(0.0f, 0.0f, 1.0f)) *
+		glm::rotate(glm::mat4(1.0f), glm::radians(this->eulerangle.x), glm::vec3(1.0f, 0.0f, 0.0f)) *
+		glm::rotate(glm::mat4(1.0f), glm::radians(this->eulerangle.y), glm::vec3(0.0f, 1.0f, 0.0f)) *
+		glm::scale(glm::mat4(1.0f), glm::vec3(this->scale.x, this->scale.y, this->scale.z));
+
+	if (nullptr != this->gameobject->parent)
+	{
+		glm::mat4 M = this->gameobject->parent->transform->GetModelMatrix();
+		this->mMatrix = M * this->mMatrix;
+	}
+	this->nmMatrix = glm::inverseTranspose(this->mMatrix);
+	this->transformChangedInThisFrame = false;
+}
+
+glm::mat4& Transform::GetModelMatrix() 
+{
+	if (this->transformChangedInThisFrame)
+		this->RecalculateTransform();
+	return this->mMatrix;
+}
+
+glm::mat4& Transform::GetNMMatrix() 
+{
+	if (this->transformChangedInThisFrame)
+		this->RecalculateTransform();
+	return this->nmMatrix;
 }
