@@ -3,6 +3,7 @@
 using namespace spring;
 
 bool Picking::enable;
+GameObject* Picking::selected;
 FrameBuffer* Picking::pickBuffer;
 Material* Picking::material;
 
@@ -18,6 +19,24 @@ void Picking::Initialize()
 	pickBuffer = new FrameBuffer(Screen::width,Screen::height,ColorFormat::RGB24);
 	pickBuffer->Initialize();
 	material = new Material(Shader::Load("physical/gpu_picking.vs","physical/gpu_picking.fs"));
+}
+
+void Picking::Pick() 
+{
+	if (enable == false)
+		return;
+	float minX = 10.0f;
+	float maxX = minX + Screen::width * 0.6f;
+	float minY = Screen::height - 50.0f - Screen::height * 0.6f - 30.0f;
+	float maxY = minY + Screen::height * 0.6f;
+	float mouseX = Input::mousePosition.x;
+	float mouseY = Input::mousePosition.y;
+	if ((mouseX >= minX && mouseX <= maxX) && (mouseY >= minY && mouseY <= maxY))
+	{
+		Node* node = Picking::Pick((mouseX - minX) / 0.6f, (mouseY - minY) / 0.6f);
+		if (nullptr != node) selected = node->gameobject;
+		else selected = nullptr;
+	}
 }
 
 Node* Picking::Pick(unsigned int x, unsigned int y) 

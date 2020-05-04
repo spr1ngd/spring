@@ -18,6 +18,7 @@
 #include "picking.h"
 #include "console.h"
 
+#include "editorapplication.h"
 #include "gameapp.h"
 
 using namespace spring;
@@ -84,6 +85,11 @@ int main(int, char**)
 	Scene* scene = new Scene();
 	Scene::current = scene;
 
+	// Editor application entrance.
+	GameObject* editorApp = new GameObject("EditorApplication");
+	EditorApplication* editorApplication = editorApp->AddNode<EditorApplication>();
+	editorApplication->flags = NodeFlags::Static;
+
 	// Game application entrance. this should be created by editor.
 	GameObject* appGO = new GameObject("GameApp");
 	GameApp* gameApp = appGO->AddNode<GameApp>();
@@ -94,7 +100,7 @@ int main(int, char**)
 	ShaderCompiler shader_compiler;
 
 	// gpu picking system
-	Picking::enable = false;
+	Picking::enable = true;
 	Picking::Initialize();
 
 	// gizmos
@@ -178,6 +184,7 @@ int main(int, char**)
 						meshRenderer->material = originMaterial;
 					});
 			}); 
+		Picking::Pick();
 
 		PostProcessing::postprocessing->outline->Render(nullptr);
 		PostProcessing::postprocessing->Process();

@@ -46,6 +46,7 @@ const Quaternion& Transform::GetRotation()
 void Transform::SetPosition(Vector3 position) 
 {
 	this->transformChangedInThisFrame = true;
+	
 	this->position = position;
 	if (nullptr == this->gameobject->parent) 
 	{
@@ -55,6 +56,9 @@ void Transform::SetPosition(Vector3 position)
 	{ 
 		this->localPosition = this->position - this->gameobject->parent->transform->position;
 	}
+	RecalculateTransform();
+	for (auto child : this->gameobject->children)
+		child->transform->RecalculateTransform();
 }
 
 const Vector3& Transform::GetPosition() 
@@ -65,15 +69,19 @@ const Vector3& Transform::GetPosition()
 void Transform::SetLocalPosition(Vector3 localPosition) 
 {
 	this->transformChangedInThisFrame = true;
+
 	this->localPosition = localPosition;
 	if (nullptr == this->gameobject->parent) 
 	{
 		this->position = localPosition;
 	}
 	else 
-	{
-		this->position = this->position + localPosition;
+	{ 
+		this->position = this->gameobject->parent->transform->position + localPosition;
 	}
+	RecalculateTransform();
+	for (auto child : this->gameobject->children)
+		child->transform->RecalculateTransform();
 }
 
 Vector3 Transform::GetLocalPosition() 
@@ -145,4 +153,37 @@ glm::mat4& Transform::GetNMMatrix()
 	if (this->transformChangedInThisFrame)
 		this->RecalculateTransform();
 	return this->nmMatrix;
+}
+
+void Transform::SetParent(Transform& parent) 
+{
+	this->parent = &parent;
+	parent.children.push_back(this);
+}
+
+Transform* Transform::GetParent() 
+{
+	return this->parent;
+}
+
+Transform* Transform::QueryChild(unsigned int childIndex)
+{
+	if (childIndex >= this->children.size())
+		return nullptr;
+	return this->children[childIndex];
+}
+
+Transform* Transform::QueryChild(const char* childPath)
+{
+	for (Transform* child : this->children)
+	{
+		if (strcmp(child->gameobject->name, childPath) == 0)
+			return child;
+	}
+	return nullptr;
+}
+
+unsigned int Transform::GetChildCount() 
+{
+	return this->children.size();
 }

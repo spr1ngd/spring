@@ -1,4 +1,5 @@
 #pragma once
+#include <vector>
 #include "glm/glm.hpp"
 #include "quaternion.h"
 #include "vector3.h"
@@ -10,6 +11,9 @@ namespace spring
 	class Transform
 	{
 	private:
+		Transform* parent = nullptr;
+		std::vector<Transform*> children;
+
 		bool transformChangedInThisFrame = true;
 		Vector3 localPosition = Vector3::zero;		
 
@@ -52,6 +56,13 @@ namespace spring
 		void LookAt(Vector3 target,bool isLocal = true);
 		void Rotate(Vector3 axis,float angle);
 		void RotateAround(Vector3 point,Vector3 axis,float angle);
+
+		void SetParent(Transform& parent);
+		Transform* GetParent();
+
+		Transform* QueryChild(unsigned int childIndex);
+		Transform* QueryChild(const char* childPath);
+		unsigned int GetChildCount();
 
 		glm::mat4& GetModelMatrix();
 		glm::mat4& GetNMMatrix();

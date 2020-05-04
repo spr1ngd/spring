@@ -213,6 +213,7 @@
     <ClInclude Include="Console.h" />
     <ClInclude Include="Cubemap.h" />
     <ClInclude Include="Cursor.h" />
+    <ClInclude Include="EditorApplication.h" />
     <ClInclude Include="EditorGizmosUtility.h" />
     <ClInclude Include="EditorWindow.h" />
     <ClInclude Include="Environment.h" />
@@ -328,6 +329,7 @@
     <ClCompile Include="Console.cpp" />
     <ClCompile Include="Cubemap.cpp" />
     <ClCompile Include="Cursor.cpp" />
+    <ClCompile Include="EditorApplication.cpp" />
     <ClCompile Include="EditorGizmosUtility.cpp" />
     <ClCompile Include="EditorWindow.cpp" />
     <ClCompile Include="Environment.cpp" />

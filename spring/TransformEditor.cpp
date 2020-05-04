@@ -1,6 +1,7 @@
 #include "transformeditor.h"
 #include "selection.h"
 
+using namespace spring;
 using namespace spring::editor;
 
 void TransformEditor::OnDrawInspector() 
@@ -11,10 +12,10 @@ void TransformEditor::OnDrawInspector()
 	const Vector3 localSpaceEulerangle = node->GetEulerangle();
 	const Vector3 localSpaceScale = node->GetScale();
 
-	float* localPosition = new float[3]{ localSpacePos.x,localSpacePos.y,localSpacePos.z };
-	ImGui::DragFloat3("local position", localPosition);
-	node->SetLocalPosition(Vector3(localPosition[0], localPosition[1], localPosition[2]));
-	delete[] localPosition;
+	// float* localPosition = new float[3]{ localSpacePos.x,localSpacePos.y,localSpacePos.z };
+	// ImGui::DragFloat3("local position", localPosition);
+	// node->SetLocalPosition(Vector3(localPosition[0], localPosition[1], localPosition[2]));
+	// delete[] localPosition;
 
 	float* position = new float[3]{ worldSpacePos.x,worldSpacePos.y,worldSpacePos.z };
 	ImGui::DragFloat3("position", position);

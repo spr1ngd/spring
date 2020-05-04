@@ -2,9 +2,6 @@
 #include "sample.h"
 #include "thirdplayercamera.h"
 
-// editor gizmos
-GameObject* axisGizmos = nullptr;
-
 GameObject* thirdPlayer = nullptr;
 MeshRenderer* grassRenderer = nullptr;
 
@@ -108,19 +105,11 @@ void GameApp::Awake()
 	thirdPlayer = Primitive::CreatePrimitive(Primitive::Sphere);
 	thirdPlayer->transform->SetScale(Vector3(0.05f,0.05f,0.05f));
 	thirdPlayer->transform->SetPosition(Vector3(0.0f,0.1f,0.0f));
-
-	axisGizmos = Primitive::CreateGizmo(Primitive::GizmoType::Move);
 }
 
 void GameApp::Update() 
-{
-	auto renderers = axisGizmos->GetNodesInChildren<MeshRenderer>();
-	for (auto renderer : renderers)
-	{
-		MeshRenderer* mr = renderer;
-		mr->material->shader->setVec3("WorldSpaceAxisPos", axisGizmos->transform->position);
-	}
-
+{ 
+	// third player camera.
 	ThirdPlayerCamera* tpc = Camera::main->gameobject->GetNode<ThirdPlayerCamera>();
 	if (nullptr != tpc)
 		tpc->target = thirdPlayer;
