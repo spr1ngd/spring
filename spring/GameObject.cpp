@@ -42,6 +42,19 @@ void GameObject::Destroy()
 	delete this;
 }
 
+void GameObject::SetActive(bool visible) 
+{
+	// 应该让所有的GameObject为false，并且让Node.enable = false
+	this->visible = visible;
+	for (auto child : this->children)
+		child->SetActive(visible);
+}
+
+bool GameObject::GetActive() 
+{
+	return this->visible;
+}
+
 #pragma region static methods
 
 void GameObject::AddGameObject(GameObject* gameobject) 

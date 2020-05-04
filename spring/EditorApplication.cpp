@@ -1,34 +1,23 @@
 #include "editorapplication.h"
-#include "gameobject.h"
-#include "primitive.h"
-#include "meshrenderer.h"
+#include "input.h"
 #include "picking.h"
-#include "console.h"
+#include "gizmos.h"
 
 using namespace spring;
 using namespace spring::editor;
 
 void EditorApplication::Awake()
 {
-	axisGizmos = Primitive::CreateGizmo(Primitive::GizmoType::Move);
+
 }
 
 void EditorApplication::Update()
 { 
-	// axis.
-	auto renderers = axisGizmos->GetNodesInChildren<MeshRenderer>();
-	for (auto renderer : renderers)
+	if (Input::GetMouseDown(MOUSE_LEFT))
 	{
-		MeshRenderer* mr = renderer;
-		mr->material->shader->setVec3("WorldSpaceAxisPos", axisGizmos->transform->position);
-	}
-
-	if (nullptr != Picking::selected) 
-	{
-		PRINT_LOG("select : %s",Picking::selected->name);
-		if (Picking::selected == this->axisGizmos) 
+		if (nullptr != Picking::selected)
 		{
-			PRINT_ERROR("select axis gizmos editor.");
+			Gizmos::DrawAxis(*Picking::selected->transform);
 		}
 	}
 }

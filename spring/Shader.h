@@ -86,6 +86,7 @@ namespace spring
 		std::map<const char*, unsigned int> locations;
 		char* vertexShaderName;
 		char* fragmentShaderName;
+		char* geometryShaderName;
 
 		map<unsigned int, Colorf> colors;
 		map<unsigned int, GLuint> ints;

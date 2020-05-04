@@ -9,5 +9,8 @@ void GameObjectEditor::OnDrawInspector()
 		return;
 
 	ImGui::LabelText("name", gameobject->name);
-	ImGui::Checkbox("visible", &gameobject->visible);
+
+	bool visible = gameobject->GetActive();
+	ImGui::Checkbox("visible", &visible);
+	gameobject->SetActive(visible);
 }

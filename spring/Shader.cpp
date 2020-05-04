@@ -707,6 +707,12 @@ Shader* Shader::Load(const char* vertexShaderName, const char* fragmentShaderNam
 	shader->fragmentShaderName = new char[strlen(fragmentShaderName)];
 	strcpy_s(shader->vertexShaderName, strlen(vertexShaderName) + 1, vertexShaderName);
 	strcpy_s(shader->fragmentShaderName, strlen(fragmentShaderName) + 1, fragmentShaderName);
+
+	if (nullptr != geometryShaderName)
+	{
+		shader->geometryShaderName = new char[strlen(geometryShaderName)];
+		strcpy_s(shader->geometryShaderName, strlen(geometryShaderName) + 1, geometryShaderName);
+	}
 	return shader;
 }
 

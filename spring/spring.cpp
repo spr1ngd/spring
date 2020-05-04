@@ -140,6 +140,7 @@ int main(int, char**)
 				behaviour.second->Update();
 			}
 		}
+		// todo : remove 
 		ParticleRenderer::Update();
 
 		for (auto behaviour : Behaviour::behaviours)
@@ -177,13 +178,16 @@ int main(int, char**)
 				Camera::current->Render();
 				Renderable::Draw( Layer::Default, [&](MeshRenderer* meshRenderer)
 					{
+						// TODO: 肯定存在严重的内存泄漏问题
 						Material* originMaterial = meshRenderer->material;
-						meshRenderer->material = Picking::material;
+						Material* pickingMaterial = new Material(Shader::Load(originMaterial->shader->vertexShaderName, "physical/gpu_picking.fs",originMaterial->shader->geometryShaderName));
+						meshRenderer->material = pickingMaterial;
 						meshRenderer->material->shader->setColor("identify",Picking::Convert2Color(meshRenderer->GetRenderableId()));
 						meshRenderer->Render();
 						meshRenderer->material = originMaterial;
+						delete pickingMaterial;
 					});
-			}); 
+			});
 		Picking::Pick();
 
 		PostProcessing::postprocessing->outline->Render(nullptr);

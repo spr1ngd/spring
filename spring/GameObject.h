@@ -24,8 +24,8 @@ namespace spring
 		static void AddGameObject(GameObject* gameobject);
 		static void RemoveGameObject(GameObject* gameobject);
 
-	public:
 		bool visible = true;
+	public:
 		int flags = 0x00000000;
 		int layer = 0x00000001;
 		Transform* transform; // only store position/rotation/scale/eulerangle data
@@ -36,7 +36,7 @@ namespace spring
 
 		GameObject();
 		GameObject(const char* name);
-		~GameObject();
+		~GameObject() override;
 
 		template<typename T>
 		T* AddNode() 
@@ -121,6 +121,9 @@ namespace spring
 				return nullptr;
 			return this->children[childIndex];
 		}
+
+		void SetActive(bool visible);
+		bool GetActive();
 
 		TypeInfo GetTypeInfo() override 
 		{

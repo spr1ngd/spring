@@ -239,7 +239,7 @@ void ParticleRenderer::Render()
 	if (this->usingParticles.size() <= 0)
 		return;
 
-	if (!this->enabled || ( nullptr != this->gameobject && !this->gameobject->visible) )
+	if (!this->enabled || ( nullptr != this->gameobject && !this->gameobject->GetActive()) )
 		return;
 
 	// this->material->AlphaTestFunc(GL_LESS, 0.0f);

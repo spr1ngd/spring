@@ -1,6 +1,7 @@
 #include "gameapp.h"
 #include "sample.h"
 #include "thirdplayercamera.h"
+#include "gizmos.h"
 
 GameObject* thirdPlayer = nullptr;
 MeshRenderer* grassRenderer = nullptr;
@@ -105,6 +106,8 @@ void GameApp::Awake()
 	thirdPlayer = Primitive::CreatePrimitive(Primitive::Sphere);
 	thirdPlayer->transform->SetScale(Vector3(0.05f,0.05f,0.05f));
 	thirdPlayer->transform->SetPosition(Vector3(0.0f,0.1f,0.0f));
+
+	Gizmos::DrawAxis(*thirdPlayer->transform);
 }
 
 void GameApp::Update() 

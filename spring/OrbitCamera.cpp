@@ -39,6 +39,8 @@ void OrbitCamera::Update()
 
 	if ((mouseX < minX || mouseX > maxX) || (mouseY < minY || mouseY > maxY))
 	{
+		this->enableRotate = false;
+		this->enablePan = false;
 		return;
 	}
 	if (Input::GetMouseDown(MouseID::MOUSE_LEFT)) 
@@ -49,13 +51,13 @@ void OrbitCamera::Update()
 	{
 		this->enableRotate = true;
 	}
+	if (Input::GetMouse(MouseID::MOUSE_WHEEL))
+	{
+		this->enablePan = true;
+	}
 	if (Input::GetMouseUp(MouseID::MOUSE_LEFT))
 	{
 		this->enableRotate = false;
-	}
-	if (Input::GetMouse(MouseID::MOUSE_WHEEL)) 
-	{
-		this->enablePan = true;
 	}
 	if (Input::GetMouseUp(MouseID::MOUSE_WHEEL))
 	{
@@ -96,7 +98,6 @@ void OrbitCamera::Rotate()
 	Vector3 position = rotation * negativeDistance + this->target;
 	this->camera->transform->SetRotation(rotation);
 	this->camera->transform->SetPosition(position);
-
 }
 
 void OrbitCamera::Pan()

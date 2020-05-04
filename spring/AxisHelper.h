@@ -1,39 +1,53 @@
 #pragma once
 #include <vector>
-#include "mesh.h"
-#include "transform.h"
-#include "meshrenderer.h"
-#include "material.h"
+#include "behaviour.h"
 #include "space.h"
 
 namespace spring 
 {
-	class AxisHelper
+	class AxisHelper : public Behaviour
 	{
-		// todo : generate a axis in scene 
-		// todo : axis helper will translate/rotate through transform data.
-		// todo : renderable composite this object.
-	private:
-		Material* material;
-		Transform* target;
-		CoordinateSpace space;
 	public:
-		enum Mode 
+		enum EditorGizmosMode
 		{
-			Axis,
-			Rotate,
-			Scale
+			EditMode_Move,
+			EditMode_Rotate,
+			EditMode_Scale
 		};
-		Mode mode = Mode::Axis;
-		Mesh* mesh;
-		MeshRenderer* meshRenderer;
+		enum AxisMode
+		{
+			None,
+			X,
+			Y,
+			Z
+		};
 	private:
-		void RenderAxis();
-		void RenderRotator();
-		void RenderScaler();
-	public:
-		AxisHelper(Vector3 target);
-		AxisHelper(Transform* target, CoordinateSpace space = CoordinateSpace::Self);
-		void Render();
+		Transform* target;
+		CoordinateSpace space = CoordinateSpace::World;
+
+		GameObject* axisGizmos = nullptr;
+		GameObject* rotateGizmos = nullptr;
+		GameObject* scaleGizmos = nullptr;
+
+		bool editing = false;
+		Vector3 moveDir = Vector3::zero;
+		EditorGizmosMode gizmosMode = EditorGizmosMode::EditMode_Move;
+		AxisMode currentEditAxis = AxisMode::None;
+
+	public: 
+		float moveSpeed = 0.05f;
+
+		AxisHelper();
+		void Awake() override;
+		void Update() override;
+		void Destroy() override;
+		void SetTarget(Transform* target);
+		void SetAxisMode(AxisHelper::EditorGizmosMode mode);
+		TypeInfo GetTypeInfo() override 
+		{
+			if (nullptr == this->typeInfo)
+				this->typeInfo = new TypeInfo("AxisHelper");
+			return *this->typeInfo;
+		}
 	};
 }

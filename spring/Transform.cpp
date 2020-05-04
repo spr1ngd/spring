@@ -91,7 +91,11 @@ Vector3 Transform::GetLocalPosition()
 
 void Transform::SetScale(Vector3 scale) 
 {
+	this->transformChangedInThisFrame = true;
 	this->scale = scale;
+	RecalculateTransform();
+	for (auto child : this->gameobject->children)
+		child->transform->RecalculateTransform();
 }
 
 const Vector3& Transform::GetScale() 

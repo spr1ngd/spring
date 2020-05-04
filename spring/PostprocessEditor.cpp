@@ -8,6 +8,18 @@ using namespace spring::editor;
 void PostprocessEditor::OnDrawInspector() 
 {
 	class::PostProcessing* pp = PostProcessing::postprocessing;
+
+	// picking framebuffer
+	if (Picking::enable) 
+	{
+		ImGui::SetNextItemOpen(true, ImGuiCond_Once);
+		if (ImGui::CollapsingHeader("Picking"))
+		{
+			ImGui::Checkbox("Enable Picking", &Picking::enable);
+			ImGui::Image((ImTextureID)Picking::pickBuffer->GetBuffer(), ImVec2(160.0f, 90.0f), ImVec2(0, 1), ImVec2(1, 0));
+		}
+	}
+
 	if (pp->enabled == false)
 		return;
 
@@ -60,8 +72,6 @@ void PostprocessEditor::OnDrawInspector()
 	{
 		ImGui::Checkbox("Enable Outline",&pp->outline->enable);
 
-
-		ImGui::Image((ImTextureID)Picking::pickBuffer->GetBuffer(), stdSize, ImVec2(0, 1), ImVec2(1, 0));
 		ImGui::Image((ImTextureID)pp->outline->buffer->GetBuffer(), stdSize, ImVec2(0, 1), ImVec2(1, 0));
 		ImGui::Image((ImTextureID)pp->outline->originBuffer->GetBuffer(), stdSize, ImVec2(0, 1), ImVec2(1, 0));
 		ImGui::Image((ImTextureID)pp->outline->blendBuffer->GetBuffer(), stdSize, ImVec2(0, 1), ImVec2(1, 0));

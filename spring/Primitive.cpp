@@ -224,6 +224,62 @@ GameObject* Primitive::CreateGizmoScale()
 {
 	GameObject* scaleGizmo = new GameObject("editor_gizmos_scale");
 
+	// x axis
+	Material* xAxisMaterial = new Material(Shader::Load("editor/gizmos/editor_gizmos_axis.vs", "editor/gizmos/editor_gizmos_axis.fs"));
+	xAxisMaterial->shader->setColor(MAIN_COLOR, Color::red);
+	xAxisMaterial->DepthTestFunc(true, GL_ALWAYS, true);
+	GameObject* xAxis = new GameObject("editor_gizmos_x_scale");
+	MeshRenderer* xAxisRenderer = xAxis->AddNode<MeshRenderer>();
+	xAxisRenderer->material = xAxisMaterial;
+	xAxisRenderer->setRenderOrder(15000);
+	Mesh* xAxisMesh = GenPrimitive(Primitive::Type::Cylinder);
+	Matrix4x4 xAxisRTS = Matrix4x4::RTS(Vector3(0.5f, 0.0f, 0.0f), Vector3(0.02f, 1.0f, 0.02f), Vector3(0.0f, 0.0f, -90.0f));
+	xAxisMesh->RTS(xAxisRTS);
+	Mesh* xAxisArrowMesh = GenPrimitive(Primitive::Type::Cube);
+	Matrix4x4 xAxisArrowRTS = Matrix4x4::RTS(Vector3(1.0f, 0.0f, 0.0f), Vector3(0.1f, 0.1f, 0.1f), Vector3(0.0f, 0.0f, 0.0f));
+	xAxisArrowMesh->RTS(xAxisArrowRTS);
+	xAxisMesh->Combine(*xAxisArrowMesh);
+	delete xAxisArrowMesh;
+	xAxisRenderer->mesh = xAxisMesh;
+	xAxis->SetParent(scaleGizmo);
+
+	// y axis
+	Material* yAxisMaterial = new Material(Shader::Load("editor/gizmos/editor_gizmos_axis.vs", "editor/gizmos/editor_gizmos_axis.fs"));
+	yAxisMaterial->shader->setColor(MAIN_COLOR, Color::blue);
+	yAxisMaterial->DepthTestFunc(true, GL_ALWAYS, true);
+	GameObject* yAxis = new GameObject("editor_gizmos_y_scale");
+	MeshRenderer* yAxisRenderer = yAxis->AddNode<MeshRenderer>();
+	yAxisRenderer->setRenderOrder(15000);
+	yAxisRenderer->material = yAxisMaterial;
+	Mesh* yAxisMesh = GenPrimitive(Primitive::Type::Cylinder);
+	Matrix4x4 yAxisRTS = Matrix4x4::RTS(Vector3(0.0f, 0.5f, 0.0f), Vector3(0.02f, 1.0f, 0.02f), Vector3(0.0f, 0.0f, 0.0f));
+	yAxisMesh->RTS(yAxisRTS);
+	Mesh* yAxisArrowMesh = GenPrimitive(Primitive::Type::Cube);
+	Matrix4x4 yAxisArrowRTS = Matrix4x4::RTS(Vector3(0.0f, 1.0f, 0.0f), Vector3(0.1f, 0.1f, 0.1f), Vector3(0.0f, 0.0f, 0.0f));
+	yAxisArrowMesh->RTS(yAxisArrowRTS);
+	yAxisMesh->Combine(*yAxisArrowMesh);
+	delete yAxisArrowMesh;
+	yAxisRenderer->mesh = yAxisMesh;
+	yAxis->SetParent(scaleGizmo);
+
+	// z axis
+	Material* zAxisMaterial = new Material(Shader::Load("editor/gizmos/editor_gizmos_axis.vs", "editor/gizmos/editor_gizmos_axis.fs"));
+	zAxisMaterial->shader->setColor(MAIN_COLOR, Color::green);
+	zAxisMaterial->DepthTestFunc(true, GL_ALWAYS, true);
+	GameObject* zAxis = new GameObject("editor_gizmos_z_scale");
+	MeshRenderer* zAxisRenderer = zAxis->AddNode<MeshRenderer>();
+	zAxisRenderer->setRenderOrder(15000);
+	zAxisRenderer->material = zAxisMaterial;
+	Mesh* zAxisMesh = GenPrimitive(Primitive::Type::Cylinder);
+	Matrix4x4 zAxisRTS = Matrix4x4::RTS(Vector3(0.0f, 0.0f, 0.5f), Vector3(0.02f, 1.0f, 0.02f), Vector3(90.0f, 0.0f, 0.0f));
+	zAxisMesh->RTS(zAxisRTS);
+	Mesh* zAxisArrowMesh = GenPrimitive(Primitive::Type::Cube);
+	Matrix4x4 zAxisArrowRTS = Matrix4x4::RTS(Vector3(0.0f, 0.0f, 1.0f), Vector3(0.1f, 0.1f, 0.1f), Vector3(0.0f, 0.0f, 0.0f));
+	zAxisArrowMesh->RTS(zAxisArrowRTS);
+	zAxisMesh->Combine(*zAxisArrowMesh);
+	delete zAxisArrowMesh;
+	zAxisRenderer->mesh = zAxisMesh;
+	zAxis->SetParent(scaleGizmo);
 	return scaleGizmo;
 }
 
@@ -694,47 +750,47 @@ Mesh* Primitive::GenSphere()
 
 Mesh* Primitive::GenBand() 
 {
-	float maxRadius = 0.5f;
-	float radius = 0.15f;
-	int subdivision = 64;
-	int bandSubdivision = 64;
+	float biggerBandRadius = 1.0f;
+	float samllerBandRadius = 0.0001f;
+	int biggerBandSubdivision = 64;
+	int samllerBandSubdivision = 64;
 
-	float perRadian = (1.0f / subdivision) * Mathf::pi * 2;
-	float perBRadian = (1.0f / bandSubdivision) * Mathf::pi * 2;
+	float biggerBandRadian = (1.0f / biggerBandSubdivision) * Mathf::pi * 2;
+	float samllerBandRadian = (1.0f / samllerBandSubdivision) * Mathf::pi * 2;
 
 	Mesh* band = new Mesh();
 	std::vector<Vertex> vertices;
 	std::vector<unsigned int> indices;
 
 	int vertexCount = 0;
-	for (unsigned int i = 0; i <= subdivision; i++)
+	for (unsigned int i = 0; i <= biggerBandSubdivision; i++)
 	{
-		float radian = perRadian * i;
+		float radian = biggerBandRadian * i;
 		float x = Mathf::Cos(radian);
 		float z = Mathf::Sin(radian);
 		Vector3 dir = Vector3(x, 0.0f, z);
-		Vector3 origin = Vector3(x, 0.0f, z) * maxRadius;
+		Vector3 origin = Vector3(x, 0.0f, z) * biggerBandRadius;
 
 		vertexCount = vertices.size();
-		for (unsigned int bIndex = 0; bIndex <= bandSubdivision; bIndex++)
+		for (unsigned int bIndex = 0; bIndex <= samllerBandSubdivision; bIndex++)
 		{
-			float bRadian = perBRadian * bIndex;
+			float bRadian = samllerBandRadian * bIndex;
 			float bX = Mathf::Cos(bRadian);
 			float bY = Mathf::Sin(bRadian);
 
 			Vertex vertex;
-			vertex.vertex = origin + dir * bX * radius + Vector3(0.0f, bY * radius, 0.0f);
+			vertex.vertex = origin + dir * bX * samllerBandRadius + Vector3(0.0f, bY * samllerBandRadius, 0.0f);
 			vertex.normal = Vector3::Normalize(vertex.vertex - origin);
 			vertices.push_back(vertex);
 
-			if (bIndex < bandSubdivision && i < subdivision)
+			if (bIndex < samllerBandSubdivision && i < biggerBandSubdivision)
 			{
 				indices.push_back(vertexCount + bIndex);
 				indices.push_back(vertexCount + bIndex + 1);
-				indices.push_back(vertexCount + bIndex + 2 + bandSubdivision);
+				indices.push_back(vertexCount + bIndex + 2 + samllerBandSubdivision);
 
-				indices.push_back(vertexCount + bIndex + 2 + bandSubdivision);
-				indices.push_back(vertexCount + bIndex + 1+ bandSubdivision);
+				indices.push_back(vertexCount + bIndex + 2 + samllerBandSubdivision);
+				indices.push_back(vertexCount + bIndex + 1+ samllerBandSubdivision);
 				indices.push_back(vertexCount + bIndex);
 			}
 		}
