@@ -61,10 +61,10 @@ void Material::EnableAlphaBlend()
 	}
 }
 
-void Material::DepthTestFunc(bool enable, GLenum func)
+void Material::DepthTestFunc(bool enable, GLenum func,bool enableDepthWrite)
 {
 	this->depthTest = enable;
-	this->depthWrite = depthWrite;
+	this->depthWrite = enableDepthWrite;
 	this->depthFunc = func;
 }
 void Material::EnableDepthTest()
@@ -78,12 +78,11 @@ void Material::EnableDepthTest()
 		glDisable(GL_DEPTH_TEST);
 	}
 }
-void Material::EnableDepthWrite( bool enable )  
+void Material::EnableDepthWrite()  
 {
-	this->depthWrite = enable;
-	glDepthFunc(this->depthFunc);
 	if (this->depthWrite == true)
 	{
+		glDepthFunc(this->depthFunc);
 		glDepthMask(GL_TRUE);
 	}
 	else

@@ -28,12 +28,19 @@ namespace spring
 
 			float distance = 1.0f;
 			float minDistance = 0.5f;
-			float maxDistance = 300.0f;
+			float maxDistance = 300.0f; 
 
 			OrbitCamera();
 			void Awake() override;
 			void Update() override;
 			void Destroy() override;
+
+			TypeInfo GetTypeInfo() override
+			{
+				if (nullptr == this->typeInfo)
+					this->typeInfo = new TypeInfo("OrbitCamera");
+				return *this->typeInfo;
+			}
 		};
 	}
 }

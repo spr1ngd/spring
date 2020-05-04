@@ -5,7 +5,7 @@ using namespace spring::editor;
 
 void LightEditor::OnDrawInspector() 
 {
-	Light* light = Selection::gameobject->GetNode<Light>();
+	Light* light = Selection::GetSelected()->GetNode<Light>();
 
 	ImGui::DragFloat("Intensity",&light->intensity,1.0f,0.0f,100.0f,"%.1f");
 

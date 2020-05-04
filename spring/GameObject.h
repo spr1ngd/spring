@@ -24,8 +24,8 @@ namespace spring
 		static void AddGameObject(GameObject* gameobject);
 		static void RemoveGameObject(GameObject* gameobject);
 
-	public:
 		bool visible = true;
+	public:
 		int flags = 0x00000000;
 		int layer = 0x00000001;
 		Transform* transform; // only store position/rotation/scale/eulerangle data
@@ -36,7 +36,7 @@ namespace spring
 
 		GameObject();
 		GameObject(const char* name);
-		~GameObject();
+		~GameObject() override;
 
 		template<typename T>
 		T* AddNode() 
@@ -50,6 +50,7 @@ namespace spring
 			nodeptr->transform = this->transform;
 			return node;
 		}
+
 		template<typename T>
 		T* GetNode() 
 		{
@@ -69,6 +70,21 @@ namespace spring
 				}
 			}
 			return nullptr;
+		}
+
+		template<typename T>
+		std::vector<T*> GetNodesInChildren()
+		{
+			std::vector<T*> result;
+			for (auto child = this->children.begin(); child != children.end(); child++)
+			{
+				GameObject* childPtr = *child;
+				T* node = childPtr->GetNode<T>();
+				result.push_back(node);
+				std::vector<T*> resultInChildren = childPtr->GetNodesInChildren<T>();
+				result.insert(result.end(), resultInChildren.begin(), resultInChildren.end());
+			}
+			return result;
 		}
 
 		void SetParent( GameObject* newParent ) 
@@ -105,6 +121,9 @@ namespace spring
 				return nullptr;
 			return this->children[childIndex];
 		}
+
+		void SetActive(bool visible);
+		bool GetActive();
 
 		TypeInfo GetTypeInfo() override 
 		{

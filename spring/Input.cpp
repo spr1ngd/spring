@@ -171,9 +171,17 @@ void Input::setKeyCodeState(KeyCode keycode, InputState keycodeState)
 	{
 		info->state = keycodeState;
 		if (keycodeState == InputState::STATE_DOWN)
+		{
 			info->up = false;
+		}
 		else if (keycodeState == InputState::STATE_UP)
+		{
 			info->down = false;
+		}
+		else if (keycodeState == InputState::STATE_PRESS)
+		{
+			info->down = true;
+		}
 	}
 }
 
@@ -191,8 +199,8 @@ bool Input::GetKeyDown(KeyCode keycode)
 	if (info == nullptr)
 		return false;
 	bool result = (info->state == InputState::STATE_DOWN) && !info->down;
-	if(result)
-		info->down = true;
+	//if (result)
+	//	info->down = true;
 	return result;
 }
 
@@ -202,8 +210,8 @@ bool Input::GetKeyUp(KeyCode keycode)
 	if (info == nullptr)
 		return false;
 	bool result = (info->state == InputState::STATE_UP) && !info->up;
-	if(result)
-		info->up = true;
+	//if(result)
+	//	info->up = true;
 	return result;
 }  
 
@@ -232,9 +240,17 @@ void Input::setMouseState(MouseID mouseID, InputState state)
 	{
 		info->state = state;
 		if (state == InputState::STATE_DOWN)
+		{
 			info->up = false;
-		if (state == InputState::STATE_UP)
+		}
+		else if (state == InputState::STATE_UP)
+		{
 			info->down = false;
+		}
+		else if (state == InputState::STATE_PRESS)
+		{
+			info->down = true;
+		}
 	}
 }
 
@@ -269,8 +285,8 @@ bool Input::GetMouseDown(MouseID mouseId)
 	if (nullptr == info)
 		return false;
 	bool result = (info->state == InputState::STATE_DOWN) && (!info->down) ;
-	if( result )
-		info->down = true;
+	//if( result )
+	//	info->down = true;
 	return result;
 }
 
@@ -280,8 +296,8 @@ bool Input::GetMouseUp(MouseID mouseId)
 	if (nullptr == info)
 		return false;
 	bool result = (info->state == InputState::STATE_UP) && (!info->up);
-	if( result )
-		info->up = true;
+	//if( result )
+	//	info->up = true;
 	return result;
 }
 

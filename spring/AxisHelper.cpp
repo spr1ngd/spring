@@ -1,142 +1,112 @@
 #include "springengine.h"
 #include "axishelper.h"
-#include "meshrenderer.h"
 #include "gizmos.h"
+#include "picking.h"
+#include "orbitcamera.h"
 
 using namespace spring;
+using namespace spring::editor;
 
-AxisHelper::AxisHelper(Vector3 target) 
+AxisHelper::AxisHelper() : target(nullptr), axisGizmos(nullptr), rotateGizmos(nullptr), scaleGizmos(nullptr) 
 {
-	this->space = CoordinateSpace::World;
-	this->target = nullptr;
 
-	this->material = new Material(Shader::Load("vertex/vertexcolor.vs", "vertex/vertexcolor.fs"));
-	this->material->name = "axis_color";
-	this->material->renderMode = Material::Fill;
-	this->meshRenderer = new MeshRenderer(this->material);
-	this->RenderAxis();
-	this->meshRenderer->setRenderOrder(5000);
 }
 
-AxisHelper::AxisHelper(Transform* trans, CoordinateSpace space)
+void AxisHelper::SetTarget(Transform* target)
 {
-	this->space = space;
-	this->target = trans;
-
-	this->material = new Material(Shader::Load("vertex/vertexcolor.vs", "vertex/vertexcolor.fs"));
-	this->material->name = "axis_color";
-	this->material->renderMode = Material::Fill;	
-	this->meshRenderer = new MeshRenderer(this->material);
-	this->RenderAxis();
-	this->meshRenderer->setRenderOrder(5000);
+	this->target = target;
+}
+void AxisHelper::SetAxisMode(AxisHelper::EditorGizmosMode mode)
+{
+	this->gizmosMode = mode;
+	axisGizmos->SetActive(this->gizmosMode == AxisHelper::EditMode_Move);
+	scaleGizmos->SetActive(this->gizmosMode == AxisHelper::EditMode_Scale);
+	rotateGizmos->SetActive(gizmosMode == AxisHelper::EditMode_Rotate);
 }
 
-void AxisHelper::Render() 
+void AxisHelper::Awake() 
 {
-	if (nullptr == this->meshRenderer)
-		return;
+	axisGizmos = Primitive::CreateGizmo(Primitive::GizmoType::Move);
+	scaleGizmos = Primitive::CreateGizmo(Primitive::GizmoType::Scale);
+	rotateGizmos = Primitive::CreateGizmo(Primitive::GizmoType::Rotate);
+	axisGizmos->SetActive(this->gizmosMode == AxisHelper::EditMode_Move);
+	scaleGizmos->SetActive(this->gizmosMode == AxisHelper::EditMode_Scale);
+	rotateGizmos->SetActive(gizmosMode == AxisHelper::EditMode_Rotate);
+}
+
+void AxisHelper::Update() 
+{ 
+	float distance = Vector3::Distance(this->transform->GetPosition(), Camera::main->transform->GetPosition());
+	float realRate = distance / 5.0f;
+	if( nullptr != this->axisGizmos )
+		this->axisGizmos->transform->SetScale(Vector3(realRate, realRate, realRate));
+	if( nullptr != this->scaleGizmos)
+		this->scaleGizmos->transform->SetScale(Vector3(realRate, realRate, realRate));
+
+	if (nullptr != Picking::selected && this->currentEditAxis == AxisMode::None)
+	{
+		if (strcmp(Picking::selected->name, "editor_gizmos_x_axis") == 0)
+		{
+			this->currentEditAxis = AxisMode::X;
+		}
+		else if (strcmp(Picking::selected->name, "editor_gizmos_y_axis") == 0)
+		{
+			this->currentEditAxis = AxisMode::Y;
+		}
+		else if (strcmp(Picking::selected->name, "editor_gizmos_z_axis") == 0)
+		{
+			this->currentEditAxis = AxisMode::Z;
+		}
+		else
+		{
+			this->currentEditAxis = AxisMode::None;
+		}
+	}
+
+	if (nullptr != Camera::main)
+	{
+		auto orbit = Camera::main->gameobject->GetNode<OrbitCamera>();
+		if (nullptr != orbit)
+			orbit->enabled = !this->editing;
+	}
+
+	if (this->currentEditAxis != AxisMode::None)
+	{
+		if (Input::GetMouse(MouseID::MOUSE_LEFT))
+		{
+			this->editing = true;
+			if (this->currentEditAxis == AxisMode::X)
+				this->moveDir = Vector3(1.0f, 0.0f, 0.0f) * Input::mouseDelta.x;
+			else if (this->currentEditAxis == AxisMode::Y)
+				this->moveDir = Vector3(0.0f, -1.0f, 0.0f) * Input::mouseDelta.y;
+			else if (this->currentEditAxis == AxisMode::Z)
+				this->moveDir = Vector3(0.0f, 0.0f, -1.0f) * Input::mouseDelta.x;
+
+			if (nullptr != this->target) 
+			{
+				Vector3 targetSrcPos = this->target->GetPosition();
+				targetSrcPos += this->moveDir * moveSpeed;
+				this->target->SetPosition(targetSrcPos);
+			}
+		}
+	}
+
+	if (Input::GetMouseUp(MouseID::MOUSE_LEFT))
+	{
+		this->editing = false;
+		this->currentEditAxis = AxisMode::None;
+	}
+
 	if (nullptr != this->target)
 	{
-		this->meshRenderer->transform->SetPosition(this->target->GetPosition());
-		this->meshRenderer->transform->SetEulerangle(Vector3::zero);
-	}
-	switch (this->mode) 
-	{
-	case AxisHelper::Mode::Axis:
-		this->RenderAxis();
-		break;
-	case AxisHelper::Mode::Rotate:
-		this->RenderRotator();
-		break;
-	case AxisHelper::Mode::Scale:
-		this->RenderScaler();
-		break;
-	default:
-		break;
+		if( nullptr != axisGizmos )
+			axisGizmos->transform->SetPosition(this->target->GetPosition());
+		if( nullptr != scaleGizmos )
+			scaleGizmos->transform->SetPosition(this->target->GetPosition());
 	}
 }
 
-void AxisHelper::RenderAxis() 
-{
-	vector<Vertex> vertices;
-	vector<unsigned int> indices;
-	// x axis
-	Vertex xStart;
-	xStart.vertex = Vector3::zero;
-	Vertex xEnd;
-
-	if (this->space == CoordinateSpace::Self && this->target != nullptr)
-	{
-		xEnd.vertex = this->target->right;
-	}
-	else
-	{
-		xEnd.vertex = Vector3::right;
-	}
-	xStart.color = Colorf::red;
-	xEnd.color = Colorf::red;
-	vertices.push_back(xStart);
-	vertices.push_back(xEnd);
-	indices.push_back(0);
-	indices.push_back(1);
-
-	// y axis
-	Vertex yStart;
-	yStart.vertex = Vector3::zero;
-	Vertex yEnd;
-	if (this->space == CoordinateSpace::Self && this->target != nullptr)
-	{
-		yEnd.vertex = this->target->up;
-	}
-	else
-	{
-		yEnd.vertex = Vector3::up;
-	}
-	yStart.color = Colorf::green;
-	yEnd.color = Colorf::green;
-	vertices.push_back(yStart);
-	vertices.push_back(yEnd);
-	indices.push_back(2);
-	indices.push_back(3);
-
-	// z axis
-	Vertex zStart;
-	zStart.vertex = Vector3::zero;
-	Vertex zEnd;
-	if (this->space == CoordinateSpace::Self && this->target != nullptr)
-	{
-		zEnd.vertex = this->target->forword;
-	}
-	else
-	{
-		zEnd.vertex = Vector3::forward;
-	}
-	zStart.color = Colorf::blue;
-	zEnd.color = Colorf::blue;
-	vertices.push_back(zStart);
-	vertices.push_back(zEnd);
-	indices.push_back(4);
-	indices.push_back(5);
-
-	Mesh mesh;
-	mesh.vertices = vertices;
-	mesh.indices = indices;
-	mesh.mode = Mesh::Lines;
-	// vector<Mesh> meshes;
-	//meshes.push_back(mesh);
-
-	this->mesh = &mesh;
-	// this->meshRenderer->meshes = meshes;
-	this->meshRenderer->mesh = &mesh;
-	this->meshRenderer->Initialize();
-}
-
-void AxisHelper::RenderRotator()
-{
-
-}
-
-void AxisHelper::RenderScaler()
+void AxisHelper::Destroy() 
 {
 
 }

@@ -1,5 +1,6 @@
 #include "mesh.h" 
 #include "console.h"
+#include "matrix4x4.h"
 
 using namespace spring;
 
@@ -7,11 +8,10 @@ Mesh::Mesh()
 {
 
 }
-Mesh::Mesh(vector<Vertex> vertices, vector<unsigned int>indices, vector<Texture*> textures) 
+Mesh::Mesh(vector<Vertex> vertices, vector<unsigned int>indices) 
 {
 	this->vertices = vertices;
 	this->indices = indices;
-	this->textures = textures;
 }
 Mesh::~Mesh() 
 {
@@ -34,9 +34,33 @@ Mesh& Mesh::GetSubMesh(unsigned int subMeshIndex)
 }
 void Mesh::SetSubMesh(Mesh* subMesh) 
 {
-	PRINT_LOG("set sub mesh.");
 	this->subMeshes.push_back(subMesh);
 }
+
+void Mesh::RTS(Matrix4x4 rts) 
+{
+	for (unsigned int i = 0; i < this->vertices.size(); i++) 
+	{
+		Vector3 vertex = this->vertices[i].vertex;
+		this->vertices[i].vertex = rts * vertex;
+	}
+}
+
+void Mesh::Combine(Mesh& mesh)
+{
+	unsigned int verticesCount = this->vertices.size();
+	this->vertices.insert(this->vertices.end(), mesh.vertices.begin(), mesh.vertices.end());
+	for (auto index : mesh.indices)
+		this->indices.push_back(verticesCount + index);
+}
+
+void Mesh::Clear() 
+{
+	this->vertices.clear();
+	this->indices.clear();
+}
+
+#pragma region renderer core
 
 void Mesh::Init(function<void()> setting) 
 {
@@ -97,3 +121,5 @@ void Mesh::DrawInstanced(unsigned int instancedCount,function<void()> render)
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 	glBindVertexArray(0);
 }
+
+#pragma endregion

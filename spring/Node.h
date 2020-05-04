@@ -29,7 +29,7 @@ namespace spring
 		
 		Node();
 		Node(const char* nodeName);
-		~Node();
+		~Node() override;
 
 		void Destroy() override;
 

@@ -1,16 +1,13 @@
 #pragma once
 #include <vector>
-#include "mesh.h"
 #include "node.h"
-#include "shader.h"
-#include "transform.h"
-#include "texture.h"
 #include "renderable.h"
 #include "material.h"
-#include "camera.h"
+#include "mesh.h"
 
 namespace spring 
 {
+	class Camera;
 	class MeshRenderer : public Node, public Renderable
 	{
 	protected:
@@ -19,13 +16,11 @@ namespace spring
 	public:
 		bool enableGPUInstance = false;
 		Mesh* mesh;
-		Material* material;
-		// specific material for mesh.subMesh
-		// vector<Material*> materials; 
+		Material* material; 
 		
 		MeshRenderer();
 		MeshRenderer(Material* mateiral);
-		~MeshRenderer();
+		~MeshRenderer() override;
 
 		virtual void Initialize();
 		void Render() override;

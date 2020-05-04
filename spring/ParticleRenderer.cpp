@@ -198,7 +198,7 @@ float ParticleRenderer::getEmitInterval(float lifePercent)
 
 void ParticleRenderer::Init() 
 {
-	this->mesh = Primitive::GenPrimitive(Primitive::Type::Plane);
+	this->mesh = Primitive::GenPrimitive(Primitive::Type::Quad);
 	mesh->Init([&](void) 
 		{
 			unsigned int vertexLocation = this->material->shader->getAttribLocation(VERTEX);
@@ -239,7 +239,7 @@ void ParticleRenderer::Render()
 	if (this->usingParticles.size() <= 0)
 		return;
 
-	if (!this->enabled || ( nullptr != this->gameobject && !this->gameobject->visible) )
+	if (!this->enabled || ( nullptr != this->gameobject && !this->gameobject->GetActive()) )
 		return;
 
 	// this->material->AlphaTestFunc(GL_LESS, 0.0f);
@@ -248,7 +248,7 @@ void ParticleRenderer::Render()
 	this->material->AlphaBlendFunc();
 	this->material->EnableAlphaBlend();
 
-	this->material->EnableDepthWrite(false);
+	this->material->EnableDepthWrite();
 	this->material->EnableDepthTest();
 	this->material->EnableStencilTest();
 	this->material->EnableCullFace();

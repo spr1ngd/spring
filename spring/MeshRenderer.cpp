@@ -1,18 +1,17 @@
 #include "meshrenderer.h"
+#include "mesh.h"
 #include "graphic.h"
 #include "matrix4x4.h"
 
 using namespace spring;
 
-MeshRenderer::MeshRenderer()
+MeshRenderer::MeshRenderer() : material(nullptr), mesh(nullptr)
 {
-	this->type = "class spring::MeshRenderer";
 }
 
-MeshRenderer::MeshRenderer(Material* mateiral)
+MeshRenderer::MeshRenderer(Material* mateiral) : material(nullptr), mesh(nullptr)
 {
 	PRINT_ERROR("DOES NOT ALLOW CONSTRUCT MESH RENDERER DIRECTLY.");
-	this->type = "class spring::MeshRenderer";
 	this->material = mateiral;
 }
 
@@ -95,7 +94,7 @@ void MeshRenderer::Render(glm::mat4 view, glm::mat4 projection)
 	if (this->initialized == false)
 		this->Initialize();
 
-	if (!this->enabled || ( nullptr != this->gameobject && !this->gameobject->visible) )
+	if (!this->enabled || ( nullptr != this->gameobject && !this->gameobject->GetActive()) )
 		return;
 
 	// this->material->AlphaTestFunc(GL_GREATER, 0.0f);
@@ -103,7 +102,7 @@ void MeshRenderer::Render(glm::mat4 view, glm::mat4 projection)
 	this->material->EnableAlphaBlend();
 	this->material->EnableDepthWrite();
 	this->material->EnableDepthTest();
-	this->material->EnableStencilTest();
+	// this->material->EnableStencilTest();
 	this->material->EnableCullFace();
 
 	auto drawMesh = [&](Mesh* mesh) 
@@ -115,13 +114,15 @@ void MeshRenderer::Render(glm::mat4 view, glm::mat4 projection)
 		// }
 
 		// TODO: if model's transform data does not change , model matrix is necessary to recalculate
-		glm::mat4 model =
-			glm::translate(glm::mat4(1.0), glm::vec3(this->transform->position.x, this->transform->position.y, this->transform->position.z)) *
-			glm::rotate(glm::mat4(1.0f), glm::radians(this->transform->GetEulerangle().z), glm::vec3(0.0f, 0.0f, 1.0f)) *
-			glm::rotate(glm::mat4(1.0f), glm::radians(this->transform->GetEulerangle().x), glm::vec3(1.0f, 0.0f, 0.0f)) *
-			glm::rotate(glm::mat4(1.0f), glm::radians(this->transform->GetEulerangle().y), glm::vec3(0.0f, 1.0f, 0.0f)) *
-			glm::scale(glm::mat4(1.0f), glm::vec3(this->transform->scale.x, this->transform->scale.y, this->transform->scale.z));
-		glm::mat4 nm = glm::inverseTranspose(model);
+		// glm::mat4 model =
+		// 	glm::translate(glm::mat4(1.0), glm::vec3(this->transform->position.x, this->transform->position.y, this->transform->position.z)) *
+		// 	glm::rotate(glm::mat4(1.0f), glm::radians(this->transform->GetEulerangle().z), glm::vec3(0.0f, 0.0f, 1.0f)) *
+		// 	glm::rotate(glm::mat4(1.0f), glm::radians(this->transform->GetEulerangle().x), glm::vec3(1.0f, 0.0f, 0.0f)) *
+		// 	glm::rotate(glm::mat4(1.0f), glm::radians(this->transform->GetEulerangle().y), glm::vec3(0.0f, 1.0f, 0.0f)) *
+		// 	glm::scale(glm::mat4(1.0f), glm::vec3(this->transform->scale.x, this->transform->scale.y, this->transform->scale.z));
+		// glm::mat4 nm = glm::inverseTranspose(model);
+		glm::mat4 model = this->transform->GetModelMatrix();
+		glm::mat4 nm = this->transform->GetNMMatrix();
 		this->material->shader->setMat4(MATRIX_M, model);
 		this->material->shader->setMat4(MATRIX_NM, nm);
 		this->material->shader->setMat4(MATRIX_V, view);

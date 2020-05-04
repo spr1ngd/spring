@@ -65,4 +65,9 @@ namespace spring
 		operator Vector2();
 		operator Vector4();
 	};
+	
+	//Vector3 operator*(float multiplicand,const Vector3 vec3) 
+	//{
+	//	return Vector3(vec3.x * multiplicand, vec3.y * multiplicand, vec3.z * multiplicand);
+	//}
 }

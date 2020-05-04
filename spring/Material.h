@@ -62,9 +62,9 @@ namespace spring
 		void AlphaBlendFunc( GLenum srcFactor = GL_SRC_ALPHA,GLenum dstFactor = GL_ONE_MINUS_SRC_ALPHA);
 		void EnableAlphaBlend();
 
-		void DepthTestFunc( bool enable, GLenum func = GL_LESS);
+		void DepthTestFunc( bool enable, GLenum func = GL_LESS,bool enableDepthWrite = true);
 		void EnableDepthTest();
-		void EnableDepthWrite(bool enable = true);
+		void EnableDepthWrite();
 
 		void StencilTestFunc();
 		void EnableStencilTest();

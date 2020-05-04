@@ -38,5 +38,13 @@ namespace spring
 
 		operator Vector3();
 		operator Vector4();
+
+		static float Magnitude(const Vector2 vec2);
+		static Vector2 Normalize(const Vector2 vec2);
 	};
+
+	//Vector2 operator*(float multiplicator, const Vector2 vec2) 
+	//{
+	//	return Vector2(vec2.x * multiplicator, vec2.y * multiplicator);
+	//}
 }

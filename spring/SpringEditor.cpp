@@ -4,6 +4,8 @@
 #include "postprocesseditor.h"
 #include "pickingeditor.h"
 
+#include "editorgizmosutility.h"
+
 using namespace spring;
 using namespace spring::editor;
 
@@ -24,6 +26,8 @@ void SpringEditor::Initialize()
 	hierarchy = new HierarchyWindow("Hierarchy", true);
 	menu = new MenuWindow("Menu",true);
 	status = new StatusWindow("Status",false);
+
+	EditorGizmosUtility::Initialize();
 }
 
 void SpringEditor::Release() 

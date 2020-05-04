@@ -271,8 +271,8 @@ void generateParticle2()
 
 void physically_based_rendering::Awake() 
 {
-	generateMobiusBand();
-	starFighter();
+	// generateMobiusBand();
+	// starFighter();
 	// generateParticle();
 	// generateParticle2();
 	// particleGO->SetParent(fighterGO);

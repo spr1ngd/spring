@@ -1,6 +1,7 @@
 #include "vector2.h"
 #include "vector3.h"
 #include "vector4.h"
+#include "mathf.h"
 
 using namespace spring;
 
@@ -57,4 +58,14 @@ Vector2::operator spring::Vector3()
 Vector2::operator spring::Vector4() 
 {
 	return Vector4(this->x,this->y,0.0f,0.0f);
+}
+
+float Vector2::Magnitude(const Vector2 vec2)
+{
+	return Mathf::Sqrt(vec2.x * vec2.x + vec2.y * vec2.y);
+}
+Vector2 Vector2::Normalize(const Vector2 vec2)
+{
+	float magnitude = Vector2::Magnitude(vec2);
+	return Vector2(vec2.x / magnitude, vec2.y / magnitude);
 }

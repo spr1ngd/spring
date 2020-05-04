@@ -66,6 +66,7 @@ namespace spring
 	public:
 		static Shader* error;
 		static Vector4 shaderTimer;
+		static Shader* Load(const char* shaderName);
 		static Shader* Load(const char* vertexShaderName,const char* fragmentShaderName,const char* geometryShader = nullptr);
 
 	private:
@@ -85,6 +86,7 @@ namespace spring
 		std::map<const char*, unsigned int> locations;
 		char* vertexShaderName;
 		char* fragmentShaderName;
+		char* geometryShaderName;
 
 		map<unsigned int, Colorf> colors;
 		map<unsigned int, GLuint> ints;

@@ -11,6 +11,11 @@ Object::Object()
 	this->instanceId = GetInstanceID();
 }
 
+Object::~Object() 
+{
+
+}
+
 void Object::Destroy() 
 {
 

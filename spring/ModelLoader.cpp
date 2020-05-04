@@ -1,6 +1,7 @@
 #include "modelloader.h"
 #include "console.h"
 #include "misc.h"
+#include "texture.h"
 
 using namespace spring;
 using namespace std; 
@@ -119,10 +120,10 @@ Mesh* ModelLoader::processMesh( aiMesh*mesh,const aiScene*scene )
 		// vertex color
 		if (mesh->HasVertexColors(0)) 
 		{
-			unsigned char r = (unsigned char)mesh->mColors[i]->r;
-			unsigned char g = (unsigned char)mesh->mColors[i]->g;
-			unsigned char b = (unsigned char)mesh->mColors[i]->b;
-			unsigned char a = (unsigned char)mesh->mColors[i]->a;
+			unsigned char r = (unsigned char)mesh->mColors[0]->r;
+			unsigned char g = (unsigned char)mesh->mColors[0]->g;
+			unsigned char b = (unsigned char)mesh->mColors[0]->b;
+			unsigned char a = (unsigned char)mesh->mColors[0]->a;
 			Color color = Color(r,g,b,a);
 			vertex.color = color;
 		}
@@ -160,9 +161,9 @@ Mesh* ModelLoader::processMesh( aiMesh*mesh,const aiScene*scene )
 	}
 
 #pragma endregion
-
+	// spring engine texture instance assign for meshrendeerer.
 	// PRINT_LOG("[ModelLoader] : load mesh %s load textures %d ",mesh->mName.C_Str(),textures.size());
-	return new Mesh(vertices, indices, textures);
+	return new Mesh(vertices, indices);
 }
 vector<Texture*> ModelLoader::loadMaterialTextures(aiMaterial* mateiral, aiTextureType textureType, string typeName)
 {

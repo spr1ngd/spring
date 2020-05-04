@@ -522,6 +522,9 @@ void Shader::setEngineEnvironment()
 	if( this->textures.size() <= 0 )
 		this->setTexture("MainTextureData.texture", TextureLoader::CreatePureWhiteTexture()->textureId);
 
+	// camera pos
+	this->setVec3(WorldSpaceCameraPos, Camera::main->transform->position);
+
 	// ambient setting
 	this->setColor(AMBIENT_COLOR,Environment::ambient.color);
 
@@ -663,6 +666,11 @@ void Shader::setTime()
 
 #pragma region loading | caching | flash
 
+Shader* Shader::Load(const char* shaderName) 
+{
+	return nullptr;
+}
+
 Shader* Shader::Load(const char* vertexShaderName, const char* fragmentShaderName, const char* geometryShaderName)
 {
 	const char* pathPrefix = "res/shader/";
@@ -699,6 +707,12 @@ Shader* Shader::Load(const char* vertexShaderName, const char* fragmentShaderNam
 	shader->fragmentShaderName = new char[strlen(fragmentShaderName)];
 	strcpy_s(shader->vertexShaderName, strlen(vertexShaderName) + 1, vertexShaderName);
 	strcpy_s(shader->fragmentShaderName, strlen(fragmentShaderName) + 1, fragmentShaderName);
+
+	if (nullptr != geometryShaderName)
+	{
+		shader->geometryShaderName = new char[strlen(geometryShaderName)];
+		strcpy_s(shader->geometryShaderName, strlen(geometryShaderName) + 1, geometryShaderName);
+	}
 	return shader;
 }
 

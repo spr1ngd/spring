@@ -213,6 +213,8 @@
     <ClInclude Include="Console.h" />
     <ClInclude Include="Cubemap.h" />
     <ClInclude Include="Cursor.h" />
+    <ClInclude Include="EditorApplication.h" />
+    <ClInclude Include="EditorGizmosUtility.h" />
     <ClInclude Include="EditorWindow.h" />
     <ClInclude Include="Environment.h" />
     <ClInclude Include="Example.h" />
@@ -300,6 +302,7 @@
     <ClInclude Include="Text.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="TextureLoader.h" />
+    <ClInclude Include="ThirdPlayerCamera.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="ToneMapping.h" />
     <ClInclude Include="Transform.h" />
@@ -326,6 +329,8 @@
     <ClCompile Include="Console.cpp" />
     <ClCompile Include="Cubemap.cpp" />
     <ClCompile Include="Cursor.cpp" />
+    <ClCompile Include="EditorApplication.cpp" />
+    <ClCompile Include="EditorGizmosUtility.cpp" />
     <ClCompile Include="EditorWindow.cpp" />
     <ClCompile Include="Environment.cpp" />
     <ClCompile Include="FileIO.cpp" />
@@ -409,6 +414,7 @@
     <ClCompile Include="Text.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="TextureLoader.cpp" />
+    <ClCompile Include="ThirdPlayerCamera.cpp" />
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="ToneMapping.cpp" />
     <ClCompile Include="Transform.cpp" />

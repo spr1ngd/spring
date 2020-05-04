@@ -2,6 +2,7 @@
 #include "springeditor.h"
 #include "inspectorwindow.h"
 #include "selection.h"
+#include "node.h"
 #include "gameobject.h"
 
 #include "transformeditor.h"
@@ -30,7 +31,8 @@ InspectorWindow::InspectorWindow(const char* name, bool openDefault) : EditorWin
 
 void InspectorWindow::OnDrawWindow() 
 {
-	if (nullptr == Selection::gameobject)
+	GameObject* selected = Selection::GetSelected();
+	if (nullptr == selected)
 		return;
 	editors["GameObject"]->OnDrawInspector();
 	ImGui::SetNextItemOpen(true, ImGuiCond_Once);
@@ -39,7 +41,7 @@ void InspectorWindow::OnDrawWindow()
 		editors["Transform"]->OnDrawInspector();
 		ImGui::TreePop();
 	}
-	for (auto node = Selection::gameobject->nodes.begin(); node != Selection::gameobject->nodes.end(); node++)
+	for (auto node = selected->nodes.begin(); node != selected->nodes.end(); node++)
 	{
 		Node* nodePtr = *node;
 		auto iterator = editors.find(nodePtr->GetTypeInfo().typeName);

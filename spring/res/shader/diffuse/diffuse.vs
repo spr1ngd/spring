@@ -15,6 +15,7 @@ uniform mat4 V;
 uniform mat4 P;
 uniform mat4 NM;
 uniform mat4 LightSpaceMatrix;
+uniform sampler2D HeightMap;
 
 out vec4 WorldPos;
 out vec3 WorldNormal;
@@ -23,8 +24,10 @@ out vec4 LightSpacePos;
 
 void main()
 {
+    float height = texture2D(HeightMap,texcoord).r;
+    vec3 pos = vertex + normal * height;
     mat4 nm = inverse(transpose(M));
-    WorldPos = M * vec4(vertex,1.0);    
+    WorldPos = M * vec4(pos,1.0);    
     LightSpacePos = LightSpaceMatrix * WorldPos;
     WorldNormal = mat3(nm)*normal;
     Texcoord = texcoord;

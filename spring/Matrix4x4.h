@@ -46,6 +46,8 @@ namespace spring
 		static Matrix4x4 Transpose(const Matrix4x4 mat4);
 		static Matrix4x4 Inverse(const Matrix4x4 mat4);
 
+		static Matrix4x4 RTS(const Vector3 tranalation, const Vector3 scale, const Vector3 eulerangle);
+
 		void transpose();
 		void inverse();
 

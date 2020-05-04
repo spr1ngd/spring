@@ -43,7 +43,7 @@ namespace spring
 		Type cameraType = Type::Perspective;
 		LayerMask* cullingMask;
 		float fov = 60.0f;
-		float nearClip = 0.1f;
+		float nearClip = 0.001f;
 		float farClip = 1000.0f; 
 
 		FrameBuffer* framebuffer = nullptr;

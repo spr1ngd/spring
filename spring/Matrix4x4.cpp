@@ -152,7 +152,7 @@ Matrix4x4 Matrix4x4::Scale(float x, float y, float z)
 		x, 0.0f, 0.0f, 0.0f,
 		0.0f, y, 0.0f, 0.0f,
 		0.0f, 0.0f, z, 0.0f,
-		0.0f, 0.0f, 0.0f, 0.0f
+		0.0f, 0.0f, 0.0f, 1.0f
 	);
 	return scaling;
 }
@@ -197,6 +197,12 @@ Matrix4x4 Matrix4x4::Inverse(const Matrix4x4 mat4)
 {
 	// todo
 	return mat4;
+}
+
+Matrix4x4 Matrix4x4::RTS( const Vector3 translation,const Vector3 scale,const Vector3 eulerangle ) 
+{ 
+	Matrix4x4 ZXY = RotateY(eulerangle.y) * RotateX(eulerangle.x) * RotateZ(eulerangle.z);
+	return Translate(translation.x, translation.y, translation.z) * ZXY * Scale(scale.x, scale.y, scale.z);
 }
 
 void Matrix4x4::transpose() 
@@ -302,14 +308,15 @@ Vector2 Matrix4x4::operator*(const Vector2 vec2)
 
 Vector3 Matrix4x4::operator*(const Vector3 vec3) 
 {
+	Vector4 vec4 = Vector4(vec3.x,vec3.y,vec3.z,1.0f);
 	Vector4 result
 	(
-		this->m11 * vec3.x + this->m12 * vec3.y + this->m13 * vec3.z,
-		this->m21 * vec3.x + this->m22 * vec3.y + this->m23 * vec3.z,
-		this->m31 * vec3.x + this->m32 * vec3.y + this->m33 * vec3.z,
-		this->m41 * vec3.x + this->m42 * vec3.y + this->m43 * vec3.z
+		this->m11 * vec4.x + this->m12 * vec4.y + this->m13 * vec4.z + this->m14 * vec4.w,
+		this->m21 * vec4.x + this->m22 * vec4.y + this->m23 * vec4.z + this->m24 * vec4.w,
+		this->m31 * vec4.x + this->m32 * vec4.y + this->m33 * vec4.z + this->m34 * vec4.w,
+		this->m41 * vec4.x + this->m42 * vec4.y + this->m43 * vec4.z + this->m44 * vec4.w
 	);
-	return result;
+	return Vector3(result.x, result.y, result.z);
 }
 
 Vector4 Matrix4x4::operator*(const Vector4 vec4) 

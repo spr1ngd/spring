@@ -24,9 +24,9 @@ namespace spring
 		TypeInfo* typeInfo;
 	public:
 		const char* name;
-		const char* type = "Object";
 
 		Object();
+		virtual ~Object();
 		virtual void Destroy();
 
 		virtual const char* ToString();

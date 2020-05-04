@@ -1,9 +1,7 @@
 #pragma once
 #include <functional>
-#include "node.h"
+#include <vector>
 #include "gameobject.h"
-
-typedef void (*SelectionChanged)();
 
 namespace spring 
 {
@@ -11,14 +9,17 @@ namespace spring
 	{
 		class Selection 
 		{
-		public:
+		private:
 			static GameObject* gameobject;
-			static Node* node;
-			static Node* nodes;
-			static SelectionChanged selectionChanged;
+			static std::vector<std::function<void(GameObject&)>> onSelectEvents;
+			static std::vector<std::function<void(GameObject&)>> onDeselectEvents;
+		public:
 
-			static void Select(Node* node);
-			static void Unselect(Node* node);
+			static void OnSelect(std::function<void(GameObject&)> selectEvent);
+			static void OnDeselect(std::function<void(GameObject&)> deselectEvent);
+
+			static void Select(GameObject* target);
+			static GameObject* GetSelected();
 		};
 	}
 }
