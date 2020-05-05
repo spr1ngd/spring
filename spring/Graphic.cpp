@@ -12,7 +12,8 @@ void Graphic::Initialize()
 	{
 		GameObject* renderer = new GameObject("FullScreenRenderer(Graphic_Internal)");
 		renderer->layer = Layer::PostProcessing;
-		renderer->flags |= HideFlags::HideFlags_HideInHierarchyWindow;
+		// renderer->flags |= HideFlags::HideFlags_HideInHierarchyWindow;
+		renderer->SetFlag(HideFlags::HideFlags_HideInHierarchyWindow);
 		Graphic::fsRenderer = renderer->AddNode<FullScreenRenderer>();
 		Graphic::fsRenderer->Initialize();
 	}

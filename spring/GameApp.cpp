@@ -13,13 +13,13 @@ void GameApp::Awake()
 	sample->enabled = true;
 
 	GameObject* internalUICamera = new GameObject("Internal UI Camera");
-	internalUICamera->flags = HideFlags::HideFlags_HideInHierarchyWindow;
+	internalUICamera->SetFlag(HideFlags::HideFlags_HideInHierarchyWindow);
 	Camera* uiCamera = internalUICamera->AddNode<Camera>();
 	uiCamera->cullingMask->layers = Layer::UI;
 	uiCamera->clearFlag = Camera::None;
 
 	GameObject* plane = Primitive::CreatePrimitive(Primitive::Type::Quad);
-	plane->transform->SetScale(Vector3(10000, 10000, 10000));
+	plane->transform->SetLocalScale(Vector3(10000, 10000, 10000));
 	plane->transform->SetPosition(Vector3(0.0f, 0.0f, 0.0f));
 	//plane->transform->SetPosition(Vector3(0.0f, -25.0f, 0.0f));
 	plane->transform->SetEulerangle(Vector3(0.0f, 0.0f, 0.0f));
@@ -104,7 +104,7 @@ void GameApp::Awake()
 
 	// initialize the third player
 	thirdPlayer = Primitive::CreatePrimitive(Primitive::Sphere);
-	thirdPlayer->transform->SetScale(Vector3(0.05f,0.05f,0.05f));
+	thirdPlayer->transform->SetLocalScale(Vector3(0.05f,0.05f,0.05f));
 	thirdPlayer->transform->SetPosition(Vector3(0.0f,0.1f,0.0f));
 
 	Gizmos::DrawAxis(*thirdPlayer->transform);

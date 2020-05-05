@@ -14,6 +14,7 @@ namespace spring
 	{
 		HideFlags_None = 0x00000000,
 		HideFlags_HideInHierarchyWindow = 0x00000001,
+		HideFlags_NotEditable = 0x00000010
 	};
 
 	class GameObject : public Object
@@ -25,8 +26,8 @@ namespace spring
 		static void RemoveGameObject(GameObject* gameobject);
 
 		bool visible = true;
-	public:
 		int flags = 0x00000000;
+	public:
 		int layer = 0x00000001;
 		Transform* transform; // only store position/rotation/scale/eulerangle data
 
@@ -124,6 +125,19 @@ namespace spring
 
 		void SetActive(bool visible);
 		bool GetActive();
+
+		inline bool HasFlag( HideFlags hideFlag ) 
+		{
+			return (this->flags & hideFlag) == hideFlag;
+		}
+		inline void SetFlag(HideFlags hideFlag)
+		{
+			this->flags |= hideFlag;
+		}
+		inline void RemoveFlag(HideFlags hideFlag) 
+		{
+			this->flags &= ~hideFlag;
+		}
 
 		TypeInfo GetTypeInfo() override 
 		{

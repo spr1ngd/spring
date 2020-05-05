@@ -166,6 +166,7 @@ GameObject* Primitive::CreateGizmoMove()
 	xAxisMaterial->shader->setColor(MAIN_COLOR, Color::red);
 	xAxisMaterial->DepthTestFunc(true, GL_ALWAYS, true);
 	GameObject* xAxis = new GameObject("editor_gizmos_x_axis");
+	xAxis->SetFlag(HideFlags_NotEditable);
 	MeshRenderer* xAxisRenderer = xAxis->AddNode<MeshRenderer>();
 	xAxisRenderer->material = xAxisMaterial;
 	xAxisRenderer->setRenderOrder(15000);
@@ -185,6 +186,7 @@ GameObject* Primitive::CreateGizmoMove()
 	yAxisMaterial->shader->setColor(MAIN_COLOR, Color::blue);
 	yAxisMaterial->DepthTestFunc(true, GL_ALWAYS, true);
 	GameObject* yAxis = new GameObject("editor_gizmos_y_axis");
+	yAxis->SetFlag(HideFlags_NotEditable);
 	MeshRenderer* yAxisRenderer = yAxis->AddNode<MeshRenderer>();
 	yAxisRenderer->setRenderOrder(15000);
 	yAxisRenderer->material = yAxisMaterial;
@@ -204,6 +206,7 @@ GameObject* Primitive::CreateGizmoMove()
 	zAxisMaterial->shader->setColor(MAIN_COLOR, Color::green);
 	zAxisMaterial->DepthTestFunc(true, GL_ALWAYS, true);
 	GameObject* zAxis = new GameObject("editor_gizmos_z_axis");
+	zAxis->SetFlag(HideFlags_NotEditable);
 	MeshRenderer* zAxisRenderer = zAxis->AddNode<MeshRenderer>();
 	zAxisRenderer->setRenderOrder(15000);
 	zAxisRenderer->material = zAxisMaterial;
@@ -229,6 +232,7 @@ GameObject* Primitive::CreateGizmoScale()
 	xAxisMaterial->shader->setColor(MAIN_COLOR, Color::red);
 	xAxisMaterial->DepthTestFunc(true, GL_ALWAYS, true);
 	GameObject* xAxis = new GameObject("editor_gizmos_x_scale");
+	xAxis->SetFlag(HideFlags_NotEditable);
 	MeshRenderer* xAxisRenderer = xAxis->AddNode<MeshRenderer>();
 	xAxisRenderer->material = xAxisMaterial;
 	xAxisRenderer->setRenderOrder(15000);
@@ -248,6 +252,7 @@ GameObject* Primitive::CreateGizmoScale()
 	yAxisMaterial->shader->setColor(MAIN_COLOR, Color::blue);
 	yAxisMaterial->DepthTestFunc(true, GL_ALWAYS, true);
 	GameObject* yAxis = new GameObject("editor_gizmos_y_scale");
+	yAxis->SetFlag(HideFlags_NotEditable);
 	MeshRenderer* yAxisRenderer = yAxis->AddNode<MeshRenderer>();
 	yAxisRenderer->setRenderOrder(15000);
 	yAxisRenderer->material = yAxisMaterial;
@@ -267,6 +272,7 @@ GameObject* Primitive::CreateGizmoScale()
 	zAxisMaterial->shader->setColor(MAIN_COLOR, Color::green);
 	zAxisMaterial->DepthTestFunc(true, GL_ALWAYS, true);
 	GameObject* zAxis = new GameObject("editor_gizmos_z_scale");
+	zAxis->SetFlag(HideFlags_NotEditable);
 	MeshRenderer* zAxisRenderer = zAxis->AddNode<MeshRenderer>();
 	zAxisRenderer->setRenderOrder(15000);
 	zAxisRenderer->material = zAxisMaterial;

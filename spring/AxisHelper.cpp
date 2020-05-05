@@ -38,28 +38,32 @@ void AxisHelper::Update()
 { 
 	float distance = Vector3::Distance(this->transform->GetPosition(), Camera::main->transform->GetPosition());
 	float realRate = distance / 5.0f;
-	if( nullptr != this->axisGizmos )
-		this->axisGizmos->transform->SetScale(Vector3(realRate, realRate, realRate));
-	if( nullptr != this->scaleGizmos)
-		this->scaleGizmos->transform->SetScale(Vector3(realRate, realRate, realRate));
+	if (nullptr != this->axisGizmos)
+		this->axisGizmos->transform->SetLocalScale(Vector3(realRate, realRate, realRate));
+	if (nullptr != this->scaleGizmos)
+		this->scaleGizmos->transform->SetLocalScale(Vector3(realRate, realRate, realRate));
 
-	if (nullptr != Picking::selected && this->currentEditAxis == AxisMode::None)
-	{
-		if (strcmp(Picking::selected->name, "editor_gizmos_x_axis") == 0)
+	if (nullptr != Picking::selected )
+	{ 
+		if (this->currentEditAxis == AxisMode::None) 
 		{
-			this->currentEditAxis = AxisMode::X;
-		}
-		else if (strcmp(Picking::selected->name, "editor_gizmos_y_axis") == 0)
-		{
-			this->currentEditAxis = AxisMode::Y;
-		}
-		else if (strcmp(Picking::selected->name, "editor_gizmos_z_axis") == 0)
-		{
-			this->currentEditAxis = AxisMode::Z;
-		}
-		else
-		{
-			this->currentEditAxis = AxisMode::None;
+
+			if (strcmp(Picking::selected->name, "editor_gizmos_x_axis") == 0 || strcmp(Picking::selected->name, "editor_gizmos_x_scale") == 0)
+			{
+				this->currentEditAxis = AxisMode::X;
+			}
+			else if (strcmp(Picking::selected->name, "editor_gizmos_y_axis") == 0 || strcmp(Picking::selected->name, "editor_gizmos_y_scale") == 0)
+			{
+				this->currentEditAxis = AxisMode::Y;
+			}
+			else if (strcmp(Picking::selected->name, "editor_gizmos_z_axis") == 0 || strcmp(Picking::selected->name, "editor_gizmos_z_scale") == 0)
+			{
+				this->currentEditAxis = AxisMode::Z;
+			}
+			else
+			{
+				this->currentEditAxis = AxisMode::None;
+			}
 		}
 	}
 
@@ -75,18 +79,40 @@ void AxisHelper::Update()
 		if (Input::GetMouse(MouseID::MOUSE_LEFT))
 		{
 			this->editing = true;
-			if (this->currentEditAxis == AxisMode::X)
-				this->moveDir = Vector3(1.0f, 0.0f, 0.0f) * Input::mouseDelta.x;
-			else if (this->currentEditAxis == AxisMode::Y)
-				this->moveDir = Vector3(0.0f, -1.0f, 0.0f) * Input::mouseDelta.y;
-			else if (this->currentEditAxis == AxisMode::Z)
-				this->moveDir = Vector3(0.0f, 0.0f, -1.0f) * Input::mouseDelta.x;
 
-			if (nullptr != this->target) 
+			if (this->gizmosMode == AxisHelper::EditMode_Move)
 			{
-				Vector3 targetSrcPos = this->target->GetPosition();
-				targetSrcPos += this->moveDir * moveSpeed;
-				this->target->SetPosition(targetSrcPos);
+				Vector3 moveDir = Vector3::zero;
+				if (this->currentEditAxis == AxisMode::X)
+					moveDir = Vector3(1.0f, 0.0f, 0.0f) * Input::mouseDelta.x;
+				else if (this->currentEditAxis == AxisMode::Y)
+					moveDir = Vector3(0.0f, -1.0f, 0.0f) * Input::mouseDelta.y;
+				else if (this->currentEditAxis == AxisMode::Z)
+					moveDir = Vector3(0.0f, 0.0f, -1.0f) * Input::mouseDelta.x;
+
+				if (nullptr != this->target)
+				{
+					Vector3 targetSrcPos = this->target->GetPosition();
+					targetSrcPos += moveDir * this->moveSpeed;
+					this->target->SetPosition(targetSrcPos);
+				}
+			}
+			else if (this->gizmosMode == AxisHelper::EditMode_Scale) 
+			{
+				Vector3 scaleDir = Vector3::zero;
+				if (this->currentEditAxis == AxisMode::X)
+					scaleDir = Vector3(1.0f, 0.0f, 0.0f) * Input::mouseDelta.x;
+				else if (this->currentEditAxis == AxisMode::Y)
+					scaleDir = Vector3(0.0f, -1.0f, 0.0f) * Input::mouseDelta.y;
+				else if (this->currentEditAxis == AxisMode::Z)
+					scaleDir = Vector3(0.0f, 0.0f, -1.0f) * Input::mouseDelta.x;
+
+				if (nullptr != this->target)
+				{
+					Vector3 targetSrcScale = this->target->GetLocalScale();
+					targetSrcScale += scaleDir * this->scaleSpeed;
+					this->target->SetLocalScale(targetSrcScale);
+				}
 			}
 		}
 	}

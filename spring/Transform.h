@@ -15,10 +15,13 @@ namespace spring
 		std::vector<Transform*> children;
 
 		bool transformChangedInThisFrame = true;
-		Vector3 localPosition = Vector3::zero;		
+		Quaternion rotation = Quaternion::indentity;
+		Vector3 localPosition = Vector3::zero;
+		Vector3 localScale = Vector3::one;
 
 		glm::mat4 mMatrix;
 		glm::mat4 nmMatrix;
+		Matrix4x4 rotationMatrix = Matrix4x4::indentity;
 
 		void RecalculateTransform();
 
@@ -26,9 +29,6 @@ namespace spring
 		Vector3 up = Vector3::up;
 		Vector3 right = Vector3::right;
 		Vector3 forword = Vector3::forward;
-
-		Matrix4x4 rotationMatrix = Matrix4x4::indentity;
-		Quaternion rotation = Quaternion::indentity;
 
 		Vector3 eulerangle = Vector3::zero;
 		Vector3 scale = Vector3::one;
@@ -50,8 +50,8 @@ namespace spring
 		void SetLocalPosition(Vector3 localPosition);
 		Vector3 GetLocalPosition();
 
-		void SetScale(Vector3 scale);
-		const Vector3& GetScale();
+		void SetLocalScale(Vector3 localScale);
+		const Vector3& GetLocalScale();
 
 		void LookAt(Vector3 target,bool isLocal = true);
 		void Rotate(Vector3 axis,float angle);

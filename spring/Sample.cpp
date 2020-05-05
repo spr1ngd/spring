@@ -87,7 +87,7 @@ void Sample::Awake()
 	{ 
 		// TODO : 50MBÄÚ´æÏûºÄ£¿£¿£¿£¿£¿
 		GameObject* skyboxGO = new GameObject("Skybox");
-		skyboxGO->flags |= HideFlags::HideFlags_HideInHierarchyWindow;
+		skyboxGO->SetFlag(HideFlags::HideFlags_HideInHierarchyWindow);
 		skyboxGO->layer = Layer::Skybox;
 		skybox = skyboxGO->AddNode<class::Skybox>();
 		Material* skyboxMaterial = new Material(Shader::Load("skybox/6 Sided.vs", "skybox/6 Sided.fs"));

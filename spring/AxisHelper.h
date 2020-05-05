@@ -30,12 +30,13 @@ namespace spring
 		GameObject* scaleGizmos = nullptr;
 
 		bool editing = false;
-		Vector3 moveDir = Vector3::zero;
 		EditorGizmosMode gizmosMode = EditorGizmosMode::EditMode_Move;
 		AxisMode currentEditAxis = AxisMode::None;
 
 	public: 
 		float moveSpeed = 0.05f;
+		float scaleSpeed = 0.01f;
+		float rotateSpeed = 1.0f;
 
 		AxisHelper();
 		void Awake() override;

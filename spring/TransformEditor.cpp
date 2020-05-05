@@ -10,7 +10,7 @@ void TransformEditor::OnDrawInspector()
 	const Vector3 worldSpacePos = node->GetPosition();
 	const Vector3 localSpacePos = node->GetLocalPosition();
 	const Vector3 localSpaceEulerangle = node->GetEulerangle();
-	const Vector3 localSpaceScale = node->GetScale();
+	const Vector3 localSpaceScale = node->GetLocalScale();
 
 	// float* localPosition = new float[3]{ localSpacePos.x,localSpacePos.y,localSpacePos.z };
 	// ImGui::DragFloat3("local position", localPosition);
@@ -28,7 +28,7 @@ void TransformEditor::OnDrawInspector()
 	delete[] localEulerangle;
 
 	float* localScale = new float[3]{ localSpaceScale.x,localSpaceScale.y,localSpaceScale.z };
-	ImGui::DragFloat3("scale", localScale);
-	node->SetScale(Vector3(localScale[0], localScale[1], localScale[2]));
+	ImGui::DragFloat3("local scale", localScale);
+	node->SetLocalScale(Vector3(localScale[0], localScale[1], localScale[2]));
 	delete[] localScale;
 }

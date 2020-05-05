@@ -26,5 +26,6 @@ namespace spring
 		static void Render();
 
 		static void DrawAxis(Transform& target);
+		static void SetAxisMode(AxisHelper::EditorGizmosMode mode);
 	};
 }

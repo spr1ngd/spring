@@ -26,7 +26,7 @@ void DrawGroundxxx()
 	ground->mesh = &mesh;
 	ground->Initialize();
 
-	ground->transform->SetScale(Vector3(50.0f));
+	ground->transform->SetLocalScale(Vector3(50.0f));
 	ground->transform->SetPosition(Vector3(0.0f, -2.0f, 0.0f));
 	ground->transform->SetEulerangle(Vector3(-90.0f, 0.0f, 0.0f));
 	ground->material->shader->setColor(MAIN_COLOR, Color::white);

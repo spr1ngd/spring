@@ -22,7 +22,7 @@ void InstancedRenderer::AddInstance(Vector3 position, Vector3 eulerangle, Vector
 	Transform* trans = new Transform();
 	trans->SetPosition(position);
 	trans->SetEulerangle(eulerangle);
-	trans->SetScale(scale);
+	trans->SetLocalScale(scale);
 	this->instances.push_back(trans);
 
 	glm::mat4 model =

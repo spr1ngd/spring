@@ -22,8 +22,8 @@ void processKeyInput(KeyCode keyCode, int keyStatus)
 void processMouseInput(MouseID mouseId, int mouseStatus)
 {
 	if (mouseStatus == GLFW_PRESS) Input::setMouseState(mouseId, InputState::STATE_DOWN);
-	if (mouseStatus == GLFW_RELEASE)Input::setMouseState(mouseId, InputState::STATE_UP);
-	if (mouseStatus == GLFW_REPEAT)Input::setMouseState(mouseId, InputState::STATE_PRESS);
+	if (mouseStatus == GLFW_RELEASE) Input::setMouseState(mouseId, InputState::STATE_UP);
+	if (mouseStatus == GLFW_REPEAT) Input::setMouseState(mouseId, InputState::STATE_PRESS);
 }
 
 void io_keyboard_callback(GLFWwindow* window,int key,int scancode,int action,int mods)
@@ -199,8 +199,8 @@ bool Input::GetKeyDown(KeyCode keycode)
 	if (info == nullptr)
 		return false;
 	bool result = (info->state == InputState::STATE_DOWN) && !info->down;
-	//if (result)
-	//	info->down = true;
+	if (result)
+		info->down = true;
 	return result;
 }
 
@@ -240,15 +240,15 @@ void Input::setMouseState(MouseID mouseID, InputState state)
 	{
 		info->state = state;
 		if (state == InputState::STATE_DOWN)
-		{
+		{ 
 			info->up = false;
 		}
 		else if (state == InputState::STATE_UP)
-		{
+		{ 
 			info->down = false;
 		}
 		else if (state == InputState::STATE_PRESS)
-		{
+		{ 
 			info->down = true;
 		}
 	}
@@ -285,8 +285,8 @@ bool Input::GetMouseDown(MouseID mouseId)
 	if (nullptr == info)
 		return false;
 	bool result = (info->state == InputState::STATE_DOWN) && (!info->down) ;
-	//if( result )
-	//	info->down = true;
+	if (result)
+		info->down = true;
 	return result;
 }
 

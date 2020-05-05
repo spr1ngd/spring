@@ -40,3 +40,9 @@ void Gizmos::DrawAxis(Transform& target)
 	}
 	axisHelper->SetTarget(&target);
 }
+
+void Gizmos::SetAxisMode(AxisHelper::EditorGizmosMode mode) 
+{
+	if (nullptr != axisHelper)
+		axisHelper->SetAxisMode(mode);
+}

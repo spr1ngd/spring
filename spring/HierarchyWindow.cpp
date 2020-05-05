@@ -21,7 +21,7 @@ void DrawTree(int& clickedNode,int& clickedIndex, GameObject& parent ,ImGuiTreeN
 	for (auto go = parent.children.begin(); go != parent.children.end(); go++)
 	{
 		GameObject* goPtr = *go;
-		if ((goPtr->flags & HideFlags::HideFlags_HideInHierarchyWindow) == HideFlags::HideFlags_HideInHierarchyWindow)
+		if(goPtr->HasFlag(HideFlags::HideFlags_HideInHierarchyWindow))
 			continue;
 		clickedIndex++;
 		ImGuiTreeNodeFlags node_flag = flags;
@@ -58,7 +58,7 @@ void HierarchyWindow::OnDrawWindow()
 		for (int i = 0; i < (int)Scene::current->gameobjects.size(); i++)
 		{
 			GameObject* gameobject = Scene::current->gameobjects[i];
-			if ((gameobject->flags & HideFlags::HideFlags_HideInHierarchyWindow) == HideFlags::HideFlags_HideInHierarchyWindow)
+			if(gameobject->HasFlag(HideFlags::HideFlags_HideInHierarchyWindow))
 				continue;
 			ImGuiTreeNodeFlags node_flags = base_flags;
 			const bool isSelected = (selection_mask & (1 << clickedIndex)) != 0;

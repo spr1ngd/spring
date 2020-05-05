@@ -57,8 +57,13 @@ void Transform::SetPosition(Vector3 position)
 		this->localPosition = this->position - this->gameobject->parent->transform->position;
 	}
 	RecalculateTransform();
-	for (auto child : this->gameobject->children)
-		child->transform->RecalculateTransform();
+	for (GameObject* child : this->gameobject->children)
+	{
+		auto srcLocalPos = child->transform->GetLocalPosition();
+		// child->transform->position = this->position + srcLocalPos;
+		// child->transform->RecalculateTransform();
+		child->transform->SetPosition(this->position + srcLocalPos);
+	}
 }
 
 const Vector3& Transform::GetPosition() 
@@ -89,18 +94,30 @@ Vector3 Transform::GetLocalPosition()
 	return this->localPosition;
 }
 
-void Transform::SetScale(Vector3 scale) 
+void Transform::SetLocalScale(Vector3 localScale)
 {
 	this->transformChangedInThisFrame = true;
-	this->scale = scale;
+	this->localScale = localScale;
+	if (nullptr == this->gameobject->parent)
+	{
+		this->scale = localScale;
+	}
+	else
+	{
+		Vector3 parentScale = this->gameobject->parent->transform->scale;
+		this->scale = Vector3(parentScale.x * this->localScale.x, parentScale.y * this->localScale.x, parentScale.z * this->localScale.z);
+	}
 	RecalculateTransform();
-	for (auto child : this->gameobject->children)
-		child->transform->RecalculateTransform();
+	for (GameObject* child : this->gameobject->children)
+	{
+		Vector3 srcLocalScale = child->transform->GetLocalScale();
+		child->transform->SetLocalScale(srcLocalScale);
+	}
 }
 
-const Vector3& Transform::GetScale() 
+const Vector3& Transform::GetLocalScale() 
 {
-	return this->scale;
+	return this->localScale;
 }
 
 void Transform::LookAt(Vector3 target,bool isLocal)
@@ -126,9 +143,6 @@ void Transform::RotateAround(Vector3 point,Vector3 axis, float angle)
 
 void Transform::RecalculateTransform() 
 {
-	// TODO: 将当前矩阵与父级矩阵向乘，得出最终的模型矩阵
-	// recalculate model matrix
-	// recalculate nm matrix
 	this->mMatrix =
 		glm::translate(glm::mat4(1.0), glm::vec3(this->position.x, this->position.y, this->position.z)) *
 		glm::rotate(glm::mat4(1.0f), glm::radians(this->eulerangle.z), glm::vec3(0.0f, 0.0f, 1.0f)) *
@@ -136,11 +150,11 @@ void Transform::RecalculateTransform()
 		glm::rotate(glm::mat4(1.0f), glm::radians(this->eulerangle.y), glm::vec3(0.0f, 1.0f, 0.0f)) *
 		glm::scale(glm::mat4(1.0f), glm::vec3(this->scale.x, this->scale.y, this->scale.z));
 
-	if (nullptr != this->gameobject->parent)
-	{
-		glm::mat4 M = this->gameobject->parent->transform->GetModelMatrix();
-		this->mMatrix = M * this->mMatrix;
-	}
+	//if (nullptr != this->gameobject->parent)
+	//{
+	//	glm::mat4 M = this->gameobject->parent->transform->GetModelMatrix();
+	//	this->mMatrix = M * this->mMatrix;
+	//}
 	this->nmMatrix = glm::inverseTranspose(this->mMatrix);
 	this->transformChangedInThisFrame = false;
 }
