@@ -1,7 +1,6 @@
 #pragma once
 #include <vector>
 #include "shader.h"
-#include "vector3.h"
 
 namespace spring 
 {

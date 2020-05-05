@@ -18,6 +18,7 @@
 
 #define MAIN_TEX "Main_Texture"
 #define SECONDARY_TEX "Secondary_Texture"
+#define HEIGHT_TEX "Height_Texture"
 #define MAIN_CUBEMAP "Main_Cubemap"
 #define MAIN_COLOR "Main_Color"
 

@@ -21,6 +21,7 @@ Material::~Material()
 {
 	if (nullptr != this->shader)
 		delete this->shader;
+	Flash(this);
 }
 
 void Material::AlphaTestFunc(GLenum alphaTestFunc, float alphaTestRef ) 

@@ -18,6 +18,7 @@ namespace spring
 		Quaternion rotation = Quaternion::indentity;
 		Vector3 localPosition = Vector3::zero;
 		Vector3 localScale = Vector3::one;
+		Vector3 localEulerangle = Vector3::zero;
 
 		glm::mat4 mMatrix;
 		glm::mat4 nmMatrix;
@@ -52,6 +53,9 @@ namespace spring
 
 		void SetLocalScale(Vector3 localScale);
 		const Vector3& GetLocalScale();
+
+		void SetLocalEulerangle(Vector3 localEulerangle);
+		const Vector3& GetLocalEulerangle();
 
 		void LookAt(Vector3 target,bool isLocal = true);
 		void Rotate(Vector3 axis,float angle);

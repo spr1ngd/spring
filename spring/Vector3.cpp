@@ -21,9 +21,9 @@ float Vector3::Magnitude(const Vector3& vec3)
 
 Vector3 Vector3::Normalize(Vector3 vec3)
 {
-	if (vec3 == Vector3::zero)
-		return Vector3::zero;
 	float magnitude = Vector3::Magnitude(vec3);
+	if (magnitude == 0.0f)
+		return Vector3::zero;
 	Vector3 normalize = vec3 / magnitude;
 	return normalize;
 }

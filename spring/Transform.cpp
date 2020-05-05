@@ -21,7 +21,14 @@ void Transform::SetEulerangle(Vector3 eulerangle)
 	this->up = this->rotationMatrix * Vector3::up;
 	this->forword = this->rotationMatrix * Vector3::forward;
 	this->eulerangle = eulerangle;
+	if (nullptr == this->gameobject->parent)
+		this->localEulerangle = eulerangle;
+	else
+		;//todo set local eulerangle in other condition
 	this->rotation = Quaternion::Euler(this->eulerangle);
+	this->RecalculateTransform();
+	for (GameObject* child : this->gameobject->children)
+		this->RecalculateTransform();
 }
 
 const Vector3& Transform::GetEulerangle() 
@@ -58,12 +65,7 @@ void Transform::SetPosition(Vector3 position)
 	}
 	RecalculateTransform();
 	for (GameObject* child : this->gameobject->children)
-	{
-		auto srcLocalPos = child->transform->GetLocalPosition();
-		// child->transform->position = this->position + srcLocalPos;
-		// child->transform->RecalculateTransform();
-		child->transform->SetPosition(this->position + srcLocalPos);
-	}
+		child->transform->RecalculateTransform();
 }
 
 const Vector3& Transform::GetPosition() 
@@ -109,15 +111,26 @@ void Transform::SetLocalScale(Vector3 localScale)
 	}
 	RecalculateTransform();
 	for (GameObject* child : this->gameobject->children)
-	{
-		Vector3 srcLocalScale = child->transform->GetLocalScale();
-		child->transform->SetLocalScale(srcLocalScale);
-	}
+		child->transform->RecalculateTransform();
 }
 
 const Vector3& Transform::GetLocalScale() 
 {
 	return this->localScale;
+}
+
+void Transform::SetLocalEulerangle(Vector3 localEulerangle) 
+{
+	this->transformChangedInThisFrame = true;
+	this->localEulerangle = localEulerangle;
+	this->RecalculateTransform();
+	for (GameObject* child : this->gameobject->children)
+		child->transform->RecalculateTransform();
+}
+
+const Vector3& Transform::GetLocalEulerangle() 
+{
+	return this->localEulerangle;
 }
 
 void Transform::LookAt(Vector3 target,bool isLocal)
@@ -143,18 +156,18 @@ void Transform::RotateAround(Vector3 point,Vector3 axis, float angle)
 
 void Transform::RecalculateTransform() 
 {
-	this->mMatrix =
-		glm::translate(glm::mat4(1.0), glm::vec3(this->position.x, this->position.y, this->position.z)) *
-		glm::rotate(glm::mat4(1.0f), glm::radians(this->eulerangle.z), glm::vec3(0.0f, 0.0f, 1.0f)) *
-		glm::rotate(glm::mat4(1.0f), glm::radians(this->eulerangle.x), glm::vec3(1.0f, 0.0f, 0.0f)) *
-		glm::rotate(glm::mat4(1.0f), glm::radians(this->eulerangle.y), glm::vec3(0.0f, 1.0f, 0.0f)) *
-		glm::scale(glm::mat4(1.0f), glm::vec3(this->scale.x, this->scale.y, this->scale.z));
-
-	//if (nullptr != this->gameobject->parent)
-	//{
-	//	glm::mat4 M = this->gameobject->parent->transform->GetModelMatrix();
-	//	this->mMatrix = M * this->mMatrix;
-	//}
+	this->mMatrix = 
+		glm::translate(glm::mat4(1.0), glm::vec3(this->localPosition.x, this->localPosition.y, this->localPosition.z)) *
+		glm::rotate(glm::mat4(1.0f), glm::radians(this->localEulerangle.z), glm::vec3(0.0f, 0.0f, 1.0f)) *
+		glm::rotate(glm::mat4(1.0f), glm::radians(this->localEulerangle.x), glm::vec3(1.0f, 0.0f, 0.0f)) *
+		glm::rotate(glm::mat4(1.0f), glm::radians(this->localEulerangle.y), glm::vec3(0.0f, 1.0f, 0.0f)) *
+		glm::scale(glm::mat4(1.0f), glm::vec3(this->localScale.x, this->localScale.y, this->localScale.z));
+	 
+	if (nullptr != this->gameobject->parent)
+	{
+		glm::mat4 M = this->gameobject->parent->transform->GetModelMatrix();
+		this->mMatrix = M * this->mMatrix;
+	} 
 	this->nmMatrix = glm::inverseTranspose(this->mMatrix);
 	this->transformChangedInThisFrame = false;
 }

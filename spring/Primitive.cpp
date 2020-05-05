@@ -134,10 +134,10 @@ GameObject* Primitive::CreateSphere()
 	return sphere;
 }
 
-GameObject* Primitive::CreateBand() 
+GameObject* Primitive::CreateBand(float bRadius, float sRadius, unsigned int bSubdivision, unsigned int sSubdivision)
 {
 	GameObject* band = new GameObject("Band");
-	Mesh* bandMesh = GenBand();
+	Mesh* bandMesh = GenBand(bRadius, sRadius, bSubdivision, sSubdivision);
 	MeshRenderer* renderer = band->AddNode<MeshRenderer>();
 	renderer->material = new Material(Shader::Load("diffuse/diffuse.vs", "diffuse/diffuse.fs"));
 	renderer->material->shader->setColor(MAIN_COLOR, Color::gray);
@@ -165,7 +165,7 @@ GameObject* Primitive::CreateGizmoMove()
 	Material* xAxisMaterial = new Material(Shader::Load("editor/gizmos/editor_gizmos_axis.vs", "editor/gizmos/editor_gizmos_axis.fs"));
 	xAxisMaterial->shader->setColor(MAIN_COLOR, Color::red);
 	xAxisMaterial->DepthTestFunc(true, GL_ALWAYS, true);
-	GameObject* xAxis = new GameObject("editor_gizmos_x_axis");
+	GameObject* xAxis = new GameObject("editor_gizmos_x");
 	xAxis->SetFlag(HideFlags_NotEditable);
 	MeshRenderer* xAxisRenderer = xAxis->AddNode<MeshRenderer>();
 	xAxisRenderer->material = xAxisMaterial;
@@ -185,7 +185,7 @@ GameObject* Primitive::CreateGizmoMove()
 	Material* yAxisMaterial = new Material(Shader::Load("editor/gizmos/editor_gizmos_axis.vs", "editor/gizmos/editor_gizmos_axis.fs"));
 	yAxisMaterial->shader->setColor(MAIN_COLOR, Color::blue);
 	yAxisMaterial->DepthTestFunc(true, GL_ALWAYS, true);
-	GameObject* yAxis = new GameObject("editor_gizmos_y_axis");
+	GameObject* yAxis = new GameObject("editor_gizmos_y");
 	yAxis->SetFlag(HideFlags_NotEditable);
 	MeshRenderer* yAxisRenderer = yAxis->AddNode<MeshRenderer>();
 	yAxisRenderer->setRenderOrder(15000);
@@ -205,7 +205,7 @@ GameObject* Primitive::CreateGizmoMove()
 	Material* zAxisMaterial = new Material(Shader::Load("editor/gizmos/editor_gizmos_axis.vs", "editor/gizmos/editor_gizmos_axis.fs"));
 	zAxisMaterial->shader->setColor(MAIN_COLOR, Color::green);
 	zAxisMaterial->DepthTestFunc(true, GL_ALWAYS, true);
-	GameObject* zAxis = new GameObject("editor_gizmos_z_axis");
+	GameObject* zAxis = new GameObject("editor_gizmos_z");
 	zAxis->SetFlag(HideFlags_NotEditable);
 	MeshRenderer* zAxisRenderer = zAxis->AddNode<MeshRenderer>();
 	zAxisRenderer->setRenderOrder(15000);
@@ -231,7 +231,7 @@ GameObject* Primitive::CreateGizmoScale()
 	Material* xAxisMaterial = new Material(Shader::Load("editor/gizmos/editor_gizmos_axis.vs", "editor/gizmos/editor_gizmos_axis.fs"));
 	xAxisMaterial->shader->setColor(MAIN_COLOR, Color::red);
 	xAxisMaterial->DepthTestFunc(true, GL_ALWAYS, true);
-	GameObject* xAxis = new GameObject("editor_gizmos_x_scale");
+	GameObject* xAxis = new GameObject("editor_gizmos_x");
 	xAxis->SetFlag(HideFlags_NotEditable);
 	MeshRenderer* xAxisRenderer = xAxis->AddNode<MeshRenderer>();
 	xAxisRenderer->material = xAxisMaterial;
@@ -251,7 +251,7 @@ GameObject* Primitive::CreateGizmoScale()
 	Material* yAxisMaterial = new Material(Shader::Load("editor/gizmos/editor_gizmos_axis.vs", "editor/gizmos/editor_gizmos_axis.fs"));
 	yAxisMaterial->shader->setColor(MAIN_COLOR, Color::blue);
 	yAxisMaterial->DepthTestFunc(true, GL_ALWAYS, true);
-	GameObject* yAxis = new GameObject("editor_gizmos_y_scale");
+	GameObject* yAxis = new GameObject("editor_gizmos_y");
 	yAxis->SetFlag(HideFlags_NotEditable);
 	MeshRenderer* yAxisRenderer = yAxis->AddNode<MeshRenderer>();
 	yAxisRenderer->setRenderOrder(15000);
@@ -271,7 +271,7 @@ GameObject* Primitive::CreateGizmoScale()
 	Material* zAxisMaterial = new Material(Shader::Load("editor/gizmos/editor_gizmos_axis.vs", "editor/gizmos/editor_gizmos_axis.fs"));
 	zAxisMaterial->shader->setColor(MAIN_COLOR, Color::green);
 	zAxisMaterial->DepthTestFunc(true, GL_ALWAYS, true);
-	GameObject* zAxis = new GameObject("editor_gizmos_z_scale");
+	GameObject* zAxis = new GameObject("editor_gizmos_z");
 	zAxis->SetFlag(HideFlags_NotEditable);
 	MeshRenderer* zAxisRenderer = zAxis->AddNode<MeshRenderer>();
 	zAxisRenderer->setRenderOrder(15000);
@@ -292,6 +292,48 @@ GameObject* Primitive::CreateGizmoScale()
 GameObject* Primitive::CreateGizmoRotate() 
 {
 	GameObject* rotateGizmo = new GameObject("editor_gizmos_rotate");
+
+	// x axis
+	Material* xAxisMaterial = new Material(Shader::Load("editor/gizmos/editor_gizmos_axis.vs", "editor/gizmos/editor_gizmos_axis.fs"));
+	xAxisMaterial->shader->setColor(MAIN_COLOR, Color::red);
+	xAxisMaterial->DepthTestFunc(true, GL_ALWAYS, true);
+	GameObject* xAxis = new GameObject("editor_gizmos_x");
+	xAxis->SetFlag(HideFlags_NotEditable);
+	MeshRenderer* xAxisRenderer = xAxis->AddNode<MeshRenderer>();
+	xAxisRenderer->material = xAxisMaterial;
+	xAxisRenderer->setRenderOrder(15000);
+	Mesh* xAxisMesh = GenBand(1.0f, 0.01f, 128, 16);
+	xAxisMesh->RTS(Matrix4x4::RTS(Vector3(0.0f, 0.0f, 0.0f), Vector3(1.0f,1.0f,1.0f), Vector3(0.0f, 0.0f, 90.0f)));
+	xAxisRenderer->mesh = xAxisMesh;
+	xAxis->SetParent(rotateGizmo);
+
+	// y axis
+	Material* yAxisMaterial = new Material(Shader::Load("editor/gizmos/editor_gizmos_axis.vs", "editor/gizmos/editor_gizmos_axis.fs"));
+	yAxisMaterial->shader->setColor(MAIN_COLOR, Color::blue);
+	yAxisMaterial->DepthTestFunc(true, GL_ALWAYS, true);
+	GameObject* yAxis = new GameObject("editor_gizmos_y");
+	yAxis->SetFlag(HideFlags_NotEditable);
+	MeshRenderer* yAxisRenderer = yAxis->AddNode<MeshRenderer>();
+	yAxisRenderer->setRenderOrder(15000);
+	yAxisRenderer->material = yAxisMaterial;
+	Mesh* yAxisMesh = GenBand(1.0f, 0.01f, 128, 16);
+	// yAxisMesh->RTS(Matrix4x4::RTS(Vector3(0.0f, 0.0f, 0.0f), Vector3(1.0f, 1.0f, 1.0f), Vector3(0.0f, 0.0f, 90.0f)));
+	yAxisRenderer->mesh = yAxisMesh;
+	yAxis->SetParent(rotateGizmo);
+
+	// z axis
+	Material* zAxisMaterial = new Material(Shader::Load("editor/gizmos/editor_gizmos_axis.vs", "editor/gizmos/editor_gizmos_axis.fs"));
+	zAxisMaterial->shader->setColor(MAIN_COLOR, Color::green);
+	zAxisMaterial->DepthTestFunc(true, GL_ALWAYS, true);
+	GameObject* zAxis = new GameObject("editor_gizmos_z");
+	zAxis->SetFlag(HideFlags_NotEditable);
+	MeshRenderer* zAxisRenderer = zAxis->AddNode<MeshRenderer>();
+	zAxisRenderer->setRenderOrder(15000);
+	zAxisRenderer->material = zAxisMaterial;
+	Mesh* zAxisMesh = GenBand(1.0f, 0.01f, 128, 16);
+	zAxisMesh->RTS(Matrix4x4::RTS(Vector3(0.0f, 0.0f, 0.0f), Vector3(1.0f, 1.0f, 1.0f), Vector3(90.0f, 0.0f, 0.0f)));
+	zAxisRenderer->mesh = zAxisMesh;
+	zAxis->SetParent(rotateGizmo);
 
 	return rotateGizmo;
 }
@@ -754,49 +796,44 @@ Mesh* Primitive::GenSphere()
 	return sphere;
 }
 
-Mesh* Primitive::GenBand() 
+Mesh* Primitive::GenBand(float bRadius,float sRadius, unsigned int bSubdivision, unsigned int sSubdivision)
 {
-	float biggerBandRadius = 1.0f;
-	float samllerBandRadius = 0.0001f;
-	int biggerBandSubdivision = 64;
-	int samllerBandSubdivision = 64;
-
-	float biggerBandRadian = (1.0f / biggerBandSubdivision) * Mathf::pi * 2;
-	float samllerBandRadian = (1.0f / samllerBandSubdivision) * Mathf::pi * 2;
+	float biggerBandRadian = (1.0f / bSubdivision) * Mathf::pi * 2;
+	float samllerBandRadian = (1.0f / sSubdivision) * Mathf::pi * 2;
 
 	Mesh* band = new Mesh();
 	std::vector<Vertex> vertices;
 	std::vector<unsigned int> indices;
 
 	int vertexCount = 0;
-	for (unsigned int i = 0; i <= biggerBandSubdivision; i++)
+	for (unsigned int i = 0; i <= bSubdivision; i++)
 	{
 		float radian = biggerBandRadian * i;
 		float x = Mathf::Cos(radian);
 		float z = Mathf::Sin(radian);
-		Vector3 dir = Vector3(x, 0.0f, z);
-		Vector3 origin = Vector3(x, 0.0f, z) * biggerBandRadius;
+		Vector3 dir = Vector3::Normalize(Vector3(x, 0.0f, z));
+		Vector3 origin = dir * bRadius;
 
 		vertexCount = vertices.size();
-		for (unsigned int bIndex = 0; bIndex <= samllerBandSubdivision; bIndex++)
+		for (unsigned int bIndex = 0; bIndex <= sSubdivision; bIndex++)
 		{
 			float bRadian = samllerBandRadian * bIndex;
 			float bX = Mathf::Cos(bRadian);
 			float bY = Mathf::Sin(bRadian);
 
 			Vertex vertex;
-			vertex.vertex = origin + dir * bX * samllerBandRadius + Vector3(0.0f, bY * samllerBandRadius, 0.0f);
+			vertex.vertex = origin + dir * bX * sRadius + Vector3(0.0f, bY, 0.0f) * sRadius;
 			vertex.normal = Vector3::Normalize(vertex.vertex - origin);
 			vertices.push_back(vertex);
 
-			if (bIndex < samllerBandSubdivision && i < biggerBandSubdivision)
+			if (bIndex < sSubdivision && i < bSubdivision)
 			{
 				indices.push_back(vertexCount + bIndex);
 				indices.push_back(vertexCount + bIndex + 1);
-				indices.push_back(vertexCount + bIndex + 2 + samllerBandSubdivision);
+				indices.push_back(vertexCount + bIndex + 2 + sSubdivision);
 
-				indices.push_back(vertexCount + bIndex + 2 + samllerBandSubdivision);
-				indices.push_back(vertexCount + bIndex + 1+ samllerBandSubdivision);
+				indices.push_back(vertexCount + bIndex + 2 + sSubdivision);
+				indices.push_back(vertexCount + bIndex + 1 + sSubdivision);
 				indices.push_back(vertexCount + bIndex);
 			}
 		}

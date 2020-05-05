@@ -199,8 +199,8 @@ bool Input::GetKeyDown(KeyCode keycode)
 	if (info == nullptr)
 		return false;
 	bool result = (info->state == InputState::STATE_DOWN) && !info->down;
-	if (result)
-		info->down = true;
+	//if (result)
+	//	info->down = true;
 	return result;
 }
 
@@ -285,8 +285,8 @@ bool Input::GetMouseDown(MouseID mouseId)
 	if (nullptr == info)
 		return false;
 	bool result = (info->state == InputState::STATE_DOWN) && (!info->down) ;
-	if (result)
-		info->down = true;
+	/*if (result)
+		info->down = true;*/
 	return result;
 }
 

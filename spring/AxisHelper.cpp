@@ -42,21 +42,23 @@ void AxisHelper::Update()
 		this->axisGizmos->transform->SetLocalScale(Vector3(realRate, realRate, realRate));
 	if (nullptr != this->scaleGizmos)
 		this->scaleGizmos->transform->SetLocalScale(Vector3(realRate, realRate, realRate));
+	if (nullptr != this->rotateGizmos)
+		this->rotateGizmos->transform->SetLocalScale(Vector3(realRate, realRate, realRate));
 
 	if (nullptr != Picking::selected )
 	{ 
 		if (this->currentEditAxis == AxisMode::None) 
 		{
 
-			if (strcmp(Picking::selected->name, "editor_gizmos_x_axis") == 0 || strcmp(Picking::selected->name, "editor_gizmos_x_scale") == 0)
+			if (strcmp(Picking::selected->name, "editor_gizmos_x") == 0)
 			{
 				this->currentEditAxis = AxisMode::X;
 			}
-			else if (strcmp(Picking::selected->name, "editor_gizmos_y_axis") == 0 || strcmp(Picking::selected->name, "editor_gizmos_y_scale") == 0)
+			else if (strcmp(Picking::selected->name, "editor_gizmos_y") == 0)
 			{
 				this->currentEditAxis = AxisMode::Y;
 			}
-			else if (strcmp(Picking::selected->name, "editor_gizmos_z_axis") == 0 || strcmp(Picking::selected->name, "editor_gizmos_z_scale") == 0)
+			else if (strcmp(Picking::selected->name, "editor_gizmos_z") == 0)
 			{
 				this->currentEditAxis = AxisMode::Z;
 			}
@@ -76,10 +78,13 @@ void AxisHelper::Update()
 
 	if (this->currentEditAxis != AxisMode::None)
 	{
-		if (Input::GetMouse(MouseID::MOUSE_LEFT))
+		if (Input::GetMouseDown(MouseID::MOUSE_LEFT))
 		{
 			this->editing = true;
+		}
 
+		if (Input::GetMouse(MouseID::MOUSE_LEFT) && this->editing)
+		{
 			if (this->gizmosMode == AxisHelper::EditMode_Move)
 			{
 				Vector3 moveDir = Vector3::zero;
@@ -114,6 +119,23 @@ void AxisHelper::Update()
 					this->target->SetLocalScale(targetSrcScale);
 				}
 			}
+			else if (this->gizmosMode == AxisHelper::EditMode_Rotate) 
+			{
+				Vector3 rotateDir = Vector3::zero;
+				if (this->currentEditAxis == AxisMode::X)
+					rotateDir = Vector3(1.0f, 0.0f, 0.0f) * Input::mouseDelta.x;
+				else if (this->currentEditAxis == AxisMode::Y)
+					rotateDir = Vector3(0.0f, -1.0f, 0.0f) * Input::mouseDelta.y;
+				else if (this->currentEditAxis == AxisMode::Z)
+					rotateDir = Vector3(0.0f, 0.0f, -1.0f) * Input::mouseDelta.x;
+
+				if (nullptr != this->target) 
+				{
+					Vector3 targetSrcEuler = this->target->GetEulerangle();
+					targetSrcEuler += rotateDir * this->rotateSpeed;
+					this->target->SetEulerangle(targetSrcEuler);
+				}
+			}
 		}
 	}
 
@@ -125,10 +147,21 @@ void AxisHelper::Update()
 
 	if (nullptr != this->target)
 	{
-		if( nullptr != axisGizmos )
+		if (nullptr != axisGizmos)
+		{
 			axisGizmos->transform->SetPosition(this->target->GetPosition());
-		if( nullptr != scaleGizmos )
+			axisGizmos->transform->SetEulerangle(this->target->GetEulerangle());
+		}
+		if (nullptr != scaleGizmos)
+		{
 			scaleGizmos->transform->SetPosition(this->target->GetPosition());
+			scaleGizmos->transform->SetEulerangle(this->target->GetEulerangle());
+		}
+		if (nullptr != rotateGizmos)
+		{
+			rotateGizmos->transform->SetPosition(this->target->GetPosition());
+			rotateGizmos->transform->SetEulerangle(this->target->GetEulerangle());
+		}
 	}
 }
 

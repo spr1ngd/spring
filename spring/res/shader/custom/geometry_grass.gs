@@ -13,7 +13,7 @@ uniform mat4 M;
 uniform mat4 NM;
 uniform mat4 MVP;
 uniform vec3 WorldSpaceCameraPos;
-uniform sampler2D HeightMap;
+uniform sampler2D Height_Texture;
 
 // 物理影响
 uniform vec3 FactorPos;
@@ -24,7 +24,7 @@ out vec2 TexCoord;
 void genMesh( int index )
 { 
     vec3 pos = gl_in[index].gl_Position.xyz;
-    float height = texture2D(HeightMap,gs_in[index].UV).r;
+    float height = texture2D(Height_Texture,gs_in[index].UV).r;
     pos += gs_in[index].Normal * height;
     vec3 WorldNormal = normalize((NM * vec4(gs_in[index].Normal,1.0)).xyz);
     vec4 WorldPos = M * vec4(pos,1.0);

@@ -121,6 +121,7 @@ void Shader::initializeLocation()
 	this->getUniformLocation(MATRIX_P);
 	this->getUniformLocation(MATRIX_NM);
 	this->getUniformLocation(MAIN_TEX);
+	this->getUniformLocation(HEIGHT_TEX);
 	this->getUniformLocation(MAIN_CUBEMAP);
 	this->getUniformLocation(MAIN_COLOR);
 	this->getUniformLocation(AMBIENT_COLOR);
