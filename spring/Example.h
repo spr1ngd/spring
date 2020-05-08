@@ -46,7 +46,7 @@ public:
 		if (this->drawGround)
 			this->DrawGround();
 
-		Mesh& mesh = ModelLoader::Load("fbx/747/747-400.fbx");
+		Mesh& mesh = ModelLoader::LoadMeshFromFile("fbx/747/747-400.fbx");
 		Material* mat = new Material(Shader::Load("diffuse/diffuse.vs", "diffuse/diffuse.fs"));
 		mat->renderMode = Material::RenderMode::Fill;
 		mat->CullFaceFunc(true);
@@ -140,7 +140,7 @@ public:
 	{
 		Material* groundMaterial = new Material(Shader::Load("diffuse/diffuse.vs", "diffuse/diffuse.fs"));
 		ground = new MeshRenderer(groundMaterial);
-		Mesh& mesh = ModelLoader::Load("obj/quad.obj");
+		Mesh& mesh = ModelLoader::LoadMeshFromFile("obj/quad.obj");
 		ground->mesh = &mesh;
 		ground->Initialize();
 

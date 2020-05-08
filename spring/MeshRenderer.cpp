@@ -19,6 +19,7 @@ MeshRenderer::~MeshRenderer()
 {
 	if (nullptr != this->material)
 		delete this->material;
+	// Renderable::~Renderable();
 }
 
 void MeshRenderer::Initialize() 
@@ -107,20 +108,6 @@ void MeshRenderer::Render(glm::mat4 view, glm::mat4 projection)
 
 	auto drawMesh = [&](Mesh* mesh) 
 	{
-		// if (mesh->textures.size() > 0)
-		// {
-		// 	vector<Texture*> textures = mesh->textures;
-		// 	this->material->shader->setTexture(MAIN_TEX, textures[0]->textureId);
-		// }
-
-		// TODO: if model's transform data does not change , model matrix is necessary to recalculate
-	/*	glm::mat4 model =
-			glm::translate(glm::mat4(1.0), glm::vec3(this->transform->position.x, this->transform->position.y, this->transform->position.z)) *
-			glm::rotate(glm::mat4(1.0f), glm::radians(this->transform->GetEulerangle().z), glm::vec3(0.0f, 0.0f, 1.0f)) *
-			glm::rotate(glm::mat4(1.0f), glm::radians(this->transform->GetEulerangle().x), glm::vec3(1.0f, 0.0f, 0.0f)) *
-			glm::rotate(glm::mat4(1.0f), glm::radians(this->transform->GetEulerangle().y), glm::vec3(0.0f, 1.0f, 0.0f)) *
-			glm::scale(glm::mat4(1.0f), glm::vec3(this->transform->scale.x, this->transform->scale.y, this->transform->scale.z));
-		glm::mat4 nm = glm::inverseTranspose(model);*/
 		glm::mat4 model = this->transform->GetModelMatrix();
 		glm::mat4 nm = this->transform->GetNMMatrix();
 		this->material->shader->setMat4(MATRIX_M, model);

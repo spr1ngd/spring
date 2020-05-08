@@ -42,7 +42,7 @@ void InstancedTechnology::Awake()
 
 	instanceRenderer = new InstancedRenderer(instancedMaterial);
 	instanceRenderer->name = "InstanceRenderer";
-	Mesh& mesh = ModelLoader::Load("obj/cube.obj");
+	Mesh& mesh = ModelLoader::LoadMeshFromFile("obj/cube.obj");
 	instanceRenderer->mesh = mesh;
 
 	// instanceRendererNormal = new InstancedRenderer(instancedMaterialNormal);

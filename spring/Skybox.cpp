@@ -11,14 +11,14 @@ Texture* spring::Skybox::prebrdf;
 
 Skybox::Skybox()
 {
-	Mesh& mesh = ModelLoader::Load("obj/cube.obj");
+	Mesh& mesh = ModelLoader::LoadMeshFromFile("obj/cube.obj");
 	this->mesh = &mesh;
 	this->setRenderOrder(RenderOrder::Skybox);
 }
 
 Skybox::Skybox(Material* material,Cubemap* cubemap) 
 {
-	Mesh& mesh = ModelLoader::Load("obj/cube.obj");
+	Mesh& mesh = ModelLoader::LoadMeshFromFile("obj/cube.obj");
 	this->mesh = &mesh;
 	this->setRenderOrder(RenderOrder::Skybox);
 	this->material = material;

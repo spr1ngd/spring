@@ -47,11 +47,11 @@ void OrbitCamera::Update()
 	{
 
 	}
-	if (Input::GetMouse(MouseID::MOUSE_LEFT)) 
+	if (Input::GetMouseDown(MouseID::MOUSE_LEFT))
 	{
 		this->enableRotate = true;
 	}
-	if (Input::GetMouse(MouseID::MOUSE_WHEEL))
+	if (Input::GetMouseDown(MouseID::MOUSE_WHEEL))
 	{
 		this->enablePan = true;
 	}

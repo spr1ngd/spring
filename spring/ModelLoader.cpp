@@ -2,6 +2,8 @@
 #include "console.h"
 #include "misc.h"
 #include "texture.h"
+#include "meshrenderer.h"
+#include "gameobject.h"
 
 using namespace spring;
 using namespace std; 
@@ -26,7 +28,29 @@ const char* ModelLoader::GetReference(Mesh* mesh)
 	}
 	return "";
 }
-Mesh& ModelLoader::Load(const char* meshFilePath)
+
+GameObject* ModelLoader::LoadGameObjectFromFile(const char* meshFileName)
+{
+	GameObject* gameobject = new GameObject(meshFileName);
+	const char* prefix = "res/model/";
+	char* filePath = misc::strcat(prefix, meshFileName);
+
+	Assimp::Importer importer;
+	const aiScene* scene = importer.ReadFile(filePath, aiProcess_Triangulate | aiProcess_FlipUVs);
+
+	if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode)
+		PRINT_ERROR("load model failed.");
+	if (scene == nullptr)
+		return nullptr;
+
+	int childIndex = 0;
+	ModelLoader loader;
+	loader.parseNode(scene->mRootNode, scene, gameobject);
+	delete[] filePath;
+	return gameobject;
+}
+
+Mesh& ModelLoader::LoadMeshFromFile(const char* meshFilePath)
 {
 	Mesh* mesh = GetMesh(meshFilePath);
 	if (nullptr != mesh)
@@ -55,11 +79,63 @@ Mesh* ModelLoader::LoadMesh(const char* filePath)
 	processNode(scene->mRootNode, scene, *mesh,false);
 	return mesh;
 }
+void ModelLoader::parseNode(aiNode* node, const aiScene* scene, GameObject* parent)
+{
+	GameObject* nodeGameObject = nullptr;
+	if (node->mNumMeshes > 0)
+	{
+		
+		Mesh* nodeMesh = new Mesh();
+		for (unsigned int meshIndex = 0; meshIndex < node->mNumMeshes; meshIndex++)
+		{
+			unsigned int index = node->mMeshes[meshIndex];
+			aiMesh* mesh = scene->mMeshes[index];
+			Mesh* subMesh = processMesh(mesh, scene);
+			nodeMesh->Combine(*subMesh);
+		}
+		nodeGameObject = new GameObject();
+		auto name = misc::strcat(node->mName.C_Str(), "");
+		nodeGameObject->name = name;
+		nodeGameObject->SetParent(parent);
+		Vector3 scale, position;
+		Quaternion rotation;
+		this->decomposeTransformation(node->mTransformation, scale, position, rotation);
+		nodeGameObject->transform->SetPosition(position);
+		nodeGameObject->transform->SetLocalScale(scale);
+		nodeGameObject->transform->SetLocalRotation(rotation);
+		// TODO : Êä³ö²âÊÔ
+		MeshRenderer* childMeshRenderer = nodeGameObject->AddNode<MeshRenderer>();
+		childMeshRenderer->material = new Material(Shader::Load("diffuse/diffuse.vs", "diffuse/diffuse.fs"));
+		childMeshRenderer->mesh = nodeMesh;
+	}
+
+	for (unsigned int childIndex = 0; childIndex < node->mNumChildren; childIndex++)
+	{
+		aiNode* childNode = node->mChildren[childIndex];
+		parseNode(childNode, scene, node->mNumMeshes > 0 ? nodeGameObject : parent);
+	}
+}
+
+void ModelLoader::decomposeTransformation(const aiMatrix4x4& matrix, Vector3& position, Vector3& scale, Quaternion& rotation)
+{ 
+	aiVector3D aiScaling, aiPosition;
+	aiQuaternion aiRotation;
+	matrix.Decompose(aiScaling, aiRotation, aiPosition);
+	position.x = aiPosition.x; position.y = aiPosition.y; position.z = aiPosition.z;
+	scale.x = aiScaling.x; scale.y = aiScaling.y; scale.z = aiScaling.z;
+	rotation.x = aiRotation.x; rotation.y = aiRotation.y; rotation.z = aiRotation.z; rotation.w = aiRotation.w;
+} 
+
 void ModelLoader::processNode(aiNode* node, const aiScene* scene, Mesh& parentNode ,bool isSubMesh)
 {
 	if (node->mNumMeshes > 1)
 	{
-		PRINT_ERROR("do not support to load multi root node mesh resource.");
+		for (unsigned int i = 0; i < node->mNumMeshes; i++) 
+		{
+			aiMesh* aimesh = scene->mMeshes[node->mMeshes[i]];
+		}
+
+		// todo : we should create a new empty root for those kind of models
 		return;
 	}
 	for (unsigned int i = 0; i < node->mNumMeshes; i++) 
@@ -80,8 +156,6 @@ Mesh* ModelLoader::processMesh( aiMesh*mesh,const aiScene*scene )
 	vector<Vertex> vertices;
 	vector<unsigned int> indices;
 	vector<Texture*> textures;
-
-#pragma region parse for model vertices
 
 	for (unsigned int i = 0; i < mesh->mNumVertices; i++) 
 	{
@@ -128,11 +202,7 @@ Mesh* ModelLoader::processMesh( aiMesh*mesh,const aiScene*scene )
 			vertex.color = color;
 		}
 		vertices.push_back(vertex);
-	}
-
-#pragma endregion
-
-#pragma region parse for model indices
+	} 
 
 	for (unsigned int i = 0; i < mesh->mNumFaces; i++) 
 	{
@@ -141,12 +211,9 @@ Mesh* ModelLoader::processMesh( aiMesh*mesh,const aiScene*scene )
 		{
 			indices.push_back(face.mIndices[j]);
 		}
-	}
+	} 
 
-#pragma endregion
-
-#pragma region parse mesh texture resources
-
+	// package mesh data and textures data into mesh renderer object.
 	if (scene->HasMaterials())
 	{
 		aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
@@ -159,10 +226,7 @@ Mesh* ModelLoader::processMesh( aiMesh*mesh,const aiScene*scene )
 		textures.insert(textures.end(), normalTextures.begin(), normalTextures.end());
 		textures.insert(textures.end(), heightTextures.begin(), heightTextures.end());
 	}
-
-#pragma endregion
-	// spring engine texture instance assign for meshrendeerer.
-	// PRINT_LOG("[ModelLoader] : load mesh %s load textures %d ",mesh->mName.C_Str(),textures.size());
+	  
 	return new Mesh(vertices, indices);
 }
 vector<Texture*> ModelLoader::loadMaterialTextures(aiMaterial* mateiral, aiTextureType textureType, string typeName)

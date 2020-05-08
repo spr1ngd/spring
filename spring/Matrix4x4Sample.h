@@ -14,7 +14,7 @@ public:
 	{ 
 		if (!enabled)
 			return;
-		Mesh& mesh = ModelLoader::Load("obj/sphere.obj");
+		Mesh& mesh = ModelLoader::LoadMeshFromFile("obj/sphere.obj");
 		Material* sunMaterial = new Material(Shader::Load("diffuse/diffuse.vs", "diffuse/diffuse.fs"));
 		sun = new MeshRenderer(sunMaterial);
 		sun->name = "Sun";

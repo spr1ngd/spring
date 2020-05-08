@@ -5,8 +5,8 @@
 
 using namespace spring;
 
-map<KeyCode, KeyCodeInfo> Input::keyCodeCaches;
-map<MouseID, MouseInfo> Input::mouseCaches;
+map<KeyCode, KeyCodeInfo*> Input::keyCodeCaches;
+map<MouseID, MouseInfo*> Input::mouseCaches;
 Vector2 Input::mousePosition;
 Vector2 Input::mouseDelta = Vector2::zero;
 float Input::mouseWheelDelta;
@@ -148,6 +148,25 @@ void Input::InitializeInput(GLFWwindow* window)
 	glfwSetCursorPosCallback(window, io_cursor_position_callback); // todo : raw mouse motion.
 }
 
+void Input::CheckOutInputStatus() 
+{
+	for (auto pair = mouseCaches.begin(); pair != mouseCaches.end(); pair++) 
+	{
+		MouseInfo* mi = pair->second;
+		/*if (mi->state == STATE_DOWN && mi->down == true )
+		{
+			mi->state = STATE_IDLE;
+			mi->down = false;
+		}
+		else if (mi->state == STATE_UP && mi->up == true)
+		{
+			mi->state = STATE_IDLE;
+			mi->up = false;
+		}*/
+		mi->state = STATE_IDLE;
+	}
+}
+
 #pragma region keyboard events
 
 KeyCodeInfo* Input::GetKeyCodeInfo(KeyCode keycode) 
@@ -155,7 +174,7 @@ KeyCodeInfo* Input::GetKeyCodeInfo(KeyCode keycode)
 	auto result = keyCodeCaches.find(keycode);
 	if (result == keyCodeCaches.end())
 		return nullptr;
-	return &result->second;
+	return result->second;
 } 
 
 void Input::setKeyCodeState(KeyCode keycode, InputState keycodeState)
@@ -163,8 +182,8 @@ void Input::setKeyCodeState(KeyCode keycode, InputState keycodeState)
 	KeyCodeInfo* info = GetKeyCodeInfo(keycode);
 	if (info == nullptr)
 	{
-		KeyCodeInfo keycodeInfo(keycode, keycodeState);
-		auto item = pair<KeyCode, KeyCodeInfo>(keycode, keycodeInfo);
+		KeyCodeInfo* keycodeInfo = new KeyCodeInfo(keycode, keycodeState);
+		auto item = pair<KeyCode, KeyCodeInfo*>(keycode, keycodeInfo);
 		keyCodeCaches.insert(item);
 	}
 	else
@@ -224,7 +243,7 @@ MouseInfo* Input::GetMouseInfo(MouseID mouseID)
 	auto result = mouseCaches.find(mouseID);
 	if (result == mouseCaches.end())
 		return nullptr;
-	return &result->second;
+	return result->second;
 }
 
 void Input::setMouseState(MouseID mouseID, InputState state)
@@ -232,8 +251,8 @@ void Input::setMouseState(MouseID mouseID, InputState state)
 	MouseInfo* info = GetMouseInfo(mouseID);
 	if (nullptr == info) 
 	{
-		MouseInfo mouseInfo(mouseID, state);
-		auto item = std::pair<MouseID, MouseInfo>(mouseID, mouseInfo);
+		MouseInfo* mouseInfo = new MouseInfo(mouseID, state);
+		auto item = std::pair<MouseID, MouseInfo*>(mouseID, mouseInfo);
 		mouseCaches.insert(item);
 	}
 	else 
@@ -259,9 +278,9 @@ void Input::setMouseWheel(float delta)
 	MouseInfo* info = GetMouseInfo(MouseID::MOUSE_WHEEL);
 	if (nullptr == info)
 	{
-		MouseInfo mouseInfo(MouseID::MOUSE_WHEEL,InputState::STATE_IDLE);
-		mouseInfo.wheelDelta = delta;
-		auto item = std::pair<MouseID, MouseInfo>(MouseID::MOUSE_WHEEL,mouseInfo);
+		MouseInfo* mouseInfo = new MouseInfo(MouseID::MOUSE_WHEEL,InputState::STATE_IDLE);
+		mouseInfo->wheelDelta = delta;
+		auto item = std::pair<MouseID, MouseInfo*>(MouseID::MOUSE_WHEEL,mouseInfo);
 		mouseCaches.insert(item);
 	}
 	else 
@@ -276,7 +295,8 @@ bool Input::GetMouse(MouseID mouseId)
 	MouseInfo* info = GetMouseInfo(mouseId);
 	if (nullptr == info)
 		return false;
-	return info->state == InputState::STATE_DOWN;
+	// return info->state == InputState::STATE_DOWN;
+	return info->downing;
 }
 
 bool Input::GetMouseDown(MouseID mouseId) 
@@ -284,9 +304,11 @@ bool Input::GetMouseDown(MouseID mouseId)
 	MouseInfo* info = GetMouseInfo(mouseId);
 	if (nullptr == info)
 		return false;
-	bool result = (info->state == InputState::STATE_DOWN) && (!info->down) ;
-	/*if (result)
-		info->down = true;*/
+	bool result = (info->state == InputState::STATE_DOWN);// && (!info->down);
+	// if (result)
+	// 	info->down = true;
+	if (result)
+		info->downing = true;
 	return result;
 }
 
@@ -295,9 +317,11 @@ bool Input::GetMouseUp(MouseID mouseId)
 	MouseInfo* info = GetMouseInfo(mouseId);
 	if (nullptr == info)
 		return false;
-	bool result = (info->state == InputState::STATE_UP) && (!info->up);
-	//if( result )
-	//	info->up = true;
+	bool result = (info->state == InputState::STATE_UP);// && (!info->up);
+	// if( result )
+	// 	info->up = true;
+	if (result)
+		info->downing = false;
 	return result;
 }
 

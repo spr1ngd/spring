@@ -27,7 +27,7 @@ physically_based_rendering::physically_based_rendering()
 
 void displaySpheres() 
 {
-	Mesh& mesh = ModelLoader::Load("obj/sphere.obj");
+	Mesh& mesh = ModelLoader::LoadMeshFromFile("obj/sphere.obj");
 
 	const char* albedo = "albedo";
 	const char* metal = "metal";
@@ -87,7 +87,7 @@ void starFighter()
 	Texture* emissionTex = TextureLoader::Load("res/model/fbx/star fighter 02/StarSparrow_Emission.png");
 
 	// // loader->Load("res/model/fbx/star fighter/star fighter 01.fbx");
-	Mesh& mesh = ModelLoader::Load("fbx/star fighter 02/star fighter 02.fbx");
+	Mesh& mesh = ModelLoader::LoadMeshFromFile("fbx/star fighter 02/star fighter 02.fbx");
 	Shader* shader = Shader::Load("pbs/pbs.vs", "pbs/pbs(ibl).fs");
 	Material* material = new Material(shader);
 
@@ -124,7 +124,7 @@ void generateMobiusBand()
 {
 	mobiusband = new GameObject("Mobiusband");//mobiusband.fbx
 	MeshRenderer* mobiusRenderer = mobiusband->AddNode<MeshRenderer>();
-	mobiusRenderer->mesh = &ModelLoader::Load("fbx/mobiusband.fbx");
+	mobiusRenderer->mesh = &ModelLoader::LoadMeshFromFile("fbx/mobiusband.fbx");
 	// mobiusRenderer->mesh = &ModelLoader::Load("obj/cube.obj");
 	mobiusRenderer->material = new Material(Shader::Load("pbs/pbs.vs", "pbs/pbs(ibl).fs"));
 	mobiusRenderer->material->shader->setCubemap("irradianceMap", Skybox::irradianceCubemap);

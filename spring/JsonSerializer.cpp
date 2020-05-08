@@ -531,7 +531,7 @@ Mesh* JsonSerializer::toMesh(Value& value)
 	auto meshResValue = value.FindMember("_res");
 	auto drawTypeValue = value.FindMember("_draw_type");
 	auto meshModeValue = value.FindMember("_mesh_mode");
-	Mesh* mesh = &ModelLoader::Load(meshResValue->value.GetString());
+	Mesh* mesh = &ModelLoader::LoadMeshFromFile(meshResValue->value.GetString());
 	mesh->drawType = Mesh::DrawType(drawTypeValue->value.GetInt());
 	mesh->mode = Mesh::Mode(meshModeValue->value.GetInt());
 	return mesh;

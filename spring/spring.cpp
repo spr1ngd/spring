@@ -110,6 +110,7 @@ int main(int, char**)
 	// Main loop
 	while (!glfwWindowShouldClose(window))
 	{
+		Input::CheckOutInputStatus();
 		glfwPollEvents();
 
 		GUILayout::PreRender();
@@ -134,7 +135,9 @@ int main(int, char**)
 			{
 				if (behaviour.second->awaked == false)
 				{
+					PRINT_ERROR("awake : %s", behaviour.second->name);
 					behaviour.second->Awake();
+					PRINT_ERROR(" after awake : %s", behaviour.second->name);
 					behaviour.second->awaked = true;
 				}
 				behaviour.second->Update();
@@ -172,17 +175,17 @@ int main(int, char**)
 		}
 
 		// render for gpu picking system
-		Picking::Render([&](void) 
+		Picking::Render([&](void)
 			{
 				Camera::current = Camera::main;
 				Camera::current->Render();
-				Renderable::Draw( Layer::Default, [&](MeshRenderer* meshRenderer)
+				Renderable::Draw(Layer::Default, [&](MeshRenderer* meshRenderer)
 					{
 						// TODO: 肯定存在严重的内存泄漏问题
 						Material* originMaterial = meshRenderer->material;
-						Material* pickingMaterial = new Material(Shader::Load(originMaterial->shader->vertexShaderName, "physical/gpu_picking.fs",originMaterial->shader->geometryShaderName));
+						Material* pickingMaterial = new Material(Shader::Load(originMaterial->shader->vertexShaderName, "physical/gpu_picking.fs", originMaterial->shader->geometryShaderName));
 						meshRenderer->material = pickingMaterial;
-						meshRenderer->material->shader->setColor("identify",Picking::Convert2Color(meshRenderer->GetRenderableId()));
+						meshRenderer->material->shader->setColor("identify", Picking::Convert2Color(meshRenderer->GetRenderableId()));
 						meshRenderer->Render();
 						meshRenderer->material = originMaterial;
 						delete pickingMaterial;

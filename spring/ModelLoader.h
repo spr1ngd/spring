@@ -12,6 +12,8 @@ using namespace std;
 
 namespace spring 
 {
+	class Quaternion;
+	class GameObject;
 	class Texture;
 	class ModelLoader :public AssetLoader
 	{
@@ -30,8 +32,13 @@ namespace spring
 		string directory;
 		ModelLoader();
 
+		void parseNode(aiNode* node, const aiScene* scene , GameObject* parent);
+		void decomposeTransformation(const aiMatrix4x4& matrix ,Vector3& position,Vector3& scale,Quaternion& rotation);
+
 	public:
-		static Mesh& Load(const char* meshFilePath);
+		static Mesh& LoadMeshFromFile(const char* meshFilePath);
+
+		static GameObject* LoadGameObjectFromFile(const char* meshFilePath);
 		static const char* GetReference(Mesh* mesh);
 	};
 }

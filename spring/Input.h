@@ -30,9 +30,9 @@ namespace spring
 		InputState state = InputState::STATE_IDLE;
 		bool down = false;
 		bool up = false;
+		bool downing = false;
 		float wheelDelta = 0.0f;
-	public:
-		MouseInfo();
+	public: 
 		MouseInfo( MouseID mouseID, InputState state )
 		{
 			this->mouseID = mouseID;
@@ -156,8 +156,7 @@ namespace spring
 		InputState state = InputState::STATE_IDLE;
 		bool down = false;
 		bool up = false;
-	public:
-		KeyCodeInfo();
+	public: 
 		KeyCodeInfo(KeyCode keyCode, InputState state) 
 		{
 			this->keyCode = keyCode;
@@ -168,10 +167,10 @@ namespace spring
 	class Input
 	{
 	private:
-		static map<KeyCode, KeyCodeInfo> keyCodeCaches;
+		static map<KeyCode, KeyCodeInfo*> keyCodeCaches;
 		static KeyCodeInfo* GetKeyCodeInfo(KeyCode keycode);
 
-		static map<MouseID, MouseInfo> mouseCaches;
+		static map<MouseID, MouseInfo*> mouseCaches;
 		static MouseInfo* GetMouseInfo(MouseID mouseID);
 
 		static GLFWwindow* window;
@@ -194,6 +193,7 @@ namespace spring
 		static float GetMouseWheel();
 		static void setMouseWheel(float delta);
 
+		static void CheckOutInputStatus();
 		static void InitializeInput(GLFWwindow* window);
 	};
 }

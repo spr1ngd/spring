@@ -8,7 +8,6 @@ namespace spring
 	{
 	private:
 		static std::vector<Material*> materials;
-
 		static void Caching(Material* material);
 		static void Flash(Material* material);
 
@@ -51,6 +50,9 @@ namespace spring
 	private:
 		GLenum GetPolygonMode();
 	public:
+		static Material* defaultPBRMaterial;
+		static Material* defaultLambertMaterial;
+
 		Material();
 		Material(Shader* shader);
 		~Material();

@@ -5,6 +5,8 @@ using namespace std;
 using namespace spring;
 
 std::vector<Material*> Material::materials;
+Material* Material::defaultPBRMaterial = nullptr;// new Material(Shader::Load("pbs/pbs.vs", "pbs/pbs(ibl).fs"));
+Material* Material::defaultLambertMaterial = nullptr;// new Material(Shader::Load("diffuse/diffuse.vs", "diffuse/diffuse.fs"));
 
 Material::Material() 
 {

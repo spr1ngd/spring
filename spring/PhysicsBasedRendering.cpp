@@ -19,7 +19,7 @@ void DrawGroundxxx()
 {
 	if (nullptr != ground)
 		return;
-	Mesh& mesh = ModelLoader::Load("obj/quad.obj");
+	Mesh& mesh = ModelLoader::LoadMeshFromFile("obj/quad.obj");
 
 	Material* groundMaterial = new Material(Shader::Load("diffuse/diffuse(texture).vs", "diffuse/diffuse(texture).fs"));
 	ground = new MeshRenderer(groundMaterial);
@@ -47,7 +47,7 @@ void PhysicsBasedRendering::CubemapConvolution(Cubemap* cubemap)
 	material->CullFaceFunc(false, GL_FRONT);
 	material->shader->setCubemap("environmentCubemap",cubemap);
 
-	Mesh& mesh = ModelLoader::Load("obj/cube.obj");
+	Mesh& mesh = ModelLoader::LoadMeshFromFile("obj/cube.obj");
 	GameObject* convolution = new GameObject("Convolution");
 	MeshRenderer* meshRenderer = convolution->AddNode<MeshRenderer>();
 	meshRenderer->material = material;
@@ -97,7 +97,7 @@ void PhysicsBasedRendering::PreFilter(Cubemap* cubemap)
 	prefilterMaterial->CullFaceFunc(false, GL_FRONT);
 	prefilterMaterial->shader->setCubemap("environmentCubemap", cubemap);
 
-	Mesh& mesh = ModelLoader::Load("obj/cube.obj");
+	Mesh& mesh = ModelLoader::LoadMeshFromFile("obj/cube.obj");
 	GameObject* filter = new GameObject("Filter");
 	MeshRenderer* meshrenderer = filter->AddNode<MeshRenderer>();
 	meshrenderer->material = prefilterMaterial;

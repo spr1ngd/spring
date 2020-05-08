@@ -17,7 +17,14 @@ namespace spring
 		};
 		static Quaternion indentity;
 	public:
-		Quaternion(float x = 0.0f, float y = 0.0f, float z = 0.0f, float w = 1.0f);
+		Quaternion()
+		{
+			this->x = 0.0f;
+			this->y = 0.0f;
+			this->z = 0.0f;
+			this->w = 0.0f;
+		}
+		Quaternion(float x, float y , float z, float w);
 		 
 		float Magnitude() const;
 		void Normalize(); 

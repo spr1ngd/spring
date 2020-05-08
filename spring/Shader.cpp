@@ -648,7 +648,7 @@ void Shader::setLighting()
 				}
 				else
 				{
-					PRINT_ERROR("[spring engine] Shader : light does not have shadow map.");
+					// PRINT_ERROR("[spring engine] Shader : light does not have shadow map.");
 				}
 			}
 		}

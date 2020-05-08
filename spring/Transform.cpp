@@ -50,6 +50,16 @@ const Quaternion& Transform::GetRotation()
 	return this->rotation;
 }
 
+void Transform::SetLocalRotation(Quaternion localRotation) 
+{
+
+}
+
+const Quaternion& Transform::GetLocalRotation() 
+{
+	return this->localRotation;
+}
+
 void Transform::SetPosition(Vector3 position) 
 {
 	this->transformChangedInThisFrame = true;

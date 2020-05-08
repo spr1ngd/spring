@@ -69,13 +69,6 @@ void AxisHelper::Update()
 		}
 	}
 
-	if (nullptr != Camera::main)
-	{
-		auto orbit = Camera::main->gameobject->GetNode<OrbitCamera>();
-		if (nullptr != orbit)
-			orbit->enabled = !this->editing;
-	}
-
 	if (this->currentEditAxis != AxisMode::None)
 	{
 		if (Input::GetMouseDown(MouseID::MOUSE_LEFT))
@@ -143,6 +136,13 @@ void AxisHelper::Update()
 	{
 		this->editing = false;
 		this->currentEditAxis = AxisMode::None;
+	} 
+
+	if (nullptr != Camera::main)
+	{
+		auto orbit = Camera::main->gameobject->GetNode<OrbitCamera>();
+		if (nullptr != orbit)
+			orbit->enabled = !this->editing;
 	}
 
 	if (nullptr != this->target)
