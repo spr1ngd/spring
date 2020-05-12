@@ -78,14 +78,11 @@ void MeshRenderer::Render(Camera* camera)
 {
 	if (!camera->cullingMask->contains(this->gameobject->layer))
 		return;
-	glm::mat4 view = camera->GetViewMatrix();
-	glm::mat4 projection;
-	if (this->gameobject->layer == Layer::UI) projection = camera->Get2DProjection();
-	else projection = camera->GetProjectionMatrix();
-	this->Render(view, projection);
+	this->Render(camera->GetViewMatrix(), 
+		this->gameobject->layer == Layer::UI ? camera->Get2DProjection() : camera->GetProjectionMatrix());
 }
 
-void MeshRenderer::Render(glm::mat4 view, glm::mat4 projection)
+void MeshRenderer::Render(const glm::mat4& view, const glm::mat4& projection)
 {
 	if (this->material == nullptr)
 	{
@@ -105,28 +102,45 @@ void MeshRenderer::Render(glm::mat4 view, glm::mat4 projection)
 	this->material->EnableDepthTest();
 	// this->material->EnableStencilTest();
 	this->material->EnableCullFace();
+	glm::mat4 model = this->transform->GetModelMatrix();
+	glm::mat4 nm = this->transform->GetNMMatrix();
+	this->material->shader->use();
+	//auto drawMesh = [&](Mesh* mesh) 
+	//{
+	//	glm::mat4 model = this->transform->GetModelMatrix();
+	//	glm::mat4 nm = this->transform->GetNMMatrix();
+	//	// glm::mat4 mvp = projection * view * model;
 
-	auto drawMesh = [&](Mesh* mesh) 
-	{
-		glm::mat4 model = this->transform->GetModelMatrix();
-		glm::mat4 nm = this->transform->GetNMMatrix();
-		this->material->shader->setMat4(MATRIX_M, model);
-		this->material->shader->setMat4(MATRIX_NM, nm);
-		this->material->shader->setMat4(MATRIX_V, view);
-		this->material->shader->setMat4(MATRIX_P, projection);
-		glm::mat4 mvp = projection * view * model;
-		this->material->shader->setMat4(MATRIX_MVP, mvp);
 
-		// draw mesh
-		this->material->shader->use();
-		mesh->Draw();
-		this->material->shader->disuse();
-	};
-	drawMesh(this->mesh);
+	//	//this->material->shader->setMat4(MATRIX_M, model);
+	//	//this->material->shader->setMat4(MATRIX_NM, nm);
+	//	//this->material->shader->setMat4(MATRIX_V, view);
+	//	//this->material->shader->setMat4(MATRIX_P, projection);
+	//	//this->material->shader->setMat4(MATRIX_MVP, mvp);
+	//	//// draw mesh
+	//	//mesh->Draw();
+
+	//	this->RenderMesh(this->material, this->mesh, model, nm, view, projection);
+	//};
+	//drawMesh(this->mesh);
+	this->RenderMesh(this->material, this->mesh, model, nm, view, projection);
 	// sub mesh
 	vector<Mesh*> subMeshes = this->mesh->GetAllSubMeshes();
 	for (std::vector<Mesh*>::iterator subMesh = subMeshes.begin(); subMesh != subMeshes.end(); subMesh++)
-		drawMesh(*subMesh);
+		this->RenderMesh(this->material, *subMesh, model, nm, view, projection);
+
+	this->material->shader->disuse();
+}
+
+void MeshRenderer::RenderMesh(Material* mat, Mesh* mesh, const glm::mat4& model, const glm::mat4& nm, const glm::mat4& view, const glm::mat4 projection)
+{
+	glm::mat4 mvp = projection * view * model;
+	mat->shader->setMat4(MATRIX_M, model);
+	mat->shader->setMat4(MATRIX_NM, nm);
+	mat->shader->setMat4(MATRIX_V, view);
+	mat->shader->setMat4(MATRIX_P, projection);
+	mat->shader->setMat4(MATRIX_MVP, mvp);
+	mesh->Draw();
 }
 
 MeshRenderer* MeshRenderer::GetMeshRenderer(unsigned int renderableId) 

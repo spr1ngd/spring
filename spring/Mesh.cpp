@@ -1,6 +1,7 @@
 #include "mesh.h" 
-#include "console.h"
+#include "console.h" 
 #include "matrix4x4.h"
+#include "graphicprofiler.h"
 
 using namespace spring;
 
@@ -105,6 +106,9 @@ void Mesh::Draw( function<void()> render )
 	if (nullptr != render)
 		render();
 	auto mode = GetDrawMode(this->mode);
+	GraphicProfiler::DrawcallIncrease();
+	GraphicProfiler::VerticesIncrease(this->vertices.size());
+	GraphicProfiler::TriangleIncrease(this->indices.size() / 3);
 	glDrawElements(mode, (GLsizei)indices.size(), GL_UNSIGNED_INT, (void*)0);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,0);
 	glBindVertexArray(0);

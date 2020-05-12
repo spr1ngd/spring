@@ -6,6 +6,7 @@
 // todo : replaced input module by glfw interfaces.
 // #include <windows.h>
 
+#include "graphicprofiler.h"
 #include "springengine.h"
 // todo : integrate spring engine all .h file to springengine.h and clean up solution directory.
 #include "springeditor.h"
@@ -100,7 +101,7 @@ int main(int, char**)
 	ShaderCompiler shader_compiler;
 
 	// gpu picking system
-	Picking::enable = true;
+	Picking::enable = false;
 	Picking::Initialize();
 
 	// gizmos
@@ -110,6 +111,8 @@ int main(int, char**)
 	// Main loop
 	while (!glfwWindowShouldClose(window))
 	{
+		GraphicProfiler::ProfilerReset();
+
 		Input::CheckOutInputStatus();
 		glfwPollEvents();
 
@@ -135,9 +138,7 @@ int main(int, char**)
 			{
 				if (behaviour.second->awaked == false)
 				{
-					PRINT_ERROR("awake : %s", behaviour.second->name);
 					behaviour.second->Awake();
-					PRINT_ERROR(" after awake : %s", behaviour.second->name);
 					behaviour.second->awaked = true;
 				}
 				behaviour.second->Update();
@@ -160,6 +161,7 @@ int main(int, char**)
 			Camera::current = *cam;
 			if (Camera::current->cullingMask->contains(Layer::UI))
 				continue;
+			// TODO： 相机应该分是否每帧渲染，可选择只渲染一帧
 			Camera::current->Render();
 			if (Camera::current->framebuffer == nullptr)
 			{

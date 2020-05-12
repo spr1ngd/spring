@@ -1,3 +1,4 @@
+#include "renderable.h"
 #include <algorithm>
 #include "node.h"
 #include "meshrenderer.h"
@@ -41,40 +42,26 @@ void Renderable::Draw()
 void Renderable::Draw(int layers)
 {
 	for (unsigned int i = 0; i < objects.size(); i++)
-	{
-		auto object = objects[i];
-		try
-		{
-			MeshRenderer* renderer = dynamic_cast<MeshRenderer*>(object);
-			int layer = renderer->gameobject->layer;
-			if ((layers & layer) == layer)
-				renderer->Render();
-		}
-		catch (bad_cast)
-		{
-			PRINT_ERROR("cast renderable object to meshrenderer failed.");
-		}
+	{ 
+		// todo: avoid dynamic cast
+		MeshRenderer* renderer = dynamic_cast<MeshRenderer*>(objects[i]);
+		int layer = renderer->gameobject->layer;
+		if ((layers & layer) == layer)
+			renderer->Render();
 	}
 }
 
 void Renderable::Draw(int layers , std::function<void(MeshRenderer*)> func)
 {
 	for (unsigned int i = 0; i < objects.size(); i++)
-	{
-		auto object = objects[i];
-		try
+	{ 
+		// todo: avoid dynamic cast
+		MeshRenderer* renderer = dynamic_cast<MeshRenderer*>(objects[i]);
+		int layer = renderer->gameobject->layer;
+		if ((layers & layer) == layer)
 		{
-			MeshRenderer* renderer = dynamic_cast<MeshRenderer*>(object);
-			int layer = renderer->gameobject->layer;
-			if ((layers & layer) == layer)
-			{
-				if (nullptr != func)
-					func(renderer);
-			}
-		}
-		catch (bad_cast)
-		{
-			PRINT_ERROR("cast renderable object to meshrenderer failed.");
+			if (nullptr != func)
+				func(renderer);
 		}
 	}
 }
@@ -88,4 +75,14 @@ Renderable* Renderable::GetRender(unsigned int renderableId)
 			return render;
 	}
 	return nullptr;
+}
+
+void Renderable::CacheRenderer(ParticleRenderer* particleRenderer) 
+{
+
+}
+
+void Renderable::CacheRenderer(MeshRenderer* meshRenderer) 
+{
+
 }

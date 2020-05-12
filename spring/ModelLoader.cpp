@@ -99,11 +99,13 @@ void ModelLoader::parseNode(aiNode* node, const aiScene* scene, GameObject* pare
 		nodeGameObject->SetParent(parent);
 		Vector3 scale, position;
 		Quaternion rotation;
-		this->decomposeTransformation(node->mTransformation, scale, position, rotation);
+		this->decomposeTransformation(node->mTransformation, position, scale, rotation);
 		nodeGameObject->transform->SetPosition(position);
 		nodeGameObject->transform->SetLocalScale(scale);
 		nodeGameObject->transform->SetLocalRotation(rotation);
 		// TODO : Êä³ö²âÊÔ
+		PRINT_ERROR("%s.position %f,%f,%f.", name,position.x,position.y,position.z);
+		PRINT_LOG("%s.scale %f,%f,%f.", name, scale.x, scale.y, scale.z);
 		MeshRenderer* childMeshRenderer = nodeGameObject->AddNode<MeshRenderer>();
 		childMeshRenderer->material = new Material(Shader::Load("diffuse/diffuse.vs", "diffuse/diffuse.fs"));
 		childMeshRenderer->mesh = nodeMesh;
@@ -121,7 +123,7 @@ void ModelLoader::decomposeTransformation(const aiMatrix4x4& matrix, Vector3& po
 	aiVector3D aiScaling, aiPosition;
 	aiQuaternion aiRotation;
 	matrix.Decompose(aiScaling, aiRotation, aiPosition);
-	position.x = aiPosition.x; position.y = aiPosition.y; position.z = aiPosition.z;
+	position.x = aiPosition.x / 100.0f; position.y = aiPosition.y / 100.0f; position.z = aiPosition.z / 100.0f;
 	scale.x = aiScaling.x; scale.y = aiScaling.y; scale.z = aiScaling.z;
 	rotation.x = aiRotation.x; rotation.y = aiRotation.y; rotation.z = aiRotation.z; rotation.w = aiRotation.w;
 } 

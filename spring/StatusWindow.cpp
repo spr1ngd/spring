@@ -1,5 +1,6 @@
 #include "statuswindow.h"
 #include "fps.h"
+#include "graphicprofiler.h"
 
 using namespace spring;
 using namespace spring::editor;
@@ -19,4 +20,7 @@ void StatusWindow::OnDrawWindow()
 
 	ImGui::Text("FPS:%d",FPS::fps);
 	ImGui::Text("Elapsed seconds per frame:%.2f",FPS::perFrameElapsed);
+	ImGui::Text("Drawcall count : %d",GraphicProfiler::GetDrawcall());
+	ImGui::Text("Triangle count : %d", GraphicProfiler::GetTriangles());
+	ImGui::Text("Vertex count : %d", GraphicProfiler::GetVertices());
 }

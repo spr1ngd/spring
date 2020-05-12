@@ -2,13 +2,12 @@
 #include <vector>
 #include "node.h"
 #include "matrix4x4.h"
-#include "transform.h"
 #include "vector3.h"
 #include "color.h"
-#include "framebuffer.h"
 
 namespace spring 
 {
+	class FrameBuffer;
 	class Camera : public Node
 	{
 	private:
@@ -23,7 +22,7 @@ namespace spring
 		static Camera* main;
 		static Camera* current;
 
-		enum Type
+		enum CameraType
 		{
 			Perspective,
 			Orthographic
@@ -40,7 +39,7 @@ namespace spring
 		Vector3 center = Vector3::zero;
 		Vector3 direction;
 		ClearFlag clearFlag = ClearFlag::SolidColor;
-		Type cameraType = Type::Perspective;
+		CameraType cameraType = CameraType::Perspective;
 		LayerMask* cullingMask;
 		float fov = 60.0f;
 		float nearClip = 0.001f;
@@ -56,9 +55,9 @@ namespace spring
 		void LookAt(const Node* target);
 		void LookAt(const Vector3* target);
 
-		glm::mat4 GetViewMatrix();
-		glm::mat4 GetProjectionMatrix();
-		glm::mat4 Get2DProjection();
+		const glm::mat4& GetViewMatrix();
+		const glm::mat4& GetProjectionMatrix();
+		const glm::mat4& Get2DProjection();
 		void Update();
 		void Render();
 		void Destroy() override;

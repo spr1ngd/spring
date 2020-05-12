@@ -2,6 +2,7 @@
 #include "sample.h"
 #include "thirdplayercamera.h"
 #include "gizmos.h"
+#include "misc.h"
 
 GameObject* thirdPlayer = nullptr;
 MeshRenderer* grassRenderer = nullptr;
@@ -35,8 +36,18 @@ void GameApp::Awake()
 	// Mesh* natureparkMesh = &ModelLoader::LoadMeshFromFile("fbx/naturepark.fbx");
 	// npRenderer->mesh = natureparkMesh;
 
-	GameObject* naturepark = ModelLoader::LoadGameObjectFromFile("fbx/naturepark.fbx");
-	naturepark->transform->SetLocalScale(Vector3(0.1f, 0.1f, 0.1f));
+	GameObject* parent = Primitive::CreatePrimitive(Primitive::Cube);
+	for (unsigned int childIndex = 0; childIndex < 100; childIndex++) 
+	{
+		GameObject* child = Primitive::CreatePrimitive(Primitive::Cube);
+		child->name = misc::strcat(std::to_string(childIndex).c_str(),"");
+		child->SetParent(parent);
+		child->transform->SetPosition(Vector3(Mathf::Randomf(-20.0f, 20.0f), Mathf::Randomf(0.0f, 20.0f), Mathf::Randomf(-20.0f, 20.0f)));
+	}
+
+	// TODO : ultimate display this model 'nature park' in scene , can keep fps more over 64.
+	// GameObject* naturepark = ModelLoader::LoadGameObjectFromFile("fbx/naturepark.fbx");
+	// naturepark->transform->SetLocalScale(Vector3(0.1f, 0.1f, 0.1f));
 
 	return;
 

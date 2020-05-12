@@ -10,6 +10,7 @@ using namespace std;
 namespace spring 
 {
 	class MeshRenderer;
+	class ParticleRenderer;
 	class Renderable
 	{
 	private:
@@ -18,9 +19,12 @@ namespace spring
 
 		static unsigned long renderCounts;
 		static std::vector<Renderable*> objects;
+		static std::vector<MeshRenderer*> meshRenderers;
+		static std::vector<ParticleRenderer*> particleRenderers;
 
 		void Insert( Renderable* object ) 
 		{
+			// todo : ÎªÁË¸ørenderersÅÅÐò
 			int insertIndex = 0;
 			for (Renderable* item : objects)
 			{
@@ -60,5 +64,8 @@ namespace spring
 		static void Draw(int layers, std::function<void(MeshRenderer*)> func);
 
 		static Renderable* GetRender(unsigned int renderableId);
+
+		static void CacheRenderer(MeshRenderer* meshRenderer);
+		static void CacheRenderer(ParticleRenderer* particleRenderer);
 	};
 }

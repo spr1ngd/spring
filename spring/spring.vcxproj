@@ -230,6 +230,7 @@
     <ClInclude Include="GameObjectEditor.h" />
     <ClInclude Include="Gizmos.h" />
     <ClInclude Include="Graphic.h" />
+    <ClInclude Include="GraphicProfiler.h" />
     <ClInclude Include="GUI.h" />
     <ClInclude Include="GUILayout.h" />
     <ClInclude Include="HierarchyWindow.h" />
@@ -345,6 +346,7 @@
     <ClCompile Include="GameObjectEditor.cpp" />
     <ClCompile Include="Gizmos.cpp" />
     <ClCompile Include="Graphic.cpp" />
+    <ClCompile Include="GraphicProfiler.cpp" />
     <ClCompile Include="GUI.cpp" />
     <ClCompile Include="GUILayout.cpp" />
     <ClCompile Include="HierarchyWindow.cpp" />

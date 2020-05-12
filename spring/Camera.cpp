@@ -1,6 +1,7 @@
 #include "camera.h"
 #include "screen.h"
 #include "graphic.h"
+#include "framebuffer.h"
 
 using namespace spring;
 
@@ -82,17 +83,17 @@ void Camera::Render()
 	}
 }
 
-glm::mat4 Camera::GetViewMatrix()
+const glm::mat4& Camera::GetViewMatrix()
 {
 	return this->ViewMatrix;
 }
 
-glm::mat4 Camera::GetProjectionMatrix()
+const glm::mat4& Camera::GetProjectionMatrix()
 {
 	return this->ProjectionMatrix;
 }
 
-glm::mat4 Camera::Get2DProjection()
+const glm::mat4& Camera::Get2DProjection()
 {
 	return this->Projection2DMatrix;
 }
