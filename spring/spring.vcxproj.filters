@@ -559,6 +559,9 @@
     <ClInclude Include="GraphicProfiler.h">
       <Filter>头文件\Core\Graphic</Filter>
     </ClInclude>
+    <ClInclude Include="ProfilerSample.h">
+      <Filter>头文件\Core\Graphic</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="spring.cpp">
@@ -892,6 +895,9 @@
       <Filter>源文件\Editor\Gizmos</Filter>
     </ClCompile>
     <ClCompile Include="GraphicProfiler.cpp">
+      <Filter>源文件\Core\Graphic</Filter>
+    </ClCompile>
+    <ClCompile Include="ProfilerSample.cpp">
       <Filter>源文件\Core\Graphic</Filter>
     </ClCompile>
   </ItemGroup>

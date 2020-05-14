@@ -1,7 +1,13 @@
 #pragma once
+#include <vector>
+#include <stack>
+#include "profilersample.h"
+
+using namespace std;
 
 namespace spring 
 {
+	class ProfilerSample;
 	class GraphicProfiler 
 	{
 	private:
@@ -9,6 +15,10 @@ namespace spring
 		static unsigned int vertices;
 		static unsigned int indices;
 		static unsigned int triangles;
+
+		// profiler sample
+		static std::stack<ProfilerSample*> sampleStack;
+		static ProfilerSample* samplingProfiler;
 
 	public:
 		static unsigned int GetDrawcall();
@@ -28,5 +38,11 @@ namespace spring
 		static void IndicesReset();
 
 		static void ProfilerReset();
+
+		// profiler sample
+		static std::vector<ProfilerSample*> samples;
+		static void BeginSample(const char* sampleId);
+		static void EndSample();
+		static void ClearSample();
 	};
 }

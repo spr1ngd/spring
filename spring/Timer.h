@@ -19,5 +19,10 @@ namespace spring
 			lastFrameTime = currentFrameTime;
 			totalTime += elapsedTime;
 		}
+
+		static float GetTickCount() 
+		{
+			return (float)GetTickCount64();
+		}
 	};
 }

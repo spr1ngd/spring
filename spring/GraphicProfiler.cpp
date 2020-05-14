@@ -7,12 +7,18 @@ unsigned int GraphicProfiler::triangles = 0;
 unsigned int GraphicProfiler::vertices = 0;
 unsigned int GraphicProfiler::indices = 0;
 
+// profiler sample
+std::vector<ProfilerSample*> GraphicProfiler::samples;
+ProfilerSample* GraphicProfiler::samplingProfiler = nullptr;
+
 void GraphicProfiler::ProfilerReset() 
 {
 	GraphicProfiler::DrawcallReset();
 	GraphicProfiler::TriangleReset();
 	GraphicProfiler::VerticesReset();
 	GraphicProfiler::IndicesReset();
+
+	GraphicProfiler::ClearSample();
 }
 
 unsigned int GraphicProfiler::GetDrawcall()
@@ -65,4 +71,26 @@ void GraphicProfiler::IndicesIncrease(unsigned int count)
 void GraphicProfiler::IndicesReset() 
 {
 	GraphicProfiler::indices = 0;
+}
+
+// profiler sample
+void GraphicProfiler::BeginSample(const char* sampleId) 
+{
+	ProfilerSample* profilerSample = new ProfilerSample(sampleId);
+	profilerSample->BeginSample();
+	samplingProfiler = profilerSample;
+	samples.push_back(profilerSample);
+}
+
+void GraphicProfiler::EndSample() 
+{
+	samplingProfiler->EndSample();
+	samplingProfiler = nullptr;
+}
+
+void GraphicProfiler::ClearSample() 
+{
+	for (auto sample : samples) 
+		delete sample;
+	samples.clear();
 }

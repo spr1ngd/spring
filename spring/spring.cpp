@@ -132,6 +132,7 @@ int main(int, char**)
 		for (vector<Camera*>::iterator cam = Camera::cameras.begin(); cam != Camera::cameras.end(); cam++)
 			(*cam)->Update();
 
+		GraphicProfiler::BeginSample("behaviour update");
 		for (auto behaviour : Behaviour::behaviours)
 		{
 			if (behaviour.second->enabled)
@@ -144,6 +145,8 @@ int main(int, char**)
 				behaviour.second->Update();
 			}
 		}
+		GraphicProfiler::EndSample();
+
 		// todo : remove 
 		ParticleRenderer::Update();
 
@@ -155,6 +158,7 @@ int main(int, char**)
 
 		PostProcessing::postprocessing->Preprocess();
 
+		GraphicProfiler::BeginSample("render scene");
 		// draw 3d scene.
 		for (vector<Camera*>::iterator cam = Camera::cameras.begin(); cam != Camera::cameras.end(); cam++)
 		{
@@ -175,6 +179,7 @@ int main(int, char**)
 				Camera::current->framebuffer->Unbind();
 			}
 		}
+		GraphicProfiler::EndSample();
 
 		// render for gpu picking system
 		Picking::Render([&](void)

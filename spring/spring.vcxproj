@@ -276,6 +276,7 @@
     <ClInclude Include="PostprocessEditor.h" />
     <ClInclude Include="PostProcessing.h" />
     <ClInclude Include="Primitive.h" />
+    <ClInclude Include="ProfilerSample.h" />
     <ClInclude Include="Quaternion.h" />
     <ClInclude Include="Rect.h" />
     <ClInclude Include="RectTransform.h" />
@@ -391,6 +392,7 @@
     <ClCompile Include="PostprocessEditor.cpp" />
     <ClCompile Include="PostProcessing.cpp" />
     <ClCompile Include="Primitive.cpp" />
+    <ClCompile Include="ProfilerSample.cpp" />
     <ClCompile Include="Quaternion.cpp" />
     <ClCompile Include="Rect.cpp" />
     <ClCompile Include="RectTransform.cpp" />

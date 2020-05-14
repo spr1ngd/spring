@@ -23,4 +23,7 @@ void StatusWindow::OnDrawWindow()
 	ImGui::Text("Drawcall count : %d",GraphicProfiler::GetDrawcall());
 	ImGui::Text("Triangle count : %d", GraphicProfiler::GetTriangles());
 	ImGui::Text("Vertex count : %d", GraphicProfiler::GetVertices());
+
+	for (auto sample : GraphicProfiler::samples)
+		ImGui::Text("%s : %f", sample->sampleId, sample->elapsedTime);
 }

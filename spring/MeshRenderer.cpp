@@ -102,33 +102,16 @@ void MeshRenderer::Render(const glm::mat4& view, const glm::mat4& projection)
 	this->material->EnableDepthTest();
 	// this->material->EnableStencilTest();
 	this->material->EnableCullFace();
+
 	glm::mat4 model = this->transform->GetModelMatrix();
 	glm::mat4 nm = this->transform->GetNMMatrix();
-	this->material->shader->use();
-	//auto drawMesh = [&](Mesh* mesh) 
-	//{
-	//	glm::mat4 model = this->transform->GetModelMatrix();
-	//	glm::mat4 nm = this->transform->GetNMMatrix();
-	//	// glm::mat4 mvp = projection * view * model;
 
-
-	//	//this->material->shader->setMat4(MATRIX_M, model);
-	//	//this->material->shader->setMat4(MATRIX_NM, nm);
-	//	//this->material->shader->setMat4(MATRIX_V, view);
-	//	//this->material->shader->setMat4(MATRIX_P, projection);
-	//	//this->material->shader->setMat4(MATRIX_MVP, mvp);
-	//	//// draw mesh
-	//	//mesh->Draw();
-
-	//	this->RenderMesh(this->material, this->mesh, model, nm, view, projection);
-	//};
-	//drawMesh(this->mesh);
+	this->material->shader->use();  
 	this->RenderMesh(this->material, this->mesh, model, nm, view, projection);
 	// sub mesh
 	vector<Mesh*> subMeshes = this->mesh->GetAllSubMeshes();
 	for (std::vector<Mesh*>::iterator subMesh = subMeshes.begin(); subMesh != subMeshes.end(); subMesh++)
 		this->RenderMesh(this->material, *subMesh, model, nm, view, projection);
-
 	this->material->shader->disuse();
 }
 
