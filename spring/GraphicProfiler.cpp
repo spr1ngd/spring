@@ -8,8 +8,8 @@ unsigned int GraphicProfiler::vertices = 0;
 unsigned int GraphicProfiler::indices = 0;
 
 // profiler sample
+std::stack<ProfilerSample*> GraphicProfiler::profilersStack;
 std::vector<ProfilerSample*> GraphicProfiler::samples;
-ProfilerSample* GraphicProfiler::samplingProfiler = nullptr;
 
 void GraphicProfiler::ProfilerReset() 
 {
@@ -76,21 +76,34 @@ void GraphicProfiler::IndicesReset()
 // profiler sample
 void GraphicProfiler::BeginSample(const char* sampleId) 
 {
-	ProfilerSample* profilerSample = new ProfilerSample(sampleId);
-	profilerSample->BeginSample();
-	samplingProfiler = profilerSample;
-	samples.push_back(profilerSample);
+	ProfilerSample* profiler = nullptr;
+	for (auto sample : samples)
+	{
+		if (std::strcmp(sample->sampleId, sampleId) == 0)
+		{
+			profiler = sample;
+			break;
+		}
+	}
+	if (nullptr == profiler)
+	{
+		profiler = new ProfilerSample(sampleId);
+		samples.push_back(profiler);
+	}
+	profiler->BeginSample();
+	profilersStack.push(profiler);
 }
-
 void GraphicProfiler::EndSample() 
 {
-	samplingProfiler->EndSample();
-	samplingProfiler = nullptr;
+	ProfilerSample* profiler = profilersStack.top();
+	profiler->EndSample();
+	profilersStack.pop();
 }
-
 void GraphicProfiler::ClearSample() 
 {
 	for (auto sample : samples) 
 		delete sample;
 	samples.clear();
+	while (!profilersStack.empty())
+		profilersStack.pop();
 }

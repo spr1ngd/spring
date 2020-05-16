@@ -5,6 +5,9 @@ namespace spring
 {
 	class ProfilerSample 
 	{
+	private: 
+		float beginSampleTick = 0.0f;
+
 	public:
 		const char* sampleId = nullptr;
 		float elapsedTime = 0.0f;
@@ -17,12 +20,12 @@ namespace spring
 
 		void BeginSample() 
 		{
-			elapsedTime = Timer::GetTickCount();
+			beginSampleTick = Timer::GetTickCount();
 		}
 		void EndSample()
 		{
-			float f = Timer::GetTickCount() - this->elapsedTime;
-			this->elapsedTime = f;
+			float f = Timer::GetTickCount() - this->beginSampleTick;
+			this->elapsedTime += f;
 		}
 	};
 }

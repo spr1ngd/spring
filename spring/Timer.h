@@ -13,7 +13,10 @@ namespace spring
 		static void Start();
 		static void Time() 
 		{
-			float currentFrameTime = GetTickCount64() * 0.001f;
+			SYSTEMTIME  st = { 0 };
+			GetLocalTime(&st);
+
+			float currentFrameTime = st.wMilliseconds * 0.001f;//GetTickCount64() * 0.001f;
 			float elapsedTime = currentFrameTime - lastFrameTime;
 			deltaTime = elapsedTime;
 			lastFrameTime = currentFrameTime;
@@ -22,7 +25,10 @@ namespace spring
 
 		static float GetTickCount() 
 		{
-			return (float)GetTickCount64();
+			//return (float)GetTickCount64();
+			SYSTEMTIME  st = { 0 };
+			GetLocalTime(&st);
+			return (float)st.wMilliseconds;
 		}
 	};
 }

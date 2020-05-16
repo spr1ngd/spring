@@ -65,22 +65,10 @@ void Sample::Awake()
 
 #pragma endregion
 
-	auto createLight = [&](Light::Type lightType, Color lightColor, float intensity, Vector3 position, Vector3 eulerangle)
-	{
-		Light* light = new Light();
-		light->type = lightType;
-		light->color = lightColor;
-		light->intensity = intensity;
-		light->transform->SetEulerangle(eulerangle);
-		light->transform->SetPosition(position);
-		return light;
-	};
-
-	//Color(255, 244, 214, 255)
 #pragma region directional light 
 
 	Environment::ambient.color = Color(75, 75, 75, 255);
-	Environment::shadow.sample = Environment::ShadowSetting::Octuple;
+	Environment::shadow.sample = Environment::ShadowSetting::Double;
 
 	// TODO 70MB
 	if (renderSkybox) 
@@ -119,11 +107,10 @@ void Sample::Awake()
 		Light* light = directionalLightGO->AddNode<Light>();
 		light->type = Light::Type::Directional;
 		light->shadowType = Light::HardShadow;
+		light->layers.set(Layer::Default);
 		light->color = Color(255, 244, 214, 255);
-		light->intensity = 2.0f;
-		light->size = 150.0f;
-		light->zNear = -1.0f;
-		light->zFar = 300.0f;
+		light->setting.intensity = 2.0f;
+		light->SetShadowMappingParams(1024, 150.0f, -1.0f, 300.0f);
 		directionalLightGO->transform->SetPosition(Vector3(18.0f, 36.0f, 32.0f));
 		directionalLightGO->transform->SetEulerangle(Vector3::down);
 

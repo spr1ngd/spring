@@ -132,7 +132,7 @@ int main(int, char**)
 		for (vector<Camera*>::iterator cam = Camera::cameras.begin(); cam != Camera::cameras.end(); cam++)
 			(*cam)->Update();
 
-		GraphicProfiler::BeginSample("behaviour update");
+		GraphicProfiler::BeginSample("update");
 		for (auto behaviour : Behaviour::behaviours)
 		{
 			if (behaviour.second->enabled)
@@ -158,7 +158,7 @@ int main(int, char**)
 
 		PostProcessing::postprocessing->Preprocess();
 
-		GraphicProfiler::BeginSample("render scene");
+		GraphicProfiler::BeginSample("core render");
 		// draw 3d scene.
 		for (vector<Camera*>::iterator cam = Camera::cameras.begin(); cam != Camera::cameras.end(); cam++)
 		{

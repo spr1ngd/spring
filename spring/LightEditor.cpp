@@ -7,15 +7,15 @@ void LightEditor::OnDrawInspector()
 {
 	Light* light = Selection::GetSelected()->GetNode<Light>();
 
-	ImGui::DragFloat("Intensity",&light->intensity,1.0f,0.0f,100.0f,"%.1f");
+	ImGui::DragFloat("Intensity",&light->setting.intensity,1.0f,0.0f,100.0f,"%.1f");
 
 	float* value = new float[4]{ light->color.r / 255.0f,light->color.g / 255.0f,light->color.b / 255.0f,light->color.a / 255.0f };
 	ImGui::ColorEdit4("Color", value);
 	light->color = Colorf(value[0],value[1],value[2],value[3]);
 
-	ImGui::DragFloat("size", &light->size);
-	ImGui::DragFloat("zNear", &light->zNear);
-	ImGui::DragFloat("zFar", &light->zFar);
+	ImGui::DragFloat("size", &light->shadowMapping.size);
+	ImGui::DragFloat("zNear", &light->shadowMapping.zNear);
+	ImGui::DragFloat("zFar", &light->shadowMapping.zFar);
 
 	if (nullptr != light->shadow)
 	{

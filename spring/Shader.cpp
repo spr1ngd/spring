@@ -8,6 +8,7 @@
 #include "texture.h"
 #include "textureloader.h"
 #include "misc.h"
+#include "graphicprofiler.h"
 
 using namespace std;
 using namespace spring;
@@ -20,7 +21,6 @@ Shader::Shader()
 {
 	Shader::Caching(this);
 }
-
 Shader::Shader(const char* vertexShader, const char* fragmentShader, const char* geometryShader)
 {
 	bool success = true;
@@ -47,7 +47,6 @@ Shader::Shader(const char* vertexShader, const char* fragmentShader, const char*
 	this->initializeLocation();
 	Shader::Caching(this);
 }
-
 Shader::~Shader() 
 {
 	Flash(this);
@@ -166,9 +165,19 @@ const char* Shader::getUniformName(unsigned int location)
 void Shader::use()
 {
 	glUseProgram(this->program);
+
+	GraphicProfiler::BeginSample("lighting setting");
 	this->setLighting();
+	GraphicProfiler::EndSample();
+
+	GraphicProfiler::BeginSample("environment setting");
 	this->setEngineEnvironment();
+	GraphicProfiler::EndSample();
+
+	GraphicProfiler::BeginSample("shader parameters setting");
 	this->setShaderValues();
+	GraphicProfiler::EndSample();
+
 	this->setTime();
 }
 
@@ -525,6 +534,7 @@ void Shader::setEngineEnvironment()
 
 	// camera pos
 	this->setVec3(WorldSpaceCameraPos, Camera::main->transform->position);
+	this->setVec3(CAMERA_POSITION, Camera::main->transform->position);
 
 	// ambient setting
 	this->setColor(AMBIENT_COLOR,Environment::ambient.color);
@@ -535,125 +545,27 @@ void Shader::setEngineEnvironment()
 
 void Shader::setLighting() 
 {
-	if (!this->enableLighting)
-		return;
-	string intensity = "intensity";
-	string color = "color";
-	string position = "position";
-	string range = "range";
-	string constant = "constant";
-	string linear = "linear";
-	string quadratic = "quadratic";
-	string direction = "direction";
-	string cutoff = "cutoff";
-	string outerCutoff = "outerCutoff";
-
-	int directionalLightCount = 0;
-	int pointLightCount = 0;
-	int spotLightCount = 0;
-	for (auto light : Light::lights)
+	if (!this->lightingIntialized) 
 	{
-		if (light->type == Light::Type::Directional)
-		{
-			string arrayName = "dirLights";
-			const char* intensityName = spring::misc::string2c((arrayName + '[' + to_string(directionalLightCount) + "]." + intensity));
-			const char* positionName = spring::misc::string2c((arrayName + '[' + to_string(directionalLightCount) + "]." + position));
-			const char* colorName = spring::misc::string2c((arrayName + '[' + to_string(directionalLightCount) + "]." + color));
-			this->setFloat(intensityName, light->intensity);
-			this->setVec3(positionName, light->transform->position);
-			this->setColor(colorName, light->color);
-			directionalLightCount++;
-			delete[] intensityName;
-			delete[] positionName;
-			delete[] colorName;
+		Light::ShaderSetting(*this);
+		this->lightingIntialized = true;
+	}
 
-		}
-		else if (light->type == Light::Type::Point)
-		{
-			string arrayName = "pointLights";
-			char* intensityStr = spring::misc::string2c((arrayName + '[' + to_string(pointLightCount) + "]." + intensity));
-			char* positionStr = spring::misc::string2c((arrayName + '[' + to_string(pointLightCount) + "]." + position));
-			char* colorStr = spring::misc::string2c((arrayName + '[' + to_string(pointLightCount) + "]." + color));
-			char* rangeStr = spring::misc::string2c((arrayName + '[' + to_string(pointLightCount) + "]." + range));
-			char* constantStr = spring::misc::string2c((arrayName + '[' + to_string(pointLightCount) + "]." + constant));
-			char* linearStr = spring::misc::string2c(arrayName + '[' + to_string(pointLightCount) + "]." + linear);
-			char* quadraticStr = spring::misc::string2c(arrayName + '[' + to_string(pointLightCount) + "]." + quadratic);
-			this->setFloat(intensityStr, light->intensity);
-			this->setVec3(positionStr, light->transform->position);
-			this->setColor(colorStr, light->color);
-			this->setFloat(rangeStr, light->range);
-			this->setFloat(constantStr, light->constant);
-			this->setFloat(linearStr, light->linear);
-			this->setFloat(quadraticStr, light->quadratic);
-			pointLightCount++;
-			delete[] intensityStr;
-			delete[] positionStr;
-			delete[] colorStr;
-			delete[] rangeStr;
-			delete[] constantStr;
-			delete[] linearStr;
-			delete[] quadraticStr;
-		}
-		else if (light->type == Light::Type::Spot)
-		{
-			string arrayName = "spotLights";
-			char* intensityStr = spring::misc::string2c(arrayName + '[' + to_string(spotLightCount) + "]." + intensity);
-			char* positionStr = spring::misc::string2c(arrayName + '[' + to_string(spotLightCount) + "]." + position);
-			char* directionStr = spring::misc::string2c(arrayName + '[' + to_string(spotLightCount) + "]." + direction);
-			char* colorStr = spring::misc::string2c(arrayName + '[' + to_string(spotLightCount) + "]." + color);
-			char* rangeStr = spring::misc::string2c(arrayName + '[' + to_string(spotLightCount) + "]." + range);
-			char* constantStr = spring::misc::string2c(arrayName + '[' + to_string(spotLightCount) + "]." + constant);
-			char* linearStr = spring::misc::string2c(arrayName + '[' + to_string(spotLightCount) + "]." + linear);
-			char* quadraticStr = spring::misc::string2c(arrayName + '[' + to_string(spotLightCount) + "]." + quadratic);
-			char* cutoffStr = spring::misc::string2c(arrayName + '[' + to_string(spotLightCount) + "]." + cutoff);
-			char* outerCutoffStr = spring::misc::string2c(arrayName + '[' + to_string(spotLightCount) + "]." + outerCutoff);
-			this->setFloat(intensityStr, light->intensity);
-			this->setVec3(positionStr, light->transform->position);
-			this->setColor(colorStr, light->color);
-			this->setFloat(rangeStr, light->range);
-			this->setFloat(constantStr, light->constant);
-			this->setFloat(linearStr, light->linear);
-			this->setFloat(quadraticStr, light->quadratic);
-			this->setFloat(cutoffStr, glm::cos(glm::radians(light->spotAngle / 2.0f)));
-			this->setFloat(outerCutoffStr, glm::cos(glm::radians(light->outterAngle / 2.0f)));
-			this->setVec3(directionStr, light->transform->GetEulerangle());
-			spotLightCount++;
-			delete[] intensityStr;
-			delete[] positionStr;
-			delete[] directionStr;
-			delete[] colorStr;
-			delete[] rangeStr;
-			delete[] constantStr;
-			delete[] linearStr;
-			delete[] quadraticStr;
-			delete[] cutoffStr;
-			delete[] outerCutoffStr;
-		}
-		else
-		{
-
-		}
-
+	for (Light* light : Light::lights) 
+	{
 		if (this->receiveShadow)
 		{
-			// add light shadow map for shader program
 			if (light->shadowType != Light::NoShadow)
 			{
 				if (nullptr != light->shadow)
 				{
 					unsigned int shadowmap = light->shadow->GetBuffer();
 					this->setTexture(SHADOWMAP, shadowmap);
-					// set light space matrix.
 					this->setMat4("LightSpaceMatrix", light->lightSpaceMatrix);
-				}
-				else
-				{
-					// PRINT_ERROR("[spring engine] Shader : light does not have shadow map.");
 				}
 			}
 		}
 	}
-	this->setVec3(CAMERA_POSITION, Camera::main->transform->position);
 }
 
 void Shader::setTime()
@@ -666,12 +578,31 @@ void Shader::setTime()
 }
 
 #pragma region loading | caching | flash
+char* Shader::loadShaderFile( const char*shaderFilePath )
+{
+	ifstream shaderFile;
+	int length;
+	shaderFile.open(shaderFilePath, ios::in|ios::binary);
+	if (!shaderFile.good()) 
+	{
+		PRINT_ERROR("shader file %s is not exist.",shaderFilePath);
+		return NULL;
+	}
+	shaderFile.seekg(0, ios::end);
+	length = int(shaderFile.tellg());
+	shaderFile.seekg(ios::beg);
+	char* buffer = new char[length+1];
+	shaderFile.read(buffer, length);
+	buffer[length] = '\0';
+	shaderFile.close();
+	return buffer;
+}
 
 Shader* Shader::Load(const char* shaderName) 
 {
+	// todo : do not supports to load shader via shader name.
 	return nullptr;
 }
-
 Shader* Shader::Load(const char* vertexShaderName, const char* fragmentShaderName, const char* geometryShaderName)
 {
 	const char* pathPrefix = "res/shader/";
@@ -716,32 +647,15 @@ Shader* Shader::Load(const char* vertexShaderName, const char* fragmentShaderNam
 	}
 	return shader;
 }
-
-char* Shader::loadShaderFile( const char*shaderFilePath )
+void Shader::ForEach(std::function<void(Shader*)> func)
 {
-	ifstream shaderFile;
-	int length;
-	shaderFile.open(shaderFilePath, ios::in|ios::binary);
-	if (!shaderFile.good()) 
-	{
-		PRINT_ERROR("shader file %s is not exist.",shaderFilePath);
-		return NULL;
-	}
-	shaderFile.seekg(0, ios::end);
-	length = int(shaderFile.tellg());
-	shaderFile.seekg(ios::beg);
-	char* buffer = new char[length+1];
-	shaderFile.read(buffer, length);
-	buffer[length] = '\0';
-	shaderFile.close();
-	return buffer;
+	for (Shader* shader : cachingShaders)
+		func(shader);
 }
-
 void Shader::Caching(Shader* shader) 
 {
 	cachingShaders.push_back(shader);
 }
-
 void Shader::Flash(Shader* shader) 
 {
 	for (vector<Shader*>::iterator item = cachingShaders.begin(); item != cachingShaders.end();item++)

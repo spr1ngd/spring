@@ -19,17 +19,18 @@ void GameApp::Awake()
 	uiCamera->cullingMask->layers = Layer::UI;
 	uiCamera->clearFlag = Camera::None;
 
-	// GameObject* plane = Primitive::CreatePrimitive(Primitive::Type::Quad);
-	// plane->name = "Ground";
-	// plane->SetFlag(HideFlags_NotEditable);
-	// plane->transform->SetLocalScale(Vector3(10000, 10000, 10000));
-	// plane->transform->SetPosition(Vector3(0.0f, 0.0f, 0.0f));
-	// //plane->transform->SetPosition(Vector3(0.0f, -25.0f, 0.0f));
-	// plane->transform->SetEulerangle(Vector3(0.0f, 0.0f, 0.0f));
-	// MeshRenderer* renderer = plane->GetNode<MeshRenderer>();
-	// renderer->setRenderOrder(5000);
-
-
+	GameObject* plane = Primitive::CreatePrimitive(Primitive::Type::Quad);
+	plane->name = "Ground";
+	plane->SetFlag(HideFlags_NotEditable);
+	plane->transform->SetLocalScale(Vector3(100, 100, 100));
+	plane->transform->SetPosition(Vector3(0.0f, 0.0f, 0.0f));
+	//plane->transform->SetPosition(Vector3(0.0f, -25.0f, 0.0f));
+	plane->transform->SetEulerangle(Vector3(0.0f, 0.0f, 0.0f));
+	MeshRenderer* renderer = plane->GetNode<MeshRenderer>();
+	Texture* tex = TextureLoader::Load("res/texture/standarduv.jpg");
+	renderer->material->shader->setTexture("MainTextureData.texture", tex->textureId);
+	renderer->setRenderOrder(5000);
+	
 	// GameObject* naturepark = new GameObject("NaturePark");
 	// MeshRenderer* npRenderer = naturepark->AddNode<MeshRenderer>();
 	// npRenderer->material = new Material(Shader::Load("diffuse/diffuse.vs", "diffuse/diffuse.fs"));

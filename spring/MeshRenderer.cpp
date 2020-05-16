@@ -2,6 +2,7 @@
 #include "mesh.h"
 #include "graphic.h"
 #include "matrix4x4.h"
+#include "graphicprofiler.h"
 
 using namespace spring;
 
@@ -106,8 +107,13 @@ void MeshRenderer::Render(const glm::mat4& view, const glm::mat4& projection)
 	glm::mat4 model = this->transform->GetModelMatrix();
 	glm::mat4 nm = this->transform->GetNMMatrix();
 
+	GraphicProfiler::BeginSample("enable shader");
 	this->material->shader->use();  
+	GraphicProfiler::EndSample();
+
+	GraphicProfiler::BeginSample("draw mesh");
 	this->RenderMesh(this->material, this->mesh, model, nm, view, projection);
+	GraphicProfiler::EndSample();
 	// sub mesh
 	vector<Mesh*> subMeshes = this->mesh->GetAllSubMeshes();
 	for (std::vector<Mesh*>::iterator subMesh = subMeshes.begin(); subMesh != subMeshes.end(); subMesh++)

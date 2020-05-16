@@ -16,9 +16,8 @@ namespace spring
 		static unsigned int indices;
 		static unsigned int triangles;
 
-		// profiler sample
-		static std::stack<ProfilerSample*> sampleStack;
-		static ProfilerSample* samplingProfiler;
+		// profiler sample 
+		static stack<ProfilerSample*> profilersStack;
 
 	public:
 		static unsigned int GetDrawcall();

@@ -8,7 +8,7 @@ using namespace spring::editor;
 StatusWindow::StatusWindow(const char* name, bool openDefault /* = false */) : EditorWindow(name,openDefault)
 {
 	this->windowFlags =
-		ImGuiWindowFlags_NoResize|
+		// ImGuiWindowFlags_NoResize|
 		ImGuiWindowFlags_NoMove|
 		ImGuiWindowFlags_NoScrollWithMouse |
 		ImGuiWindowFlags_NoScrollbar;

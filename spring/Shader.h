@@ -4,6 +4,7 @@
 #include "Glm/ext.hpp"  
 #include <map>
 #include <vector>
+#include <functional>
 #include "color.h"
 #include "vector3.h"
 #include "vector4.h"
@@ -69,6 +70,7 @@ namespace spring
 		static Vector4 shaderTimer;
 		static Shader* Load(const char* shaderName);
 		static Shader* Load(const char* vertexShaderName,const char* fragmentShaderName,const char* geometryShader = nullptr);
+		static void ForEach(std::function<void(Shader*)> func);
 
 	private:
 		char* loadShaderFile(const char* shaderFilePath);
@@ -102,6 +104,7 @@ namespace spring
 		map<unsigned int, Cubemap*> cubemaps;
 
 		GLuint program;
+		bool lightingIntialized = false;
 		bool receiveShadow = true;
 		bool enableLighting = true;
 
