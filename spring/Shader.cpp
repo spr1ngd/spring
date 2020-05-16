@@ -177,8 +177,10 @@ void Shader::use()
 	GraphicProfiler::BeginSample("shader parameters setting");
 	this->setShaderValues();
 	GraphicProfiler::EndSample();
-
+	
+	GraphicProfiler::BeginSample("shader time setting");
 	this->setTime();
+	GraphicProfiler::EndSample();
 }
 
 void Shader::disuse() 
@@ -535,18 +537,16 @@ void Shader::setEngineEnvironment()
 	// camera pos
 	this->setVec3(WorldSpaceCameraPos, Camera::main->transform->position);
 	this->setVec3(CAMERA_POSITION, Camera::main->transform->position);
-
-	// ambient setting
-	this->setColor(AMBIENT_COLOR,Environment::ambient.color);
-
-	// shadow setting
-	this->setInt(SHADOW_SAMPLELEVEL,Environment::shadow.sample);
 }
 
 void Shader::setLighting() 
 {
 	if (!this->lightingIntialized) 
 	{
+		// ambient setting
+		this->setColor(AMBIENT_COLOR, Environment::GetAmbientSetting().color);
+		// shadow setting
+		this->setInt(SHADOW_SAMPLELEVEL, Environment::GetShadowSetting().sample);
 		Light::ShaderSetting(*this);
 		this->lightingIntialized = true;
 	}

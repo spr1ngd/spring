@@ -35,9 +35,16 @@ namespace spring
 				// sample = SampleLevel::Double;
 			}
 		};
-
-	public:
+	private:
 		static AmbientSetting ambient;
 		static ShadowSetting shadow;
+
+	public:
+
+		static const AmbientSetting& GetAmbientSetting();
+		static const ShadowSetting& GetShadowSetting();
+
+		static void SetAmbientSetting(Color ambientColor);
+		static void SetShodowSetting(ShadowSetting::SampleLevel shadowSampleLevel);
 	};
 }

@@ -67,8 +67,8 @@ void Sample::Awake()
 
 #pragma region directional light 
 
-	Environment::ambient.color = Color(75, 75, 75, 255);
-	Environment::shadow.sample = Environment::ShadowSetting::Double;
+	Environment::SetAmbientSetting(Color(75, 75, 75, 255));
+	Environment::SetShodowSetting(Environment::ShadowSetting::Double);
 
 	// TODO 70MB
 	if (renderSkybox) 

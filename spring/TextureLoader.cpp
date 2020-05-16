@@ -17,8 +17,8 @@ TextureLoader::TextureLoader()
 
 bool TextureLoader::IsExist(const char* filePath, Texture* texture) 
 {
-	texture = textures[filePath];
-	return texture != nullptr;
+	auto cache = textures.find(filePath);
+	return cache != textures.end();
 }
 
 void TextureLoader::Caching(const char* filePath, Texture* texture) 
@@ -67,12 +67,14 @@ Texture* TextureLoader::CreatePureWhiteTexture()
 {
 	const char* textureName = "__spring__engine__pure__white__texture__";
 	Texture* texture = nullptr;
-	if (!IsExist(textureName, texture)) 
+	if (!IsExist(textureName, texture))
 	{
+		PRINT_ERROR("create new pure white color texture.");
 		texture = new Texture();
 		texture->textureName = textureName;
 		texture->textureType = "pure color";
 		GLuint tex;
+		// todo : replaced by texture object.
 		glGenTextures(1, &tex);
 		glBindTexture(GL_TEXTURE_2D, tex);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
@@ -85,6 +87,8 @@ Texture* TextureLoader::CreatePureWhiteTexture()
 		texture->textureId = tex;
 		Caching(textureName, texture);
 	}
+	else
+		texture = textures[textureName];
 	return texture;
 }
 
