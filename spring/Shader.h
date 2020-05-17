@@ -58,6 +58,24 @@ using namespace std;
 
 namespace spring 
 {
+	template<typename T>
+	struct ShaderParams 
+	{
+		int location;
+		T value;
+	};
+
+	typedef ShaderParams<Colorf> ShaderColorfParams;
+	typedef ShaderParams<Vector2> ShaderVec2Params;
+	typedef ShaderParams<Vector3> ShaderVec3Params;
+	typedef ShaderParams<Vector4> ShaderVec4Params;
+	typedef ShaderParams<int> ShaderIntParams;
+	typedef ShaderParams<bool> ShaderBoolParams;
+	typedef ShaderParams<float> ShaderFloatParams;
+	typedef ShaderParams<glm::mat4> ShaderMat4Params;
+	typedef ShaderParams<MaterialTexture> ShaderTextureParams;
+	typedef ShaderParams<Cubemap> ShaderCubemapParams;
+
 	class Shader
 	{
 	private:
@@ -86,22 +104,40 @@ namespace spring
 		void setTime();
 
 	public:
-		std::map<const char*, unsigned int> locations;
+		std::map<const char*, int> locations;
 		char* vertexShaderName;
 		char* fragmentShaderName;
 		char* geometryShaderName;
 
 		map<unsigned int, Colorf> colors;
+		map<const char*, ShaderColorfParams> _colors;
+
 		map<unsigned int, GLuint> ints;
+		map<const char*, ShaderIntParams> _ints;
+
 		map<unsigned int, bool> bools;
+		map<const char*, ShaderBoolParams> _bools;
+
 		map<unsigned int, GLfloat> floats;
+		map<const char*, ShaderFloatParams> _floats;
+
 		map<unsigned int, Vector2> vec2Map;
+		map<const char*, ShaderVec2Params> _vec2s;
+
 		map<unsigned int, Vector3> vec3Map;
+		map<const char*, ShaderVec3Params> _vec3s;
+
 		map<unsigned int, Vector4> vec4Map;
+		map<const char*, ShaderVec4Params> _vec4s;
+
 		map<unsigned int, glm::mat4> mat4Map;
+		map<const char*, ShaderMat4Params> _mat4s;
 
 		map<unsigned int, MaterialTexture> textures;
+		map<const char*, ShaderTextureParams> _textures;
+
 		map<unsigned int, Cubemap*> cubemaps;
+		map<const char*, ShaderCubemapParams> _cubemaps;
 
 		GLuint program;
 		bool lightingIntialized = false;

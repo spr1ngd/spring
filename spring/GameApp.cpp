@@ -27,7 +27,7 @@ void GameApp::Awake()
 	//plane->transform->SetPosition(Vector3(0.0f, -25.0f, 0.0f));
 	plane->transform->SetEulerangle(Vector3(0.0f, 0.0f, 0.0f));
 	MeshRenderer* renderer = plane->GetNode<MeshRenderer>();
-	Texture* tex = TextureLoader::Load("res/texture/standarduv.jpg");
+	Texture* tex = TextureLoader::Load("res/texture/standarduv.jpg",true);
 	renderer->material->shader->setTexture("MainTextureData.texture", tex->textureId);
 	renderer->setRenderOrder(5000);
 	
@@ -38,7 +38,7 @@ void GameApp::Awake()
 	// npRenderer->mesh = natureparkMesh;
 
 	GameObject* parent = Primitive::CreatePrimitive(Primitive::Cube);
-	for (unsigned int childIndex = 0; childIndex < 100; childIndex++) 
+	for (unsigned int childIndex = 0; childIndex < 500; childIndex++) 
 	{
 		GameObject* child = Primitive::CreatePrimitive(Primitive::Cube);
 		child->name = misc::strcat(std::to_string(childIndex).c_str(),"");

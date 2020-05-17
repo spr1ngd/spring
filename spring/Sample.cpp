@@ -110,7 +110,7 @@ void Sample::Awake()
 		light->layers.set(Layer::Default);
 		light->color = Color(255, 244, 214, 255);
 		light->setting.intensity = 2.0f;
-		light->SetShadowMappingParams(1024, 150.0f, -1.0f, 300.0f);
+		light->SetShadowMappingParams(4096, 150.0f, -1.0f, 300.0f);
 		directionalLightGO->transform->SetPosition(Vector3(18.0f, 36.0f, 32.0f));
 		directionalLightGO->transform->SetEulerangle(Vector3::down);
 

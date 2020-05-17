@@ -19,11 +19,11 @@ void StatusWindow::OnDrawWindow()
 	ImGui::SetNextItemOpen(this->enabled, ImGuiCond_Once);
 
 	ImGui::Text("FPS:%d",FPS::fps);
-	ImGui::Text("Elapsed seconds per frame:%.2f",FPS::perFrameElapsed);
+	ImGui::Text("Elapsed seconds per frame:%.0fms",FPS::perFrameElapsed);
 	ImGui::Text("Drawcall count : %d",GraphicProfiler::GetDrawcall());
 	ImGui::Text("Triangle count : %d", GraphicProfiler::GetTriangles());
 	ImGui::Text("Vertex count : %d", GraphicProfiler::GetVertices());
 
 	for (auto sample : GraphicProfiler::samples)
-		ImGui::Text("%s : %f", sample->sampleId, sample->elapsedTime);
+		ImGui::Text("%s : %.0fms", sample->sampleId, sample->elapsedTime);
 }

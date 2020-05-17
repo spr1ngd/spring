@@ -15,9 +15,12 @@ namespace spring
 			static float perFrameElapsed;
 			static void CalculateFramePerSecond()
 			{
-				float currentFrameTime = GetTickCount64() * 0.001f;
+				SYSTEMTIME  st = { 0 };
+				GetLocalTime(&st);
+
+				float currentFrameTime = st.wMilliseconds;
 				perFrameElapsed = currentFrameTime - lastFrameTime;
-				int result = (int)(1.0f / perFrameElapsed);
+				int result = (int)(1000.0f / perFrameElapsed);
 				if (result > 0)
 					fps = result;
 				lastFrameTime = currentFrameTime;
