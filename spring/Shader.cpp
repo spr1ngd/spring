@@ -115,20 +115,7 @@ bool Shader::link(unsigned int vertexShader, unsigned int fragmentShader, unsign
 
 void Shader::initializeLocation()
 {
-	this->getUniformLocation(MATRIX_M);
-	this->getUniformLocation(MATRIX_V);
-	this->getUniformLocation(MATRIX_P);
-	this->getUniformLocation(MATRIX_NM);
-	this->getUniformLocation(MAIN_TEX);
-	this->getUniformLocation(HEIGHT_TEX);
-	this->getUniformLocation(MAIN_CUBEMAP);
-	this->getUniformLocation(MAIN_COLOR);
-	this->getUniformLocation(AMBIENT_COLOR);
 
-	this->getUniformLocation(LIGHT_COLOR);
-	this->getUniformLocation(LIGHT_INSTENSITY);
-	this->getUniformLocation(LIGHT_POSITION);
-	this->getUniformLocation(LIGHT_DIRECTION);
 }
 
 unsigned int Shader::getAttribLocation(const char* name) 
@@ -136,19 +123,16 @@ unsigned int Shader::getAttribLocation(const char* name)
 	return glGetAttribLocation(this->program, name);
 }
 
-unsigned int Shader::getUniformLocation(const char* name) 
+int Shader::getUniformLocation(const char* name) 
 {
-// 	for (auto pair = this->locations.begin(); pair != this->locations.end(); pair++)
-// 	{
-// 		if (strcmp(pair->first, name) == 0)
-// 			return pair->second;
-// 	}
-// 	int location = glGetUniformLocation(this->program,name);
-// 	char* key = new char[strlen(name)];
-// 	strcpy_s(key, strlen(name) + 1, name);
-// 	this->locations.insert(std::pair<const char*, int>(key, location));
-// 	return location;
-	return glGetUniformLocation(this->program,name);
+	for (auto pair : this->locations)
+	{
+		if (strcmp(pair.first, name) == 0)
+			return pair.second;
+	}
+	int location = glGetUniformLocation(this->program,name);
+	this->locations.insert(std::pair<const char*,int>(name,location));
+	return location;
 }
 
 const char* Shader::getUniformName(unsigned int location)
@@ -191,17 +175,6 @@ void Shader::disuse()
 
 void Shader::setBool(const char* name, bool value)
 {
-	// int location = this->getUniformLocation(name);
-	// if (location == -1)
-	// 	return;
-	// auto pair = this->bools.find(location);
-	// if (pair == this->bools.end()) 
-	// {
-	// 	this->bools.insert(std::pair<unsigned int,bool>(location,value));
-	// 	return;
-	// }
-	// this->bools[location] = value;
-
 	for (auto params = this->_bools.begin(); params != this->_bools.end(); params++) 
 	{
 		if (strcmp(params->first, name) == 0) 
@@ -229,17 +202,6 @@ bool Shader::getBool(const char* name)
 
 void Shader::setMat4(const char* name, glm::mat4 value) 
 {
-// 	int location = this->getUniformLocation(name);
-// 	if (location == -1)
-// 		return;
-// 	auto pair = this->mat4Map.find(location);
-// 	if (pair == this->mat4Map.end())
-// 	{
-// 		this->mat4Map.insert(std::pair<GLuint, glm::mat4>(location, value));
-// 		return;
-// 	}
-// 	this->mat4Map[location] = value;
-
 	for (auto params = this->_mat4s.begin(); params != this->_mat4s.end(); params++)
 	{
 		if (strcmp(params->first, name) == 0)
@@ -259,17 +221,6 @@ void Shader::setMat4(const char* name, glm::mat4 value)
 
 void Shader::setVec2(const char* name, Vector2 value)
 {
-	//int location = this->getUniformLocation(name);
-	//if (location == -1)
-	//	return;
-	//auto pair = this->vec2Map.find(location);
-	//if (pair == this->vec2Map.end())
-	//{
-	//	this->vec2Map.insert(std::pair<GLuint, Vector2>(location, value));
-	//	return;
-	//}
-	//this->vec2Map[location] = value;
-
 	for (auto params = this->_vec2s.begin(); params != this->_vec2s.end(); params++)
 	{
 		if (strcmp(params->first, name) == 0)
@@ -297,17 +248,6 @@ Vector2 Shader::getVec2(const char* name)
 
 void Shader::setVec3(const char* name, Vector3 value)
 {
-	// int location = this->getUniformLocation(name);
-	// if (location == -1)
-	// 	return;
-	// auto pair = this->vec3Map.find(location);
-	// if (pair == this->vec3Map.end())
-	// {
-	// 	this->vec3Map.insert(std::pair<GLuint,Vector3>(location,value));
-	// 	return;
-	// }
-	// this->vec3Map[location] = value;
-
 	for (auto params = this->_vec3s.begin(); params != this->_vec3s.end(); params++)
 	{
 		if (strcmp(params->first, name) == 0)
@@ -335,17 +275,6 @@ Vector3 Shader::getVec3(const char* name)
 
 void Shader::setVec4(const char* name, Vector4 value)
 {
-	/*int location = this->getUniformLocation(name);
-	if (location == -1)
-		return;
-	auto pair = this->vec4Map.find(location);
-	if (pair == this->vec4Map.end()) 
-	{
-		this->vec4Map.insert(std::pair<GLuint,Vector4>(location,value));
-		return;
-	}
-	this->vec4Map[location] = value;*/
-
 	for (auto params = this->_vec4s.begin(); params != this->_vec4s.end(); params++)
 	{
 		if (strcmp(params->first, name) == 0)
@@ -373,16 +302,6 @@ Vector4 Shader::getVec4(const char* name)
 
 void Shader::setInt(const char* name, GLint value)
 {
-	//int location = this->getUniformLocation(name);
-	//if (location == -1)
-	//	return;
-	//auto pair = this->ints.find(location);
-	//if (pair == this->ints.end())
-	//{
-	//	this->ints.insert(std::pair<GLuint,GLuint>(location, value));
-	//	return;
-	//}
-	//this->ints[location] = value;
 	for (auto params = this->_ints.begin(); params != this->_ints.end(); params++)
 	{
 		if (strcmp(params->first, name) == 0)
@@ -410,17 +329,6 @@ int Shader::getInt(const char* name)
 
 void Shader::setFloat(const char* name, GLfloat value)
 {
-	//int location = this->getUniformLocation(name);
-	//if (location == -1)
-	//	return;
-	//auto pair = this->floats.find(location);
-	//if (pair == this->floats.end())
-	//{
-	//	this->floats.insert(std::pair<GLuint,GLfloat>(location,value));
-	//	return;
-	//}
-	//this->floats[location] = value;
-
 	for (auto params = this->_ints.begin(); params != this->_ints.end(); params++)
 	{
 		if (strcmp(params->first, name) == 0)
@@ -459,17 +367,6 @@ Color Shader::getColor(const char* name)
 
 void Shader::setColor( const char* name, Colorf value)
 {
-	//int location = this->getUniformLocation(name);
-	//if (location == -1)
-	//	return;
-	//auto pair = this->colors.find(location);
-	//if (pair == this->colors.end())
-	//{
-	//	this->colors.insert(std::pair<GLuint, Colorf>(location, color));
-	//	return;
-	//}
-	//this->colors[location] = color;
-
 	for (auto params = this->_colors.begin(); params != this->_colors.end(); params++)
 	{
 		if (strcmp(params->first, name) == 0)
@@ -495,21 +392,8 @@ Colorf Shader::GetColorf(const char* name)
 	return Colorf::white;
 }
 
-void Shader::setTexture(const char*name, GLuint value)
+void Shader::setTexture(const char* name, GLuint value)
 {
-	//int location = this->getUniformLocation(name);
-	//if (location == -1)
-	//	return;
-	//auto pair = this->textures.find(location);
-	//if (pair == this->textures.end())
-	//{
-	//	MaterialTexture mt;
-	//	mt.texture = texture;
-	//	this->textures.insert(std::pair<GLuint,MaterialTexture>(location,mt));
-	//	return;
-	//}
-	//this->textures[location].texture = texture;
-
 	for (auto params = this->_textures.begin(); params != this->_textures.end(); params++)
 	{
 		if (strcmp(params->first, name) == 0)
@@ -539,16 +423,6 @@ int Shader::getTexture(const char* name)
 
 void Shader::setTilling(const char* name, Vector2 tilling) 
 {
-	//int location = this->getUniformLocation(name);
-	//if (location == -1)
-	//	return;
-	//auto pair = this->textures.find(location);
-	//if (pair != this->textures.end())
-	//{
-	//	MaterialTexture mt = this->textures[location];
-	//	mt.tilling = tilling;
-	//	this->textures[location] = mt;
-	//}	
 	for (auto params = this->_textures.begin(); params != this->_textures.end(); params++)
 	{
 		if (strcmp(params->first, name) == 0)
@@ -569,17 +443,6 @@ Vector2 Shader::getTilling(const char* name)
 
 void Shader::setOffset(const char* name, Vector2 offset) 
 {
-	//int location = this->getUniformLocation(name);
-	//if (location == -1)
-	//	return;
-	//auto pair = this->textures.find(location);
-	//if (pair != this->textures.end())
-	//{
-	//	MaterialTexture mt = this->textures[location];
-	//	mt.offset = offset;
-	//	this->textures[location] = mt;
-	//}
-
 	for (auto params = this->_textures.begin(); params != this->_textures.end(); params++)
 	{
 		if (strcmp(params->first, name) == 0)
@@ -600,16 +463,6 @@ Vector2 Shader::getOffset(const char* name)
 
 void Shader::setCubemap(const char* name, Cubemap* cubemap)
 {
-	//int location = this->getUniformLocation(name);
-	//if (location == -1)
-	//	return;
-	//auto pair = this->cubemaps.find(location);
-	//if (pair == this->cubemaps.end())
-	//{
-	//	this->cubemaps[location] = cubemap;
-	//	return;
-	//}
-	//this->cubemaps[location] = cubemap;
 	for (auto params = this->_cubemaps.begin(); params != this->_cubemaps.end(); params++)
 	{
 		if (strcmp(params->first, name) == 0)
@@ -639,27 +492,15 @@ int Shader::getCubemap(const char* name)
 
 void Shader::setShaderValues() 
 {
-// 	for (auto pair : this->bools) 
-// 		glUniform1i(pair.first, pair.second);
 	for (auto pair : this->_bools)
 		glUniform1i(pair.second.location, pair.second.value);
 
-// 	for (auto pair : this->ints)
-// 		glUniform1i(pair.first, pair.second);
 	for (auto pair : this->_ints)
 		glUniform1i(pair.second.location, pair.second.value);
 
-// 	for (auto pair : this->floats)
-// 		glUniform1f(pair.first, pair.second);
 	for (auto pair : this->_floats)
 		glUniform1f(pair.second.location, pair.second.value);
 
-// 	for (auto pair : this->colors)
-// 	{
-// 		Colorf color = pair.second;
-// 		const float value[4] = { color.r ,color.g ,color.b,color.a };
-// 		glUniform4fv(pair.first, 1, value);
-// 	}
 	for (auto pair : this->_colors)
 	{
 		Colorf color = pair.second.value;
@@ -667,12 +508,6 @@ void Shader::setShaderValues()
 		glUniform4fv(pair.second.location, 1, value);
 	}
 
-// 	for (auto pair : this->vec2Map)
-// 	{
-// 		Vector2 vec2 = pair.second;
-// 		const float value[2] = { vec2.x,vec2.y};
-// 		glUniform2fv(pair.first, 1, value);
-// 	}
 	for (auto pair : this->_vec2s)
 	{
 		Vector2 vec2 = pair.second.value;
@@ -680,12 +515,6 @@ void Shader::setShaderValues()
 		glUniform2fv(pair.second.location, 1, value);
 	}
 
-// 	for (auto pair : this->vec3Map)
-// 	{
-// 		Vector3 vec3 = pair.second;
-// 		const float value[3] = {vec3.x,vec3.y,vec3.z};
-// 		glUniform3fv(pair.first, 1, value);
-// 	}
 	for (auto vec3Param : this->_vec3s)
 	{
 		Vector3 vec3 = vec3Param.second.value;
@@ -693,12 +522,6 @@ void Shader::setShaderValues()
 		glUniform3fv(vec3Param.second.location, 1, value);
 	}
 
-// 	for (auto pair : this->vec4Map) 
-// 	{
-// 		Vector4 vec4 = pair.second;
-// 		const float value[4] = {vec4.x,vec4.y,vec4.z,vec4.w};
-// 		glUniform4fv(pair.first,1,value);
-// 	}	
 	for (auto pair : this->_vec4s)
 	{
 		Vector4 vec4 = pair.second.value;
@@ -706,45 +529,29 @@ void Shader::setShaderValues()
 		glUniform4fv(pair.second.location, 1, value);
 	}
 
-// 	for (auto pair : this->mat4Map) 
-// 	{
-// 		glUniformMatrix4fv(pair.first, 1, GL_FALSE, glm::value_ptr(pair.second));
-// 	}
 	for (auto pair : this->_mat4s )
 		glUniformMatrix4fv(pair.second.location, 1, GL_FALSE, glm::value_ptr(pair.second.value));
 
 	unsigned int textureIndex = 0;
-// 	for (std::pair<GLuint,MaterialTexture> pair : this->textures)
-// 	{
-// 		glUniform1i(pair.first, textureIndex);
-// 		glActiveTexture(GL_TEXTURE0 + textureIndex++);
-// 		glBindTexture(GL_TEXTURE_2D, pair.second.texture);
-// 		GLuint tillingLocation = glGetUniformLocation(this->program, "MainTextureData.tilling");
-// 		GLuint offsetLocation = glGetUniformLocation(this->program, "MainTextureData.offset");
-// 		const float tilling[2] = {pair.second.tilling.x,pair.second.tilling.y};
-// 		glUniform2fv(tillingLocation,1, tilling);
-// 		const float offset[2] = { pair.second.offset.x,pair.second.offset.y };
-// 		glUniform2fv(offsetLocation, 1, offset);
-// 	}
 	for (auto pair : this->_textures) 
 	{
 		glUniform1i(pair.second.location, textureIndex);
 		glActiveTexture(GL_TEXTURE0 + textureIndex++);
 		glBindTexture(GL_TEXTURE_2D, pair.second.value.texture);
-		GLuint tillingLocation = glGetUniformLocation(this->program, "MainTextureData.tilling");
-		GLuint offsetLocation = glGetUniformLocation(this->program, "MainTextureData.offset");
-		const float tilling[2] = { pair.second.value.tilling.x,pair.second.value.tilling.y };
-		glUniform2fv(tillingLocation, 1, tilling);
-		const float offset[2] = { pair.second.value.offset.x,pair.second.value.offset.y };
-		glUniform2fv(offsetLocation, 1, offset);
+		int tillingLocation = this->getUniformLocation("MainTextureData.tilling");
+		if (tillingLocation != -1)
+		{
+			const float tilling[2] = { pair.second.value.tilling.x,pair.second.value.tilling.y };
+			glUniform2fv(tillingLocation, 1, tilling);
+		}
+		int offsetLocation = this->getUniformLocation("MainTextureData.offset");
+		if (offsetLocation != -1)
+		{
+			const float offset[2] = { pair.second.value.offset.x,pair.second.value.offset.y };
+			glUniform2fv(offsetLocation, 1, offset);
+		}
 	}
 
-// 	for (std::pair<GLuint, Cubemap*> pair : this->cubemaps) 
-// 	{
-// 		glUniform1i(pair.first, textureIndex);
-// 		glActiveTexture(GL_TEXTURE0 + textureIndex++);
-// 		glBindTexture(GL_TEXTURE_CUBE_MAP,pair.second->cubemap);
-// 	}
 	for (auto pair : this->_cubemaps)
 	{
 		glUniform1i(pair.second.location, textureIndex);
@@ -755,9 +562,6 @@ void Shader::setShaderValues()
 
 void Shader::setEngineEnvironment() 
 {
-	/*if (this->textures.size() <= 0)
-		this->setTexture("MainTextureData.texture", TextureLoader::CreatePureWhiteTexture()->textureId);*/
-
 	// camera pos
 	GraphicProfiler::BeginSample("Set WorldSpaceCameraPos");
 	this->setVec3(WorldSpaceCameraPos, Camera::main->transform->position);
@@ -791,9 +595,9 @@ void Shader::setLighting()
 		this->lightingIntialized = true;
 	}
 
-	for (Light* light : Light::lights) 
+	if (this->receiveShadow)
 	{
-		if (this->receiveShadow)
+		for (Light* light : Light::lights)
 		{
 			if (light->shadowType != Light::NoShadow)
 			{
@@ -810,11 +614,7 @@ void Shader::setLighting()
 
 void Shader::setTime()
 {
-	unsigned int timeLocation = this->getUniformLocation(_Time);
-	if (timeLocation < 0)
-		return;
-	float time[4] = {shaderTimer.x,shaderTimer.y,shaderTimer.z,shaderTimer.w};
-	glUniform4fv(timeLocation, 1, time);
+	this->setVec4(_Time, shaderTimer);
 }
 
 #pragma region loading | caching | flash

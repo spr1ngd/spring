@@ -151,7 +151,7 @@ namespace spring
 		void use();
 		void disuse();
 		unsigned int getAttribLocation(const char* name);
-		unsigned int getUniformLocation(const char* name);
+		int getUniformLocation(const char* name);
 		const char* getUniformName(unsigned int location);
 
 		void setBool(const char* name, bool value);
