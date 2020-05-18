@@ -181,7 +181,7 @@ void Light::CastShadow()
 					else
 						renderer->material = depthMaterial;
 					// todo : make camera culling mask equal with light.
-					renderer->Render(view,light->shadowMapping.projection);
+					renderer->Render(view,light->shadowMapping.projection, light->lightSpaceMatrix);
 					renderer->material = srcMaterial;
 				}
 			});

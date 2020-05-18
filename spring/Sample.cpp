@@ -48,7 +48,7 @@ void Sample::Awake()
 	Camera::main = camera;
 	camera->clearFlag = Camera::ClearFlag::Skybox;
 	camera->background = Color(31, 113, 113, 255);
-	camera->cullingMask->layers = Layer::Default | Layer::Skybox | Layer::PostProcessing;
+	camera->cullingMask->set(Layer::Default | Layer::Skybox | Layer::PostProcessing);
 	mainCamera->transform->SetPosition(Vector3(0.0f, 0.0f, 25.0f));
 	mainCamera->transform->LookAt(Vector3::zero);
 

@@ -100,8 +100,7 @@ namespace spring
 
 		void setShaderValues();
 		void setEngineEnvironment();
-		void setLighting();
-		void setTime();
+		void setLighting(); 
 
 	public:
 		std::map<const char*, int> locations;

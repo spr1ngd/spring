@@ -76,7 +76,8 @@ void PhysicsBasedRendering::CubemapConvolution(Cubemap* cubemap)
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glClearColor(0.0f,0.0f,0.0f,1.0f);
 		glm::mat4 view = views[i];
-		meshRenderer->Render(view, projection);
+		glm::mat4 vp = projection * view;
+		meshRenderer->Render(view, projection ,vp);
 	}
 	capture->Unbind();
 	// delete material;
@@ -136,7 +137,8 @@ void PhysicsBasedRendering::PreFilter(Cubemap* cubemap)
 			fbo->CubemapCapture(prefilter->cubemap, i,level);
 			glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
 			glClearColor(0.0f,0.0f,0.0f,1.0f);
-			meshrenderer->Render(views[i], projection);
+			glm::mat4 vp = projection * views[i];
+			meshrenderer->Render(views[i], projection, vp);
 		}
 	}
 	fbo->Unbind();
@@ -162,7 +164,7 @@ void PhysicsBasedRendering::PreBRDF(Cubemap* cubemap)
 	fbo->Bind();
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glClearColor(1.0f,0.0f,0.0f,1.0f);
-	fsRenderer->Render(glm::mat4(0.0),glm::mat4(0.0));
+	fsRenderer->Render(glm::mat4(0.0),glm::mat4(0.0),glm::mat4(0.0f));
 	fbo->Unbind();
 
 	prebrdf->textureId = fbo->GetBuffer();

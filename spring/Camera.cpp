@@ -49,13 +49,20 @@ void Camera::Update()
 		glm::vec3(up.x, up.y, up.z));
 
 	// 如果这些值不发生变化，则不需要进行重新计算
-	if (this->cameraType == Camera::Perspective)
-		this->ProjectionMatrix = glm::perspective(glm::radians(this->fov), float(Screen::width) / float(Screen::height), this->nearClip, this->farClip);
-	else if (this->cameraType == Camera::Orthographic)
-		this->ProjectionMatrix = glm::ortho(-50.0f,50.0f, -50.0f,50.0f, -10.0f,50.0f);
+	if (this->cullingMask->contains(Layer::UI))
+	{
+		this->Projection2DMatrix = glm::ortho(0.0f, static_cast<float>(Screen::width), 0.0f, static_cast<float>(Screen::height), -1.0f, 1.0f);
+	}
 	else
-		throw new std::invalid_argument("spring engine : camera type invalid.");
-	this->Projection2DMatrix = glm::ortho(0.0f, static_cast<float>(Screen::width), 0.0f, static_cast<float>(Screen::height), -1.0f, 1.0f);
+	{
+		if (this->cameraType == Camera::Perspective)
+			this->ProjectionMatrix = glm::perspective(glm::radians(this->fov), float(Screen::width) / float(Screen::height), this->nearClip, this->farClip);
+		else if (this->cameraType == Camera::Orthographic)
+			this->ProjectionMatrix = glm::ortho(-50.0f, 50.0f, -50.0f, 50.0f, -10.0f, 50.0f);
+		else
+			throw new std::invalid_argument("spring engine : camera type invalid.");
+		this->ViewProjectionMatrix = this->ProjectionMatrix * this->ViewMatrix;
+	}
 }
 
 void Camera::Render()
@@ -96,6 +103,11 @@ const glm::mat4& Camera::GetProjectionMatrix()
 const glm::mat4& Camera::Get2DProjection()
 {
 	return this->Projection2DMatrix;
+}
+
+const glm::mat4& Camera::GetViewProjectionMatrix() 
+{
+	return this->ViewProjectionMatrix;
 }
 
 void Camera::CachingCamera(Camera* camera)

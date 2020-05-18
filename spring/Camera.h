@@ -14,6 +14,7 @@ namespace spring
 		glm::mat4 ViewMatrix;
 		glm::mat4 ProjectionMatrix;
 		glm::mat4 Projection2DMatrix;
+		glm::mat4 ViewProjectionMatrix;
 
 		static void CachingCamera(Camera* camera);
 
@@ -58,6 +59,7 @@ namespace spring
 		const glm::mat4& GetViewMatrix();
 		const glm::mat4& GetProjectionMatrix();
 		const glm::mat4& Get2DProjection();
+		const glm::mat4& GetViewProjectionMatrix();
 		void Update();
 		void Render();
 		void Destroy() override;

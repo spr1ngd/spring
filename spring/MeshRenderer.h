@@ -25,8 +25,8 @@ namespace spring
 		virtual void Initialize();
 		void Render() override;
 		virtual void Render( Camera* camera );
-		virtual void Render( const glm::mat4& view ,const glm::mat4& projection);
-		virtual void RenderMesh(Material* mat,Mesh* mesh,const glm::mat4& mode,const glm::mat4& nm,const glm::mat4& view,const glm::mat4 projection);
+		virtual void Render( const glm::mat4& view ,const glm::mat4& projection ,const glm::mat4& vp);
+		virtual void RenderMesh(Material* mat,Mesh* mesh,const glm::mat4& mode,const glm::mat4& nm,const glm::mat4& view,const glm::mat4& projection ,const glm::mat4& vp);
 
 		TypeInfo GetTypeInfo() override 
 		{

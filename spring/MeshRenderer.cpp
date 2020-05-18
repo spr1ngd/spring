@@ -80,10 +80,11 @@ void MeshRenderer::Render(Camera* camera)
 	if (!camera->cullingMask->contains(this->gameobject->layer))
 		return;
 	this->Render(camera->GetViewMatrix(), 
-		this->gameobject->layer == Layer::UI ? camera->Get2DProjection() : camera->GetProjectionMatrix());
+		this->gameobject->layer == Layer::UI ? camera->Get2DProjection() : camera->GetProjectionMatrix(),
+		camera->GetViewProjectionMatrix());
 }
 
-void MeshRenderer::Render(const glm::mat4& view, const glm::mat4& projection)
+void MeshRenderer::Render(const glm::mat4& view, const glm::mat4& projection, const glm::mat4& vp)
 {
 	if (this->material == nullptr)
 	{
@@ -111,24 +112,31 @@ void MeshRenderer::Render(const glm::mat4& view, const glm::mat4& projection)
 	this->material->shader->use();  
 	GraphicProfiler::EndSample();
 
-	GraphicProfiler::BeginSample("draw mesh");
-	this->RenderMesh(this->material, this->mesh, model, nm, view, projection);
-	GraphicProfiler::EndSample();
+	this->RenderMesh(this->material, this->mesh, model, nm, view, projection, vp);
 	// sub mesh
 	vector<Mesh*> subMeshes = this->mesh->GetAllSubMeshes();
 	for (std::vector<Mesh*>::iterator subMesh = subMeshes.begin(); subMesh != subMeshes.end(); subMesh++)
-		this->RenderMesh(this->material, *subMesh, model, nm, view, projection);
+		this->RenderMesh(this->material, *subMesh, model, nm, view, projection, vp);
 	this->material->shader->disuse();
 }
 
-void MeshRenderer::RenderMesh(Material* mat, Mesh* mesh, const glm::mat4& model, const glm::mat4& nm, const glm::mat4& view, const glm::mat4 projection)
+void MeshRenderer::RenderMesh(Material* mat, Mesh* mesh, const glm::mat4& model, const glm::mat4& nm, const glm::mat4& view, const glm::mat4& projection, const glm::mat4& vp)
 {
-	glm::mat4 mvp = projection * view * model;
+	// todo ： 优化重点 2
+	GraphicProfiler::BeginSample("get mvp matrix");
+	glm::mat4 mvp = vp * model;
+	GraphicProfiler::EndSample();
+
+	// todo ： 优化重点 1
+	GraphicProfiler::BeginSample("set matrix parameters");
 	mat->shader->setMat4(MATRIX_M, model);
 	mat->shader->setMat4(MATRIX_NM, nm);
 	mat->shader->setMat4(MATRIX_V, view);
 	mat->shader->setMat4(MATRIX_P, projection);
 	mat->shader->setMat4(MATRIX_MVP, mvp);
+	GraphicProfiler::EndSample();
+
+	// todo ： 优化重点 3 将RenderMode缓存
 	mesh->Draw();
 }
 

@@ -148,20 +148,9 @@ const char* Shader::getUniformName(unsigned int location)
 void Shader::use()
 {
 	glUseProgram(this->program);
-
-	GraphicProfiler::BeginSample("lighting setting");
 	this->setLighting();
-	GraphicProfiler::EndSample();
-
 	this->setEngineEnvironment();
-
-	GraphicProfiler::BeginSample("shader parameters setting");
 	this->setShaderValues();
-	GraphicProfiler::EndSample();
-	
-	GraphicProfiler::BeginSample("shader time setting");
-	this->setTime();
-	GraphicProfiler::EndSample();
 }
 
 void Shader::disuse() 
@@ -562,12 +551,9 @@ void Shader::setShaderValues()
 
 void Shader::setEngineEnvironment() 
 {
-	// camera pos
-	GraphicProfiler::BeginSample("Set WorldSpaceCameraPos");
 	this->setVec3(WorldSpaceCameraPos, Camera::main->transform->position);
-	GraphicProfiler::EndSample();
 	this->setVec3(CAMERA_POSITION, Camera::main->transform->position);
-
+	this->setVec4(_Time, shaderTimer);
 }
 
 void Shader::setLighting() 
@@ -610,12 +596,7 @@ void Shader::setLighting()
 			}
 		}
 	}
-}
-
-void Shader::setTime()
-{
-	this->setVec4(_Time, shaderTimer);
-}
+} 
 
 #pragma region loading | caching | flash
 char* Shader::loadShaderFile( const char*shaderFilePath )
