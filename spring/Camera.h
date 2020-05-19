@@ -63,5 +63,8 @@ namespace spring
 		void Update();
 		void Render();
 		void Destroy() override;
+
+		glm::mat4 WorldSpaceToViewportSpace(const glm::mat4& model);
+		glm::mat4 WorldSpaceToScreenSpace(const glm::mat4& model);
 	};
 } 

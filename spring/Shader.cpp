@@ -115,7 +115,11 @@ bool Shader::link(unsigned int vertexShader, unsigned int fragmentShader, unsign
 
 void Shader::initializeLocation()
 {
-
+	/*this->getUniformLocation(MATRIX_M);
+	this->getUniformLocation(MATRIX_NM);
+	this->getUniformLocation(MATRIX_V);
+	this->getUniformLocation(MATRIX_P);
+	this->getUniformLocation(MATRIX_MVP);*/
 }
 
 unsigned int Shader::getAttribLocation(const char* name) 
@@ -201,7 +205,7 @@ void Shader::setMat4(const char* name, glm::mat4 value)
 	}
 
 	ShaderMat4Params mat4Param;
-	mat4Param.location = this->getUniformLocation(name);
+	mat4Param.location = this->getUniformLocation(name);;
 	mat4Param.value = value;
 	char* key = new char[strlen(name)];
 	strcpy_s(key, strlen(name) + 1, name);

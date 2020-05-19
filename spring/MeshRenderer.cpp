@@ -97,6 +97,7 @@ void MeshRenderer::Render(const glm::mat4& view, const glm::mat4& projection, co
 	if (!this->enabled || ( nullptr != this->gameobject && !this->gameobject->GetActive()) )
 		return;
 
+	GraphicProfiler::BeginSample("gpu parameters setting");
 	// this->material->AlphaTestFunc(GL_GREATER, 0.0f);
 	this->material->EnableAlphaTest();
 	this->material->EnableAlphaBlend();
@@ -104,29 +105,26 @@ void MeshRenderer::Render(const glm::mat4& view, const glm::mat4& projection, co
 	this->material->EnableDepthTest();
 	// this->material->EnableStencilTest();
 	this->material->EnableCullFace();
+	GraphicProfiler::EndSample();
 
-	glm::mat4 model = this->transform->GetModelMatrix();
-	glm::mat4 nm = this->transform->GetNMMatrix();
+	glm::mat4& model = this->transform->GetModelMatrix();
+	glm::mat4& nm = this->transform->GetNMMatrix();
+	glm::mat4 mvp = vp * model;
 
 	GraphicProfiler::BeginSample("enable shader");
 	this->material->shader->use();  
 	GraphicProfiler::EndSample();
 
-	this->RenderMesh(this->material, this->mesh, model, nm, view, projection, vp);
+	this->RenderMesh(this->material, this->mesh, model, nm, view, projection, mvp);
 	// sub mesh
 	vector<Mesh*> subMeshes = this->mesh->GetAllSubMeshes();
 	for (std::vector<Mesh*>::iterator subMesh = subMeshes.begin(); subMesh != subMeshes.end(); subMesh++)
-		this->RenderMesh(this->material, *subMesh, model, nm, view, projection, vp);
+		this->RenderMesh(this->material, *subMesh, model, nm, view, projection, mvp);
 	this->material->shader->disuse();
 }
 
-void MeshRenderer::RenderMesh(Material* mat, Mesh* mesh, const glm::mat4& model, const glm::mat4& nm, const glm::mat4& view, const glm::mat4& projection, const glm::mat4& vp)
+void MeshRenderer::RenderMesh(Material* mat, Mesh* mesh, const glm::mat4& model, const glm::mat4& nm, const glm::mat4& view, const glm::mat4& projection, const glm::mat4& mvp)
 {
-	// todo ： 优化重点 2
-	GraphicProfiler::BeginSample("get mvp matrix");
-	glm::mat4 mvp = vp * model;
-	GraphicProfiler::EndSample();
-
 	// todo ： 优化重点 1
 	GraphicProfiler::BeginSample("set matrix parameters");
 	mat->shader->setMat4(MATRIX_M, model);

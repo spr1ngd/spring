@@ -57,7 +57,7 @@
 using namespace std;
 
 namespace spring 
-{
+{ 
 	template<typename T>
 	struct ShaderParams 
 	{

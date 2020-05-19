@@ -116,3 +116,13 @@ void Camera::CachingCamera(Camera* camera)
 		Camera::main = camera;
 	cameras.push_back(camera);
 }
+
+glm::mat4 Camera::WorldSpaceToViewportSpace(const glm::mat4& model)
+{
+	return this->ViewProjectionMatrix * model;
+}
+
+glm::mat4 Camera::WorldSpaceToScreenSpace(const glm::mat4& model)
+{
+	return this->ViewMatrix * model;
+}

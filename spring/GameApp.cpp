@@ -7,6 +7,18 @@
 GameObject* thirdPlayer = nullptr;
 MeshRenderer* grassRenderer = nullptr;
 
+void PerformanceTest()
+{
+	GameObject* parent = Primitive::CreatePrimitive(Primitive::Cube);
+	for (unsigned int childIndex = 0; childIndex < 100; childIndex++)
+	{
+		GameObject* child = Primitive::CreatePrimitive(Primitive::Cube);
+		child->name = misc::strcat(std::to_string(childIndex).c_str(),"");
+		child->SetParent(parent);
+		child->transform->SetPosition(Vector3(Mathf::Randomf(-20.0f, 20.0f), Mathf::Randomf(0.0f, 20.0f), Mathf::Randomf(-20.0f, 20.0f)));
+	}
+}
+
 void GameApp::Awake()
 {
 	Sample* sample = new Sample();
@@ -31,25 +43,11 @@ void GameApp::Awake()
 	renderer->material->shader->setTexture("MainTextureData.texture", tex->textureId);
 	renderer->setRenderOrder(5000);
 	
-	// GameObject* naturepark = new GameObject("NaturePark");
-	// MeshRenderer* npRenderer = naturepark->AddNode<MeshRenderer>();
-	// npRenderer->material = new Material(Shader::Load("diffuse/diffuse.vs", "diffuse/diffuse.fs"));
-	// Mesh* natureparkMesh = &ModelLoader::LoadMeshFromFile("fbx/naturepark.fbx");
-	// npRenderer->mesh = natureparkMesh;
-
-	GameObject* parent = Primitive::CreatePrimitive(Primitive::Cube);
-	for (unsigned int childIndex = 0; childIndex < 500; childIndex++) 
-	{
-		GameObject* child = Primitive::CreatePrimitive(Primitive::Cube);
-		child->name = misc::strcat(std::to_string(childIndex).c_str(),"");
-		child->SetParent(parent);
-		child->transform->SetPosition(Vector3(Mathf::Randomf(-20.0f, 20.0f), Mathf::Randomf(0.0f, 20.0f), Mathf::Randomf(-20.0f, 20.0f)));
-	}
 
 	// TODO : ultimate display this model 'nature park' in scene , can keep fps more over 64.
-	// GameObject* naturepark = ModelLoader::LoadGameObjectFromFile("fbx/naturepark.fbx");
-	// naturepark->transform->SetLocalScale(Vector3(0.1f, 0.1f, 0.1f));
-
+	GameObject* naturepark = ModelLoader::LoadGameObjectFromFile("fbx/mobiusband.fbx");
+	naturepark->transform->SetLocalScale(Vector3(0.1f, 0.1f, 0.1f));
+	// PerformanceTest();
 	return;
 
 	//Texture* tex = TextureLoader::Load("res/texture/standarduv.jpg");

@@ -103,9 +103,6 @@ void ModelLoader::parseNode(aiNode* node, const aiScene* scene, GameObject* pare
 		nodeGameObject->transform->SetPosition(position);
 		nodeGameObject->transform->SetLocalScale(scale);
 		nodeGameObject->transform->SetLocalRotation(rotation);
-		// TODO : Êä³ö²âÊÔ
-		PRINT_ERROR("%s.position %f,%f,%f.", name,position.x,position.y,position.z);
-		PRINT_LOG("%s.scale %f,%f,%f.", name, scale.x, scale.y, scale.z);
 		MeshRenderer* childMeshRenderer = nodeGameObject->AddNode<MeshRenderer>();
 		childMeshRenderer->material = new Material(Shader::Load("diffuse/diffuse.vs", "diffuse/diffuse.fs"));
 		childMeshRenderer->mesh = nodeMesh;

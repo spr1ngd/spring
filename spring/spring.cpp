@@ -158,7 +158,6 @@ int main(int, char**)
 
 		PostProcessing::postprocessing->Preprocess();
 
-		GraphicProfiler::BeginSample("core render");
 		// draw 3d scene.
 		for (vector<Camera*>::iterator cam = Camera::cameras.begin(); cam != Camera::cameras.end(); cam++)
 		{
@@ -179,7 +178,6 @@ int main(int, char**)
 				Camera::current->framebuffer->Unbind();
 			}
 		}
-		GraphicProfiler::EndSample();
 
 		// render for gpu picking system
 		Picking::Render([&](void)
