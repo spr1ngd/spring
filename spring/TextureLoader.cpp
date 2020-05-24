@@ -15,10 +15,13 @@ TextureLoader::TextureLoader()
 
 }
 
-bool TextureLoader::IsExist(const char* filePath, Texture* texture) 
+bool TextureLoader::TryGetCache(const char* filePath,Texture* texture)
 {
 	auto cache = textures.find(filePath);
-	return cache != textures.end();
+	bool exist = cache != textures.end();
+	if (exist == true)
+		texture = cache->second;
+	return exist;
 }
 
 void TextureLoader::Caching(const char* filePath, Texture* texture) 
@@ -67,7 +70,7 @@ Texture* TextureLoader::CreatePureWhiteTexture()
 {
 	const char* textureName = "__spring__engine__pure__white__texture__";
 	Texture* texture = nullptr;
-	if (!IsExist(textureName, texture))
+	if (!TryGetCache(textureName, texture))
 	{
 		PRINT_ERROR("create new pure white color texture.");
 		texture = new Texture();
@@ -94,6 +97,9 @@ Texture* TextureLoader::CreatePureWhiteTexture()
 
 Texture* TextureLoader::Load(const char* filePath ,bool invertY)
 {
+	Texture* texture = nullptr;
+	if (TryGetCache(filePath, texture))
+		return texture;
 	unsigned int flags = SOIL_FLAG_POWER_OF_TWO;
 	if (invertY)
 		flags |= SOIL_FLAG_INVERT_Y;
@@ -104,7 +110,7 @@ Texture* TextureLoader::Load(const char* filePath ,bool invertY)
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glBindTexture(GL_TEXTURE_2D, 0);
-	Texture* texture = new Texture();
+	texture = new Texture();
 	texture->textureName = filePath;
 	texture->textureId = textureId;
 	Caching(filePath, texture);

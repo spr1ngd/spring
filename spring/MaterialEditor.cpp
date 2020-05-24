@@ -1,6 +1,7 @@
 #include "materialeditor.h"
 #include "selection.h"
 #include "meshrenderer.h"
+#include "shader.h"
 
 using namespace spring;
 using namespace spring::editor;
@@ -42,75 +43,68 @@ void MaterialEditor::OnDrawInspector()
 	{
 		Shader* shader = material->shader;
 		// map<GLuint, Colorf> colors;
-		for (auto color : shader->colors) 
-		{
-			const char* name = shader->getUniformName(color.first);
-			float* value = new float[4]{ color.second.r,color.second.g,color.second.b,color.second.a };
-			ImGui::ColorEdit4(name, value);
-			shader->setColor(name, Colorf(value[0], value[1], value[2], value[3]));
+		for (std::pair<const char*,ShaderColorfParams> pair : shader->_colors) 
+		{ 
+			Colorf color = pair.second.value;
+			float* value = new float[4]{ color.r,color.g,color.b,color.a };
+			ImGui::ColorEdit4(pair.first, value);
+			shader->setColor(pair.first, Colorf(value[0], value[1], value[2], value[3]));
 			delete[] value;
 		}
 		// map<GLuint, GLuint> ints;
-		for (auto pair : shader->ints)
-		{
-			const char* name = shader->getUniformName(pair.first);
-			int* value = new int[1]{(int)pair.second};
-			ImGui::InputInt(name, value);
-			shader->setInt(name, value[0]);
+		for (auto pair : shader->_ints)
+		{ 
+			int* value = new int[1]{(int)pair.second.value};
+			ImGui::InputInt(pair.first, value);
+			shader->setInt(pair.first, value[0]);
 			delete[] value;
 		}
 
 		// map<GLuint, GLfloat> floats;
-		for (auto pair : shader->floats) 
+		for (auto pair : shader->_floats) 
 		{
-			const char* name = shader->getUniformName(pair.first);
-			float* value = new float[1] {pair.second};
-			ImGui::InputFloat(name, value);
-			shader->setFloat(name, value[0]);
+			float* value = new float[1] {pair.second.value};
+			ImGui::InputFloat(pair.first, value);
+			shader->setFloat(pair.first, value[0]);
 			delete[] value;
 		}
 
 		// map<GLuint, Vector2> vec2Map;
-		for (auto v2 : shader->vec2Map) 
+		for (auto v2 : shader->_vec2s) 
 		{
-			const char* name = shader->getUniformName(v2.first);
-			float* value = new float[2]{ v2.second.x,v2.second.y };
-			ImGui::DragFloat2(name, value);
-			shader->setVec2(name, Vector2(value[0],value[1]));
+			float* value = new float[2]{ v2.second.value.x,v2.second.value.y };
+			ImGui::DragFloat2(v2.first, value);
+			shader->setVec2(v2.first, Vector2(value[0],value[1]));
 			delete[] value;
 		}
 		// map<GLuint, Vector3> vec3Map;
-		for (auto v3 : shader->vec3Map) 
+		for (auto v3 : shader->_vec3s) 
 		{
-			const char* name = shader->getUniformName(v3.first);
-			float* value = new float[3]{v3.second.x,v3.second.y,v3.second.z};
-			ImGui::InputFloat3(name, value);
-			shader->setVec3(name, Vector3(value[0], value[1], value[2]));
+			float* value = new float[3]{v3.second.value.x,v3.second.value.y,v3.second.value.z};
+			ImGui::InputFloat3(v3.first, value);
+			shader->setVec3(v3.first, Vector3(value[0], value[1], value[2]));
 			delete[] value;
 		}
 		// map<GLuint, Vector4> vec4Map;
-		for (auto v4 : shader->vec4Map)
+		for (auto v4 : shader->_vec4s)
 		{
-			const char* name = shader->getUniformName(v4.first);
-			float* value = new float[4]{ v4.second.x,v4.second.y,v4.second.z ,v4.second.w};
-			ImGui::InputFloat3(name, value);
-			shader->setVec4(name, Vector4(value[0], value[1], value[2], value[3]));
+			float* value = new float[4]{ v4.second.value.x,v4.second.value.y,v4.second.value.z ,v4.second.value.w};
+			ImGui::InputFloat3(v4.first, value);
+			shader->setVec4(v4.first, Vector4(value[0], value[1], value[2], value[3]));
 			delete[] value;
 		}
 		// map<GLuint, glm::mat4> mat4Map;
 		// map<GLuint, MaterialTexture> textures;
-		for (auto tex : shader->textures) 
+		for (auto tex : shader->_textures) 
 		{
-			const char* name = shader->getUniformName(tex.first);
-			ImGui::LabelText(name,"");
-			ImGui::ImageButton((ImTextureID)tex.second.texture, ImVec2(32, 32), ImVec2(0, 1), ImVec2(1, 0));
+			ImGui::LabelText(tex.first,"");
+			ImGui::ImageButton((ImTextureID)tex.second.value.texture, ImVec2(32, 32), ImVec2(0, 1), ImVec2(1, 0));
 		}
 		// map<GLuint, Cubemap*> cubemaps;
-		for (auto cubemap : shader->cubemaps)
+		for (auto cubemap : shader->_cubemaps)
 		{
-			const char* name = shader->getUniformName(cubemap.first);
-			ImGui::LabelText(name, "");
-			ImGui::ImageButton((ImTextureID)cubemap.second->cubemap, ImVec2(32, 32), ImVec2(0, 1), ImVec2(1, 0));
+			ImGui::LabelText(cubemap.first, "");
+			ImGui::ImageButton((ImTextureID)cubemap.second.value.cubemap, ImVec2(32, 32), ImVec2(0, 1), ImVec2(1, 0));
 		}
 		ImGui::TreePop();
 	}

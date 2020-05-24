@@ -322,7 +322,7 @@ int Shader::getInt(const char* name)
 
 void Shader::setFloat(const char* name, GLfloat value)
 {
-	for (auto params = this->_ints.begin(); params != this->_ints.end(); params++)
+	for (auto params = this->_floats.begin(); params != this->_floats.end(); params++)
 	{
 		if (strcmp(params->first, name) == 0)
 		{

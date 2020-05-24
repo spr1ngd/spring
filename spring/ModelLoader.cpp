@@ -2,6 +2,7 @@
 #include "console.h"
 #include "misc.h"
 #include "texture.h"
+#include "material.h"
 #include "meshrenderer.h"
 #include "gameobject.h"
 
@@ -29,7 +30,7 @@ const char* ModelLoader::GetReference(Mesh* mesh)
 	return "";
 }
 
-GameObject* ModelLoader::LoadGameObjectFromFile(const char* meshFileName)
+GameObject* ModelLoader::LoadGameObjectFromFile(const char* meshFileName/*,std::vector<Material*>& mats*/)
 {
 	GameObject* gameobject = new GameObject(meshFileName);
 	const char* prefix = "res/model/";
@@ -45,7 +46,7 @@ GameObject* ModelLoader::LoadGameObjectFromFile(const char* meshFileName)
 
 	int childIndex = 0;
 	ModelLoader loader;
-	loader.parseNode(scene->mRootNode, scene, gameobject);
+	loader.parseNode(scene->mRootNode, scene, gameobject/*, mats*/);
 	delete[] filePath;
 	return gameobject;
 }
@@ -79,17 +80,22 @@ Mesh* ModelLoader::LoadMesh(const char* filePath)
 	processNode(scene->mRootNode, scene, *mesh,false);
 	return mesh;
 }
-void ModelLoader::parseNode(aiNode* node, const aiScene* scene, GameObject* parent)
+void ModelLoader::parseNode(aiNode* node, const aiScene* scene, GameObject* parent/*, std::vector<Material*>& mats*/)
 {
 	GameObject* nodeGameObject = nullptr;
+	std::vector<Material*> mats;
+	processMaterial(scene, mats);
 	if (node->mNumMeshes > 0)
-	{
-		
+	{		
 		Mesh* nodeMesh = new Mesh();
+		std::vector<Texture*> textures;
+		unsigned int materialIndex = scene->mMeshes[node->mMeshes[0]]->mMaterialIndex;
 		for (unsigned int meshIndex = 0; meshIndex < node->mNumMeshes; meshIndex++)
 		{
 			unsigned int index = node->mMeshes[meshIndex];
 			aiMesh* mesh = scene->mMeshes[index];
+			if (mesh->mMaterialIndex != materialIndex)
+				PRINT_ERROR("can not combine two mesh with different materials.");
 			Mesh* subMesh = processMesh(mesh, scene);
 			nodeMesh->Combine(*subMesh);
 		}
@@ -104,14 +110,27 @@ void ModelLoader::parseNode(aiNode* node, const aiScene* scene, GameObject* pare
 		nodeGameObject->transform->SetLocalScale(scale);
 		nodeGameObject->transform->SetLocalRotation(rotation);
 		MeshRenderer* childMeshRenderer = nodeGameObject->AddNode<MeshRenderer>();
-		childMeshRenderer->material = new Material(Shader::Load("diffuse/diffuse.vs", "diffuse/diffuse.fs"));
 		childMeshRenderer->mesh = nodeMesh;
+		Material* material = nullptr;
+
+		const char* matName = scene->mMaterials[materialIndex]->GetName().C_Str();
+		for (Material* mat : mats)
+		{
+			if (strcmp(mat->name, matName) == 0)
+			{
+				material = mat;
+				break;
+			}
+		}
+		if (nullptr == material)
+			PRINT_ERROR("parse material failed.");
+		childMeshRenderer->material = material;
 	}
 
 	for (unsigned int childIndex = 0; childIndex < node->mNumChildren; childIndex++)
 	{
 		aiNode* childNode = node->mChildren[childIndex];
-		parseNode(childNode, scene, node->mNumMeshes > 0 ? nodeGameObject : parent);
+		parseNode(childNode, scene, node->mNumMeshes > 0 ? nodeGameObject : parent /*,mats*/);
 	}
 }
 
@@ -120,7 +139,7 @@ void ModelLoader::decomposeTransformation(const aiMatrix4x4& matrix, Vector3& po
 	aiVector3D aiScaling, aiPosition;
 	aiQuaternion aiRotation;
 	matrix.Decompose(aiScaling, aiRotation, aiPosition);
-	position.x = aiPosition.x / 100.0f; position.y = aiPosition.y / 100.0f; position.z = aiPosition.z / 100.0f;
+	position.x = aiPosition.x; position.y = aiPosition.y ; position.z = aiPosition.z ;
 	scale.x = aiScaling.x; scale.y = aiScaling.y; scale.z = aiScaling.z;
 	rotation.x = aiRotation.x; rotation.y = aiRotation.y; rotation.z = aiRotation.z; rotation.w = aiRotation.w;
 } 
@@ -140,6 +159,7 @@ void ModelLoader::processNode(aiNode* node, const aiScene* scene, Mesh& parentNo
 	for (unsigned int i = 0; i < node->mNumMeshes; i++) 
 	{
 		aiMesh* aimesh = scene->mMeshes[node->mMeshes[i]];
+		std::vector<Texture*> texs;
 		Mesh* mesh = processMesh(aimesh,scene);
 		if (isSubMesh)
 			parentNode.SetSubMesh(mesh);
@@ -153,8 +173,7 @@ Mesh* ModelLoader::processMesh( aiMesh*mesh,const aiScene*scene )
 {
 	// transfer aiMesh to spring::Mesh
 	vector<Vertex> vertices;
-	vector<unsigned int> indices;
-	vector<Texture*> textures;
+	vector<unsigned int> indices; 
 
 	for (unsigned int i = 0; i < mesh->mNumVertices; i++) 
 	{
@@ -210,38 +229,84 @@ Mesh* ModelLoader::processMesh( aiMesh*mesh,const aiScene*scene )
 		{
 			indices.push_back(face.mIndices[j]);
 		}
-	} 
-
-	// package mesh data and textures data into mesh renderer object.
-	if (scene->HasMaterials())
-	{
-		aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
-		vector<Texture*> diffuseTextures = loadMaterialTextures(material, aiTextureType_DIFFUSE, "texture_diffuse");
-		vector<Texture*> specularTexturess = loadMaterialTextures(material, aiTextureType_SPECULAR, "texture_specular");
-		vector<Texture*> normalTextures = loadMaterialTextures(material, aiTextureType_NORMALS, "texture_normal");
-		vector<Texture*> heightTextures = loadMaterialTextures(material, aiTextureType_HEIGHT, "texture_height");
-		textures.insert(textures.end(), diffuseTextures.begin(), diffuseTextures.end());
-		textures.insert(textures.end(), specularTexturess.begin(), specularTexturess.end());
-		textures.insert(textures.end(), normalTextures.begin(), normalTextures.end());
-		textures.insert(textures.end(), heightTextures.begin(), heightTextures.end());
 	}
-	  
+
 	return new Mesh(vertices, indices);
 }
-vector<Texture*> ModelLoader::loadMaterialTextures(aiMaterial* mateiral, aiTextureType textureType, string typeName)
+
+void ModelLoader::processMaterial(const aiScene* scene, std::vector<Material*>& mats)
 {
-	vector<Texture*> textures;
-	for (unsigned int i = 0; i < mateiral->GetTextureCount(textureType); i++)
+	if (!scene->HasMaterials())
+		return;
+	for (unsigned int materialIndex = 0; materialIndex < scene->mNumMaterials; materialIndex++) 
 	{
-		aiString str;
-		mateiral->GetTexture(textureType, i, &str);
-		string filePath = directory + '/' + str.C_Str();
-		Texture* tex = TextureLoader::Load(filePath.c_str());
-		tex->textureType = typeName.c_str();
-		tex->textureName = str.C_Str();
-		textures.push_back(tex);
+		aiMaterial* material = scene->mMaterials[materialIndex];
+		// load material properties 
+
+		int twoSide = 0;
+		material->Get(AI_MATKEY_TWOSIDED, twoSide);
+
+		float isOpacity = 1.0f;
+		material->Get(AI_MATKEY_OPACITY, isOpacity);
+
+		float shininess = 0.0f;
+		material->Get(AI_MATKEY_SHININESS, shininess);
+
+		aiColor4D diffuseColor(0.0f,0.0f,0.0f,1.0f);
+		material->Get(AI_MATKEY_COLOR_DIFFUSE, diffuseColor);
+
+		aiColor4D ambientColor(0.0f, 0.0f, 0.0f, 1.0f);
+		material->Get(AI_MATKEY_COLOR_AMBIENT, ambientColor);
+
+		aiColor4D emissionColor(0.0f, 0.0f, 0.0f, 1.0f);
+		material->Get(AI_MATKEY_COLOR_EMISSIVE, emissionColor);
+
+		aiColor4D specularColor(0.0f, 0.0f, 0.0f, 1.0f);
+		material->Get(AI_MATKEY_COLOR_SPECULAR, specularColor);
+
+		// load textures
+		Texture* albedoTex = processTexture(material, aiTextureType_DIFFUSE, PBR_TEXTURE_ALBEDO);
+		Texture* specularTex = processTexture(material, aiTextureType_SPECULAR, PBR_TEXTURE_SPECULAR);
+		Texture* normalTex = processTexture(material, aiTextureType_NORMALS, PBR_TEXTURE_NORMAL);
+		Texture* heightTex = processTexture(material, aiTextureType_HEIGHT, PBR_TEXTURE_HEIGHT);
+		Texture* ambientTex = processTexture(material, aiTextureType_AMBIENT, PBR_TEXTURE_AMBIENT);
+
+		Material* mat = new Material(Shader::Load("pbs/pbs.vs", "pbs/pbs(ibl).fs"));
+		const char* matName = material->GetName().C_Str();
+		char* key = new char[strlen(matName)];
+		strcpy_s(key, strlen(matName) + 1, matName);
+		mat->name = key;
+
+		mat->SetFloat(PBR_FLOAT_ROUGHNESS, shininess);
+
+		mat->SetColor(PBR_COLOR_ALBEDO, Colorf(diffuseColor.r, diffuseColor.g, diffuseColor.b, diffuseColor.a));
+		mat->SetColor(PBR_COLOR_EMISSION, Colorf(emissionColor.r, emissionColor.g, emissionColor.b, emissionColor.a));
+		mat->SetColor(PBR_COLOR_SPECULAR, Colorf(specularColor.r, specularColor.g, specularColor.b, specularColor.a));
+		mat->SetColor(PBR_COLOR_AMBIENTOCCLUSION, Colorf(ambientColor.r, ambientColor.g, ambientColor.b, ambientColor.a));
+
+		mat->SetTexture(PBR_TEXTURE_ALBEDO, albedoTex);
+		mat->SetTexture(PBR_TEXTURE_AMBIENT, ambientTex);
+		mat->SetTexture(PBR_TEXTURE_NORMAL, normalTex);
+		mat->SetTexture(PBR_TEXTURE_SPECULAR, specularTex);
+		mat->SetTexture(PBR_TEXTURE_HEIGHT, heightTex);
+
+		mats.push_back(mat);
 	}
-	return textures;
+}
+
+Texture* ModelLoader::processTexture(aiMaterial* material, aiTextureType textureType, string typeName)
+{ 
+	unsigned int textureCount = material->GetTextureCount(textureType);
+	if (textureCount <= 0)
+		return nullptr;
+	if (textureCount > 1)
+		PRINT_ERROR("Contain the same textures on one material.");
+	aiString str;
+	material->GetTexture(textureType, 0, &str);
+	string filePath = directory + '/' + str.C_Str();
+	Texture* tex = TextureLoader::Load(filePath.c_str());
+	tex->textureType = typeName.c_str();
+	tex->textureName = str.C_Str();
 }
 
 void ModelLoader::CacheMesh(const char* resName, Mesh* mesh) 

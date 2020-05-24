@@ -4,6 +4,7 @@
 
 namespace spring 
 {
+	class Texture;
 	class Material
 	{
 	private:
@@ -48,7 +49,9 @@ namespace spring
 		GLenum cullfaceFunc = GL_BACK;
 
 	private:
+		std::vector<Texture*> texs;
 		GLenum GetPolygonMode();
+
 	public:
 		static Material* defaultPBRMaterial;
 		static Material* defaultLambertMaterial;
@@ -72,5 +75,14 @@ namespace spring
 
 		void CullFaceFunc( bool enabel, GLenum cullface = GL_BACK );
 		void EnableCullFace();
+
+		// set textures
+		void SetTexture(const char* texName,Texture* texture);
+		void SetTextures(std::vector<Texture*> textures);
+
+		void SetColor(const char* propertyName,const Colorf& color);
+		void SetFloat(const char* propertyName,const float fValue);
+		void SetInt(const char* propertyName,const int iValue);
+		void SetBool(const char* propertyName,const bool bValue);
 	};
 }

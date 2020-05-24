@@ -15,6 +15,7 @@ namespace spring
 	class Quaternion;
 	class GameObject;
 	class Texture;
+	class Material;
 	class ModelLoader :public AssetLoader
 	{
 	private:
@@ -27,18 +28,19 @@ namespace spring
 		Mesh* LoadMesh(const char* filePath);
 		void processNode(aiNode* node, const aiScene* scene, Mesh& parentNode,bool isSubMesh);
 		Mesh* processMesh(aiMesh* mesh, const aiScene* scene);
-		vector<Texture*> loadMaterialTextures(aiMaterial* mateiral, aiTextureType textureType, string typeName);
+		void processMaterial(const aiScene* scene,std::vector<Material*>& mats);
+		Texture* processTexture(aiMaterial* mateiral, aiTextureType textureType, string typeName);
 
 		string directory;
 		ModelLoader();
 
-		void parseNode(aiNode* node, const aiScene* scene , GameObject* parent);
+		void parseNode(aiNode* node, const aiScene* scene , GameObject* parent/* ,std::vector<Material*>& mats*/);
 		void decomposeTransformation(const aiMatrix4x4& matrix ,Vector3& position,Vector3& scale,Quaternion& rotation);
-
+		
 	public:
 		static Mesh& LoadMeshFromFile(const char* meshFilePath);
 
-		static GameObject* LoadGameObjectFromFile(const char* meshFilePath);
+		static GameObject* LoadGameObjectFromFile(const char* meshFilePath/*,std::vector<Material*>& mats*/);
 		static const char* GetReference(Mesh* mesh);
 	};
 }

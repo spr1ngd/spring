@@ -45,8 +45,51 @@ void GameApp::Awake()
 	
 
 	// TODO : ultimate display this model 'nature park' in scene , can keep fps more over 64.
-	GameObject* naturepark = ModelLoader::LoadGameObjectFromFile("fbx/mobiusband.fbx");
+	std::vector<Material*> mats;
+	GameObject* naturepark = ModelLoader::LoadGameObjectFromFile("fbx/weapon/M4A1_PBR.fbx");
 	naturepark->transform->SetLocalScale(Vector3(0.1f, 0.1f, 0.1f));
+
+	// load 
+	//auto commonAlbedoTex = TextureLoader::Load("res/model/fbx/weapon/Textures/M4A1_rev_M4A1_Common_AlbedoTransparency.png");
+	//auto commonAmbientOcclusionTex = TextureLoader::Load("res/model/fbx/weapon/Textures/M4A1_rev_M4A1_Common_ambient_occlusion.png");
+	//auto commonSmoothnessTex = TextureLoader::Load("res/model/fbx/weapon/Textures/M4A1_rev_M4A1_Common_MetallicSmoothness.png");
+	//auto commonNormalTex = TextureLoader::Load("res/model/fbx/weapon/Textures/M4A1_rev_M4A1_Common_Normal.png");
+
+	//auto sightsAlbedoTex = TextureLoader::Load("res/model/fbx/weapon/Textures/M4A1_rev_M4A1_Sights_AlbedoTransparency.png");
+	//auto sightsAmbientOcclusionTex = TextureLoader::Load("res/model/fbx/weapon/Textures/M4A1_rev_M4A1_Sights_ambient_occlusion.png");
+	//auto sightsSmoothnessTex = TextureLoader::Load("res/model/fbx/weapon/Textures/M4A1_rev_M4A1_Sights_MetallicSmoothness.png");
+	//auto sightsNormalTex = TextureLoader::Load("res/model/fbx/weapon/Textures/M4A1_rev_M4A1_Sights_Normal.png");
+
+	//auto stockAlbedoTex = TextureLoader::Load("res/model/fbx/weapon/Textures/M4A1_rev_M4A1_Stock_Rail_AlbedoTransparency.png");
+	//auto stockAmbientOcclusionTex = TextureLoader::Load("res/model/fbx/weapon/Textures/M4A1_rev_M4A1_Stock_Rail_ambient_occlusion.png");
+	//auto stockSmoothnessTex = TextureLoader::Load("res/model/fbx/weapon/Textures/M4A1_rev_M4A1_Stock_Rail_MetallicSmoothness.png");
+	//auto stockNormalTex = TextureLoader::Load("res/model/fbx/weapon/Textures/M4A1_rev_M4A1_Stock_Rail_Normal.png");
+
+	//for (auto mat : mats)
+	//{
+	//	if (strcmp(mat->name, "M4A1_Common") == 0)
+	//	{
+	//		mat->SetTexture(PBR_TEXTURE_ALBEDO, commonAlbedoTex);
+	//		mat->SetTexture(PBR_TEXTURE_NORMAL, commonNormalTex);
+	//		/*mat->SetTexture(PBR_TEXTURE_AMBIENTOCCLUSION, commonAmbientOcclusionTex);
+	//		mat->SetTexture(PBR_TEXTURE_METALLIC, commonSmoothnessTex);*/
+	//	}
+	//	else if (strcmp(mat->name, "M4A1_Sights") == 0)
+	//	{
+	//		mat->SetTexture(PBR_TEXTURE_ALBEDO, sightsAlbedoTex);
+	//		mat->SetTexture(PBR_TEXTURE_NORMAL, sightsNormalTex);
+	//		/*	mat->SetTexture(PBR_TEXTURE_AMBIENTOCCLUSION, sightsAmbientOcclusionTex);
+	//			mat->SetTexture(PBR_TEXTURE_METALLIC, sightsSmoothnessTex);*/
+	//	}
+	//	else if (strcmp(mat->name, "M4A1_Stock_Rail") == 0)
+	//	{
+	//		mat->SetTexture(PBR_TEXTURE_ALBEDO, stockAlbedoTex);
+	//		mat->SetTexture(PBR_TEXTURE_NORMAL, stockNormalTex);
+	//		/*mat->SetTexture(PBR_TEXTURE_AMBIENTOCCLUSION, stockAmbientOcclusionTex);
+	//		mat->SetTexture(PBR_TEXTURE_METALLIC, stockSmoothnessTex);*/
+	//	}
+	//}
+
 	// PerformanceTest();
 	return;
 

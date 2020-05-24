@@ -29,7 +29,7 @@ namespace spring
 		static Cubemap* CreateCubemap(unsigned int width,unsigned int height);
 		static Cubemap* CreateCubemapMipmap(unsigned int width,unsigned int height);
 		static void Caching(const char* filePath ,Texture* texture);
-		static bool IsExist(const char* filePath ,Texture* texture);
+		static bool TryGetCache(const char* filePath , Texture* texture);
 		static void Release();
 	};
 }

@@ -1,4 +1,5 @@
 #include "material.h"
+#include "texture.h"
 #include "console.h"
 
 using namespace std;
@@ -12,7 +13,6 @@ Material::Material()
 {
 	Material::Caching(this);
 }
-
 Material::Material(Shader* shader) 
 {
 	this->shader = shader;
@@ -25,6 +25,40 @@ Material::~Material()
 		delete this->shader;
 	Flash(this);
 }
+
+#pragma region material basic properties setting 
+
+void Material::SetTexture(const char* texName, Texture* texture)
+{
+	if (nullptr == this->shader || nullptr == texture)
+		return;
+	this->shader->setTexture(texName, texture->textureId);
+}
+
+void Material::SetTextures(std::vector<Texture*> textures)
+{
+	for (Texture* texture : textures)
+		this->SetTexture(texture->textureName, texture);
+}
+
+void Material::SetColor(const char* propertyName, const Colorf& color) 
+{
+	this->shader->setColor(propertyName, color);
+}
+void Material::SetFloat(const char* propertyName, const float fValue) 
+{
+	this->shader->setFloat(propertyName, fValue);
+}
+void Material::SetInt(const char* propertyName, const int iValue) 
+{
+	this->shader->setInt(propertyName, iValue);
+}
+void Material::SetBool(const char* propertyName, const bool bValue) 
+{
+	this->shader->setBool(propertyName, bValue);
+}
+
+#pragma endregion
 
 void Material::AlphaTestFunc(GLenum alphaTestFunc, float alphaTestRef ) 
 {

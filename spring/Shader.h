@@ -23,6 +23,27 @@
 #define MAIN_CUBEMAP "Main_Cubemap"
 #define MAIN_COLOR "Main_Color"
 
+// pbr fixed name fields
+#define PBR_FLOAT_METAL "metal"
+#define PBR_FLOAT_ROUGHNESS "roughness"
+
+#define PBR_COLOR_ALBEDO "albedo"
+#define PBR_COLOR_AMBIENTOCCLUSION "ao"
+#define PBR_COLOR_EMISSION "emissionColor"
+#define PBR_COLOR_SPECULAR "specular"
+
+#define PBR_TEXTURE_ALBEDO "albedoTex"
+#define PBR_TEXTURE_AMBIENTOCCLUSION "occlusionTex"
+#define PBR_TEXTURE_SMOOTHNESS "smoothnessTex"
+#define PBR_TEXTURE_NORMAL "normalTex"
+#define PBR_TEXTURE_METALLIC "metallicTex"
+#define PBR_TEXTURE_EMIISON "emissionTex"
+#define PBR_TEXTURE_SPECULAR "specularTex"
+#define PBR_TEXTURE_DETAIL "detailTex"
+#define PBR_TEXTURE_HEIGHT "heightTex"
+#define PBR_TEXTURE_SHINESS "shinessTex"
+#define PBR_TEXTURE_AMBIENT "ambientTex"
+
 // ambient system properties
 #define AMBIENT_COLOR "AmbientColor"
 #define SHADOWMAP "ShadowMap"

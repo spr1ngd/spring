@@ -16,7 +16,7 @@ namespace spring
 	public:
 		bool enableGPUInstance = false;
 		Mesh* mesh;
-		Material* material; 
+		Material* material;
 		
 		MeshRenderer();
 		MeshRenderer(Material* mateiral);

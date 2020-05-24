@@ -40,9 +40,6 @@ void Transform::SetRotation(Quaternion rotation)
 {
 	this->rotation = rotation;
 	// this->SetEulerangle(this->rotation.EulerAngle());
-	// this->eulerangle = this->rotation.EulerAngle();
-	// Console::ErrorFormat("%f,%f,%f", this->eulerangle.x, this->eulerangle.y, this->eulerangle.z);
-	// todo : update eulerangle and rotation matrix
 }
 
 const Quaternion& Transform::GetRotation() 
@@ -52,7 +49,8 @@ const Quaternion& Transform::GetRotation()
 
 void Transform::SetLocalRotation(Quaternion localRotation) 
 {
-
+	this->localRotation = localRotation;
+	this->SetLocalEulerangle(this->localRotation.EulerAngle());
 }
 
 const Quaternion& Transform::GetLocalRotation() 

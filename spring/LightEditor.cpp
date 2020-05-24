@@ -13,9 +13,14 @@ void LightEditor::OnDrawInspector()
 	ImGui::ColorEdit4("Color", value);
 	light->color = Colorf(value[0],value[1],value[2],value[3]);
 
-	ImGui::DragFloat("size", &light->shadowMapping.size);
-	ImGui::DragFloat("zNear", &light->shadowMapping.zNear);
-	ImGui::DragFloat("zFar", &light->shadowMapping.zFar);
+	float smMapSize = light->shadowMapping.shadowMapSize;
+	float smSize = light->shadowMapping.size;
+	float smZNear = light->shadowMapping.zNear;
+	float smZFar = light->shadowMapping.zFar;
+	ImGui::DragFloat("size", &smSize);
+	ImGui::DragFloat("zNear", &smZNear);
+	ImGui::DragFloat("zFar", &smZFar);
+	light->SetShadowMappingParams(smMapSize,smSize,smZNear,smZFar);
 
 	if (nullptr != light->shadow)
 	{
