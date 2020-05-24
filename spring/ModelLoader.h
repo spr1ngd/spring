@@ -34,13 +34,13 @@ namespace spring
 		string directory;
 		ModelLoader();
 
-		void parseNode(aiNode* node, const aiScene* scene , GameObject* parent/* ,std::vector<Material*>& mats*/);
+		void parseNode(aiNode* node, const aiScene* scene , GameObject* parent,std::vector<Material*>& mats);
 		void decomposeTransformation(const aiMatrix4x4& matrix ,Vector3& position,Vector3& scale,Quaternion& rotation);
 		
 	public:
 		static Mesh& LoadMeshFromFile(const char* meshFilePath);
 
-		static GameObject* LoadGameObjectFromFile(const char* meshFilePath/*,std::vector<Material*>& mats*/);
+		static GameObject* LoadGameObjectFromFile(const char* meshFilePath,std::vector<Material*>& mats);
 		static const char* GetReference(Mesh* mesh);
 	};
 }

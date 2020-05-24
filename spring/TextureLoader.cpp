@@ -103,7 +103,7 @@ Texture* TextureLoader::Load(const char* filePath ,bool invertY)
 	unsigned int flags = SOIL_FLAG_POWER_OF_TWO;
 	if (invertY)
 		flags |= SOIL_FLAG_INVERT_Y;
-	GLuint textureId = SOIL_load_OGL_texture(filePath,0,0,flags);
+	GLuint textureId = SOIL_load_OGL_texture(filePath,4,0,flags);
 	glBindTexture(GL_TEXTURE_2D, textureId);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);

@@ -37,7 +37,7 @@
 #define PBR_TEXTURE_SMOOTHNESS "smoothnessTex"
 #define PBR_TEXTURE_NORMAL "normalTex"
 #define PBR_TEXTURE_METALLIC "metallicTex"
-#define PBR_TEXTURE_EMIISON "emissionTex"
+#define PBR_TEXTURE_EMISSION "emissionTex"
 #define PBR_TEXTURE_SPECULAR "specularTex"
 #define PBR_TEXTURE_DETAIL "detailTex"
 #define PBR_TEXTURE_HEIGHT "heightTex"

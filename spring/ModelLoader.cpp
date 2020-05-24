@@ -30,7 +30,7 @@ const char* ModelLoader::GetReference(Mesh* mesh)
 	return "";
 }
 
-GameObject* ModelLoader::LoadGameObjectFromFile(const char* meshFileName/*,std::vector<Material*>& mats*/)
+GameObject* ModelLoader::LoadGameObjectFromFile(const char* meshFileName,std::vector<Material*>& mats)
 {
 	GameObject* gameobject = new GameObject(meshFileName);
 	const char* prefix = "res/model/";
@@ -46,7 +46,8 @@ GameObject* ModelLoader::LoadGameObjectFromFile(const char* meshFileName/*,std::
 
 	int childIndex = 0;
 	ModelLoader loader;
-	loader.parseNode(scene->mRootNode, scene, gameobject/*, mats*/);
+	loader.processMaterial(scene, mats);
+	loader.parseNode(scene->mRootNode, scene, gameobject, mats);
 	delete[] filePath;
 	return gameobject;
 }
@@ -80,15 +81,12 @@ Mesh* ModelLoader::LoadMesh(const char* filePath)
 	processNode(scene->mRootNode, scene, *mesh,false);
 	return mesh;
 }
-void ModelLoader::parseNode(aiNode* node, const aiScene* scene, GameObject* parent/*, std::vector<Material*>& mats*/)
+void ModelLoader::parseNode(aiNode* node, const aiScene* scene, GameObject* parent, std::vector<Material*>& mats)
 {
 	GameObject* nodeGameObject = nullptr;
-	std::vector<Material*> mats;
-	processMaterial(scene, mats);
 	if (node->mNumMeshes > 0)
 	{		
 		Mesh* nodeMesh = new Mesh();
-		std::vector<Texture*> textures;
 		unsigned int materialIndex = scene->mMeshes[node->mMeshes[0]]->mMaterialIndex;
 		for (unsigned int meshIndex = 0; meshIndex < node->mNumMeshes; meshIndex++)
 		{
@@ -130,7 +128,7 @@ void ModelLoader::parseNode(aiNode* node, const aiScene* scene, GameObject* pare
 	for (unsigned int childIndex = 0; childIndex < node->mNumChildren; childIndex++)
 	{
 		aiNode* childNode = node->mChildren[childIndex];
-		parseNode(childNode, scene, node->mNumMeshes > 0 ? nodeGameObject : parent /*,mats*/);
+		parseNode(childNode, scene, node->mNumMeshes > 0 ? nodeGameObject : parent ,mats);
 	}
 }
 
@@ -170,8 +168,7 @@ void ModelLoader::processNode(aiNode* node, const aiScene* scene, Mesh& parentNo
 		processNode(node->mChildren[i], scene, parentNode, parentNode.vertices.size() != 0);
 }
 Mesh* ModelLoader::processMesh( aiMesh*mesh,const aiScene*scene )
-{
-	// transfer aiMesh to spring::Mesh
+{ 
 	vector<Vertex> vertices;
 	vector<unsigned int> indices; 
 
@@ -307,6 +304,7 @@ Texture* ModelLoader::processTexture(aiMaterial* material, aiTextureType texture
 	Texture* tex = TextureLoader::Load(filePath.c_str());
 	tex->textureType = typeName.c_str();
 	tex->textureName = str.C_Str();
+	return tex;
 }
 
 void ModelLoader::CacheMesh(const char* resName, Mesh* mesh) 

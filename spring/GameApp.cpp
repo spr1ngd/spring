@@ -43,13 +43,13 @@ void GameApp::Awake()
 	renderer->material->shader->setTexture("MainTextureData.texture", tex->textureId);
 	renderer->setRenderOrder(5000);
 	
+	 
+	//std::vector<Material*> mats;
+	//GameObject* naturepark = ModelLoader::LoadGameObjectFromFile("fbx/weapon/M4A1_PBR.fbx",mats);
+	//naturepark->transform->SetLocalScale(Vector3(0.05f, 0.05f, 0.05f));
+	//naturepark->transform->SetPosition(Vector3(0.0f,5.0f,0.0f));
 
-	// TODO : ultimate display this model 'nature park' in scene , can keep fps more over 64.
-	std::vector<Material*> mats;
-	GameObject* naturepark = ModelLoader::LoadGameObjectFromFile("fbx/weapon/M4A1_PBR.fbx");
-	naturepark->transform->SetLocalScale(Vector3(0.1f, 0.1f, 0.1f));
-
-	// load 
+	//// load 
 	//auto commonAlbedoTex = TextureLoader::Load("res/model/fbx/weapon/Textures/M4A1_rev_M4A1_Common_AlbedoTransparency.png");
 	//auto commonAmbientOcclusionTex = TextureLoader::Load("res/model/fbx/weapon/Textures/M4A1_rev_M4A1_Common_ambient_occlusion.png");
 	//auto commonSmoothnessTex = TextureLoader::Load("res/model/fbx/weapon/Textures/M4A1_rev_M4A1_Common_MetallicSmoothness.png");
@@ -66,29 +66,47 @@ void GameApp::Awake()
 	//auto stockNormalTex = TextureLoader::Load("res/model/fbx/weapon/Textures/M4A1_rev_M4A1_Stock_Rail_Normal.png");
 
 	//for (auto mat : mats)
-	//{
+	//{ 
 	//	if (strcmp(mat->name, "M4A1_Common") == 0)
 	//	{
 	//		mat->SetTexture(PBR_TEXTURE_ALBEDO, commonAlbedoTex);
 	//		mat->SetTexture(PBR_TEXTURE_NORMAL, commonNormalTex);
-	//		/*mat->SetTexture(PBR_TEXTURE_AMBIENTOCCLUSION, commonAmbientOcclusionTex);
-	//		mat->SetTexture(PBR_TEXTURE_METALLIC, commonSmoothnessTex);*/
+	//		mat->SetTexture(PBR_TEXTURE_AMBIENTOCCLUSION, commonAmbientOcclusionTex);
+	//		mat->SetTexture(PBR_TEXTURE_METALLIC, commonSmoothnessTex);
 	//	}
 	//	else if (strcmp(mat->name, "M4A1_Sights") == 0)
 	//	{
 	//		mat->SetTexture(PBR_TEXTURE_ALBEDO, sightsAlbedoTex);
 	//		mat->SetTexture(PBR_TEXTURE_NORMAL, sightsNormalTex);
-	//		/*	mat->SetTexture(PBR_TEXTURE_AMBIENTOCCLUSION, sightsAmbientOcclusionTex);
-	//			mat->SetTexture(PBR_TEXTURE_METALLIC, sightsSmoothnessTex);*/
+	//		mat->SetTexture(PBR_TEXTURE_AMBIENTOCCLUSION, sightsAmbientOcclusionTex);
+	//		mat->SetTexture(PBR_TEXTURE_METALLIC, sightsSmoothnessTex);
 	//	}
 	//	else if (strcmp(mat->name, "M4A1_Stock_Rail") == 0)
 	//	{
 	//		mat->SetTexture(PBR_TEXTURE_ALBEDO, stockAlbedoTex);
 	//		mat->SetTexture(PBR_TEXTURE_NORMAL, stockNormalTex);
-	//		/*mat->SetTexture(PBR_TEXTURE_AMBIENTOCCLUSION, stockAmbientOcclusionTex);
-	//		mat->SetTexture(PBR_TEXTURE_METALLIC, stockSmoothnessTex);*/
+	//		mat->SetTexture(PBR_TEXTURE_AMBIENTOCCLUSION, stockAmbientOcclusionTex);
+	//		mat->SetTexture(PBR_TEXTURE_METALLIC, stockSmoothnessTex);
 	//	}
 	//}
+
+	std::vector<Material*> mats;
+	GameObject* fighter = ModelLoader::LoadGameObjectFromFile("fbx/star fighter/star fighter 01.fbx", mats);
+	fighter->transform->SetLocalScale(Vector3(0.05f,0.05f,0.05f));
+	fighter->transform->SetPosition(Vector3(0.0f,5.0f,0.0f));
+
+	Texture* metallicTex = TextureLoader::Load("res/model/fbx/star fighter/StarSparrow_MetallicSmoothness.png");
+	Texture* normalTex = TextureLoader::Load("res/model/fbx/star fighter/StarSparrow_Normal.png");
+	Texture* albedoTex = TextureLoader::Load("res/model/fbx/star fighter/StarSparrow_Red.png");
+	Texture* emissionTex = TextureLoader::Load("res/model/fbx/star fighter/StarSparrow_Emission.png");
+
+	for (auto mat : mats) 
+	{
+		mat->SetTexture(PBR_TEXTURE_ALBEDO, albedoTex);
+		mat->SetTexture(PBR_TEXTURE_NORMAL, normalTex);
+		mat->SetTexture(PBR_TEXTURE_METALLIC, metallicTex);
+		mat->SetTexture(PBR_TEXTURE_EMISSION, emissionTex);
+	}
 
 	// PerformanceTest();
 	return;

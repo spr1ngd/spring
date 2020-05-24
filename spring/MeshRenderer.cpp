@@ -111,6 +111,16 @@ void MeshRenderer::Render(const glm::mat4& view, const glm::mat4& projection, co
 	glm::mat4& nm = this->transform->GetNMMatrix();
 	glm::mat4 mvp = vp * model;
 
+
+	// todo ： 优化重点 1
+	GraphicProfiler::BeginSample("set matrix parameters");
+	this->material->shader->setMat4(MATRIX_M, model);
+	this->material->shader->setMat4(MATRIX_NM, nm);
+	this->material->shader->setMat4(MATRIX_V, view);
+	this->material->shader->setMat4(MATRIX_P, projection);
+	this->material->shader->setMat4(MATRIX_MVP, mvp);
+	GraphicProfiler::EndSample();
+
 	GraphicProfiler::BeginSample("enable shader");
 	this->material->shader->use();  
 	GraphicProfiler::EndSample();
@@ -124,16 +134,7 @@ void MeshRenderer::Render(const glm::mat4& view, const glm::mat4& projection, co
 }
 
 void MeshRenderer::RenderMesh(Material* mat, Mesh* mesh, const glm::mat4& model, const glm::mat4& nm, const glm::mat4& view, const glm::mat4& projection, const glm::mat4& mvp)
-{
-	// todo ： 优化重点 1
-	GraphicProfiler::BeginSample("set matrix parameters");
-	mat->shader->setMat4(MATRIX_M, model);
-	mat->shader->setMat4(MATRIX_NM, nm);
-	mat->shader->setMat4(MATRIX_V, view);
-	mat->shader->setMat4(MATRIX_P, projection);
-	mat->shader->setMat4(MATRIX_MVP, mvp);
-	GraphicProfiler::EndSample();
-
+{ 
 	// todo ： 优化重点 3 将RenderMode缓存
 	mesh->Draw();
 }
