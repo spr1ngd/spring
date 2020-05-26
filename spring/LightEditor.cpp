@@ -7,11 +7,13 @@ void LightEditor::OnDrawInspector()
 {
 	Light* light = Selection::GetSelected()->GetNode<Light>();
 
-	ImGui::DragFloat("Intensity",&light->setting.intensity,1.0f,0.0f,100.0f,"%.1f");
-
-	float* value = new float[4]{ light->color.r / 255.0f,light->color.g / 255.0f,light->color.b / 255.0f,light->color.a / 255.0f };
+	float intensity = light->setting.intensity;
+	ImGui::DragFloat("Intensity", &intensity,1.0f,0.0f,100.0f,"%.1f");
+	float* value = new float[4]{ light->color.r,light->color.g,light->color.b,light->color.a};
 	ImGui::ColorEdit4("Color", value);
-	light->color = Colorf(value[0],value[1],value[2],value[3]);
+	Colorf color = Colorf(value[0],value[1],value[2],value[3]);
+	light->SetLightParams(intensity, color);
+
 
 	float smMapSize = light->shadowMapping.shadowMapSize;
 	float smSize = light->shadowMapping.size;
@@ -26,10 +28,10 @@ void LightEditor::OnDrawInspector()
 	{
 		ImGui::Text("ShadowMap");
 		ImGui::SameLine();
-		ImGui::Image((ImTextureID)light->shadow->GetBuffer(), ImVec2(128, 128), ImVec2(0, 1), ImVec2(1, 0));
+		ImGui::Image((ImTextureID)light->shadow->GetBuffer(), ImVec2(256, 256), ImVec2(0, 1), ImVec2(1, 0));
 
-		/*ImGui::Text("ShadowMap T");
+		ImGui::Text("ShadowMap Blur");
 		ImGui::SameLine();
-		ImGui::Image((ImTextureID)light->tbuffer->GetBuffer(), ImVec2(128, 128), ImVec2(0, 1), ImVec2(1, 0));*/
+		ImGui::Image((ImTextureID)light->tbuffer->GetBuffer(), ImVec2(256, 256), ImVec2(0, 1), ImVec2(1, 0));
 	}
 }

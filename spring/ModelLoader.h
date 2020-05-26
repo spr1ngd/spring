@@ -34,7 +34,7 @@ namespace spring
 		string directory;
 		ModelLoader();
 
-		void parseNode(aiNode* node, const aiScene* scene , GameObject* parent,std::vector<Material*>& mats);
+		void parseNode(aiNode* node, const aiScene* scene , GameObject* &parent,std::vector<Material*>& mats);
 		void decomposeTransformation(const aiMatrix4x4& matrix ,Vector3& position,Vector3& scale,Quaternion& rotation);
 		
 	public:

@@ -194,6 +194,6 @@ void main()
     color += emission;
 
     // color = color / (color + vec3(1.0)); // hdr
-    // color = pow(color,vec3(1.0/2.2)); // gamma correct
+    // color = pow(color,vec3(0.45)); // gamma correct
     FragColor = vec4(color,1.0);
 }

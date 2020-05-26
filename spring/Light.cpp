@@ -24,7 +24,7 @@ Light::Light()
 
 	this->type = Light::Type::Directional;
 	this->renderMode = Light::RenderMode::Pixel;
-	this->color = Color::white;
+	this->color = Colorf::white;
 	this->shadowType = ShadowType::HardShadow;
 
 	// set the first light as scene main light source
@@ -36,7 +36,6 @@ Light::Light()
 		// depthMaterial = new Material(Shader::Load("shadow/shadow.vs", "shadow/shadow.fs"));
 		depthMaterial = new Material(Shader::Load("shadow/shadow(newer).vs", "shadow/shadow.fs"));
 		instanceDepthMaterial = new Material(Shader::Load("shadow/shadow(instance).vs", "shadow/shadow.fs"));
-
 		tMaterial = new Material(Shader::Load("fullscreen/fullscreen.vs", "shadow/shadow(display).fs"));
 	}
 	Light::lights.push_back(this);

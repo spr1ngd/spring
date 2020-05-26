@@ -5,12 +5,6 @@ out vec4 FragColor;
 uniform sampler2D Main_Texture;
 in vec2 Texcoord;
 
-// void main()
-// {
-//     float depth = texture(Main_Texture,Texcoord).r;
-//     FragColor = vec4(vec3(depth),1.0);
-// }
-
 float gaussian( float x, float sigma )
 {
     return 0.39894228 * sigma * exp(-0.5 * x * x / (sigma * sigma));
@@ -24,20 +18,20 @@ float gaussian( float x,float y,float sigma)
 
 void main()
 {
-    float depth = 0.0;
+    vec4 color = vec4(0.0,0.0,0.0,0.0);
 
     ivec2 ts2D = textureSize(Main_Texture,0);
-    float texelX = 1.0 / float(ts2D.x);
-    float texelY = 1.0 / float(ts2D.y);
+    float texelX = 1.0 / ts2D.x;
+    float texelY = 1.0 / ts2D.y;
 
     // 对输入进来的纹理进行高斯模糊
-    const int sSize = 11;
+    const int sSize = 15;
     float kernel[sSize];
     int kSize = (sSize - 1) / 2;
 
     float sigma = 3.0;
     float Z = 0.0;
-    for( int k = 0; k < kSize ; k++ )
+    for( int k = 0; k < kSize ; kSize++ )
     {
         kernel[kSize+k] = kernel[kSize-k] = gaussian(float(k),sigma);
     }
@@ -53,9 +47,9 @@ void main()
         {
             float weight = kernel[kSize+x] * kernel[kSize +y];
             vec2 uv = Texcoord + vec2(texelX*x,texelY*y);
-            depth += texture(Main_Texture,uv).r * weight;
+            color += texture(Main_Texture,uv) * weight;
         }
     }
-    depth /= Z * Z;
-    FragColor = vec4(depth,depth,depth,1.0);
+
+    FragColor = color;
 }

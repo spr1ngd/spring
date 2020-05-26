@@ -32,7 +32,7 @@ const char* ModelLoader::GetReference(Mesh* mesh)
 
 GameObject* ModelLoader::LoadGameObjectFromFile(const char* meshFileName,std::vector<Material*>& mats)
 {
-	GameObject* gameobject = new GameObject(meshFileName);
+	GameObject* gameobject = nullptr;//  = new GameObject(meshFileName);
 	const char* prefix = "res/model/";
 	char* filePath = misc::strcat(prefix, meshFileName);
 
@@ -81,7 +81,7 @@ Mesh* ModelLoader::LoadMesh(const char* filePath)
 	processNode(scene->mRootNode, scene, *mesh,false);
 	return mesh;
 }
-void ModelLoader::parseNode(aiNode* node, const aiScene* scene, GameObject* parent, std::vector<Material*>& mats)
+void ModelLoader::parseNode(aiNode* node, const aiScene* scene, GameObject* &parent, std::vector<Material*>& mats)
 {
 	GameObject* nodeGameObject = nullptr;
 	if (node->mNumMeshes > 0)
@@ -100,7 +100,10 @@ void ModelLoader::parseNode(aiNode* node, const aiScene* scene, GameObject* pare
 		nodeGameObject = new GameObject();
 		auto name = misc::strcat(node->mName.C_Str(), "");
 		nodeGameObject->name = name;
-		nodeGameObject->SetParent(parent);
+		if (nullptr == parent) 
+			parent = nodeGameObject;
+		else  
+			nodeGameObject->SetParent(parent);
 		Vector3 scale, position;
 		Quaternion rotation;
 		this->decomposeTransformation(node->mTransformation, position, scale, rotation);

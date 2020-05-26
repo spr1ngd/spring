@@ -19,6 +19,43 @@ void PerformanceTest()
 	}
 }
 
+void GenFighter() 
+{
+	std::vector<Material*> mats;
+	GameObject* fighter = ModelLoader::LoadGameObjectFromFile("fbx/star fighter/star fighter 01.fbx", mats);
+	fighter->transform->SetLocalScale(Vector3(0.05f, 0.05f, 0.05f));
+	fighter->transform->SetPosition(Vector3(0.0f, 5.0f, 0.0f));
+
+	Texture* metallicTex = TextureLoader::Load("res/model/fbx/star fighter/StarSparrow_MetallicSmoothness.png");
+	Texture* normalTex = TextureLoader::Load("res/model/fbx/star fighter/StarSparrow_Normal.png");
+	Texture* albedoTex = TextureLoader::Load("res/model/fbx/star fighter/StarSparrow_Red.png");
+	Texture* emissionTex = TextureLoader::Load("res/model/fbx/star fighter/StarSparrow_Emission.png");
+
+	for (auto mat : mats)
+	{
+		mat->SetTexture(PBR_TEXTURE_ALBEDO, albedoTex);
+		mat->SetTexture(PBR_TEXTURE_NORMAL, normalTex);
+		mat->SetTexture(PBR_TEXTURE_METALLIC, metallicTex);
+		mat->SetTexture(PBR_TEXTURE_EMISSION, emissionTex);
+	}
+
+	// TODO:检查为什么没有从模型中读到以下数据
+	Colorf albedoValue = Colorf::white;
+	Colorf ambientValue = Colorf::white;
+	Colorf emissionValue = Colorf::white;
+	const char* albedo = "albedo";
+	const char* metal = "metal";
+	const char* roughness = "roughness";
+	const char* ambient = "ao";
+	const char* emission = "emissionColor";
+	auto fighterRenderer = fighter->GetNode<MeshRenderer>();
+	fighterRenderer->material->shader->setColor(albedo, albedoValue); // 反射率
+	fighterRenderer->material->shader->setFloat(metal, 1.0f); // 金属度
+	fighterRenderer->material->shader->setFloat(roughness, 0.1f); // 粗糙度
+	fighterRenderer->material->shader->setColor(ambient, ambientValue); // 环境光照
+	fighterRenderer->material->shader->setColor(emission, emissionValue);// 自发光
+}
+
 void GameApp::Awake()
 {
 	Sample* sample = new Sample();
@@ -44,71 +81,54 @@ void GameApp::Awake()
 	renderer->setRenderOrder(5000);
 	
 	 
-	//std::vector<Material*> mats;
-	//GameObject* naturepark = ModelLoader::LoadGameObjectFromFile("fbx/weapon/M4A1_PBR.fbx",mats);
-	//naturepark->transform->SetLocalScale(Vector3(0.05f, 0.05f, 0.05f));
-	//naturepark->transform->SetPosition(Vector3(0.0f,5.0f,0.0f));
-
-	//// load 
-	//auto commonAlbedoTex = TextureLoader::Load("res/model/fbx/weapon/Textures/M4A1_rev_M4A1_Common_AlbedoTransparency.png");
-	//auto commonAmbientOcclusionTex = TextureLoader::Load("res/model/fbx/weapon/Textures/M4A1_rev_M4A1_Common_ambient_occlusion.png");
-	//auto commonSmoothnessTex = TextureLoader::Load("res/model/fbx/weapon/Textures/M4A1_rev_M4A1_Common_MetallicSmoothness.png");
-	//auto commonNormalTex = TextureLoader::Load("res/model/fbx/weapon/Textures/M4A1_rev_M4A1_Common_Normal.png");
-
-	//auto sightsAlbedoTex = TextureLoader::Load("res/model/fbx/weapon/Textures/M4A1_rev_M4A1_Sights_AlbedoTransparency.png");
-	//auto sightsAmbientOcclusionTex = TextureLoader::Load("res/model/fbx/weapon/Textures/M4A1_rev_M4A1_Sights_ambient_occlusion.png");
-	//auto sightsSmoothnessTex = TextureLoader::Load("res/model/fbx/weapon/Textures/M4A1_rev_M4A1_Sights_MetallicSmoothness.png");
-	//auto sightsNormalTex = TextureLoader::Load("res/model/fbx/weapon/Textures/M4A1_rev_M4A1_Sights_Normal.png");
-
-	//auto stockAlbedoTex = TextureLoader::Load("res/model/fbx/weapon/Textures/M4A1_rev_M4A1_Stock_Rail_AlbedoTransparency.png");
-	//auto stockAmbientOcclusionTex = TextureLoader::Load("res/model/fbx/weapon/Textures/M4A1_rev_M4A1_Stock_Rail_ambient_occlusion.png");
-	//auto stockSmoothnessTex = TextureLoader::Load("res/model/fbx/weapon/Textures/M4A1_rev_M4A1_Stock_Rail_MetallicSmoothness.png");
-	//auto stockNormalTex = TextureLoader::Load("res/model/fbx/weapon/Textures/M4A1_rev_M4A1_Stock_Rail_Normal.png");
-
-	//for (auto mat : mats)
-	//{ 
-	//	if (strcmp(mat->name, "M4A1_Common") == 0)
-	//	{
-	//		mat->SetTexture(PBR_TEXTURE_ALBEDO, commonAlbedoTex);
-	//		mat->SetTexture(PBR_TEXTURE_NORMAL, commonNormalTex);
-	//		mat->SetTexture(PBR_TEXTURE_AMBIENTOCCLUSION, commonAmbientOcclusionTex);
-	//		mat->SetTexture(PBR_TEXTURE_METALLIC, commonSmoothnessTex);
-	//	}
-	//	else if (strcmp(mat->name, "M4A1_Sights") == 0)
-	//	{
-	//		mat->SetTexture(PBR_TEXTURE_ALBEDO, sightsAlbedoTex);
-	//		mat->SetTexture(PBR_TEXTURE_NORMAL, sightsNormalTex);
-	//		mat->SetTexture(PBR_TEXTURE_AMBIENTOCCLUSION, sightsAmbientOcclusionTex);
-	//		mat->SetTexture(PBR_TEXTURE_METALLIC, sightsSmoothnessTex);
-	//	}
-	//	else if (strcmp(mat->name, "M4A1_Stock_Rail") == 0)
-	//	{
-	//		mat->SetTexture(PBR_TEXTURE_ALBEDO, stockAlbedoTex);
-	//		mat->SetTexture(PBR_TEXTURE_NORMAL, stockNormalTex);
-	//		mat->SetTexture(PBR_TEXTURE_AMBIENTOCCLUSION, stockAmbientOcclusionTex);
-	//		mat->SetTexture(PBR_TEXTURE_METALLIC, stockSmoothnessTex);
-	//	}
-	//}
-
 	std::vector<Material*> mats;
-	GameObject* fighter = ModelLoader::LoadGameObjectFromFile("fbx/star fighter/star fighter 01.fbx", mats);
-	fighter->transform->SetLocalScale(Vector3(0.05f,0.05f,0.05f));
-	fighter->transform->SetPosition(Vector3(0.0f,5.0f,0.0f));
+	GameObject* naturepark = ModelLoader::LoadGameObjectFromFile("fbx/weapon/M4A1_PBR.fbx",mats);
+	naturepark->transform->SetLocalScale(Vector3(0.05f, 0.05f, 0.05f));
+	naturepark->transform->SetPosition(Vector3(0.0f,5.0f,0.0f));
 
-	Texture* metallicTex = TextureLoader::Load("res/model/fbx/star fighter/StarSparrow_MetallicSmoothness.png");
-	Texture* normalTex = TextureLoader::Load("res/model/fbx/star fighter/StarSparrow_Normal.png");
-	Texture* albedoTex = TextureLoader::Load("res/model/fbx/star fighter/StarSparrow_Red.png");
-	Texture* emissionTex = TextureLoader::Load("res/model/fbx/star fighter/StarSparrow_Emission.png");
+	// load 
+	auto commonAlbedoTex = TextureLoader::Load("res/model/fbx/weapon/Textures/M4A1_rev_M4A1_Common_AlbedoTransparency.png");
+	auto commonAmbientOcclusionTex = TextureLoader::Load("res/model/fbx/weapon/Textures/M4A1_rev_M4A1_Common_ambient_occlusion.png");
+	auto commonSmoothnessTex = TextureLoader::Load("res/model/fbx/weapon/Textures/M4A1_rev_M4A1_Common_MetallicSmoothness.png");
+	auto commonNormalTex = TextureLoader::Load("res/model/fbx/weapon/Textures/M4A1_rev_M4A1_Common_Normal.png");
 
-	for (auto mat : mats) 
-	{
-		mat->SetTexture(PBR_TEXTURE_ALBEDO, albedoTex);
-		mat->SetTexture(PBR_TEXTURE_NORMAL, normalTex);
-		mat->SetTexture(PBR_TEXTURE_METALLIC, metallicTex);
-		mat->SetTexture(PBR_TEXTURE_EMISSION, emissionTex);
-	}
+	auto sightsAlbedoTex = TextureLoader::Load("res/model/fbx/weapon/Textures/M4A1_rev_M4A1_Sights_AlbedoTransparency.png");
+	auto sightsAmbientOcclusionTex = TextureLoader::Load("res/model/fbx/weapon/Textures/M4A1_rev_M4A1_Sights_ambient_occlusion.png");
+	auto sightsSmoothnessTex = TextureLoader::Load("res/model/fbx/weapon/Textures/M4A1_rev_M4A1_Sights_MetallicSmoothness.png");
+	auto sightsNormalTex = TextureLoader::Load("res/model/fbx/weapon/Textures/M4A1_rev_M4A1_Sights_Normal.png");
+
+	auto stockAlbedoTex = TextureLoader::Load("res/model/fbx/weapon/Textures/M4A1_rev_M4A1_Stock_Rail_AlbedoTransparency.png");
+	auto stockAmbientOcclusionTex = TextureLoader::Load("res/model/fbx/weapon/Textures/M4A1_rev_M4A1_Stock_Rail_ambient_occlusion.png");
+	auto stockSmoothnessTex = TextureLoader::Load("res/model/fbx/weapon/Textures/M4A1_rev_M4A1_Stock_Rail_MetallicSmoothness.png");
+	auto stockNormalTex = TextureLoader::Load("res/model/fbx/weapon/Textures/M4A1_rev_M4A1_Stock_Rail_Normal.png");
+
+	for (auto mat : mats)
+	{ 
+		if (strcmp(mat->name, "M4A1_Common") == 0)
+		{
+			mat->SetTexture(PBR_TEXTURE_ALBEDO, commonAlbedoTex);
+			mat->SetTexture(PBR_TEXTURE_NORMAL, commonNormalTex);
+			mat->SetTexture(PBR_TEXTURE_AMBIENTOCCLUSION, commonAmbientOcclusionTex);
+			mat->SetTexture(PBR_TEXTURE_METALLIC, commonSmoothnessTex);
+		}
+		else if (strcmp(mat->name, "M4A1_Sights") == 0)
+		{
+			mat->SetTexture(PBR_TEXTURE_ALBEDO, sightsAlbedoTex);
+			mat->SetTexture(PBR_TEXTURE_NORMAL, sightsNormalTex);
+			mat->SetTexture(PBR_TEXTURE_AMBIENTOCCLUSION, sightsAmbientOcclusionTex);
+			mat->SetTexture(PBR_TEXTURE_METALLIC, sightsSmoothnessTex);
+		}
+		else if (strcmp(mat->name, "M4A1_Stock_Rail") == 0)
+		{
+			mat->SetTexture(PBR_TEXTURE_ALBEDO, stockAlbedoTex);
+			mat->SetTexture(PBR_TEXTURE_NORMAL, stockNormalTex);
+			mat->SetTexture(PBR_TEXTURE_AMBIENTOCCLUSION, stockAmbientOcclusionTex);
+			mat->SetTexture(PBR_TEXTURE_METALLIC, stockSmoothnessTex);
+		}
+	} 
 
 	// PerformanceTest();
+	// GenFighter();
 	return;
 
 	//Texture* tex = TextureLoader::Load("res/texture/standarduv.jpg");

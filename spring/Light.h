@@ -3,6 +3,7 @@
 #include "glm/glm.hpp"
 #include "node.h"
 #include "color.h"
+#include "colorf.h"
 #include "transform.h"
 #include "vector3.h"
 #include "vector4.h"
@@ -45,6 +46,7 @@ namespace spring
 	};
 	struct LightParams 
 	{
+		Colorf color = Colorf::white;
 		float intensity = 1.0f;
 		// only work in spot and point mode
 		float range = 10.0f;
@@ -91,7 +93,7 @@ namespace spring
 
 		Light::RenderMode renderMode = Light::RenderMode::Auto;
 		Light::Type type = Light::Type::Directional;
-		Color color = Color::white;
+		Colorf color = Colorf::white;
 		LightParams setting;
 
 		//lighting mapping setting
@@ -114,9 +116,10 @@ namespace spring
 			this->shadowMapping.zFar = zFar;
 			this->shadowMapping.projection = glm::ortho(-size, size, -size, size, zNear, zFar);
 		}
-		void SetLightParams(float intensity) 
+		void SetLightParams(float intensity , Colorf lightColor) 
 		{
 			this->setting.intensity = intensity;
+			this->setting.color = lightColor;
 			this->ResetShaderLightParams();
 		}
 		void SetLightParams(float intensity,float range,float constant,float linear,float quadratic)
