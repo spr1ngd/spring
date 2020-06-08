@@ -30,8 +30,8 @@ void LightEditor::OnDrawInspector()
 		ImGui::SameLine();
 		ImGui::Image((ImTextureID)light->shadow->GetBuffer(), ImVec2(256, 256), ImVec2(0, 1), ImVec2(1, 0));
 
-		ImGui::Text("ShadowMap Blur");
+		/*ImGui::Text("ShadowMap Blur");
 		ImGui::SameLine();
-		ImGui::Image((ImTextureID)light->tbuffer->GetBuffer(), ImVec2(256, 256), ImVec2(0, 1), ImVec2(1, 0));
+		ImGui::Image((ImTextureID)light->tbuffer->GetBuffer(), ImVec2(256, 256), ImVec2(0, 1), ImVec2(1, 0));*/
 	}
 }

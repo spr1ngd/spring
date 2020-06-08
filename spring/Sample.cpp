@@ -68,7 +68,7 @@ void Sample::Awake()
 #pragma region directional light 
 
 	Environment::SetAmbientSetting(Color(75, 75, 75, 255));
-	Environment::SetShodowSetting(Environment::ShadowSetting::Disable);
+	Environment::SetShodowSetting(Environment::ShadowSetting::Octuple);
 
 	// TODO 70MB
 	if (renderSkybox) 
@@ -138,30 +138,6 @@ void Sample::Awake()
 	pbr = new physically_based_rendering();
 	pbr->name = "Physically Based Rendering Example";
 	pbr->enabled = true;
-
-	// post processing
-	GameObject* postProcessingGameObject = new GameObject("PostProcessing");
-	postProcessingGameObject->layer = Layer::PostProcessing;
-	PostProcessing::postprocessing = postProcessingGameObject->AddNode<class::PostProcessing>();
-	PostProcessing::postprocessing->enabled = false;
-	// pp->bloom 
-	PostProcessing::postprocessing->bloom->enable = false;
-	PostProcessing::postprocessing->Initialize();
-
-	PostProcessing::postprocessing->toneMapping->enable = false;
-
-	if (PostProcessing::postprocessing->enabled == false)
-	{
-		FrameBuffer* mainFramebuffer = new FrameBuffer(Screen::width, Screen::height);
-		mainFramebuffer->antiAliasing = AntiAliasingLevel::Level2;
-		mainFramebuffer->depthbuffer = FrameBuffer::OnlyDepth;
-		mainFramebuffer->Initialize();
-		Camera::main->framebuffer = mainFramebuffer;
-
-		FrameBuffer* renderTarget = new FrameBuffer(Screen::width, Screen::height);
-		renderTarget->Initialize();
-		Camera::main->renderTarget = renderTarget;
-	}
 }
 
 void Sample::Update() 

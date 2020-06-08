@@ -223,9 +223,6 @@
     <ClInclude Include="Input.h">
       <Filter>头文件\Extension\Input</Filter>
     </ClInclude>
-    <ClInclude Include="FileIO.h">
-      <Filter>头文件\Extension\IO</Filter>
-    </ClInclude>
     <ClInclude Include="NotImplementException.h">
       <Filter>头文件\Extension</Filter>
     </ClInclude>
@@ -397,9 +394,6 @@
     <ClInclude Include="misc.h">
       <Filter>头文件\Extension\tools</Filter>
     </ClInclude>
-    <ClInclude Include="InstancedRenderer.h">
-      <Filter>头文件\Core\Renderer</Filter>
-    </ClInclude>
     <ClInclude Include="Texture.h">
       <Filter>头文件\Extension\Resources</Filter>
     </ClInclude>
@@ -562,6 +556,27 @@
     <ClInclude Include="ProfilerSample.h">
       <Filter>头文件\Core\Graphic</Filter>
     </ClInclude>
+    <ClInclude Include="ColorCorrection.h">
+      <Filter>头文件\Core\Renderer\PostProcessing</Filter>
+    </ClInclude>
+    <ClInclude Include="GammaCorrection.h">
+      <Filter>头文件\Core\Renderer\PostProcessing</Filter>
+    </ClInclude>
+    <ClInclude Include="InstancedRenderer.h">
+      <Filter>头文件\Core\Renderer\BasicModule</Filter>
+    </ClInclude>
+    <ClInclude Include="File.h">
+      <Filter>头文件\Extension\IO</Filter>
+    </ClInclude>
+    <ClInclude Include="Directory.h">
+      <Filter>头文件\Extension\IO</Filter>
+    </ClInclude>
+    <ClInclude Include="FileInfo.h">
+      <Filter>头文件\Extension\IO</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectoryInfo.h">
+      <Filter>头文件\Extension\IO</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="spring.cpp">
@@ -572,9 +587,6 @@
     </ClCompile>
     <ClCompile Include="Skybox.cpp">
       <Filter>源文件\Core\Renderer\Skybox</Filter>
-    </ClCompile>
-    <ClCompile Include="FileIO.cpp">
-      <Filter>源文件\Extension\IO</Filter>
     </ClCompile>
     <ClCompile Include="NotImplementException.cpp">
       <Filter>源文件\Extension</Filter>
@@ -741,9 +753,6 @@
     <ClCompile Include="SpringEditor.cpp">
       <Filter>源文件\Editor</Filter>
     </ClCompile>
-    <ClCompile Include="InstancedRenderer.cpp">
-      <Filter>源文件\Core\Renderer</Filter>
-    </ClCompile>
     <ClCompile Include="Cubemap.cpp">
       <Filter>源文件\Extension\Resources</Filter>
     </ClCompile>
@@ -899,6 +908,27 @@
     </ClCompile>
     <ClCompile Include="ProfilerSample.cpp">
       <Filter>源文件\Core\Graphic</Filter>
+    </ClCompile>
+    <ClCompile Include="ColorCorrection.cpp">
+      <Filter>源文件\Core\Renderer\PostProcessing</Filter>
+    </ClCompile>
+    <ClCompile Include="GammaCorrection.cpp">
+      <Filter>源文件\Core\Renderer\PostProcessing</Filter>
+    </ClCompile>
+    <ClCompile Include="InstancedRenderer.cpp">
+      <Filter>源文件\Core\Renderer\BasicModule</Filter>
+    </ClCompile>
+    <ClCompile Include="File.cpp">
+      <Filter>源文件\Extension\IO</Filter>
+    </ClCompile>
+    <ClCompile Include="Directory.cpp">
+      <Filter>源文件\Extension\IO</Filter>
+    </ClCompile>
+    <ClCompile Include="FileInfo.cpp">
+      <Filter>源文件\Extension\IO</Filter>
+    </ClCompile>
+    <ClCompile Include="DirectoryInfo.cpp">
+      <Filter>源文件\Extension\IO</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

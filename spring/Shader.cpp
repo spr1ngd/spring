@@ -9,6 +9,7 @@
 #include "textureloader.h"
 #include "misc.h"
 #include "graphicprofiler.h"
+#include "screen.h"
 
 using namespace std;
 using namespace spring;
@@ -555,6 +556,7 @@ void Shader::setShaderValues()
 
 void Shader::setEngineEnvironment() 
 {
+	this->setVec4(_ScreenParams, Vector4(1.0f / Screen::width, 1.0f / Screen::height, Screen::width, Screen::height));
 	this->setVec3(WorldSpaceCameraPos, Camera::main->transform->position);
 	this->setVec3(CAMERA_POSITION, Camera::main->transform->position);
 	this->setVec4(_Time, shaderTimer);
@@ -593,7 +595,7 @@ void Shader::setLighting()
 			{
 				if (nullptr != light->shadow)
 				{
-					unsigned int shadowmap = light->tbuffer->GetBuffer();
+					unsigned int shadowmap = light->shadow->GetBuffer();
 					this->setTexture(SHADOWMAP, shadowmap);
 					this->setMat4("LightSpaceMatrix", light->lightSpaceMatrix);
 				}

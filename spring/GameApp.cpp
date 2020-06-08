@@ -3,6 +3,7 @@
 #include "thirdplayercamera.h"
 #include "gizmos.h"
 #include "misc.h"
+#include "postprocessing.h"
 
 GameObject* thirdPlayer = nullptr;
 MeshRenderer* grassRenderer = nullptr;
@@ -56,31 +57,8 @@ void GenFighter()
 	fighterRenderer->material->shader->setColor(emission, emissionValue);// ×Ô·¢¹â
 }
 
-void GameApp::Awake()
+void GenM4A1() 
 {
-	Sample* sample = new Sample();
-	sample->name = "SPRING";
-	sample->enabled = true;
-
-	GameObject* internalUICamera = new GameObject("Internal UI Camera");
-	internalUICamera->SetFlag(HideFlags::HideFlags_HideInHierarchyWindow);
-	Camera* uiCamera = internalUICamera->AddNode<Camera>();
-	uiCamera->cullingMask->layers = Layer::UI;
-	uiCamera->clearFlag = Camera::None;
-
-	GameObject* plane = Primitive::CreatePrimitive(Primitive::Type::Quad);
-	plane->name = "Ground";
-	plane->SetFlag(HideFlags_NotEditable);
-	plane->transform->SetLocalScale(Vector3(100, 100, 100));
-	plane->transform->SetPosition(Vector3(0.0f, 0.0f, 0.0f));
-	//plane->transform->SetPosition(Vector3(0.0f, -25.0f, 0.0f));
-	plane->transform->SetEulerangle(Vector3(0.0f, 0.0f, 0.0f));
-	MeshRenderer* renderer = plane->GetNode<MeshRenderer>();
-	Texture* tex = TextureLoader::Load("res/texture/standarduv.jpg",true);
-	renderer->material->shader->setTexture("MainTextureData.texture", tex->textureId);
-	renderer->setRenderOrder(5000);
-	
-	 
 	std::vector<Material*> mats;
 	GameObject* naturepark = ModelLoader::LoadGameObjectFromFile("fbx/weapon/M4A1_PBR.fbx",mats);
 	naturepark->transform->SetLocalScale(Vector3(0.05f, 0.05f, 0.05f));
@@ -126,9 +104,73 @@ void GameApp::Awake()
 			mat->SetTexture(PBR_TEXTURE_METALLIC, stockSmoothnessTex);
 		}
 	} 
+}
 
+void GenPark() 
+{
+	/*std::vector<Material*> mats;
+	GameObject* naturepark = ModelLoader::LoadGameObjectFromFile("fbx/naturepark.fbx", mats);
+	naturepark->transform->SetLocalScale(Vector3(0.05f, 0.05f, 0.05f));
+	naturepark->transform->SetPosition(Vector3(0.0f, 5.0f, 0.0f));*/
+}
+
+void InitializePostProcessing() 
+{ 
+	// post processing
+	GameObject* postProcessingGameObject = new GameObject("PostProcessing");
+	postProcessingGameObject->layer = Layer::PostProcessing;
+	PostProcessing::postprocessing = postProcessingGameObject->AddNode<class::PostProcessing>();
+	PostProcessing::postprocessing->enabled = true;
+	// pp->bloom 
+	PostProcessing::postprocessing->bloom->enable = true;
+	PostProcessing::postprocessing->Initialize();
+
+	PostProcessing::postprocessing->toneMapping->enable = false;
+
+	if (PostProcessing::postprocessing->enabled == false)
+	{
+		FrameBuffer* mainFramebuffer = new FrameBuffer(Screen::width, Screen::height);
+		mainFramebuffer->antiAliasing = AntiAliasingLevel::Level2;
+		mainFramebuffer->depthbuffer = FrameBuffer::OnlyDepth;
+		mainFramebuffer->Initialize();
+		Camera::main->framebuffer = mainFramebuffer;
+
+		FrameBuffer* renderTarget = new FrameBuffer(Screen::width, Screen::height);
+		renderTarget->Initialize();
+		Camera::main->renderTarget = renderTarget;
+	}
+}
+
+void GameApp::Awake()
+{
+	Sample* sample = new Sample();
+	sample->name = "SPRING";
+	sample->enabled = true;
+
+	InitializePostProcessing();
+
+	GameObject* internalUICamera = new GameObject("Internal UI Camera");
+	internalUICamera->SetFlag(HideFlags::HideFlags_HideInHierarchyWindow);
+	Camera* uiCamera = internalUICamera->AddNode<Camera>();
+	uiCamera->cullingMask->layers = Layer::UI;
+	uiCamera->clearFlag = Camera::None;
+
+	GameObject* plane = Primitive::CreatePrimitive(Primitive::Type::Quad);
+	plane->name = "Ground";
+	plane->SetFlag(HideFlags_NotEditable);
+	plane->transform->SetLocalScale(Vector3(100, 100, 100));
+	plane->transform->SetPosition(Vector3(0.0f, 0.0f, 0.0f));
+	//plane->transform->SetPosition(Vector3(0.0f, -25.0f, 0.0f));
+	plane->transform->SetEulerangle(Vector3(0.0f, 0.0f, 0.0f));
+	MeshRenderer* renderer = plane->GetNode<MeshRenderer>();
+	Texture* tex = TextureLoader::Load("res/texture/standarduv.jpg",true);
+	renderer->material->shader->setTexture("MainTextureData.texture", tex->textureId);
+	renderer->setRenderOrder(5000);
+	 
 	// PerformanceTest();
 	// GenFighter();
+	GenM4A1();
+	// GenPark();
 	return;
 
 	//Texture* tex = TextureLoader::Load("res/texture/standarduv.jpg");

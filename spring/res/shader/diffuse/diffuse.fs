@@ -56,8 +56,9 @@ uniform float Specular_Intensity = 0.0;
 uniform vec3 CameraPosition; 
 uniform TextureData MainTextureData;
 uniform sampler2D ShadowMap;
-
 uniform int SampleLevel = 0;
+uniform vec4 _ScreenParams;
+
 uniform DirectionalLight dirLights[LIGHT_DIRECTIONAL_COUNT];
 uniform SpotLight spotLights[LIGHT_SPOT_COUNT];
 uniform PointLight pointLights[LIGHT_POINT_COUNT];
@@ -174,6 +175,17 @@ vec4 calcPointLight( PointLight lightData )
     return OUT;
 } 
 
+float gaussian( float x, float sigma )
+{
+    return 0.39894228 * sigma * exp(-0.5 * x * x / (sigma * sigma));
+}
+
+float gaussian2( float x,float y,float sigma)
+{
+    float sigmaP2 = sigma * sigma;
+    return (0.15915494 / sigmaP2) * exp(-0.5 * (x*x + y*y) / sigmaP2);
+}
+
 float castShadow( vec4 lightSpacePos , vec3 lightDir)
 {
     float cosine = dot( WorldNormal, lightDir);
@@ -185,9 +197,10 @@ float castShadow( vec4 lightSpacePos , vec3 lightDir)
     float currentDepth = projCoords.z;
     float shadow = 0.0;
     // float bias = max(0.05 * (1.0 - max(0,dot( WorldNormal, lightDir))) ,0.005);
-    float bias = 0.005;
+    float bias = 0.005; 
+    float smapleCorrelation = 0.2; // 控制在小分辨率上采样引发的像素块问题
 
-    if(  SampleLevel == 0 )
+    if(SampleLevel == 0)
     {
         // no shadow multi sample
         float closestDepth = texture(ShadowMap,projCoords.xy).r; // 如果采样区域超出了阴影贴图区域，则恒定 closestDepth = 1
@@ -199,7 +212,8 @@ float castShadow( vec4 lightSpacePos , vec3 lightDir)
         int min = -SampleLevel / 2;
         int max = SampleLevel / 2;
         float base = pow(SampleLevel + 1,2);
-        vec2 texelSize = 1.0 / textureSize(ShadowMap,0);  
+        vec2 texelSize = 1.0 / textureSize(ShadowMap,0) * smapleCorrelation;
+
         for( int x = min ; x <= max ; x++ )
         {
             for( int y = min; y <= max ;y++ )
@@ -208,7 +222,25 @@ float castShadow( vec4 lightSpacePos , vec3 lightDir)
                 shadow += ((currentDepth - bias >  pcfDepth && pcfDepth < 1.0) ? 0.0 : 1.0) / base;
             }
         }
-    }
+
+        // float blurSize = 2.0;
+        // float texelSize = 1.0 / float(textureSize(ShadowMap,0).x);
+        // float sigma = 3.0;
+        // float Z = 0.0;
+        // int sampleOffset = SampleLevel / 2;
+        // for( int x = -sampleOffset ; x<=sampleOffset;x++ )
+        // {
+        //     for( int y = -sampleOffset; y<=sampleOffset;y++ )
+        //     {
+        //         float weight = gaussian2(x,y,sigma);
+        //         Z += weight;
+        //         vec2 uv = projCoords.xy + vec2(x,y) * texelSize * blurSize;
+        //         float pcfDepth = texture(ShadowMap,uv).r;
+        //         shadow += (currentDepth - bias >  pcfDepth && pcfDepth < 1.0) ? 0.0 : 1.0;
+        //     }
+        // }
+        // shadow /= Z*Z;
+    } 
     return shadow;
 }
 

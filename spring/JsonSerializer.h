@@ -75,7 +75,7 @@ namespace spring
 			Writer<StringBuffer> writer(stringBuffer);
 			this->document->Accept(writer);
 			const char* buffer = stringBuffer.GetString();
-			FileIO::WriteFile(filePath, buffer);
+			// TODO: FileIO::WriteFile(filePath, buffer);
 		}
 		
 		template<class T>
@@ -87,7 +87,7 @@ namespace spring
 		}
 		void ReadFrom(const char* filePath) 
 		{
-			char* buffer = FileIO::ReadFile(filePath);
+			char* buffer;// TODO: = FileIO::ReadFile(filePath);
 			this->document->Parse(buffer);
 			if (this->document->HasParseError()) 
 			{

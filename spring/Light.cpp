@@ -15,7 +15,7 @@ using namespace spring;
 vector< Light*> Light::lights;
 Light* Light::main;
 Material* Light::depthMaterial;
-Material* Light::tMaterial;
+//Material* Light::tMaterial;
 Material* instanceDepthMaterial;
 
 Light::Light()
@@ -36,7 +36,7 @@ Light::Light()
 		// depthMaterial = new Material(Shader::Load("shadow/shadow.vs", "shadow/shadow.fs"));
 		depthMaterial = new Material(Shader::Load("shadow/shadow(newer).vs", "shadow/shadow.fs"));
 		instanceDepthMaterial = new Material(Shader::Load("shadow/shadow(instance).vs", "shadow/shadow.fs"));
-		tMaterial = new Material(Shader::Load("fullscreen/fullscreen.vs", "shadow/shadow(display).fs"));
+		//tMaterial = new Material(Shader::Load("fullscreen/fullscreen.vs", "shadow/shadow(display).fs"));
 	}
 	Light::lights.push_back(this);
 }
@@ -185,7 +185,7 @@ void Light::CastShadow()
 				}
 			});
 		light->shadow->Unbind();
-		Graphic::Blit(*light->shadow, *light->tbuffer,*tMaterial); 
+		//Graphic::Blit(*light->shadow, *light->tbuffer,*tMaterial); 
 	}
 	glViewport(0, 0, Screen::width,Screen::height);
 	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);

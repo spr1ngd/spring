@@ -82,7 +82,7 @@ namespace spring
 
 	private:
 		static Material* depthMaterial;
-		static Material* tMaterial;
+		//static Material* tMaterial;
 
 		bool lightParametersChangedInThisFrame = true;
 		unsigned int lightId = 0;

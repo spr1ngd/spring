@@ -98,13 +98,13 @@ void MaterialEditor::OnDrawInspector()
 		for (auto tex : shader->_textures) 
 		{
 			ImGui::LabelText(tex.first,"");
-			ImGui::ImageButton((ImTextureID)tex.second.value.texture, ImVec2(32, 32), ImVec2(0, 1), ImVec2(1, 0));
+			ImGui::ImageButton((ImTextureID)tex.second.value.texture, ImVec2(256, 256), ImVec2(0, 1), ImVec2(1, 0));
 		}
 		// map<GLuint, Cubemap*> cubemaps;
 		for (auto cubemap : shader->_cubemaps)
 		{
 			ImGui::LabelText(cubemap.first, "");
-			ImGui::ImageButton((ImTextureID)cubemap.second.value.cubemap, ImVec2(32, 32), ImVec2(0, 1), ImVec2(1, 0));
+			ImGui::ImageButton((ImTextureID)cubemap.second.value.cubemap, ImVec2(256, 256), ImVec2(0, 1), ImVec2(1, 0));
 		}
 		ImGui::TreePop();
 	}

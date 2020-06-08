@@ -122,6 +122,7 @@
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -209,16 +210,20 @@
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Character.h" />
     <ClInclude Include="Color.h" />
+    <ClInclude Include="ColorCorrection.h" />
     <ClInclude Include="Colorf.h" />
     <ClInclude Include="Console.h" />
     <ClInclude Include="Cubemap.h" />
     <ClInclude Include="Cursor.h" />
+    <ClInclude Include="Directory.h" />
+    <ClInclude Include="DirectoryInfo.h" />
     <ClInclude Include="EditorApplication.h" />
     <ClInclude Include="EditorGizmosUtility.h" />
     <ClInclude Include="EditorWindow.h" />
     <ClInclude Include="Environment.h" />
     <ClInclude Include="Example.h" />
-    <ClInclude Include="FileIO.h" />
+    <ClInclude Include="File.h" />
+    <ClInclude Include="FileInfo.h" />
     <ClInclude Include="FirstPlayerCamera.h" />
     <ClInclude Include="Font.h" />
     <ClInclude Include="FontEngine.h" />
@@ -228,6 +233,7 @@
     <ClInclude Include="GameApp.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="GameObjectEditor.h" />
+    <ClInclude Include="GammaCorrection.h" />
     <ClInclude Include="Gizmos.h" />
     <ClInclude Include="Graphic.h" />
     <ClInclude Include="GraphicProfiler.h" />
@@ -327,15 +333,19 @@
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Character.cpp" />
     <ClCompile Include="Color.cpp" />
+    <ClCompile Include="ColorCorrection.cpp" />
     <ClCompile Include="Colorf.cpp" />
     <ClCompile Include="Console.cpp" />
     <ClCompile Include="Cubemap.cpp" />
     <ClCompile Include="Cursor.cpp" />
+    <ClCompile Include="Directory.cpp" />
+    <ClCompile Include="DirectoryInfo.cpp" />
     <ClCompile Include="EditorApplication.cpp" />
     <ClCompile Include="EditorGizmosUtility.cpp" />
     <ClCompile Include="EditorWindow.cpp" />
     <ClCompile Include="Environment.cpp" />
-    <ClCompile Include="FileIO.cpp" />
+    <ClCompile Include="File.cpp" />
+    <ClCompile Include="FileInfo.cpp" />
     <ClCompile Include="FirstPlayerCamera.cpp" />
     <ClCompile Include="Font.cpp" />
     <ClCompile Include="FontEngine.cpp" />
@@ -345,6 +355,7 @@
     <ClCompile Include="GameApp.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GameObjectEditor.cpp" />
+    <ClCompile Include="GammaCorrection.cpp" />
     <ClCompile Include="Gizmos.cpp" />
     <ClCompile Include="Graphic.cpp" />
     <ClCompile Include="GraphicProfiler.cpp" />
