@@ -577,6 +577,12 @@
     <ClInclude Include="DirectoryInfo.h">
       <Filter>头文件\Extension\IO</Filter>
     </ClInclude>
+    <ClInclude Include="Vignette.h">
+      <Filter>头文件\Core\Renderer\PostProcessing</Filter>
+    </ClInclude>
+    <ClInclude Include="PostProcessingFX.h">
+      <Filter>头文件\Core\Renderer\PostProcessing</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="spring.cpp">
@@ -929,6 +935,12 @@
     </ClCompile>
     <ClCompile Include="DirectoryInfo.cpp">
       <Filter>源文件\Extension\IO</Filter>
+    </ClCompile>
+    <ClCompile Include="Vignette.cpp">
+      <Filter>源文件\Core\Renderer\PostProcessing</Filter>
+    </ClCompile>
+    <ClCompile Include="PostProcessingFX.cpp">
+      <Filter>源文件\Core\Renderer\PostProcessing</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

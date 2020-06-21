@@ -55,5 +55,8 @@ namespace spring
 		void CubemapCapture(unsigned int cubemapId, unsigned int index, unsigned int level = 0);
 
 		void Blit(FrameBuffer& dst);
+
+		FrameBuffer* GetTemporary();
+		void RevertTemporary();
 	};
 }

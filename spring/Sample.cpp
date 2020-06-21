@@ -22,7 +22,6 @@ springengine_scene* esScene;
 bool renderSkybox = true;
 bool enableLights = true;
 
-Camera* camera;
 class::spring::Skybox* skybox; 
 MeshRenderer* lightModel;
 vector<Material*> mats;
@@ -43,25 +42,7 @@ void Sample::Awake()
 
 #pragma region scene camera setting
 
-	GameObject* mainCamera = new GameObject("Main Camera");
-	camera = mainCamera->AddNode<Camera>();
-	Camera::main = camera;
-	camera->clearFlag = Camera::ClearFlag::Skybox;
-	camera->background = Color(31, 113, 113, 255);
-	camera->cullingMask->set(Layer::Default | Layer::Skybox | Layer::PostProcessing);
-	mainCamera->transform->SetPosition(Vector3(0.0f, 0.0f, 25.0f));
-	mainCamera->transform->LookAt(Vector3::zero);
 
-	// first player camera
-	// FirstPlayerCamera* fpc = mainCamera->AddNode<FirstPlayerCamera>();
-	
-	// orbit camera 
-	OrbitCamera* cam = mainCamera->AddNode<OrbitCamera>();
-	cam->target = Vector3(0.0f, 0.0f, 0.0f);// Vector3::zero;
-	cam->zoomSpeed = 1.0f;
-
-	// third player camera
-	// ThirdPlayerCamera* tpc = mainCamera->AddNode<ThirdPlayerCamera>();
 
 #pragma endregion
 

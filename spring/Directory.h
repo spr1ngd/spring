@@ -1,7 +1,5 @@
 #pragma once
-#include <filesystem>
-
-using namespace std::filesystem;
+#include <filesystem> 
 
 namespace spring 
 {
@@ -18,6 +16,6 @@ namespace spring
 		static bool MoveTo(const char* srcDir,const char* dstDir);
 
 		static DirectoryInfo* GetDiectorie(const char* directory);
-		static FileInfo* GetFiles(const char* directory,,bool recursive);
+		static FileInfo* GetFiles(const char* directory,bool recursive);
 	};
 }

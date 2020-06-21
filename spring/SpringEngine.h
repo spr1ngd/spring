@@ -15,7 +15,7 @@
 #include "GL/wglew.h"
 #include <gl/GL.h>
 #include "GLFW/glfw3.h"
-#include "fileio.h"
+// #include "fileio.h"
 #include "console.h"
 #include "space.h"
 #include "layer.h"
@@ -49,6 +49,10 @@
 #include "orbitcamera.h"
 #include "firstplayercamera.h"
 #include "fps.h"
+
+const char* _MainTex = "_MainTex";
+const char* _MainColor = "_MainColor";
+const char* _MaskTex = "_MaskTex";
 
 namespace spring
 {

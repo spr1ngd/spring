@@ -87,7 +87,7 @@ namespace spring
 		}
 		void ReadFrom(const char* filePath) 
 		{
-			char* buffer;// TODO: = FileIO::ReadFile(filePath);
+			char* buffer = nullptr;// TODO: = FileIO::ReadFile(filePath);
 			this->document->Parse(buffer);
 			if (this->document->HasParseError()) 
 			{

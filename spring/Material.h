@@ -4,6 +4,7 @@
 
 namespace spring 
 {
+	class Matrix4x4;
 	class Texture;
 	class Material
 	{
@@ -84,5 +85,9 @@ namespace spring
 		void SetFloat(const char* propertyName,const float fValue);
 		void SetInt(const char* propertyName,const int iValue);
 		void SetBool(const char* propertyName,const bool bValue);
+		void SetVec2(const char* propertyName,const Vector2& vec2);
+		void SetVec3(const char* propertyName,const Vector3& vec3);
+		void SetVec4(const char* propertyName,const Vector4& vec4);
+		void SetMatrix(const char* propertyName,const Matrix4x4& matrix);
 	};
 }

@@ -114,6 +114,29 @@ void GenPark()
 	naturepark->transform->SetPosition(Vector3(0.0f, 5.0f, 0.0f));*/
 }
 
+void InitializeSceneCamera()
+{
+	GameObject* mainCamera = new GameObject("Main Camera");
+	auto camera = mainCamera->AddNode<Camera>();
+	Camera::main = camera;
+	camera->clearFlag = Camera::ClearFlag::Skybox;
+	camera->background = Color(31, 113, 113, 255);
+	camera->cullingMask->set(Layer::Default | Layer::Skybox | Layer::PostProcessing);
+	mainCamera->transform->SetPosition(Vector3(0.0f, 0.0f, 25.0f));
+	mainCamera->transform->LookAt(Vector3::zero);
+
+	// first player camera
+	// FirstPlayerCamera* fpc = mainCamera->AddNode<FirstPlayerCamera>();
+
+	// orbit camera 
+	OrbitCamera* cam = mainCamera->AddNode<OrbitCamera>();
+	cam->target = Vector3(0.0f, 0.0f, 0.0f);// Vector3::zero;
+	cam->zoomSpeed = 1.0f;
+
+	// third player camera
+	// ThirdPlayerCamera* tpc = mainCamera->AddNode<ThirdPlayerCamera>();
+}
+
 void InitializePostProcessing() 
 { 
 	// post processing
@@ -139,6 +162,8 @@ void InitializePostProcessing()
 		renderTarget->Initialize();
 		Camera::main->renderTarget = renderTarget;
 	}
+
+	auto vignette = PostProcessing::postprocessing->AddFX<spring::FX::Vignette>();
 }
 
 void GameApp::Awake()
@@ -147,6 +172,7 @@ void GameApp::Awake()
 	sample->name = "SPRING";
 	sample->enabled = true;
 
+	InitializeSceneCamera();
 	InitializePostProcessing();
 
 	GameObject* internalUICamera = new GameObject("Internal UI Camera");

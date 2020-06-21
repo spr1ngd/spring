@@ -161,6 +161,15 @@ void PostProcessing::Process()
 
 	// blit to final framebuffer and render it to scene editor window (hdr framebuffer -> general color framebuffer)
 	this->Blit(transfer, outputFramebuffer);
+
+	// ÊÖ¶¯ÅÅÐò
+	 
+	// add vignette at finally
+	PostProcessingFX* vignette = this->GetFX(PostProcessingVignette);
+	if (nullptr != vignette)
+	{
+		vignette->Process(*outputFramebuffer,);
+	}
 }
 
 void PostProcessing::Blit(FrameBuffer* src,FrameBuffer* dst)

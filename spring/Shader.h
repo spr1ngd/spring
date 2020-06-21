@@ -125,6 +125,7 @@ namespace spring
 		void setLighting(); 
 
 	public:
+
 		std::map<const char*, int> locations;
 		char* vertexShaderName;
 		char* fragmentShaderName;
