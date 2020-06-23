@@ -58,6 +58,26 @@ void Material::SetBool(const char* propertyName, const bool bValue)
 	this->shader->setBool(propertyName, bValue);
 }
 
+void Material::SetVec2(const char* propertyName, const Vector2& vec2) 
+{
+	this->shader->setVec2(propertyName, vec2);
+}
+
+void Material::SetVec3(const char* propertyName, const Vector3& vec3) 
+{
+	this->shader->setVec3(propertyName, vec3);
+}
+
+void Material::SetVec4(const char* propertyName, const Vector4& vec4) 
+{
+	this->shader->setVec4(propertyName, vec4);
+}
+
+void Material::SetMatrix(const char* propertyName, const Matrix4x4& matrix) 
+{
+	throw "not implement.";
+}
+
 #pragma endregion
 
 void Material::AlphaTestFunc(GLenum alphaTestFunc, float alphaTestRef ) 

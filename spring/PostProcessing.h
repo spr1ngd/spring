@@ -13,9 +13,8 @@
 
 using namespace spring::FX;
 
-namespace spring 
+namespace spring
 {
-	const char* PostProcessingVignette = "Vignette";
 
 	class PostProcessing : public Behaviour
 	{
@@ -35,6 +34,7 @@ namespace spring
 		void Blit(FrameBuffer* src,FrameBuffer* dst,Material* material,unsigned int attachment); 
 
 	public:
+		static const char* PostProcessingVignette;
 
 		FrameBuffer* srcFramebuffer;
 		FrameBuffer* dstFramebuffer;
@@ -62,10 +62,11 @@ namespace spring
 			if (item != this->effects.end())
 			{
 				delete fx;
-				return item->second;
+				return (T*)item->second;
 			}
 			fx->Initialize();
-			this->effects.insert(fx->fxType, fx);
+			this->effects.insert(std::pair<const char*,PostProcessingFX*>(fx->fxType, fx));
+			return (T*)fx;
 		}
 
 		template <typename T>

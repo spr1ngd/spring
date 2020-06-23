@@ -50,10 +50,6 @@
 #include "firstplayercamera.h"
 #include "fps.h"
 
-const char* _MainTex = "_MainTex";
-const char* _MainColor = "_MainColor";
-const char* _MaskTex = "_MaskTex";
-
 namespace spring
 {
 	class SpringEngine 

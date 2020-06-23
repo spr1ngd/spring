@@ -4,6 +4,7 @@
 using namespace spring;
 
 std::vector<FrameBuffer*> FrameBuffer::framebuffers;
+std::vector<FrameBuffer*> FrameBuffer::m_temporaryFramebuffers;
 
 FrameBuffer::FrameBuffer(unsigned int width, unsigned int height , ColorFormat colorFormat ,unsigned int bufferSize)
 {
@@ -181,4 +182,26 @@ void FrameBuffer::Blit(FrameBuffer& dst)
 	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, dst.framebufferId);
 	glBlitFramebuffer(0, 0, this->width, this->height, 0, 0, dst.width, dst.height, GL_COLOR_BUFFER_BIT, GL_NEAREST);
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+}
+
+FrameBuffer* FrameBuffer::GetTemporary(unsigned int width, unsigned int height, ColorFormat colorformat)
+{
+	FrameBuffer* result = nullptr;
+	if (m_temporaryFramebuffers.size() > 0)
+	{
+		auto lastIndex = m_temporaryFramebuffers.size() - 1;
+		result = m_temporaryFramebuffers[lastIndex];
+		m_temporaryFramebuffers.pop_back();
+	}
+	else 
+	{
+		result = new FrameBuffer(width, height, colorformat);
+		result->Initialize();
+	}
+	return result;
+}
+
+void FrameBuffer::ReleaseTemporary(FrameBuffer* framebuffer) 
+{
+	m_temporaryFramebuffers.push_back(framebuffer);
 }

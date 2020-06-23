@@ -74,7 +74,6 @@
 
 // time type
 #define _Time "_Time"
-#define _ScreenParams "_ScreenParams"
 
 using namespace std;
 

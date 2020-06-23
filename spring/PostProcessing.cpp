@@ -4,6 +4,7 @@
 
 using namespace spring;
 
+const char* PostProcessing::PostProcessingVignette = "Vignette";
 class::spring::PostProcessing* PostProcessing::postprocessing;
 FrameBuffer* PostProcessing::outputFramebuffer;
 
@@ -160,16 +161,20 @@ void PostProcessing::Process()
 	}
 
 	// blit to final framebuffer and render it to scene editor window (hdr framebuffer -> general color framebuffer)
-	this->Blit(transfer, outputFramebuffer);
+
+	FrameBuffer* temporaryFramebuffer = FrameBuffer::GetTemporary(Screen::width, Screen::height);
+	this->Blit(transfer, temporaryFramebuffer);
 
 	// ÊÖ¶¯ÅÅÐò
 	 
 	// add vignette at finally
-	PostProcessingFX* vignette = this->GetFX(PostProcessingVignette);
+	PostProcessingFX* vignette = this->GetFX(PostProcessing::PostProcessingVignette);
 	if (nullptr != vignette)
 	{
-		vignette->Process(*outputFramebuffer,);
+		vignette->Process(*temporaryFramebuffer,*outputFramebuffer);
 	}
+
+	FrameBuffer::ReleaseTemporary(temporaryFramebuffer);
 }
 
 void PostProcessing::Blit(FrameBuffer* src,FrameBuffer* dst)

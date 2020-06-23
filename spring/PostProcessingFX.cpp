@@ -1,5 +1,7 @@
 #include "postprocessingfx.h"
+#include "framebuffer.h"
 
+using namespace spring;
 using namespace spring::FX;
 
 PostProcessingFX::PostProcessingFX() = default;

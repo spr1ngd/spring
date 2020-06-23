@@ -10,6 +10,7 @@
 #include "misc.h"
 #include "graphicprofiler.h"
 #include "screen.h"
+#include "shaderproperty.h"
 
 using namespace std;
 using namespace spring;
@@ -556,7 +557,7 @@ void Shader::setShaderValues()
 
 void Shader::setEngineEnvironment() 
 {
-	this->setVec4(_ScreenParams, Vector4(1.0f / Screen::width, 1.0f / Screen::height, Screen::width, Screen::height));
+	this->setVec4(ShaderProperty::_ScreenParams, Vector4(1.0f / Screen::width, 1.0f / Screen::height, Screen::width, Screen::height));
 	this->setVec3(WorldSpaceCameraPos, Camera::main->transform->position);
 	this->setVec3(CAMERA_POSITION, Camera::main->transform->position);
 	this->setVec4(_Time, shaderTimer);

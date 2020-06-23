@@ -301,6 +301,7 @@
     <ClInclude Include="Serializer.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="ShaderCompiler.h" />
+    <ClInclude Include="ShaderProperty.h" />
     <ClInclude Include="Skybox.h" />
     <ClInclude Include="Space.h" />
     <ClInclude Include="spring.h" />
@@ -423,6 +424,7 @@
     <ClCompile Include="Serializer.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="ShaderCompiler.cpp" />
+    <ClCompile Include="ShaderProperty.cpp" />
     <ClCompile Include="Skybox.cpp" />
     <ClCompile Include="spring.cpp" />
     <ClCompile Include="SpringEditor.cpp" />

@@ -163,7 +163,7 @@ void InitializePostProcessing()
 		Camera::main->renderTarget = renderTarget;
 	}
 
-	auto vignette = PostProcessing::postprocessing->AddFX<spring::FX::Vignette>();
+	Vignette* vignette = PostProcessing::postprocessing->AddFX<Vignette>();
 }
 
 void GameApp::Awake()

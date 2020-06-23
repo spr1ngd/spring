@@ -12,7 +12,8 @@ namespace spring
 {
 	class FrameBuffer
 	{
-	private:		
+	private:
+		static vector<FrameBuffer*> m_temporaryFramebuffers; // framebuffer pool
 		static vector<FrameBuffer*> framebuffers;
 
 		unsigned int buffersSize = 1;
@@ -56,7 +57,7 @@ namespace spring
 
 		void Blit(FrameBuffer& dst);
 
-		FrameBuffer* GetTemporary();
-		void RevertTemporary();
+		static FrameBuffer* GetTemporary(unsigned int width = 1024,unsigned int height = 1024,ColorFormat colorformat = ColorFormat::RGB24);
+		static void ReleaseTemporary(FrameBuffer* framebuffer);
 	};
 }

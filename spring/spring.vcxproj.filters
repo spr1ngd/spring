@@ -583,6 +583,9 @@
     <ClInclude Include="PostProcessingFX.h">
       <Filter>头文件\Core\Renderer\PostProcessing</Filter>
     </ClInclude>
+    <ClInclude Include="ShaderProperty.h">
+      <Filter>头文件\Core\Renderer\BasicModule</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="spring.cpp">
@@ -941,6 +944,9 @@
     </ClCompile>
     <ClCompile Include="PostProcessingFX.cpp">
       <Filter>源文件\Core\Renderer\PostProcessing</Filter>
+    </ClCompile>
+    <ClCompile Include="ShaderProperty.cpp">
+      <Filter>源文件\Core\Renderer\BasicModule</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
