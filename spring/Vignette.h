@@ -9,6 +9,13 @@ namespace spring
 		class Vignette : public PostProcessingFX
 		{
 		public :
+			enum VignetteType 
+			{
+				Classical = 0,
+				Mask = 1
+			};
+
+			int vignetteType = VignetteType::Classical;
 			Colorf color;
 			Vector2 center;
 			float intensity;

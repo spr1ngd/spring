@@ -6,6 +6,7 @@
 #include "antialiasing.h"
 #include "postprocessingfx.h"
 #include "vignette.h"
+#include "gammacorrection.h"
 
 #include "bloom.h"
 #include "tonemapping.h"
@@ -28,6 +29,7 @@ namespace spring
 
 	public:
 		static const char* PostProcessingVignette;
+		static const char* PostProcessingGammaCorrection;
 
 		FrameBuffer* srcFramebuffer;
 		FrameBuffer* dstFramebuffer;

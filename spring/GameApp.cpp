@@ -164,6 +164,7 @@ void InitializePostProcessing()
 	}
 
 	Vignette* vignette = PostProcessing::postprocessing->AddFX<Vignette>();
+	GammaCorrection* gammaCorrection = PostProcessing::postprocessing->AddFX<GammaCorrection>();
 }
 
 void GameApp::Awake()

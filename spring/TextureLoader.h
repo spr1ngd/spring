@@ -26,6 +26,7 @@ namespace spring
 	public:
 		static Texture* CreateTexture(unsigned int width,unsigned int height ,unsigned int level = 0);
 		static Texture* CreatePureWhiteTexture();
+		static Texture* CreatePureBlackTexture();
 		static Cubemap* CreateCubemap(unsigned int width,unsigned int height);
 		static Cubemap* CreateCubemapMipmap(unsigned int width,unsigned int height);
 		static void Caching(const char* filePath ,Texture* texture);

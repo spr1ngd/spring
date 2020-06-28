@@ -5,6 +5,11 @@
 using namespace spring;
 using namespace spring::editor;
 
+void EnumField( const char* fieldName, int& index, const char* items[] ,int count)   
+{ 
+	ImGui::Combo(fieldName, &index, items, count);
+}
+
 void ColorField(const char* fieldName,Colorf& value) 
 {
 	float* color = new float[4]{ value.r,value.g ,value.b ,value.a };
@@ -71,6 +76,20 @@ void PostprocessEditor::OnDrawInspector()
 
 	ImVec2 stdSize = ImVec2(160.0f,90.0f);
 
+	// gamma correction
+	ImGui::SetNextItemOpen(true, ImGuiCond_Once);
+	if (ImGui::CollapsingHeader("Gamma Correction"))
+	{
+		GammaCorrection* gammaCorrection = pp->GetFX<GammaCorrection>();
+		bool enabled = nullptr != gammaCorrection && gammaCorrection->enable;
+		ImGui::Checkbox("Enable Gamma Correction", &enabled);
+		enabled = pp->SetFX<GammaCorrection>(enabled);
+		if (enabled)
+		{
+			DragFloatField("gamma", gammaCorrection->gamma);
+		}
+	}
+
 	// vignette
 	ImGui::SetNextItemOpen(true, ImGuiCond_Once);
 	if (ImGui::CollapsingHeader("Vignette"))
@@ -81,6 +100,8 @@ void PostprocessEditor::OnDrawInspector()
 		vignette = pp->SetFX<Vignette>(vignetteEnabled);
 		if (vignetteEnabled)
 		{ 
+			const char* types[] = {"classical","mask"};
+			EnumField("vignette type", vignette->vignetteType, types, IM_ARRAYSIZE(types));
 			ColorField("color", vignette->color);
 			Vec2Field("center", vignette->center);
 			DragFloatField("intensity", vignette->intensity);

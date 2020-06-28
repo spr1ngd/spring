@@ -5,6 +5,7 @@
 using namespace spring;
 
 const char* PostProcessing::PostProcessingVignette = "Vignette";
+const char* PostProcessing::PostProcessingGammaCorrection = "GammaCorrection";
 class::spring::PostProcessing* PostProcessing::postprocessing;
 FrameBuffer* PostProcessing::outputFramebuffer;
 
@@ -167,7 +168,7 @@ void PostProcessing::Process()
 
 	// ÊÖ¶¯ÅÅÐò
 	 
-	// add vignette at finally
+	// add vignette
 	PostProcessingFX* vignette = this->GetFX(PostProcessing::PostProcessingVignette);
 	if (nullptr != vignette && vignette->enable)
 	{
@@ -178,6 +179,13 @@ void PostProcessing::Process()
 		this->Blit(temporaryFramebuffer, outputFramebuffer);
 	}
 
+	// gamma correction
+	PostProcessingFX* gammaCorrection = this->GetFX(PostProcessing::PostProcessingGammaCorrection);
+	if (nullptr != gammaCorrection && gammaCorrection->enable) 
+	{
+		gammaCorrection->Process(*outputFramebuffer, *temporaryFramebuffer);
+		this->Blit(temporaryFramebuffer, outputFramebuffer);
+	}
 	FrameBuffer::ReleaseTemporary(temporaryFramebuffer);
 }
 

@@ -94,6 +94,33 @@ Texture* TextureLoader::CreatePureWhiteTexture()
 		texture = textures[textureName];
 	return texture;
 }
+Texture* TextureLoader::CreatePureBlackTexture()
+{
+	const char* textureName = "__spring__engine__pure__black__texture__";
+	Texture* texture = nullptr;
+	if (!TryGetCache(textureName, texture))
+	{
+		PRINT_ERROR("create new pure black color texture.");
+		texture = new Texture();
+		texture->textureName = textureName;
+		texture->textureType = "pure black color";
+		GLuint tex;
+		glGenTextures(1, &tex);
+		glBindTexture(GL_TEXTURE_2D, tex);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		unsigned char* data = new unsigned char[4]{ 0,0,0,0 };
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 1, 1, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
+		delete[] data;
+		texture->textureId = tex;
+		Caching(textureName, texture);
+	}
+	else
+		texture = textures[textureName];
+	return texture;
+}
 
 Texture* TextureLoader::Load(const char* filePath ,bool invertY)
 {
