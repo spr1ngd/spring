@@ -11,6 +11,7 @@ namespace spring
 		public:
 			const char* fxType;
 			Material* material;
+			bool enable = false;
 
 			PostProcessingFX();
 

@@ -5,6 +5,52 @@
 using namespace spring;
 using namespace spring::editor;
 
+void ColorField(const char* fieldName,Colorf& value) 
+{
+	float* color = new float[4]{ value.r,value.g ,value.b ,value.a };
+	ImGui::ColorEdit4(fieldName, color);
+	value = Colorf(color[0], color[1], color[2], color[3]);
+	delete[] color;
+}
+
+void Vec2Field( const char* fieldName, Vector2& value ) 
+{
+	float* vec2 = new float[2]{ value.x,value.y };
+	ImGui::InputFloat2(fieldName, vec2);
+	value.x = vec2[0];
+	value.y = vec2[1];
+}
+
+void DragFloatField(const char* fieldName, float& value, float min = 0.0f, float max = 1.0f, float speed = 0.01f)
+{
+	ImGui::DragFloat(fieldName, &value, speed, min, max);
+}
+
+void CheckField( const char* fieldName, bool& value )
+{
+	ImGui::Checkbox(fieldName, &value);
+}
+
+void TextureField(const char* fieldName, Texture* texture, Vector2 size = Vector2(256, 256), Vector2 uv0 = Vector2(0, 1), Vector2 uv1 = Vector2(1, 0))
+{
+	ImGui::Text(fieldName);
+
+	if (nullptr == texture)
+	{
+		if (ImGui::Button("upload")) 
+		{
+			PRINT_LOG("upload texture.");
+		}
+	}
+	else
+	{
+		if (ImGui::ImageButton((ImTextureID)(texture->textureId), ImVec2(size.x, size.y), ImVec2(uv0.x, uv0.y), ImVec2(uv1.x, uv1.y))) 
+		{
+			PRINT_LOG("replace texture");
+		}
+	}
+}
+
 void PostprocessEditor::OnDrawInspector() 
 {
 	class::PostProcessing* pp = PostProcessing::postprocessing;
@@ -24,6 +70,26 @@ void PostprocessEditor::OnDrawInspector()
 		return;
 
 	ImVec2 stdSize = ImVec2(160.0f,90.0f);
+
+	// vignette
+	ImGui::SetNextItemOpen(true, ImGuiCond_Once);
+	if (ImGui::CollapsingHeader("Vignette"))
+	{
+		Vignette* vignette = pp->GetFX<Vignette>();
+		bool vignetteEnabled = nullptr != vignette && vignette->enable;
+		ImGui::Checkbox("Enable Vignette", &vignetteEnabled);
+		vignette = pp->SetFX<Vignette>(vignetteEnabled);
+		if (vignetteEnabled)
+		{ 
+			ColorField("color", vignette->color);
+			Vec2Field("center", vignette->center);
+			DragFloatField("intensity", vignette->intensity);
+			DragFloatField("smoothness",vignette->smoothness);
+			DragFloatField("roundness",vignette->roundness);
+			CheckField("rounded",vignette->rounded);
+			TextureField("mask texture",vignette->maskTex);
+		}
+	}
 
 	// bloom setting
 	ImGui::SetNextItemOpen(true, ImGuiCond_Once);

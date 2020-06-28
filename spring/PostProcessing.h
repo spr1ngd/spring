@@ -21,13 +21,6 @@ namespace spring
 	private:
 
 		std::map<const char*, PostProcessingFX*> effects;
-		PostProcessingFX* GetFX(const char* fxType)
-		{
-			auto item = this->effects.find(fxType);
-			if (item == this->effects.end())
-				return nullptr;
-			return item->second;
-		}
 
 		void Blit(FrameBuffer* src,FrameBuffer* dst);
 		void Blit(FrameBuffer* src,FrameBuffer* dst,Material* material);
@@ -84,6 +77,36 @@ namespace spring
 			delete fx;
 		}
 
+		template <typename T>
+		T* GetFX() 
+		{
+			T* t = new T();
+			PostProcessingFX* fx = (PostProcessingFX*)t;
+			PostProcessingFX* result = this->GetFX(fx->fxType);
+			delete fx;
+			if (nullptr == result)
+				return nullptr;
+			return (T*)result;
+		}
+
+		PostProcessingFX* GetFX(const char* fxType)
+		{
+			auto item = this->effects.find(fxType);
+			if (item == this->effects.end())
+				return nullptr;
+			return item->second;
+		}
+
+		template <typename T>
+		T* SetFX(bool enable) 
+		{
+			T* t = this->GetFX<T>();
+			if (nullptr == t)
+				t = this->AddFX<T>();
+			PostProcessingFX* fx = (PostProcessingFX*)t;
+			fx->enable = enable;
+			return t;
+		}
 
 		TypeInfo GetTypeInfo() override 
 		{

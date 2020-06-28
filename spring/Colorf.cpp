@@ -58,7 +58,7 @@ void Colorf::operator=(const Colorf colorf)
 	this->g = colorf.g;
 	this->b = colorf.b;
 	this->a = colorf.a;
-}
+} 
 
 Colorf Colorf::operator+(const Colorf color)
 {

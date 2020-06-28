@@ -169,9 +169,13 @@ void PostProcessing::Process()
 	 
 	// add vignette at finally
 	PostProcessingFX* vignette = this->GetFX(PostProcessing::PostProcessingVignette);
-	if (nullptr != vignette)
+	if (nullptr != vignette && vignette->enable)
 	{
 		vignette->Process(*temporaryFramebuffer,*outputFramebuffer);
+	}
+	else 
+	{
+		this->Blit(temporaryFramebuffer, outputFramebuffer);
 	}
 
 	FrameBuffer::ReleaseTemporary(temporaryFramebuffer);
